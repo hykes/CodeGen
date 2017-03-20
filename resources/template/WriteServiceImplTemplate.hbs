@@ -1,0 +1,45 @@
+package {{packageName}}.service;
+
+import club.itbus.core.model.Response;
+import {{packageName}}.model.{{modelName}};
+import {{packageName}}.dao.{{modelName}}Dao;
+
+import com.google.common.base.Throwables;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Desc:
+ * Mail: {{author}}
+ * Date: {{createdAt}}
+ */
+@Slf4j
+@Service
+public class {{serviceName}} implements {{modelName}}WriteService {
+
+    @Autowired
+    private {{modelName}}Dao {{LowerCase modelName}}Dao;
+
+    @Override
+    public Response<Boolean> create({{modelName}} {{LowerCase modelName}}) {
+        try{
+            return Response.ok({{LowerCase modelName}}Dao.create({{LowerCase modelName}}));
+        }catch (Exception e){
+            log.error("failed to create {{LowerCase modelName}}, cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("{{LowerCase modelName}}.create.fail");
+        }
+    }
+
+    @Override
+    public Response<Boolean> update({{modelName}} {{LowerCase modelName}}) {
+        try{
+            return Response.ok({{LowerCase modelName}}Dao.update({{LowerCase modelName}}));
+        }catch (Exception e){
+            log.error("failed to update {{LowerCase modelName}}, cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("{{LowerCase modelName}}.update.fail");
+        }
+    }
+
+}

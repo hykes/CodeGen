@@ -1,0 +1,51 @@
+package {{packageName}}.service;
+
+import club.itbus.core.model.Response;
+import club.itbus.core.model.Paging;
+import club.itbus.core.model.PageInfo;
+import {{packageName}}.model.{{modelName}};
+import {{packageName}}.dao.{{modelName}}Dao;
+
+
+import com.google.common.base.Throwables;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+/**
+ * Desc:
+ * Author:
+ * Date: {{createdAt}}
+ */
+@Slf4j
+@Service
+public class {{serviceName}} implements {{modelName}}ReadService {
+
+    @Autowired
+    private {{modelName}}Dao {{LowerCase modelName}}Dao;
+
+    @Override
+    public Response<{{modelName}}> findById(Long id) {
+        try{
+            return Response.ok({{LowerCase modelName}}Dao.load(id));
+        }catch (Exception e){
+            log.error("failed to find {{LowerCase modelName}} by id:{}, cause:{}", id, Throwables.getStackTraceAsString(e));
+            return Response.fail("{{LowerCase modelName}}.find.fail");
+        }
+    }
+
+    @Override
+    public Response<Paging<{{modelName}}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria) {
+        try{
+            PageInfo pageInfo = new PageInfo(pageNo, pageSize);
+            return Response.ok({{LowerCase modelName}}Dao.paging(pageInfo.getOffset(), pageInfo.getLimit(), criteria));
+        }catch (Exception e){
+            log.error("failed to paging {{LowerCase modelName}} by pageNo:{} pageSize:{}, cause:{}", pageNo, pageSize, Throwables.getStackTraceAsString(e));
+            return Response.fail("{{LowerCase modelName}}.paging.fail");
+        }
+    }
+
+}

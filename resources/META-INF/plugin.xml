@@ -1,0 +1,64 @@
+<idea-plugin version="2">
+  <id>me.hehaiyang.codegen</id>
+  <name>CodeGen</name>
+  <version>0.1</version>
+  <vendor email="hehaiyang@terminus.io" url="https://github.com/hehaiyangwork">HeHaiYang</vendor>
+
+  <description><![CDATA[
+      <ul>
+        <li>Generate the model class</li>
+        <li>Generate the mapper xml</li>
+        <li>Generate the sql script</li>
+      </ul>
+    ]]></description>
+
+  <change-notes><![CDATA[
+      <em>first version</em>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="141.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+
+    <applicationConfigurable instance="me.hehaiyang.plugins.codegen.setting.FormatConfigurable"/>
+    <applicationService serviceInterface="me.hehaiyang.plugins.codegen.setting.FormatSetting"
+                        serviceImplementation="me.hehaiyang.plugins.codegen.setting.FormatSetting"/>
+
+    <toolWindow id="ToolsWindow.CodeMaker" anchor="right" factoryClass="me.hehaiyang.plugins.codegen.windows.CodeGenToolsWindow"/>
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+    <!--<action id="SayHello" class="club.itbus.plugins.codemaker.HelloAction" text="HelloAction">-->
+      <!--<add-to-group group-id="WindowMenu" anchor="first"/>-->
+    <!--<keyboard-shortcut keymap="$default" first-keystroke="alt i"/>-->
+    <!--</action>-->
+    <action id="SayHello" class="me.hehaiyang.plugins.codegen.CodeGenAction" text="CodeGen">
+      <add-to-group group-id="NewGroup" anchor="first"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="alt control G"/>
+    </action>
+    <!--<group id="Terminus.group" text="_Terminus" description="terminus tools">-->
+      <!--<add-to-group group-id="GenerateGroup" anchor="last"  />-->
+      <!--<action id="Terminus.textboxes" class="club.itbus.plugins.codemaker.TextBoxes" text="Generate Mapper" description="" />-->
+    <!--</group>-->
+    <!--<action id="generateGSDoc" class="club.itbus.plugins.codemaker.GenerateGSAction" text="generateGSDoc">-->
+      <!--<add-to-group group-id="GenerateGroup" anchor="last" />-->
+    <!--</action>-->
+
+  </actions>
+
+  <application-components>
+    <component>
+      <implementation-class>me.hehaiyang.plugins.codegen.HelloCompontent</implementation-class>
+    </component>
+  </application-components>
+</idea-plugin>

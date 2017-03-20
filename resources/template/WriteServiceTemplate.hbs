@@ -1,0 +1,28 @@
+package {{packageName}}.service;
+
+import club.itbus.core.model.Response;
+import {{packageName}}.model.{{modelName}};
+
+
+/**
+ * Desc: {{comment}}
+ * Mail: {{author}}
+ * Date: {{createdAt}}
+ */
+public interface {{serviceName}} {
+
+    /**
+     *
+     * @param {{LowerCase modelName}}
+     * @return Boolean
+     */
+    Response<Boolean> create({{modelName}} {{LowerCase modelName}});
+
+    /**
+     *
+     * @param {{LowerCase modelName}}
+     * @return Boolean
+     */
+    Response<Boolean> update({{modelName}} {{LowerCase modelName}});
+
+}

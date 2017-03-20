@@ -1,0 +1,38 @@
+package {{packageName}}.model;
+
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * Desc:
+ * Author:
+ * Date: {{createdAt}}
+ */
+@Data
+public class {{modelName}} implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 自增主键
+     */
+    public Long id;
+    {{#each fields}}
+    /**
+     * {{comment}}
+     */
+    public {{fieldType}} {{field}};
+    {{/each}}
+    /**
+     * 创建时间
+     */
+    public Date createdAt;
+
+    /**
+     * 更新时间
+     */
+    public Date updatedAt;
+
+}

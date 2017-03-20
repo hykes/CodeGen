@@ -1,0 +1,31 @@
+package {{packageName}}.service;
+
+import club.itbus.core.model.Response;
+import club.itbus.core.model.Paging;
+import {{packageName}}.model.{{modelName}};
+
+import java.util.Map;
+/**
+ * Desc:
+ * Mail: {{author}}
+ * Date: {{createdAt}}
+ */
+public interface {{serviceName}} {
+
+    /**
+     *
+     * @param id
+     * @return {{LowerCase modelName}}
+     */
+    Response<{{modelName}}> findById(Long id);
+
+    /**
+     *
+     * @param pageNo
+     * @param pageSize
+     * @param criteria
+     * @return Paging<{{modelName}}>
+     */
+    Response<Paging<{{modelName}}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria);
+
+}
