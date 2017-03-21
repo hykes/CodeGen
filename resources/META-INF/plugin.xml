@@ -1,8 +1,8 @@
 <idea-plugin version="2">
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>0.1</version>
-  <vendor email="hehaiyangwork@qq.com" url="https://github.com/hehaiyangwork">HeHaiYang</vendor>
+  <version>0.2</version>
+  <vendor email="hehaiyangwork@qq.com" url="https://github.com/hehaiyangwork/CodeGen">HeHaiYang</vendor>
 
   <description><![CDATA[
       <p>This plugin helps you to generate specific code.</p>
@@ -15,7 +15,8 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      <em>first version</em>
+      <em>2017-03-21：V0.2</em>
+      <em>2017-03-21：V0.1</em>
     ]]>
   </change-notes>
 

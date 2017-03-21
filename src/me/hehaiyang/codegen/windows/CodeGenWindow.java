@@ -17,11 +17,11 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.util.PsiTreeUtil;
+import me.hehaiyang.codegen.model.CodeGenContext;
 import me.hehaiyang.codegen.utils.ParseUtils;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 import me.hehaiyang.codegen.handlebars.HandlebarsFactory;
 import me.hehaiyang.codegen.model.Field;
-import me.hehaiyang.codegen.model.Mapper;
 import me.hehaiyang.codegen.model.SqlFileType;
 import me.hehaiyang.codegen.setting.FormatSetting;
 
@@ -73,63 +73,64 @@ public class CodeGenWindow extends JFrame {
         formatSetting = FormatSetting.getInstance();
 
         sure.addActionListener(e -> {
-                try {
+            try {
 
-                    if(Strings.isNullOrEmpty(fieldTextField.getText().trim().toString())){
-                        CodeGenWindow.this.setLableTextVisbile(true, "Model名称不能为空");
-                        return;
-                    }
-                    if(Strings.isNullOrEmpty(tableTextField.getText().trim().toString())){
-                        CodeGenWindow.this.setLableTextVisbile(true, "Table名称不能为空");
-                        return;
-                    }
+                String modelName = fieldTextField.getText().trim().toString();
+                String tableName = tableTextField.getText().trim().toString();
+                String markdown = textep.getText().trim().toString();
 
-                    String modelName = fieldTextField.getText().trim().toString();
-                    String tableName = tableTextField.getText().trim().toString();
-
-                    if (!Strings.isNullOrEmpty(textep.getText().trim().toString())) {
-
-                        List<Field> fieldslist = ParseUtils.parseString(textep.getText().trim().toString());
-
-                        if (fieldslist == null || fieldslist.size() == 0) {
-                            CodeGenWindow.this.setLableTextVisbile(true, "参数格式不对，解析错误！");
-                            return;
-                        }
-
-                        WriteCommandAction.runWriteCommandAction(project, new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    // 生成 mapper
-                                    Mapper mapper = new Mapper(modelName, tableName, fieldslist);
-                                    Template template = handlebars.compileInline(formatSetting.getMapperFormat());
-                                    String context = template.apply(BuilderUtil.transBean2Map(mapper));
-                                    createfile(anActionEvent, project, modelName + XmlFileType.DOT_DEFAULT_EXTENSION, XmlFileType.INSTANCE, context);
-
-                                    Template modelTemplate = handlebars.compileInline(formatSetting.getModelFormat());
-                                    String modelContext = modelTemplate.apply(BuilderUtil.transBean2Map(mapper));
-                                    createfile(anActionEvent, project, modelName + JavaFileType.DOT_DEFAULT_EXTENSION, JavaFileType.INSTANCE, modelContext);
-
-                                    Template sqlTemplate = handlebars.compileInline(formatSetting.getSqlFormat());
-                                    String sqlContext = sqlTemplate.apply(BuilderUtil.transBean2Map(mapper));
-                                    createfile(anActionEvent, project, modelName + SqlFileType.DOT_DEFAULT_EXTENSION, SqlFileType.INSTANCE, sqlContext);
-
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-
-                        CodeGenWindow.this.setVisibleWindow(false);
-                    } else {
-                        CodeGenWindow.this.setLableTextVisbile(true, "参数不能为空");
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                if(Strings.isNullOrEmpty(modelName)){
+                    CodeGenWindow.this.setLableTextVisbile(true, "Model名称不能为空");
+                    return;
                 }
+                if(Strings.isNullOrEmpty(tableName)){
+                    CodeGenWindow.this.setLableTextVisbile(true, "Table名称不能为空");
+                    return;
+                }
+                if(!Strings.isNullOrEmpty(markdown)){
+                    CodeGenWindow.this.setLableTextVisbile(true, "参数不能为空");
+                    return;
+                }
+
+                List<Field> fieldslist = ParseUtils.parseString(textep.getText().trim().toString());
+
+                if (fieldslist == null || fieldslist.size() == 0) {
+                    CodeGenWindow.this.setLableTextVisbile(true, "参数格式不对，解析错误！");
+                    return;
+                }
+
+                WriteCommandAction.runWriteCommandAction(project, new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            CodeGenContext context = new CodeGenContext(modelName, tableName, fieldslist);
+
+                            Template mapperTemplate = handlebars.compileInline(formatSetting.getMapperFormat());
+                            String mapperContext = mapperTemplate.apply(BuilderUtil.transBean2Map(context));
+                            createfile(anActionEvent, project, context.getModelName() + XmlFileType.DOT_DEFAULT_EXTENSION, XmlFileType.INSTANCE, mapperContext);
+
+                            Template modelTemplate = handlebars.compileInline(formatSetting.getModelFormat());
+                            String modelContext = modelTemplate.apply(BuilderUtil.transBean2Map(context));
+                            createfile(anActionEvent, project, context.getModelName() + JavaFileType.DOT_DEFAULT_EXTENSION, JavaFileType.INSTANCE, modelContext);
+
+                            Template sqlTemplate = handlebars.compileInline(formatSetting.getSqlFormat());
+                            String sqlContext = sqlTemplate.apply(BuilderUtil.transBean2Map(context));
+                            createfile(anActionEvent, project, context.getModelName() + SqlFileType.DOT_DEFAULT_EXTENSION, SqlFileType.INSTANCE, sqlContext);
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                CodeGenWindow.this.setVisibleWindow(false);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-        );
+        });
         cancel.addActionListener(e -> {
             dispose();
         });
