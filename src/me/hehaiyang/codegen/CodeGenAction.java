@@ -1,40 +1,30 @@
 package me.hehaiyang.codegen;
 
-import me.hehaiyang.codegen.windows.CodeGenWindow;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.vfs.VirtualFile;
-
+import me.hehaiyang.codegen.windows.CodeGenWindow;
 
 public class CodeGenAction extends AnAction {
-
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
 
-        CodeGenWindow windowdialog=new CodeGenWindow(anActionEvent);
+        CodeGenWindow codeGenWindow=new CodeGenWindow(anActionEvent);
 
-        windowdialog.setSize(800, 400);
-        windowdialog.setAlwaysOnTop(false);
-        windowdialog.setLocationRelativeTo(null);
-        windowdialog.setVisible(true);
-
+        codeGenWindow.setSize(800, 400);
+        codeGenWindow.setAlwaysOnTop(false);
+        codeGenWindow.setLocationRelativeTo(null);
+        codeGenWindow.setVisible(true);
     }
 
     @Override
     public void update(AnActionEvent event) {
         //在Action显示之前,根据选中文件扩展名判定是否显示此Action
-        String extension = getFileExtension(event.getDataContext());
-//        this.getTemplatePresentation().setEnabled(extension != null && "jar".equals(extension));
-        this.getTemplatePresentation().setEnabled(true);
+        VirtualFile file = DataKeys.VIRTUAL_FILE.getData(event.getDataContext());
+        String extension = file == null ? null : file.getExtension();
+        this.getTemplatePresentation().setEnabled(extension != null && "java".equals(extension));
     }
-
-    public static String getFileExtension(DataContext dataContext) {
-        VirtualFile file = DataKeys.VIRTUAL_FILE.getData(dataContext);
-        return file == null ? null : file.getExtension();
-    }
-
 
 }
