@@ -1,11 +1,10 @@
-package me.hehaiyang.plugins.codegen.setting;
+package me.hehaiyang.codegen.setting;
 
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import org.jdom.Element;
 import org.jetbrains.annotations.Nullable;
 
 /**

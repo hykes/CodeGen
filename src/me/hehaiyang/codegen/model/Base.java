@@ -1,4 +1,4 @@
-package me.hehaiyang.plugins.codegen.model;
+package me.hehaiyang.codegen.model;
 
 import java.io.Serializable;
 import java.util.Date;

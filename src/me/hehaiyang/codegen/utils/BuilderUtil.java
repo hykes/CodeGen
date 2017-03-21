@@ -1,4 +1,4 @@
-package me.hehaiyang.plugins.codegen.utils;
+package me.hehaiyang.codegen.utils;
 
 import com.google.common.collect.Maps;
 import org.springframework.util.StringUtils;

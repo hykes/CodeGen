@@ -1,7 +1,7 @@
-package me.hehaiyang.plugins.codegen.model;
+package me.hehaiyang.codegen.model;
 
 
-import me.hehaiyang.plugins.codegen.utils.BuilderUtil;
+import me.hehaiyang.codegen.utils.BuilderUtil;
 
 import java.io.Serializable;
 

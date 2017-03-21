@@ -1,6 +1,6 @@
-package me.hehaiyang.plugins.codegen;
+package me.hehaiyang.codegen;
 
-import me.hehaiyang.plugins.codegen.windows.CodeGenWindow;
+import me.hehaiyang.codegen.windows.CodeGenWindow;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;

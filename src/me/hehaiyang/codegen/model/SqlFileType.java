@@ -1,4 +1,4 @@
-package me.hehaiyang.plugins.codegen.model;
+package me.hehaiyang.codegen.model;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.lang.java.JavaLanguage;

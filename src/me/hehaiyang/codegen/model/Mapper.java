@@ -1,7 +1,4 @@
-package me.hehaiyang.plugins.codegen.model;
-
-import me.hehaiyang.plugins.codegen.model.Base;
-import me.hehaiyang.plugins.codegen.model.Field;
+package me.hehaiyang.codegen.model;
 
 import java.util.Date;
 import java.util.List;

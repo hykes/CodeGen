@@ -1,4 +1,4 @@
-package me.hehaiyang.plugins.codegen.windows;
+package me.hehaiyang.codegen.windows;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;

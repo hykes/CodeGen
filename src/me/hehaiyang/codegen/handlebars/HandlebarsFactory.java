@@ -1,4 +1,4 @@
-package me.hehaiyang.plugins.codegen.handlebars;
+package me.hehaiyang.codegen.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;

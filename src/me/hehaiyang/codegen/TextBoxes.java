@@ -1,4 +1,4 @@
-package me.hehaiyang.plugins.codegen;
+package me.hehaiyang.codegen;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

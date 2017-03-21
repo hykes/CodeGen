@@ -1,4 +1,4 @@
-package me.hehaiyang.plugins.codegen;
+package me.hehaiyang.codegen;
 
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.ui.Messages;

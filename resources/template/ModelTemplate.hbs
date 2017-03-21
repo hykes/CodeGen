@@ -1,4 +1,3 @@
-package {{packageName}}.model;
 
 import lombok.Data;
 
@@ -18,21 +17,21 @@ public class {{modelName}} implements Serializable {
     /**
      * 自增主键
      */
-    public Long id;
+    private Long id;
     {{#each fields}}
     /**
      * {{comment}}
      */
-    public {{fieldType}} {{field}};
+    private {{fieldType}} {{field}};
     {{/each}}
     /**
      * 创建时间
      */
-    public Date createdAt;
+    private Date createdAt;
 
     /**
      * 更新时间
      */
-    public Date updatedAt;
+    private Date updatedAt;
 
 }

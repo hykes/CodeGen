@@ -1,7 +1,7 @@
-package me.hehaiyang.plugins.codegen.utils;
+package me.hehaiyang.codegen.utils;
 
 
-import me.hehaiyang.plugins.codegen.model.Field;
+import me.hehaiyang.codegen.model.Field;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

@@ -1,4 +1,4 @@
-package me.hehaiyang.plugins.codegen.windows;
+package me.hehaiyang.codegen.windows;
 
 /**
  * Desc:

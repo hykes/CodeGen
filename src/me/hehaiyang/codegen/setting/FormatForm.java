@@ -1,4 +1,4 @@
-package me.hehaiyang.plugins.codegen.setting;
+package me.hehaiyang.codegen.setting;
 
 import javax.swing.*;
 

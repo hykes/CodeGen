@@ -1,4 +1,4 @@
-package me.hehaiyang.plugins.codegen.windows;
+package me.hehaiyang.codegen.windows;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
@@ -17,13 +17,13 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.util.PsiTreeUtil;
-import me.hehaiyang.plugins.codegen.utils.BuilderUtil;
-import me.hehaiyang.plugins.codegen.handlebars.HandlebarsFactory;
-import me.hehaiyang.plugins.codegen.model.Field;
-import me.hehaiyang.plugins.codegen.model.Mapper;
-import me.hehaiyang.plugins.codegen.model.SqlFileType;
-import me.hehaiyang.plugins.codegen.setting.FormatSetting;
-import me.hehaiyang.plugins.codegen.utils.ParseUtils;
+import me.hehaiyang.codegen.utils.ParseUtils;
+import me.hehaiyang.codegen.utils.BuilderUtil;
+import me.hehaiyang.codegen.handlebars.HandlebarsFactory;
+import me.hehaiyang.codegen.model.Field;
+import me.hehaiyang.codegen.model.Mapper;
+import me.hehaiyang.codegen.model.SqlFileType;
+import me.hehaiyang.codegen.setting.FormatSetting;
 
 import javax.swing.*;
 import java.util.List;
