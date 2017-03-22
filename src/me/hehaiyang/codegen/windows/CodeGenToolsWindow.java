@@ -12,16 +12,14 @@ import javax.swing.*;
  * toolwindow窗口体
  */
 public class CodeGenToolsWindow implements ToolWindowFactory {
-    private JTextField textField1;
-    private JTextField textField2;
-    private JPanel mcontailjpanel;
+    private JPanel toolsWindowPanel;
 
     @Override
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
 
 
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent(mcontailjpanel, "", false);
+        Content content = contentFactory.createContent(toolsWindowPanel, "", false);
         toolWindow.getContentManager().addContent(content);
     }
 

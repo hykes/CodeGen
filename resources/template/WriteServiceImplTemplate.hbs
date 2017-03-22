@@ -1,5 +1,6 @@
 
-import club.itbus.core.model.Response;
+import io.terminus.common.model.Response;
+import io.terminus.boot.rpc.common.annotation.RpcProvider;
 
 import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;
@@ -8,24 +9,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Desc:
- * Mail: {{author}}
- * Date: {{createdAt}}
- */
+* Desc:
+* Mail: hehaiyang@terminus.io
+* Date: 2017/3/17
+*/
 @Slf4j
 @Service
-public class {{serviceName}} implements {{modelName}}WriteService {
+@RpcProvider
+public class {{modelName}}WriteServiceImpl implements {{modelName}}WriteService {
 
     @Autowired
     private {{modelName}}Dao {{LowerCase modelName}}Dao;
 
     @Override
-    public Response<Boolean> create({{modelName}} {{LowerCase modelName}}) {
-        try{
-            return Response.ok({{LowerCase modelName}}Dao.create({{LowerCase modelName}}));
+    public Response<Long> create({{modelName}} {{LowerCase modelName}}) {
+    try{
+        {{LowerCase modelName}}Dao.create({{LowerCase modelName}});
+        return Response.ok({{LowerCase modelName}}.getId());
         }catch (Exception e){
-            log.error("failed to create {{LowerCase modelName}}, cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("{{LowerCase modelName}}.create.fail");
+        log.error("failed to create {{LowerCase modelName}}, cause:{}", Throwables.getStackTraceAsString(e));
+        return Response.fail("{{LowerCase modelName}}.create.fail");
         }
     }
 

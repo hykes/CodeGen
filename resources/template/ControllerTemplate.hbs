@@ -1,54 +1,81 @@
 
-import club.itbus.core.model.Response;
-import club.itbus.core.model.JsonResponseException;
+import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import io.terminus.common.exception.JsonResponseException;
+import io.terminus.common.model.Response;
 
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Map;
+
 /**
- * Desc:
- * Author:
- * Date: {{createdAt}}
- */
+* Desc:
+* Mail: hehaiyang@terminus.io
+* Date: 2017/3/17
+*/
 @Slf4j
-@Controller
+@RestController
 @RequestMapping
-public class {{controllerName}} {
+public class {{modelName}}s {
 
-    @Autowired
-    private {{modelName}}WriteService {{LowerCase modelName}}WriteService;
+@RpcConsumer
+private {{modelName}}WriteService {{LowerCase modelName}}WriteService;
 
-    /**
-     * 创建
-     * @param
-     */
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Boolean create(@RequestBody {{modelName}} {{LowerCase modelName}}) {
-        Response<Boolean> response = {{LowerCase modelName}}WriteService.create({{LowerCase modelName}});
-        if (!response.isSuccess()) {
-            throw new JsonResponseException(500, response.getError());
-        }
-        return response.getResult();
-    }
+@RpcConsumer
+private {{modelName}}ReadService {{LowerCase modelName}}ReadService;
 
-    /**
-     * 更新
-     * @param
-     */
-    @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Boolean update(@RequestBody {{modelName}} {{LowerCase modelName}}) {
-        Response<Boolean> response = {{LowerCase modelName}}WriteService.update({{LowerCase modelName}});
-        if (!response.isSuccess()) {
-            throw new JsonResponseException(500, response.getError());
-        }
-        return response.getResult();
-    }
+@RequestMapping(value = "/contacts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+public {{modelName}} find{{modelName}}(@RequestParam Long id) {
+Response<{{modelName}}> response =  {{LowerCase modelName}}ReadService.findById(id);
+if (!response.isSuccess()) {
+throw new JsonResponseException(500, response.getError());
 }
+return response.getResult();
+}
+
+@RequestMapping(value = "/paging", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+public Paging<{{modelName}}> paging{{modelName}}(@RequestParam(value = "pageNo", required = false) Integer pageNo,
+@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+
+Map<String, Object> criteria = Maps.newHashMap();
+
+Response<Paging<{{modelName}}>> result =  {{LowerCase modelName}}ReadService.paging(pageNo, pageSize, criteria);
+if(!result.isSuccess()){
+throw new JsonResponseException(result.getError());
+}
+return result.getResult();
+}
+
+/**
+* 创建
+* @param
+*/
+@RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+public Long create{{modelName}}(@RequestBody {{modelName}} {{LowerCase modelName}}) {
+Response<Long> response = {{LowerCase modelName}}WriteService.create({{LowerCase modelName}});
+    if (!response.isSuccess()) {
+    throw new JsonResponseException(500, response.getError());
+    }
+    return response.getResult();
+    }
+
+    /**
+    * 更新
+    * @param
+    */
+    @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean update{{modelName}}(@RequestBody {{modelName}} {{LowerCase modelName}}) {
+    Response<Boolean> response = {{LowerCase modelName}}WriteService.update({{LowerCase modelName}});
+        if (!response.isSuccess()) {
+        throw new JsonResponseException(500, response.getError());
+        }
+        return response.getResult();
+        }
+        }

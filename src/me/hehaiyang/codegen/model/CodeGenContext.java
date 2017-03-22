@@ -1,7 +1,6 @@
 package me.hehaiyang.codegen.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,6 +13,10 @@ public class CodeGenContext implements Serializable {
     private static final long serialVersionUID = -8139936029537532112L;
 
     public CodeGenContext(){}
+
+    public CodeGenContext(String modelName){
+        this.modelName = modelName;
+    }
 
     public CodeGenContext(String modelName, String tableName, List<Field> fields){
         this.tableName = tableName;

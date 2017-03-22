@@ -32,6 +32,13 @@ public class HandlebarsFactory {
                 return value.replaceFirst(value.substring(0, 1),value.substring(0, 1).toLowerCase());
             }
         });
+
+        handlebars.registerHelper("UpperCase", new Helper<String>() {
+            public CharSequence apply(String value, Options options) throws IOException {
+                return value.replaceFirst(value.substring(0, 1),value.substring(0, 1).toUpperCase());
+            }
+        });
+
         return handlebars;
     }
 

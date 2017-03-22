@@ -20,6 +20,11 @@ public class FormatSetting implements PersistentStateComponent<FormatSetting> {
     private String sqlFormat;
 
     private String modelFormat;
+    private String writeFormat;
+    private String writeImplFormat;
+    private String readFormat;
+    private String readImplFormat;
+    private String controlFormat;
 
     public FormatSetting() {
     }
@@ -59,5 +64,45 @@ public class FormatSetting implements PersistentStateComponent<FormatSetting> {
 
     public void setModelFormat(String modelFormat) {
         this.modelFormat = modelFormat;
+    }
+
+    public String getWriteFormat() {
+        return writeFormat == null ? "" : this.writeFormat;
+    }
+
+    public void setWriteFormat(String writeFormat) {
+        this.writeFormat = writeFormat;
+    }
+
+    public String getWriteImplFormat() {
+        return writeImplFormat == null ? "" : this.writeImplFormat;
+    }
+
+    public void setWriteImplFormat(String writeImplFormat) {
+        this.writeImplFormat = writeImplFormat;
+    }
+
+    public String getReadImplFormat() {
+        return readImplFormat == null ? "" : this.readImplFormat;
+    }
+
+    public void setReadImplFormat(String readImplFormat) {
+        this.readImplFormat = readImplFormat;
+    }
+
+    public String getReadFormat() {
+        return readFormat == null ? "" : this.readFormat;
+    }
+
+    public void setReadFormat(String readFormat) {
+        this.readFormat = readFormat;
+    }
+
+    public String getControlFormat() {
+        return controlFormat == null ? "" : this.controlFormat;
+    }
+
+    public void setControlFormat(String controlFormat) {
+        this.controlFormat = controlFormat;
     }
 }

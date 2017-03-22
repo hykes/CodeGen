@@ -1,7 +1,6 @@
 package me.hehaiyang.codegen.utils;
 
 import com.google.common.collect.Maps;
-import org.springframework.util.StringUtils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;

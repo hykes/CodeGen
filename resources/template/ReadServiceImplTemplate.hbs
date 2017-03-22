@@ -1,7 +1,8 @@
 
-import club.itbus.core.model.Response;
-import club.itbus.core.model.Paging;
-import club.itbus.core.model.PageInfo;
+import io.terminus.common.model.PageInfo;
+import io.terminus.common.model.Paging;
+import io.terminus.common.model.Response;
+import io.terminus.boot.rpc.common.annotation.RpcProvider;
 
 import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,8 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-public class {{serviceName}} implements {{modelName}}ReadService {
+@RpcProvider
+public class {{modelName}}ReadServiceImpl implements {{modelName}}ReadService {
 
     @Autowired
     private {{modelName}}Dao {{LowerCase modelName}}Dao;

@@ -36,6 +36,16 @@ public class FormatForm {
     public JTextArea modelTextArea;
 
 
-    private JTabbedPane tabbedPanel;
+    public JTabbedPane tabbedPanel;
+    public JPanel writeServicePanel;
+    public JTextArea writeServiceTextArea;
+    public JPanel writeServiceImplPanel;
+    public JTextArea writeServiceImplTextArea;
+    public JPanel readServicePanel;
+    public JTextArea readServiceTextArea;
+    public JPanel readServiceImplPanel;
+    public JTextArea readServiceImplTextArea;
+    public JPanel controlPanel;
+    public JTextArea controlTextArea;
 
 }
