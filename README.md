@@ -23,3 +23,6 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 1. 自定义常量
 2. 文件名称设置
 3. 任意字段顺序
+4. 任意模版
+5. 任意生成代码模版组合
+6. 新增模版

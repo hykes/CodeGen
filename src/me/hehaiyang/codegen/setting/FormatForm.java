@@ -47,5 +47,6 @@ public class FormatForm {
     public JTextArea readServiceImplTextArea;
     public JPanel controlPanel;
     public JTextArea controlTextArea;
+    private JPanel paramPanel;
 
 }

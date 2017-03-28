@@ -57,7 +57,7 @@ public class CodeGenWindow extends JFrame {
         this.anActionEvent=anActionEvent;
         textep.requestFocus(true);
 
-        init();
+        this.init();
     }
 
     private void createfile(AnActionEvent anActionEvent, Project project, String fileName, LanguageFileType fileType, String context) {
@@ -66,7 +66,7 @@ public class CodeGenWindow extends JFrame {
         psiFilecurrent.getContainingDirectory().add(psiFile);
     }
 
-    public void init() {
+    private void init() {
         project = anActionEvent.getData(PlatformDataKeys.PROJECT);
         psiClass = getPsiClassFromContext(anActionEvent);
 
