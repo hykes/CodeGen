@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+
+<toc version="1.0">
+<tocitem text="CodeGen 帮助文档">
+    <tocitem text="模版配置">
+      <tocitem target="one" text="SQL模版"/>
+      <tocitem target="two" text="Dao层模版"/>
+    </tocitem>
+    <tocitem text="自定义参数">
+      <tocitem target="three" text="修改参数"/>
+      <tocitem target="four" text="新增参数"/>
+    </tocitem>
+</tocitem>
+</toc>

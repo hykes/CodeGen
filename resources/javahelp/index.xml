@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE index
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/index_1_0.dtd">
+
+<index version="1.0">
+  <indexitem text="索引">
+    <indexitem target="one" text="I'm One"/>
+    <indexitem target="two" text="I'm Second"/>
+  </indexitem>
+  <indexitem text="The Last">
+    <indexitem target="three" text="We're Third!"/>
+    <indexitem target="four" text="We're Last"/>
+  </indexitem>
+  <indexitem target="overview" text="Overview!!!"/>
+</index>
+
+
