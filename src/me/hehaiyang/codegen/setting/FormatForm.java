@@ -1,5 +1,7 @@
 package me.hehaiyang.codegen.setting;
 
+import me.hehaiyang.codegen.components.ConfigPanel;
+
 import javax.swing.*;
 
 /**
@@ -37,6 +39,7 @@ public class FormatForm {
 
 
     public JTabbedPane tabbedPanel;
+
     public JPanel writeServicePanel;
     public JTextArea writeServiceTextArea;
     public JPanel writeServiceImplPanel;
@@ -47,6 +50,12 @@ public class FormatForm {
     public JTextArea readServiceImplTextArea;
     public JPanel controlPanel;
     public JTextArea controlTextArea;
+
     private JPanel paramPanel;
 
+    private void createUIComponents() {
+        paramPanel = new JPanel();
+        // TODO: place custom component creation code here
+        paramPanel.add("自定义", new ConfigPanel());
+    }
 }
