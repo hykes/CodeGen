@@ -1,6 +1,7 @@
 package me.hehaiyang.codegen.model;
 
 
+import lombok.Data;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.io.Serializable;
  * Mail: hehaiyang@terminus.io
  * Date: 16/4/21
  */
+@Data
 public class Field implements Serializable{
 
     private static final long serialVersionUID = -7928412682947631640L;
@@ -47,44 +49,5 @@ public class Field implements Serializable{
      * 备注
      */
     private String comment;
-
-    public String getField() {
-        return field;
-    }
-
-    public void setField(String field) {
-        this.field = field;
-    }
-
-    public String getFieldType() {
-        return fieldType;
-    }
-
-    public void setFieldType(String fieldType) {
-        this.fieldType = fieldType;
-    }
-
-    public String getColumn() {
-        return column;
-    }
-
-    public void setColumn(String column) {
-        this.column = column;
-    }
-
-    public String getColumnType() {
-        return columnType;
-    }
-
-    public void setColumnType(String columnType) {
-        this.columnType = columnType;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+    
 }

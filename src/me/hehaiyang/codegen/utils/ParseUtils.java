@@ -1,6 +1,5 @@
 package me.hehaiyang.codegen.utils;
 
-
 import me.hehaiyang.codegen.model.Field;
 
 import java.io.BufferedReader;
@@ -36,16 +35,19 @@ public class ParseUtils {
                     entity.setColumnType(type);
                     entity.setField(BuilderUtil.underlineToCamel(field));
 
-                    if(type.contains("BIGINT")){
-                        entity.setFieldType("Long");
-                    }
-                    if(type.contains("INT")){
+                    if(type.toUpperCase().contains("INT")){
                         entity.setFieldType("Integer");
                     }
-                    if(type.contains("VARCHAR")){
+                    if(type.toUpperCase().contains("TINYINT")){
+                        entity.setFieldType("Integer");
+                    }
+                    if(type.toUpperCase().contains("BIGINT")){
+                        entity.setFieldType("Long");
+                    }
+                    if(type.toUpperCase().contains("VARCHAR")){
                         entity.setFieldType("String");
                     }
-                    if(type.contains("DATETIME")){
+                    if(type.toUpperCase().contains("DATETIME")){
                         entity.setFieldType("Date");
                     }
                     entity.setComment(comment);
@@ -70,7 +72,7 @@ public class ParseUtils {
         }
 
         if(totolline!=fiellist.size())
-            fiellist=new ArrayList<Field>();
+            fiellist=new ArrayList<>();
         return fiellist;
     }
 

@@ -1,5 +1,7 @@
 package me.hehaiyang.codegen.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import java.util.List;
  * Mail: hehaiyang@terminus.io
  * Date: 17/3/21
  */
+@Data
 public class CodeGenContext implements Serializable {
 
     private static final long serialVersionUID = -8139936029537532112L;
@@ -38,29 +41,5 @@ public class CodeGenContext implements Serializable {
      * 实体类名称
      */
     private String modelName;
-
-    public List<Field> getFields() {
-        return fields;
-    }
-
-    public void setFields(List<Field> fields) {
-        this.fields = fields;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
-
-    public String getModelName() {
-        return modelName;
-    }
-
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
-    }
 
 }

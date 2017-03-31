@@ -15,7 +15,8 @@ public class HandlebarsFactory {
 
     private static final Handlebars handlebars = new Handlebars();
 
-    public static Handlebars getInstance() {
+    public HandlebarsFactory() {
+
         /**
          * #{value}
          */
@@ -38,7 +39,9 @@ public class HandlebarsFactory {
                 return value.replaceFirst(value.substring(0, 1),value.substring(0, 1).toUpperCase());
             }
         });
+    }
 
+    public static Handlebars getInstance() {
         return handlebars;
     }
 
