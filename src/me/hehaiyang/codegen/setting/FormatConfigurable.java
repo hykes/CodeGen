@@ -44,10 +44,10 @@ public class FormatConfigurable implements SearchableConfigurable {
 
     @Nullable
     public JComponent createComponent() {
-        if(null == this.formatForm) {
-            this.formatForm = new FormatForm();
+        if(null == formatForm) {
+            formatForm = new FormatForm();
         }
-        return this.formatForm.mainPanel;
+        return formatForm.getMainPanel();
     }
 
     public boolean isModified() {

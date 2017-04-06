@@ -4,7 +4,6 @@
          "http://java.sun.com/products/javahelp/helpset_1_0.dtd">
 
 <helpset version="1.0">
-  <title>Hello, JavaHelp</title>
   <maps>
     <mapref location="Map.jhm"/>
     <homeID>overview</homeID>
@@ -21,4 +20,15 @@
     <type>javax.help.IndexView</type>
     <data>index.xml</data>
   </view>
+    <presentation default="true">
+        <name>Main_Window</name>
+        <size width="640" height="480" />
+        <location x="0" y="0" />
+        <title>CodeGen 帮助文档</title>
+        <image>icon</image>
+        <toolbar>
+            <helpaction>javax.help.BackAction</helpaction>
+            <helpaction>javax.help.ForwardAction</helpaction>
+        </toolbar>
+     </presentation>
 </helpset>

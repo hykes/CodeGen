@@ -34,7 +34,7 @@ public class ConfigPanel extends JPanel{
         // 支持滚动
         JScrollPane scrollPane = new JBScrollPane(table);
         scrollPane.setViewportView(table);
-        this.add(scrollPane, BorderLayout.CENTER);
+        this.add(scrollPane, BorderLayout.NORTH);
 
 
         final JPanel actionPanel = new JPanel();
@@ -58,31 +58,7 @@ public class ConfigPanel extends JPanel{
             }
         });
         actionPanel.add(delButton);
-    }
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        JFrame j = new JFrame();
-        j.setTitle("自定义参数");
-        j.setBounds(100,100,600,400);
-        j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-        ConfigPanel s = new ConfigPanel();
-
-        j.getContentPane().add(s);
-        j.setVisible(true);
-//        DefaultTableModel tableModel = s.tableModel;
-//        JBTable table = s.table;
-//        int count = table.getRowCount();
-//
-//        for(int i = 0;i< count; i++){
-//            System.out.println(tableModel.getValueAt(i, 0));
-//            System.out.println(tableModel.getValueAt(i, 1));
-//        }
-
+        actionPanel.setSize(500, 400);
     }
 
 }
