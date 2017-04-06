@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>0.2</version>
+  <version>0.3</version>
   <vendor email="hehaiyangwork@qq.com" url="https://github.com/hehaiyangwork/CodeGen">HeHaiYang</vendor>
 
   <description><![CDATA[
@@ -11,6 +11,11 @@
         <li>Generate the mapper xml</li>
         <li>Generate the sql script</li>
       </ul>
+      <code>
+      | id |  BIGINT(20) | 用户ID |
+      | name |  VARCHAR(32) | 用户名称 |
+      | mobile |  VARCHAR(11) | 用户手机号 |
+      </code>
       <p>Please feel free to contact me and ask any questions or suggest some features</p>
     ]]></description>
 
