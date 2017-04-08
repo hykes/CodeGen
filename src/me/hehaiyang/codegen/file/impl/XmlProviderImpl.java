@@ -16,8 +16,12 @@ public class XmlProviderImpl extends FileProvider {
     @Override
     public void create(String template, Object context, String fileName) throws Exception {
         Template input = handlebars.compileInline(template);
-        String controlContext = input.apply(BuilderUtil.transBean2Map(context));
-        PsiUtil.createFile(anActionEvent, fileName + XmlFileType.DOT_DEFAULT_EXTENSION, controlContext, XmlFileType.INSTANCE);
+        String data = input.apply(BuilderUtil.transBean2Map(context));
+
+        Template fileNameTemp = handlebars.compileInline(fileName);
+        String outputName = fileNameTemp.apply(BuilderUtil.transBean2Map(context));
+
+        PsiUtil.createFile(anActionEvent, outputName + XmlFileType.DOT_DEFAULT_EXTENSION, data, XmlFileType.INSTANCE);
     }
 
 }

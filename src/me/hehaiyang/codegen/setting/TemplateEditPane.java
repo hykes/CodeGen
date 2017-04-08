@@ -37,7 +37,9 @@ public class TemplateEditPane {
         }
 
         templateName.setText(codeTemplate.getName());
+        templateName.setFocusable(false);
         templateType.setText(codeTemplate.getType());
+        templateType.setFocusable(false);
         fileName.setText(codeTemplate.getFileName());
 
         editor = getEditor(codeTemplate.getTemplate(), codeTemplate.getType());

@@ -16,8 +16,12 @@ public class JavaProviderImpl extends FileProvider {
     @Override
     public void create(String template, Object context, String fileName) throws Exception{
         Template input = handlebars.compileInline(template);
-        String controlContext = input.apply(BuilderUtil.transBean2Map(context));
-        PsiUtil.createFile(anActionEvent, fileName + JavaFileType.DOT_DEFAULT_EXTENSION, controlContext, JavaFileType.INSTANCE);
+        String data = input.apply(BuilderUtil.transBean2Map(context));
+
+        Template fileNameTemp = handlebars.compileInline(fileName);
+        String outputName = fileNameTemp.apply(BuilderUtil.transBean2Map(context));
+
+        PsiUtil.createFile(anActionEvent, outputName + JavaFileType.DOT_DEFAULT_EXTENSION, data, JavaFileType.INSTANCE);
     }
 
 }

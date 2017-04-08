@@ -63,7 +63,11 @@ public class FormatConfigurable implements SearchableConfigurable {
         }
         for (Map.Entry<String, CodeTemplate> entry : formatForm.getTabTemplates().entrySet()) {
             CodeTemplate codeTemplate = formatSetting.getCodeTemplate(entry.getKey());
-            if (codeTemplate == null || !codeTemplate.getTemplate().equals(entry.getValue().getTemplate())) {
+            if (codeTemplate == null ||
+                    !codeTemplate.getTemplate().equals(entry.getValue().getTemplate()) ||
+                    !codeTemplate.getType().equals(entry.getValue().getType()) ||
+                    !codeTemplate.getName().equals(entry.getValue().getName()) ||
+                    !codeTemplate.getFileName().equals(entry.getValue().getFileName())) {
                 return true;
             }
         }
@@ -111,6 +115,14 @@ public class FormatConfigurable implements SearchableConfigurable {
 
     public void reset() {
         if (formatForm != null) {
+
+            // 黑魔法，初始化配置
+            if(formatForm.getTable().getRowCount() == 1 &&
+                    "init".equals(formatForm.getTableModel().getValueAt(0, 0).toString())) {
+                FormatSetting initSetting = new FormatSetting();
+                formatSetting.setCodeTemplates(initSetting.getCodeTemplates());
+                formatSetting.setParams(initSetting.getParams());
+            }
             formatForm.refresh(formatSetting);
         }
     }

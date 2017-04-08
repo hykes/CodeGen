@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Desc:
@@ -17,25 +18,25 @@ import java.util.List;
 @AllArgsConstructor
 public class CodeGenContext implements Serializable {
 
-    private static final long serialVersionUID = -8139936029537532112L;
+    private static final long serialVersionUID = 6235968905610310027L;
 
-    public CodeGenContext(String modelName){
-        this.modelName = modelName;
-    }
+    private String model;
 
-    /**
-     * 表名称
-     */
-    private String tableName;
-
-    /**
-     * 实体类名称
-     */
     private String modelName;
 
-    /**
-     * 字段列表
-     */
+    private String table;
+
+    private String tableName;
+
     private List<Field> fields;
 
+    private Map<String, String> $;
+
+    public Map<String, String> get$() {
+        return $;
+    }
+
+    public void set$(Map<String, String> $) {
+        this.$ = $;
+    }
 }

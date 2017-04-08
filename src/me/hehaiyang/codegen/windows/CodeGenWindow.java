@@ -1,13 +1,15 @@
 package me.hehaiyang.codegen.windows;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiClass;
+import me.hehaiyang.codegen.constants.DefaultTemplate;
 import me.hehaiyang.codegen.file.FileFactory;
 import me.hehaiyang.codegen.file.FileProvider;
 import me.hehaiyang.codegen.model.CodeGenContext;
+import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.setting.FormatSetting;
 import me.hehaiyang.codegen.utils.ParseUtils;
@@ -15,108 +17,118 @@ import me.hehaiyang.codegen.utils.PsiUtil;
 
 import javax.swing.*;
 import java.util.List;
-
+import java.util.Map;
 
 public class CodeGenWindow extends JFrame {
 
     private FormatSetting formatSetting;
-    private AnActionEvent anActionEvent;
+    private Project project;
+    private FileFactory fileFactory;
 
-    private JPanel panel1;
+    private JPanel codeGenJPanel;
+    private JPanel paramsJPanel;
+    private JTextField modelText;
+    private JTextField tableText;
+    private JLabel modelLabel;
+    private JLabel tableLabel;
+    private JPanel actionJpanel;
     private JButton cancel;
     private JButton sure;
+    private JScrollPane codeJScrollPane;
+    private JTextPane codeJTextPane;
+    private JPanel tipsJPanel;
     private JLabel tipslabel;
-    private JTextPane textep;
-    private JTextField fieldTextField;
-    private JTextField tableTextField;
-    private JLabel fieldLabel;
-    private JLabel tableLabel;
-    private JCheckBox onlyCheckBox;
-    private Project project;
-    private PsiClass psiClass;
+    private JTextField modelNameText;
+    private JTextField tableNameText;
+    private JLabel modelNameLabel;
+    private JLabel tableNameLabel;
 
     public CodeGenWindow(AnActionEvent anActionEvent) {
-        setContentPane(panel1);
+        setContentPane(codeGenJPanel);
         setTitle("CodeGen");
-        this.anActionEvent = anActionEvent;
+
         this.project = PsiUtil.getProject(anActionEvent);
-        this.psiClass = PsiUtil.getPsiClass(anActionEvent);
-        textep.requestFocus(true);
+        this.formatSetting = FormatSetting.getInstance();
+        this.fileFactory = new FileFactory(anActionEvent);
+
+        codeJTextPane.requestFocus(true);
 
         this.init();
     }
 
     private void init() {
 
-        formatSetting = FormatSetting.getInstance();
-
         sure.addActionListener(e -> {
             try {
 
-                String modelName = fieldTextField.getText().trim().toString();
-                String tableName = tableTextField.getText().trim().toString();
-                String markdown = textep.getText().trim().toString();
+                String model = modelText.getText().trim();
+                String modelName = modelNameText.getText().trim();
+                String table = tableText.getText().trim();
+                String tableName = tableNameText.getText().trim();
+                String markdown = codeJTextPane.getText().trim();
 
+                if(Strings.isNullOrEmpty(model)){
+                    this.setTipsVisbile(true, "Model不能为空！");
+                    modelText.requestFocus(true);
+                    return;
+                }
                 if(Strings.isNullOrEmpty(modelName)){
-                    CodeGenWindow.this.setLableTextVisbile(true, "Model名称不能为空");
+                    this.setTipsVisbile(true, "Model Name不能为空！");
+                    modelNameText.requestFocus(true);
+                    return;
+                }
+                if(Strings.isNullOrEmpty(table)){
+                    this.setTipsVisbile(true, "Table不能为空！");
+                    tableText.requestFocus(true);
+                    return;
+                }
+                if(Strings.isNullOrEmpty(tableName)){
+                    this.setTipsVisbile(true, "Table Name不能为空！");
+                    tableNameText.requestFocus(true);
+                    return;
+                }
+                if(Strings.isNullOrEmpty(markdown)){
+                    this.setTipsVisbile(true, "表结构设计不能为空！");
+                    codeJTextPane.requestFocus(true);
                     return;
                 }
 
-                if(!onlyCheckBox.isSelected()){
-                    if(Strings.isNullOrEmpty(tableName)){
-                        CodeGenWindow.this.setLableTextVisbile(true, "Table名称不能为空");
-                        return;
-                    }
-                    if(Strings.isNullOrEmpty(markdown)){
-                        CodeGenWindow.this.setLableTextVisbile(true, "参数不能为空");
-                        return;
-                    }
+                List<Field> fields = ParseUtils.parseString(markdown);
+                if (fields == null || fields.isEmpty()) {
+                    setTipsVisbile(true, "表结构设计读取失败，请检查！");
+                    codeJTextPane.requestFocus(true);
+                    return;
                 }
 
-                List<Field> fieldslist = ParseUtils.parseString(textep.getText().trim().toString());
-                if(!onlyCheckBox.isSelected()) {
-                    if (fieldslist == null || fieldslist.size() == 0) {
-                        CodeGenWindow.this.setLableTextVisbile(true, "参数格式不对，解析错误！");
-                        return;
-                    }
-                }
+                // 组装数据
+                CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, fields);
+                Map<String, String> params = Maps.newHashMap();
+                params.put("year", "2017");
+                params.put("day", "04.09");
+                params.put("time", "00:50:23");
+                params.put("week", "Mon");
+                params.putAll(formatSetting.getParams());
 
+                context.set$(params);
                 WriteCommandAction.runWriteCommandAction(project, ()-> {
                     try {
-                        CodeGenContext context;
-                        FileFactory fileFactory = new FileFactory(anActionEvent);
-                        FileProvider xmlFileFactory = fileFactory.getInstance("xml");
-                        FileProvider javaFileFactory = fileFactory.getInstance("java");
-                        FileProvider sqlFileFactory = fileFactory.getInstance("sql");
-                        if(!onlyCheckBox.isSelected()) {
-                            context = new CodeGenContext(modelName, tableName, fieldslist);
 
-                            xmlFileFactory.create(formatSetting.getCodeTemplate("mapper").getTemplate(), context, context.getModelName());
-
-                            javaFileFactory.create(formatSetting.getCodeTemplate("model").getTemplate(), context, context.getModelName());
-
-                            sqlFileFactory.create(formatSetting.getCodeTemplate("sql").getTemplate(), context, context.getModelName());
-
-                        }else {
-                            context = new CodeGenContext(modelName);
-
-                            javaFileFactory.create(formatSetting.getCodeTemplate("controller").getTemplate(), context, context.getModelName()+"s");
-
-                            javaFileFactory.create(formatSetting.getCodeTemplate("write").getTemplate(), context, context.getModelName()+"WriteService");
-
-                            javaFileFactory.create(formatSetting.getCodeTemplate("writeImpl").getTemplate(), context, context.getModelName()+"WriteServiceImpl");
-
-                            javaFileFactory.create(formatSetting.getCodeTemplate("read").getTemplate(), context, context.getModelName()+"ReadService");
-
-                            javaFileFactory.create(formatSetting.getCodeTemplate("readImpl").getTemplate(), context, context.getModelName()+"ReadServiceImpl");
-                        }
+                        createFile(DefaultTemplate.MAPPER, context);
+                        createFile(DefaultTemplate.SQL, context);
+                        createFile(DefaultTemplate.MODEL, context);
+                        createFile(DefaultTemplate.DAO, context);
+                        createFile(DefaultTemplate.CONTROLLER, context);
+                        createFile(DefaultTemplate.WRITE_SERVICE, context);
+                        createFile(DefaultTemplate.WRITE_SERVICE_IMPL, context);
+                        createFile(DefaultTemplate.READ_SERVICE, context);
+                        createFile(DefaultTemplate.READ_SERVICE_IMPL, context);
 
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 });
 
-                CodeGenWindow.this.setVisibleWindow();
+                this.dispose();
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -127,11 +139,24 @@ public class CodeGenWindow extends JFrame {
         });
     }
 
-    public void setVisibleWindow() {
-        dispose();
+    /**
+     * 模版+ 数据，生成文件
+     * @param template 模版名称
+     * @param context 数据
+     * @throws Exception
+     */
+    private void createFile(String template, CodeGenContext context) throws Exception{
+        CodeTemplate codeTemplate = formatSetting.getCodeTemplate(template);
+        FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getType());
+        fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFileName());
     }
 
-    public void setLableTextVisbile(boolean operator, String tips) {
+    /**
+     * 设置tips
+     * @param operator
+     * @param tips
+     */
+    private void setTipsVisbile(boolean operator, String tips) {
         tipslabel.setText(tips);
         tipslabel.setVisible(operator);
     }

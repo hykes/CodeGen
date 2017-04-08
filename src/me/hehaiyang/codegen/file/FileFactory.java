@@ -22,7 +22,7 @@ public class FileFactory {
         } else if(type.equals("xml")) {
             return new XmlProviderImpl(anActionEvent);
         }else{
-            return null;
+            return new JavaProviderImpl(anActionEvent);
         }
     }
 }

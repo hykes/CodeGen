@@ -13,13 +13,10 @@ import java.io.IOException;
  */
 public class HandlebarsFactory {
 
-    private static final Handlebars handlebars = new Handlebars();
+    private final static Handlebars handlebars = new Handlebars();
 
-    public HandlebarsFactory() {
+    public static Handlebars getInstance() {
 
-        /**
-         * #{value}
-         */
         handlebars.registerHelper("Rich", new Helper<String>() {
             public CharSequence apply(String value, Options options) throws IOException {
                 return String.valueOf("#{"+value+"}");
@@ -39,9 +36,7 @@ public class HandlebarsFactory {
                 return value.replaceFirst(value.substring(0, 1),value.substring(0, 1).toUpperCase());
             }
         });
-    }
 
-    public static Handlebars getInstance() {
         return handlebars;
     }
 

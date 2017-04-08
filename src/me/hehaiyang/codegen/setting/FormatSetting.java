@@ -7,6 +7,8 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import lombok.Data;
+import me.hehaiyang.codegen.constants.DefaultFileType;
+import me.hehaiyang.codegen.constants.DefaultTemplate;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.utils.ParseUtils;
 import org.jetbrains.annotations.Nullable;
@@ -44,17 +46,17 @@ public class FormatSetting implements PersistentStateComponent<FormatSetting> {
     public void loadDefaultSettings() {
         Map<String, CodeTemplate> codeTemplates = Maps.newHashMap();
         try {
-            codeTemplates.put("model", new CodeTemplate("model", "java", "{{model}}", template("/template/ModelTemplate.hbs")));
+            codeTemplates.put(DefaultTemplate.MODEL, new CodeTemplate(DefaultTemplate.MODEL, DefaultFileType.JAVA, "{{model}}", template("/template/ModelTemplate.hbs")));
 
-            codeTemplates.put("Controller", new CodeTemplate("Controller", "java", "{{Controller}}", template("/template/ControllerTemplate.hbs")));
-            codeTemplates.put("Dao", new CodeTemplate("Dao", "java", "{{Dao}}", template("/template/DaoTemplate.hbs")));
-            codeTemplates.put("Mapper", new CodeTemplate("Mapper", "xml", "{{Mapper}}", template("/template/MapperTemplate.hbs")));
-            codeTemplates.put("Sql", new CodeTemplate("Sql", "sql", "{{Sql}}", template("/template/SqlTemplate.hbs")));
+            codeTemplates.put(DefaultTemplate.CONTROLLER, new CodeTemplate(DefaultTemplate.CONTROLLER, DefaultFileType.JAVA, "{{model}}s", template("/template/ControllerTemplate.hbs")));
+            codeTemplates.put(DefaultTemplate.DAO, new CodeTemplate(DefaultTemplate.DAO, DefaultFileType.JAVA, "{{model}}Dao", template("/template/DaoTemplate.hbs")));
+            codeTemplates.put(DefaultTemplate.MAPPER, new CodeTemplate(DefaultTemplate.MAPPER, DefaultFileType.XML, "{{model}}Mapper", template("/template/MapperTemplate.hbs")));
+            codeTemplates.put(DefaultTemplate.SQL, new CodeTemplate(DefaultTemplate.SQL, DefaultFileType.SQL, "{{model}}Schema", template("/template/SqlTemplate.hbs")));
 
-            codeTemplates.put("ReadService", new CodeTemplate("ReadService", "java", "{{ReadService}}", template("/template/ReadServiceTemplate.hbs")));
-            codeTemplates.put("ReadServiceImpl", new CodeTemplate("ReadServiceImpl", "java", "{{ReadServiceImpl}}", template("/template/ReadServiceImplTemplate.hbs")));
-            codeTemplates.put("WriteService", new CodeTemplate("WriteService", "java", "{{WriteService}}", template("/template/WriteServiceTemplate.hbs")));
-            codeTemplates.put("WriteServiceImpl", new CodeTemplate("WriteServiceImpl", "java", "{{WriteService}}", template("/template/WriteServiceImplTemplate.hbs")));
+            codeTemplates.put(DefaultTemplate.READ_SERVICE, new CodeTemplate(DefaultTemplate.READ_SERVICE, DefaultFileType.JAVA, "{{model}}ReadService", template("/template/ReadServiceTemplate.hbs")));
+            codeTemplates.put(DefaultTemplate.READ_SERVICE_IMPL, new CodeTemplate(DefaultTemplate.READ_SERVICE_IMPL, DefaultFileType.JAVA, "{{model}}ReadServiceImpl", template("/template/ReadServiceImplTemplate.hbs")));
+            codeTemplates.put(DefaultTemplate.WRITE_SERVICE, new CodeTemplate(DefaultTemplate.WRITE_SERVICE, DefaultFileType.JAVA, "{{model}}WriteService", template("/template/WriteServiceTemplate.hbs")));
+            codeTemplates.put(DefaultTemplate.WRITE_SERVICE_IMPL, new CodeTemplate(DefaultTemplate.WRITE_SERVICE_IMPL, DefaultFileType.JAVA, "{{model}}WriteServiceImpl", template("/template/WriteServiceImplTemplate.hbs")));
 
         }catch (IOException io){
             // do nothing
