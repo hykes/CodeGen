@@ -20,16 +20,13 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 ## TODO
 
-1. 自定义常量
-   作者名称
-   邮箱
-   手机号
-   网站
-2. 文件名称设置
-3. 任意字段顺序
-4. 任意模版
-5. 任意生成代码模版组合
-6. 新增模版
-7. 使用说明
+1. 任意字段顺序
+2. 新增模版
+3. 任意生成代码模版组合
+4. 生成任务实时结果
+5. 帮助文档
    Handlebars Helpers
+   自定义参数
+   内置时间参数
+   初始化配置黑魔法
    

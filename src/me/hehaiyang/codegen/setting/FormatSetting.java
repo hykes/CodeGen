@@ -67,6 +67,7 @@ public class FormatSetting implements PersistentStateComponent<FormatSetting> {
         Map<String, String> params = Maps.newHashMap();
         params.put("email", "[ your email ]");
         params.put("author", "[ your name ]");
+        params.put("mobile", "[ your mobile ]");
         this.params = params;
     }
 
