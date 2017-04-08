@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
-* Desc:
-* Mail: hehaiyang@terminus.io
-* Date: 2017/3/17
-*/
+ * Desc:
+ * Mail: hehaiyang@terminus.io
+ * Date: 2017/3/17
+ */
 @Slf4j
 @Service
 @RpcProvider
@@ -23,12 +23,12 @@ public class {{modelName}}WriteServiceImpl implements {{modelName}}WriteService 
 
     @Override
     public Response<Long> create({{modelName}} {{LowerCase modelName}}) {
-    try{
-        {{LowerCase modelName}}Dao.create({{LowerCase modelName}});
-        return Response.ok({{LowerCase modelName}}.getId());
+        try{
+            {{LowerCase modelName}}Dao.create({{LowerCase modelName}});
+            return Response.ok({{LowerCase modelName}}.getId());
         }catch (Exception e){
-        log.error("failed to create {{LowerCase modelName}}, cause:{}", Throwables.getStackTraceAsString(e));
-        return Response.fail("{{LowerCase modelName}}.create.fail");
+            log.error("failed to create {{LowerCase modelName}}, cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("{{LowerCase modelName}}.create.fail");
         }
     }
 
@@ -39,6 +39,16 @@ public class {{modelName}}WriteServiceImpl implements {{modelName}}WriteService 
         }catch (Exception e){
             log.error("failed to update {{LowerCase modelName}}, cause:{}", Throwables.getStackTraceAsString(e));
             return Response.fail("{{LowerCase modelName}}.update.fail");
+        }
+    }
+
+   @Override
+    public Response<Boolean> delete(Long id) {
+        try{
+            return Response.ok({{LowerCase modelName}}Dao.delete(id));
+        }catch (Exception e){
+            log.error("failed to delete {{LowerCase modelName}} by id:{}, cause:{}", id,  Throwables.getStackTraceAsString(e));
+            return Response.fail("delete.{{LowerCase modelName}}.fail");
         }
     }
 

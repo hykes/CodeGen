@@ -14,8 +14,8 @@ import java.util.Map;
 
 /**
  * Desc:
- * Author:
- * Date: {{createdAt}}
+ * Mail: hehaiyang@terminus.io
+ * Date: 2017/3/17
  */
 @Slf4j
 @Service
@@ -43,6 +43,16 @@ public class {{modelName}}ReadServiceImpl implements {{modelName}}ReadService {
         }catch (Exception e){
             log.error("failed to paging {{LowerCase modelName}} by pageNo:{} pageSize:{}, cause:{}", pageNo, pageSize, Throwables.getStackTraceAsString(e));
             return Response.fail("{{LowerCase modelName}}.paging.fail");
+        }
+    }
+
+    @Override
+    public Response<List<{{modelName}}>> list(Map<String, Object> criteria) {
+        try{
+            return Response.ok({{LowerCase modelName}} Dao.list(criteria));
+        }catch (Exception e){
+            log.error("failed to list {{LowerCase modelName}} , cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("{{LowerCase modelName}} .list.fail");
         }
     }
 

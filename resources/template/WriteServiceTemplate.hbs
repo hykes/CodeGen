@@ -2,24 +2,31 @@
 import io.terminus.common.model.Response;
 
 /**
-* Desc:
-* Mail: hehaiyang@terminus.io
-* Date: 2017/3/17
-*/
+ * Desc:
+ * Mail: hehaiyang@terminus.io
+ * Date: 2017/3/17
+ */
 public interface {{modelName}}WriteService {
 
     /**
-    *
-    * @param {{LowerCase modelName}}
-    * @return Boolean
-    */
+     *
+     * @param {{LowerCase modelName}}
+     * @return Boolean
+     */
     Response<Long> create({{modelName}} {{LowerCase modelName}});
 
     /**
-    *
-    * @param {{LowerCase modelName}}
-    * @return Boolean
-    */
+     *
+     * @param {{LowerCase modelName}}
+     * @return Boolean
+     */
     Response<Boolean> update({{modelName}} {{LowerCase modelName}});
+
+    /**
+     *
+     * @param id
+     * @return Boolean
+     */
+    Response<Boolean> delete(Long id);
 
 }

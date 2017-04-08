@@ -11,11 +11,6 @@
         <li>Generate the mapper xml</li>
         <li>Generate the sql script</li>
       </ul>
-      <code>
-      | id |  BIGINT(20) | 用户ID |
-      | name |  VARCHAR(32) | 用户名称 |
-      | mobile |  VARCHAR(11) | 用户手机号 |
-      </code>
       <p>Please feel free to contact me and ask any questions or suggest some features</p>
     ]]></description>
 

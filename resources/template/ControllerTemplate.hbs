@@ -1,9 +1,11 @@
 
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import io.terminus.common.exception.JsonResponseException;
+import io.terminus.common.model.Paging;
 import io.terminus.common.model.Response;
 
 import lombok.extern.slf4j.Slf4j;
+import com.google.common.collect.Maps;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,70 +14,80 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 /**
-* Desc:
-* Mail: hehaiyang@terminus.io
-* Date: 2017/3/17
-*/
+ * Desc:
+ * Mail: hehaiyang@terminus.io
+ * Date: 2017/3/17
+ */
 @Slf4j
 @RestController
 @RequestMapping
 public class {{modelName}}s {
 
-@RpcConsumer
-private {{modelName}}WriteService {{LowerCase modelName}}WriteService;
+    @RpcConsumer
+    private {{modelName}}WriteService {{LowerCase modelName}}WriteService;
 
-@RpcConsumer
-private {{modelName}}ReadService {{LowerCase modelName}}ReadService;
+    @RpcConsumer
+    private {{modelName}}ReadService {{LowerCase modelName}}ReadService;
 
-@RequestMapping(value = "/contacts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-public {{modelName}} find{{modelName}}(@RequestParam Long id) {
-Response<{{modelName}}> response =  {{LowerCase modelName}}ReadService.findById(id);
-if (!response.isSuccess()) {
-throw new JsonResponseException(500, response.getError());
-}
-return response.getResult();
-}
-
-@RequestMapping(value = "/paging", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-public Paging<{{modelName}}> paging{{modelName}}(@RequestParam(value = "pageNo", required = false) Integer pageNo,
-@RequestParam(value = "pageSize", required = false) Integer pageSize) {
-
-Map<String, Object> criteria = Maps.newHashMap();
-
-Response<Paging<{{modelName}}>> result =  {{LowerCase modelName}}ReadService.paging(pageNo, pageSize, criteria);
-if(!result.isSuccess()){
-throw new JsonResponseException(result.getError());
-}
-return result.getResult();
-}
-
-/**
-* 创建
-* @param
-*/
-@RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-public Long create{{modelName}}(@RequestBody {{modelName}} {{LowerCase modelName}}) {
-Response<Long> response = {{LowerCase modelName}}WriteService.create({{LowerCase modelName}});
-    if (!response.isSuccess()) {
-    throw new JsonResponseException(500, response.getError());
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public {{modelName}} find{{modelName}}(@PathVariable Long id) {
+        Response<{{modelName}}> response =  {{LowerCase modelName}}ReadService.findById(id);
+        if (!response.isSuccess()) {
+            throw new JsonResponseException(500, response.getError());
+        }
+        return response.getResult();
     }
-    return response.getResult();
+
+    @RequestMapping(value = "/paging", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Paging<{{modelName}}> paging{{modelName}}(@RequestParam(value = "pageNo", required = false) Integer pageNo,
+                                                 @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+
+        Map<String, Object> criteria = Maps.newHashMap();
+
+        Response<Paging<{{modelName}}>> result =  {{LowerCase modelName}}ReadService.paging(pageNo, pageSize, criteria);
+        if(!result.isSuccess()){
+            throw new JsonResponseException(result.getError());
+        }
+        return result.getResult();
     }
 
     /**
-    * 更新
-    * @param
-    */
-    @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean update{{modelName}}(@RequestBody {{modelName}} {{LowerCase modelName}}) {
-    Response<Boolean> response = {{LowerCase modelName}}WriteService.update({{LowerCase modelName}});
+     * 创建
+     * @param
+     */
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Long create{{modelName}}(@RequestBody {{modelName}} {{LowerCase modelName}}) {
+        Response<Long> response = {{LowerCase modelName}}WriteService.create({{LowerCase modelName}});
         if (!response.isSuccess()) {
-        throw new JsonResponseException(500, response.getError());
+            throw new JsonResponseException(500, response.getError());
         }
         return response.getResult();
+    }
+
+    /**
+     * 更新
+     * @param
+     */
+    @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean update{{modelName}}(@RequestBody {{modelName}} {{LowerCase modelName}}) {
+        Response<Boolean> response = {{LowerCase modelName}}WriteService.update({{LowerCase modelName}});
+        if (!response.isSuccess()) {
+            throw new JsonResponseException(500, response.getError());
         }
+        return response.getResult();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean delete{{modelName}}(@PathVariable Long id) {
+        Response<Boolean> response = {{LowerCase modelName}}WriteService.delete(id);
+        if (!response.isSuccess()) {
+            throw new JsonResponseException(500, response.getError());
         }
+        return response.getResult();
+    }
+}

@@ -3,10 +3,12 @@ import io.terminus.common.model.Paging;
 import io.terminus.common.model.Response;
 
 import java.util.Map;
+import java.util.List;
+
 /**
  * Desc:
- * Mail: {{author}}
- * Date: {{createdAt}}
+ * Mail: hehaiyang@terminus.io
+ * Date: 2017/3/17
  */
 public interface {{modelName}}ReadService {
 
@@ -26,4 +28,10 @@ public interface {{modelName}}ReadService {
      */
     Response<Paging<{{modelName}}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria);
 
+   /**
+    *
+    * @param criteria
+    * @return List<{{modelName}}>
+    */
+    Response<List<{{modelName}}>> list(Map<String, Object> criteria);
 }
