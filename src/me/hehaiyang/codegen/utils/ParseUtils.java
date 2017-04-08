@@ -2,9 +2,7 @@ package me.hehaiyang.codegen.utils;
 
 import me.hehaiyang.codegen.model.Field;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +82,15 @@ public class ParseUtils {
         else
             return  "";
 
+    }
+
+    public static String stream2String(InputStream is)  throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int i = -1;
+        while((i=is.read())!=-1){
+            baos.write(i);
+        }
+        return baos.toString();
     }
 
 }

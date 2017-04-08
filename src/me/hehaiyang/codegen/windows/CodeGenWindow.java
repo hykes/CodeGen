@@ -91,24 +91,24 @@ public class CodeGenWindow extends JFrame {
                         if(!onlyCheckBox.isSelected()) {
                             context = new CodeGenContext(modelName, tableName, fieldslist);
 
-                            xmlFileFactory.create(formatSetting.getMapperFormat(), context, context.getModelName());
+                            xmlFileFactory.create(formatSetting.getCodeTemplate("mapper").getTemplate(), context, context.getModelName());
 
-                            javaFileFactory.create(formatSetting.getModelFormat(), context, context.getModelName());
+                            javaFileFactory.create(formatSetting.getCodeTemplate("model").getTemplate(), context, context.getModelName());
 
-                            sqlFileFactory.create(formatSetting.getSqlFormat(), context, context.getModelName());
+                            sqlFileFactory.create(formatSetting.getCodeTemplate("sql").getTemplate(), context, context.getModelName());
 
                         }else {
                             context = new CodeGenContext(modelName);
 
-                            javaFileFactory.create(formatSetting.getControlFormat(), context, context.getModelName()+"s");
+                            javaFileFactory.create(formatSetting.getCodeTemplate("controller").getTemplate(), context, context.getModelName()+"s");
 
-                            javaFileFactory.create(formatSetting.getWriteFormat(), context, context.getModelName()+"WriteService");
+                            javaFileFactory.create(formatSetting.getCodeTemplate("write").getTemplate(), context, context.getModelName()+"WriteService");
 
-                            javaFileFactory.create(formatSetting.getWriteImplFormat(), context, context.getModelName()+"WriteServiceImpl");
+                            javaFileFactory.create(formatSetting.getCodeTemplate("writeImpl").getTemplate(), context, context.getModelName()+"WriteServiceImpl");
 
-                            javaFileFactory.create(formatSetting.getReadFormat(), context, context.getModelName()+"ReadService");
+                            javaFileFactory.create(formatSetting.getCodeTemplate("read").getTemplate(), context, context.getModelName()+"ReadService");
 
-                            javaFileFactory.create(formatSetting.getReadImplFormat(), context, context.getModelName()+"ReadServiceImpl");
+                            javaFileFactory.create(formatSetting.getCodeTemplate("readImpl").getTemplate(), context, context.getModelName()+"ReadServiceImpl");
                         }
 
                     } catch (Exception ex) {

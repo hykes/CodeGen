@@ -14,6 +14,7 @@ import javax.swing.*;
  * Date: 2017/3/21
  */
 public class SqlFileType extends LanguageFileType {
+
     @NonNls
     public static final String DEFAULT_EXTENSION = "sql";
     @NonNls

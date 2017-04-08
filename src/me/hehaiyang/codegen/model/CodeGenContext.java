@@ -1,6 +1,8 @@
 package me.hehaiyang.codegen.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,19 +13,13 @@ import java.util.List;
  * Date: 17/3/21
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CodeGenContext implements Serializable {
 
     private static final long serialVersionUID = -8139936029537532112L;
 
-    public CodeGenContext(){}
-
     public CodeGenContext(String modelName){
-        this.modelName = modelName;
-    }
-
-    public CodeGenContext(String modelName, String tableName, List<Field> fields){
-        this.tableName = tableName;
-        this.fields = fields;
         this.modelName = modelName;
     }
 
@@ -33,13 +29,13 @@ public class CodeGenContext implements Serializable {
     private String tableName;
 
     /**
-     * 字段列表
-     */
-    private List<Field> fields;
-
-    /**
      * 实体类名称
      */
     private String modelName;
+
+    /**
+     * 字段列表
+     */
+    private List<Field> fields;
 
 }

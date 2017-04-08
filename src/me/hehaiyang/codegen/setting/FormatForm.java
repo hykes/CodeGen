@@ -1,26 +1,25 @@
 package me.hehaiyang.codegen.setting;
 
+import com.google.common.collect.Maps;
 import com.intellij.icons.AllIcons;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.EditorFactory;
-import com.intellij.openapi.fileTypes.FileTypeManager;
-import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.openapi.ui.Messages;
+import com.intellij.ui.components.JBScrollPane;
+import com.intellij.ui.components.JBTabbedPane;
+import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.JBDimension;
 import lombok.Data;
-import me.hehaiyang.codegen.components.ConfigPanel;
+import me.hehaiyang.codegen.model.CodeTemplate;
 
 import javax.help.CSH;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.help.HelpSetException;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * Desc: 配置面板
@@ -36,58 +35,45 @@ public class FormatForm {
     private JPanel mainPanel;
 
     /**
-     * mapper 模版设置
+     * 主页tab
      */
-    public JPanel mapperPanel;
-
-    public JTextArea mapperTextArea;
+    private JTabbedPane tabbedPanel;
 
     /**
-     * sql 模版设置
+     * 自定义参数面板
      */
-    public JPanel sqlPanel;
-
-    public JTextArea sqlTextArea;
-
-    /**
-     * model 模版设置
-     */
-    public JPanel modelPanel;
-
-    public JTextArea modelTextArea;
-
-
-    public JTabbedPane tabbedPanel;
-
-    public JPanel writeServicePanel;
-    public JTextArea writeServiceTextArea;
-    public JPanel writeServiceImplPanel;
-    public JTextArea writeServiceImplTextArea;
-    public JPanel readServicePanel;
-    public JTextArea readServiceTextArea;
-    public JPanel readServiceImplPanel;
-    public JTextArea readServiceImplTextArea;
-    public JPanel controlPanel;
-    public JTextArea controlTextArea;
-
     private JPanel paramPanel;
-    private JTabbedPane tabbedPane1;
+
+    private DefaultTableModel tableModel;   //表格模型对象
+
+    private JBTable table;
+
+    /**
+     *
+     */
+    private JTabbedPane templateTabbedPane;
+
     private JPanel extraPanel;
     private JButton help;
 
+    private Map<String, TemplateEditPane> editPaneMap;
+
     private void createUIComponents() {
         // TODO: place custom component creation code here
-//        InputStream in = this.getClass().getResourceAsStream("/template/DaoTemplate.hbs");
-//        try {
-//            paramPanel = this.addVmEditor(inputStream2String(in), "java");
-//            paramPanel.setMaximumSize(new JBDimension(500, 400));
-//            paramPanel.setMinimumSize(new JBDimension(400, 300));
-//            paramPanel.setSize(500,400);
-//            tabbedPanel.addTab("自定义参数", paramPanel);
-//        }catch (Exception e){
-//
-//        }
-        paramPanel = new ConfigPanel();
+
+        paramPanel = new JPanel();
+        paramPanel.setLayout(new BorderLayout());
+        paramPanel.setSize(500, 400);
+
+        table = new JBTable();
+        table.setSize(300,200);
+        // 单选
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        // 支持滚动
+        JScrollPane scrollPane = new JBScrollPane(table);
+        scrollPane.setViewportView(table);
+        paramPanel.add(scrollPane, BorderLayout.CENTER);
 
         help = new JButton("help");
         help.setIcon(AllIcons.General.Help);
@@ -95,6 +81,77 @@ public class FormatForm {
         help.setContentAreaFilled(false);
         help.addActionListener(helpbroker());
     }
+
+    public FormatForm(FormatSetting settings) {
+
+        // 模版配置面板
+        templateTabbedPane = new JBTabbedPane();
+        editPaneMap = Maps.newHashMap();
+        resetTabPane(settings);
+        tabbedPanel.add("模版配置", templateTabbedPane);
+
+        // 自定义参数 操作面板
+        resetParams(settings);
+
+        paramPanel.add(actionPanel(),BorderLayout.SOUTH);
+
+
+    }
+
+    /**
+     * 模版配置Tab
+     * @param settings
+     */
+    private void resetTabPane(FormatSetting settings) {
+        settings.getCodeTemplates().forEach((key, value) -> {
+            TemplateEditPane editPane = new TemplateEditPane(settings, key);
+            templateTabbedPane.addTab(key, editPane.getTemplatePanel());
+            editPaneMap.put(key, editPane);
+        });
+    }
+
+    private void resetParams(FormatSetting settings){
+        // 列名
+        String[] columnNames = {"参数名","参数值"};
+
+        // 默认数据
+        Map<String, String> map = settings.getParams();
+        Object[][] tableVales = new String[map.size()][2];
+        Object[] keys = map.keySet().toArray();
+        Object[] values = map.values().toArray();
+        for (int row = 0; row < tableVales.length; row++) {
+            tableVales[row][0] = keys[row];
+            tableVales[row][1] = values[row];
+        }
+
+        tableModel = new DefaultTableModel(tableVales,columnNames);
+        table.setModel(tableModel);
+    }
+
+    private JPanel actionPanel(){
+        JPanel actionPanel = new JPanel();
+        // 添加参数
+        final JButton addButton = new JButton("添加");
+        addButton.addActionListener(e -> {
+            String []rowValues = {"NULL", "NULL"};
+            tableModel.addRow(rowValues);
+        });
+        actionPanel.add(addButton);
+
+        // 删除参数
+        final JButton delButton = new JButton("删除");
+        delButton.addActionListener( e ->{
+            int selectedRow = table.getSelectedRow();
+            if(selectedRow!=-1){
+                tableModel.removeRow(selectedRow);
+            }else{
+                Messages.showMessageDialog("请选择一行参数", "警告", Messages.getWarningIcon());
+            }
+        });
+        actionPanel.add(delButton);
+        return actionPanel;
+    }
+
 
     private ActionListener helpbroker(){
         HelpSet helpset;
@@ -134,25 +191,22 @@ public class FormatForm {
         return new Point(centerX,centerY);
     }
 
-    public static String inputStream2String(InputStream is)  throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int i = -1;
-        while((i=is.read())!=-1){
-            baos.write(i);
-        }
-        return baos.toString();
+    public Map<String, CodeTemplate> getTabTemplates() {
+        Map<String, CodeTemplate> map = Maps.newHashMap();
+        editPaneMap.forEach((key, value) -> {
+            CodeTemplate codeTemplate = new CodeTemplate(value.getTemplateName().getText(),
+                    value.getTemplateType().getText(), value.getFileName().getText(),
+                    value.getEditor().getDocument().getText());
+            map.put(codeTemplate.getName(), codeTemplate);
+        });
+        return map;
     }
 
-    private JPanel addVmEditor(String template, String extension) {
-        JPanel editorPane = new JPanel();
-        EditorFactory factory = EditorFactory.getInstance();
-        Document velocityTemplate = factory.createDocument(template);
-        Editor editor = factory.createEditor(velocityTemplate, null, FileTypeManager.getInstance()
-                .getFileTypeByExtension(extension), false);
-        GridConstraints constraints = new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST,
-                GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW,
-                GridConstraints.SIZEPOLICY_FIXED, null, new JBDimension(300, 300), null, 0, true);
-        editorPane.add(editor.getComponent(), constraints);
-        return editorPane;
+    public void refresh(FormatSetting settings) {
+        templateTabbedPane.removeAll();
+        editPaneMap.clear();
+        resetTabPane(settings);
+        resetParams(settings);
     }
+
 }

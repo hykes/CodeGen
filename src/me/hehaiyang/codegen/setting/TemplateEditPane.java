@@ -3,55 +3,62 @@ package me.hehaiyang.codegen.setting;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
+import com.intellij.openapi.editor.EditorSettings;
 import com.intellij.openapi.fileTypes.FileTypeManager;
-import com.intellij.uiDesigner.core.GridConstraints;
+import lombok.Data;
+import me.hehaiyang.codegen.model.CodeTemplate;
 
 import javax.swing.*;
 import java.awt.*;
 
-
+/**
+ * Desc: 模版配置
+ * Mail: hehaiyangwork@qq.com
+ * Date: 2017/3/17
+ */
+@Data
 public class TemplateEditPane {
 
-    private JPanel templateEdit;
-    private JTextField templateNameText;
-    private JTextField templateTypeText;
-    private JTextField fileNameText;
+    private JPanel templatePanel;
+    private JTextField templateName;
+    private JTextField templateType;
+    private JTextField fileName;
     private JLabel templateNameLabel;
     private JLabel templateTypeLabel;
     private JLabel fileNameLabel;
-    private JPanel editorPane;
+    private JPanel configPanel;
+
     private Editor editor;
 
-//    public TemplateEditPane(CodeMakerSettings settings, String template,
-//                            CodeMakerConfiguration parentPane) {
-//        CodeTemplate codeTemplate = settings.getCodeTemplate(template);
-//        if (codeTemplate == null) {
-//            codeTemplate = CodeTemplate.EMPTY_TEMPLATE;
-//        }
-//
-//        templateNameText.setText(codeTemplate.getName());
-//        fileNameText.setText(String.valueOf(codeTemplate.getClassNumber()));
-//        classNameText.setText(codeTemplate.getClassNameVm());
-//        addVmEditor(codeTemplate.getCodeTemplate());
-//        deleteTemplateButton.addActionListener(e -> {
-//            int result = Messages.showYesNoDialog("Delete this template?", "Delete", null);
-//            if (result == Messages.OK) {
-//                settings.removeCodeTemplate(template);
-//                parentPane.refresh(settings);
-//            }
-//        });
-//    }
+    public TemplateEditPane(FormatSetting settings, String template) {
+        CodeTemplate codeTemplate = settings.getCodeTemplate(template);
+        if (codeTemplate == null) {
+            codeTemplate = new CodeTemplate();
+        }
 
-    private void addVmEditor(String template) {
-        EditorFactory factory = EditorFactory.getInstance();
-        Document velocityTemplate = factory.createDocument(template);
-        editor = factory.createEditor(velocityTemplate, null, FileTypeManager.getInstance()
-            .getFileTypeByExtension("vm"), false);
-        GridConstraints constraints = new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST,
-            GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW,
-            GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(300, 300), null, 0, true);
-        editorPane.add(editor.getComponent(), constraints);
+        templateName.setText(codeTemplate.getName());
+        templateType.setText(codeTemplate.getType());
+        fileName.setText(codeTemplate.getFileName());
+
+        editor = getEditor(codeTemplate.getTemplate(), codeTemplate.getType());
+        templatePanel.add(editor.getComponent(), BorderLayout.CENTER);
+
     }
 
+    /**
+     * 创建编辑器
+     * @param template
+     * @param extension
+     * @return
+     */
+    private Editor getEditor(String template, String extension) {
+        EditorFactory factory = EditorFactory.getInstance();
+        Document velocityTemplate = factory.createDocument(template);
+        Editor editor = factory.createEditor(velocityTemplate, null, FileTypeManager.getInstance()
+                .getFileTypeByExtension(extension), false);
 
+        EditorSettings editorSettings = editor.getSettings();
+        editorSettings.setLineNumbersShown(true);
+        return editor;
+    }
 }
