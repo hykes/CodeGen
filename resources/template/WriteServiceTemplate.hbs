@@ -6,21 +6,21 @@ import io.terminus.common.model.Response;
  * Mail: hehaiyang@terminus.io
  * Date: 2017/3/17
  */
-public interface {{modelName}}WriteService {
+public interface {{model}}WriteService {
 
     /**
      *
-     * @param {{LowerCase modelName}}
+     * @param {{LowerCase model}}
      * @return Boolean
      */
-    Response<Long> create({{modelName}} {{LowerCase modelName}});
+    Response<Long> create({{model}} {{LowerCase model}});
 
     /**
      *
-     * @param {{LowerCase modelName}}
+     * @param {{LowerCase model}}
      * @return Boolean
      */
-    Response<Boolean> update({{modelName}} {{LowerCase modelName}});
+    Response<Boolean> update({{model}} {{LowerCase model}});
 
     /**
      *

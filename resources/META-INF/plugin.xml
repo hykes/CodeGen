@@ -7,8 +7,8 @@
   <description><![CDATA[
       <p>This plugin helps you to generate specific code.</p>
       <ul>
-        <li>Generate the model class</li>
-        <li>Generate the mapper xml</li>
+        <li>Generate the java class</li>
+        <li>Generate the xml file</li>
         <li>Generate the sql script</li>
       </ul>
       <p>Please feel free to contact me and ask any questions or suggest some features</p>
@@ -34,7 +34,7 @@
     <applicationService serviceInterface="me.hehaiyang.codegen.setting.FormatSetting"
                         serviceImplementation="me.hehaiyang.codegen.setting.FormatSetting"/>
 
-    <!--<toolWindow id="ToolsWindow.CodeMaker" anchor="right" factoryClass="me.hehaiyang.plugins.codegen.windows.CodeGenToolsWindow"/>-->
+    <!--<toolWindow id="ToolsWindow.CodeGenAction" anchor="right" factoryClass="me.hehaiyang.plugins.codegen.windows.CodeGenToolsWindow"/>-->
   </extensions>
 
   <actions>

@@ -10,28 +10,28 @@ import java.util.List;
  * Mail: hehaiyang@terminus.io
  * Date: 2017/3/17
  */
-public interface {{modelName}}ReadService {
+public interface {{model}}ReadService {
 
     /**
      *
      * @param id
-     * @return {{LowerCase modelName}}
+     * @return {{LowerCase model}}
      */
-    Response<{{modelName}}> findById(Long id);
+    Response<{{model}}> findById(Long id);
 
     /**
      *
      * @param pageNo
      * @param pageSize
      * @param criteria
-     * @return Paging<{{modelName}}>
+     * @return Paging<{{model}}>
      */
-    Response<Paging<{{modelName}}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria);
+    Response<Paging<{{model}}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria);
 
    /**
     *
     * @param criteria
-    * @return List<{{modelName}}>
+    * @return List<{{model}}>
     */
-    Response<List<{{modelName}}>> list(Map<String, Object> criteria);
+    Response<List<{{model}}>> list(Map<String, Object> criteria);
 }

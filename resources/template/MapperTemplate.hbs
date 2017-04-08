@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="{{modelName}}">
-    <resultMap id="{{modelName}}Map" type="{{modelName}}">
+<mapper namespace="{{model}}">
+    <resultMap id="{{model}}Map" type="{{model}}">
         <id property="id" column="id"/>{{#each fields}}
         <result property="{{field}}" column="{{column}}"/>{{/each}}
         <result property="createdAt" column="created_at"/>
@@ -10,7 +10,7 @@
     </resultMap>
 
     <sql id="tb">
-        {{tableName}}
+        {{table}}
     </sql>
 
     <sql id="cols_all">
@@ -36,7 +36,7 @@
         </where>
     </sql>
 
-    <insert id="create" parameterType="{{modelName}}" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="{{model}}" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
         <include refid="tb"/>
         (<include refid="cols_exclude_id"/>)
@@ -44,7 +44,7 @@
         (<include refid="vals"/>)
     </insert>
 
-    <select id="load" parameterType="long" resultMap="{{modelName}}Map">
+    <select id="load" parameterType="long" resultMap="{{model}}Map">
         SELECT
         <include refid="cols_all"/>
         FROM
@@ -52,7 +52,7 @@
         WHERE id = #{id} LIMIT 1
     </select>
 
-    <select id="loads" parameterType="list" resultMap="{{modelName}}Map">
+    <select id="loads" parameterType="list" resultMap="{{model}}Map">
         SELECT
         <include refid="cols_all"/>
         FROM
@@ -63,7 +63,7 @@
         </foreach>
     </select>
 
-    <update id="update" parameterType="{{modelName}}">
+    <update id="update" parameterType="{{model}}">
         UPDATE
         <include refid="tb"/>
         <set>
@@ -86,7 +86,7 @@
     </select>
 
     <!--  分页  -->
-    <select id="paging" parameterType="map" resultMap="{{modelName}}Map">
+    <select id="paging" parameterType="map" resultMap="{{model}}Map">
         SELECT <include refid="cols_all"/>
         FROM <include refid="tb"/>
         <include refid="criteria"/>
@@ -94,7 +94,7 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="list" parameterType="map" resultMap="{{modelName}}Map">
+    <select id="list" parameterType="map" resultMap="{{model}}Map">
         SELECT <include refid="cols_all"/>
         FROM <include refid="tb"/>
         <include refid="criteria"/>

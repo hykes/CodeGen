@@ -16,39 +16,39 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RpcProvider
-public class {{modelName}}WriteServiceImpl implements {{modelName}}WriteService {
+public class {{model}}WriteServiceImpl implements {{model}}WriteService {
 
     @Autowired
-    private {{modelName}}Dao {{LowerCase modelName}}Dao;
+    private {{model}}Dao {{LowerCase model}}Dao;
 
     @Override
-    public Response<Long> create({{modelName}} {{LowerCase modelName}}) {
+    public Response<Long> create({{model}} {{LowerCase model}}) {
         try{
-            {{LowerCase modelName}}Dao.create({{LowerCase modelName}});
-            return Response.ok({{LowerCase modelName}}.getId());
+            {{LowerCase model}}Dao.create({{LowerCase model}});
+            return Response.ok({{LowerCase model}}.getId());
         }catch (Exception e){
-            log.error("failed to create {{LowerCase modelName}}, cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("{{LowerCase modelName}}.create.fail");
+            log.error("failed to create {{LowerCase model}}, cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("{{LowerCase model}}.create.fail");
         }
     }
 
     @Override
-    public Response<Boolean> update({{modelName}} {{LowerCase modelName}}) {
+    public Response<Boolean> update({{model}} {{LowerCase model}}) {
         try{
-            return Response.ok({{LowerCase modelName}}Dao.update({{LowerCase modelName}}));
+            return Response.ok({{LowerCase model}}Dao.update({{LowerCase model}}));
         }catch (Exception e){
-            log.error("failed to update {{LowerCase modelName}}, cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("{{LowerCase modelName}}.update.fail");
+            log.error("failed to update {{LowerCase model}}, cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("{{LowerCase model}}.update.fail");
         }
     }
 
    @Override
     public Response<Boolean> delete(Long id) {
         try{
-            return Response.ok({{LowerCase modelName}}Dao.delete(id));
+            return Response.ok({{LowerCase model}}Dao.delete(id));
         }catch (Exception e){
-            log.error("failed to delete {{LowerCase modelName}} by id:{}, cause:{}", id,  Throwables.getStackTraceAsString(e));
-            return Response.fail("delete.{{LowerCase modelName}}.fail");
+            log.error("failed to delete {{LowerCase model}} by id:{}, cause:{}", id,  Throwables.getStackTraceAsString(e));
+            return Response.fail("delete.{{LowerCase model}}.fail");
         }
     }
 
