@@ -2,7 +2,7 @@
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
   <version>0.4</version>
-  <vendor email="hehaiyangwork@qq.com" url="https://github.com/hehaiyangwork/CodeGen">HeHaiYang</vendor>
+  <vendor email="hehaiyangwork@qq.com" url="https://github.com/hehaiyangwork/CodeGen/issues/1">HeHaiYang</vendor>
 
   <description><![CDATA[
       <p>This plugin helps you to generate specific code.</p>
