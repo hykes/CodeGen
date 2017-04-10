@@ -14,6 +14,7 @@ import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.setting.FormatSetting;
 import me.hehaiyang.codegen.utils.ParseUtils;
 import me.hehaiyang.codegen.utils.PsiUtil;
+import org.joda.time.DateTime;
 
 import javax.swing.*;
 import java.util.List;
@@ -107,6 +108,7 @@ public class CodeGenWindow extends JFrame {
                 params.put("day", "04.09");
                 params.put("time", "00:50:23");
                 params.put("week", "Mon");
+                params.put("now", DateTime.now().toString());
                 params.putAll(formatSetting.getParams());
 
                 context.set$(params);

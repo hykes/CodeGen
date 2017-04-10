@@ -41,7 +41,7 @@
     <!-- Add your actions here -->
     <action id="NewGroup.CodeGenAction" class="me.hehaiyang.codegen.CodeGenAction" text="CodeGen">
       <add-to-group group-id="NewGroup" anchor="first"/>
-      <keyboard-shortcut keymap="$default" first-keystroke="alt control G"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="shift control G"/>
     </action>
   </actions>
 
