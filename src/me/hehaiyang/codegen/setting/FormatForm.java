@@ -1,24 +1,16 @@
 package me.hehaiyang.codegen.setting;
 
 import com.google.common.collect.Maps;
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.ui.table.JBTable;
-import com.intellij.util.ui.JBDimension;
 import lombok.Data;
 import me.hehaiyang.codegen.model.CodeTemplate;
 
-import javax.help.CSH;
-import javax.help.HelpBroker;
-import javax.help.HelpSet;
-import javax.help.HelpSetException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.Map;
 
 /**
@@ -29,32 +21,15 @@ import java.util.Map;
 @Data
 public class FormatForm {
 
-    /**
-     * 主面板
-     */
     private JPanel mainPanel;
-
-    /**
-     * 主页tab
-     */
     private JTabbedPane tabbedPanel;
-
-    /**
-     * 自定义参数面板
-     */
     private JPanel paramPanel;
 
-    private DefaultTableModel tableModel;   //表格模型对象
 
+    private DefaultTableModel tableModel;
     private JBTable table;
 
-    /**
-     *
-     */
     private JTabbedPane templateTabbedPane;
-
-    private JPanel extraPanel;
-    private JButton help;
 
     private Map<String, TemplateEditPane> editPaneMap;
 
@@ -63,10 +38,8 @@ public class FormatForm {
 
         paramPanel = new JPanel();
         paramPanel.setLayout(new BorderLayout());
-        paramPanel.setSize(500, 400);
 
         table = new JBTable();
-        table.setSize(300,200);
         // 单选
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -75,11 +48,6 @@ public class FormatForm {
         scrollPane.setViewportView(table);
         paramPanel.add(scrollPane, BorderLayout.CENTER);
 
-        help = new JButton("help");
-        help.setIcon(AllIcons.General.Help);
-        help.setBounds(0, 0, 85, 82);
-        help.setContentAreaFilled(false);
-        help.addActionListener(helpbroker());
     }
 
     public FormatForm(FormatSetting settings) {
@@ -94,8 +62,6 @@ public class FormatForm {
         resetParams(settings);
 
         paramPanel.add(actionPanel(),BorderLayout.SOUTH);
-
-
     }
 
     /**
@@ -150,26 +116,6 @@ public class FormatForm {
         });
         actionPanel.add(delButton);
         return actionPanel;
-    }
-
-
-    private ActionListener helpbroker(){
-        HelpSet helpset;
-        ClassLoader loader = this.getClass().getClassLoader();
-        URL url = HelpSet.findHelpSet(loader, "javahelp/hello.hs");
-        try {
-            helpset = new HelpSet(loader, url);
-        } catch (HelpSetException e) {
-            System.err.println("Error loading HelpSet");
-            return null;
-        }
-
-        HelpBroker helpbroker = helpset.createHelpBroker();
-        helpbroker.setViewDisplayed(true);
-        helpbroker.setSize(new JBDimension(800, 600));
-        helpbroker.setLocation(getCenterPoint(800,600));
-//        helpbroker.setFont(new Font("宋体",Font.BOLD,14));
-        return new CSH.DisplayHelpFromSource(helpbroker);
     }
 
     /**
