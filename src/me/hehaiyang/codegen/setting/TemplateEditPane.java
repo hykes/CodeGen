@@ -1,10 +1,12 @@
 package me.hehaiyang.codegen.setting;
 
+import com.google.common.collect.Lists;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.EditorSettings;
 import com.intellij.openapi.fileTypes.FileTypeManager;
+import javafx.scene.control.Spinner;
 import lombok.Data;
 import me.hehaiyang.codegen.model.CodeTemplate;
 
@@ -63,4 +65,5 @@ public class TemplateEditPane {
         editorSettings.setLineNumbersShown(true);
         return editor;
     }
+
 }

@@ -64,6 +64,7 @@
               </grid>
             </constraints>
             <properties>
+              <text value=""/>
               <toolTipText value="Support velocity, with context={class0}"/>
             </properties>
           </component>
