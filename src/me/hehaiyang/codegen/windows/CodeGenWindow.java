@@ -15,6 +15,8 @@ import me.hehaiyang.codegen.setting.FormatSetting;
 import me.hehaiyang.codegen.utils.ParseUtils;
 import me.hehaiyang.codegen.utils.PsiUtil;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.swing.*;
 import java.util.List;
@@ -44,6 +46,8 @@ public class CodeGenWindow extends JFrame {
     private JLabel modelNameLabel;
     private JLabel tableNameLabel;
 
+    private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd");
+
     public CodeGenWindow(AnActionEvent anActionEvent) {
         setContentPane(codeGenJPanel);
         setTitle("CodeGen");
@@ -55,6 +59,8 @@ public class CodeGenWindow extends JFrame {
         codeJTextPane.requestFocus(true);
 
         this.init();
+
+//        DATE_TIME_FORMAT.parseDateTime("2017-04-11").withTimeAtStartOfDay().toDate()
     }
 
     private void init() {

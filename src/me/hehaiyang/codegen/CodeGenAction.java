@@ -34,10 +34,12 @@ public class CodeGenAction extends AnAction {
         // 只有当焦点为 package 或者 class 时，显示此Action
         IdeView ideView = PsiUtil.getIdeView(event);
         Project project = PsiUtil.getProject(event);
-        PsiDirectory psiDirectory = DirectoryChooserUtil.getOrChooseDirectory(ideView);
         boolean isPackage = false;
-        if(psiDirectory != null) {
-             isPackage = PsiDirectoryFactory.getInstance(project).isPackage(psiDirectory);
+        if(ideView != null && project != null){
+            PsiDirectory psiDirectory = DirectoryChooserUtil.getOrChooseDirectory(ideView);
+            if(psiDirectory != null) {
+                isPackage = PsiDirectoryFactory.getInstance(project).isPackage(psiDirectory);
+            }
         }
         this.getTemplatePresentation().setVisible(isPackage);
         this.getTemplatePresentation().setEnabled(isPackage);
