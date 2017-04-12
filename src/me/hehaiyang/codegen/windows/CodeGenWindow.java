@@ -15,8 +15,6 @@ import me.hehaiyang.codegen.setting.FormatSetting;
 import me.hehaiyang.codegen.utils.ParseUtils;
 import me.hehaiyang.codegen.utils.PsiUtil;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import javax.swing.*;
 import java.util.List;
@@ -46,8 +44,6 @@ public class CodeGenWindow extends JFrame {
     private JLabel modelNameLabel;
     private JLabel tableNameLabel;
 
-    private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd");
-
     public CodeGenWindow(AnActionEvent anActionEvent) {
         setContentPane(codeGenJPanel);
         setTitle("CodeGen");
@@ -60,7 +56,6 @@ public class CodeGenWindow extends JFrame {
 
         this.init();
 
-//        DATE_TIME_FORMAT.parseDateTime("2017-04-11").withTimeAtStartOfDay().toDate()
     }
 
     private void init() {
@@ -110,11 +105,17 @@ public class CodeGenWindow extends JFrame {
                 // 组装数据
                 CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, fields);
                 Map<String, String> params = Maps.newHashMap();
-                params.put("year", "2017");
-                params.put("day", "04.09");
-                params.put("time", "00:50:23");
-                params.put("week", "Mon");
-                params.put("now", DateTime.now().toString());
+                DateTime dte = DateTime.now();
+                params.put("Year", String.valueOf(dte.getYear()));
+                params.put("YearOfCentury", String.valueOf(dte.getYearOfCentury()));
+                params.put("YearOfEra", String.valueOf(dte.getYearOfEra()));
+                params.put("Month", String.valueOf(dte.getMonthOfYear()));
+                params.put("DayOfMonth", String.valueOf(dte.getDayOfMonth()));
+                params.put("DayOfWeek", String.valueOf(dte.getDayOfWeek()));
+                params.put("Hours", String.valueOf(dte.getHourOfDay()));
+                params.put("Mills", String.valueOf(dte.getMinuteOfHour()));
+                params.put("Second", String.valueOf(dte.getSecondOfMinute()));
+                params.put("Now", String.valueOf(dte.getDayOfMonth()));
                 params.putAll(formatSetting.getParams());
 
                 context.set$(params);
