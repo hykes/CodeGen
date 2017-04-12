@@ -1,8 +1,8 @@
 <idea-plugin version="2">
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>0.4</version>
-  <vendor email="hehaiyangwork@qq.com" url="https://hehaiyang.me">hehaiyang</vendor>
+  <version>0.5</version>
+  <vendor email="hehaiyangwork@qq.com" url="https://github.com/hehaiyangwork/CodeGen">hehaiyang</vendor>
 
   <description><![CDATA[
       <p><a href="https://github.com/hehaiyangwork/CodeGen">GitHub</a> | <a href="https://github.com/hehaiyangwork/CodeGen/issues/1">Issues</a> | <a href="https://github.com/hehaiyangwork/CodeGen/wiki">Wiki</a></p>
