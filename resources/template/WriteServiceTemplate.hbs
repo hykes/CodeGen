@@ -2,28 +2,28 @@
 import io.terminus.common.model.Response;
 
 /**
- * Desc:
+ * Desc: {{modelName}}写服务接口
  * Mail: {{$.email}}
- * Date: {{$.now}}
+ * Date: {{$.Now}}
  */
 public interface {{model}}WriteService {
 
     /**
-     *
+     * 创建
      * @param {{LowerCase model}}
      * @return Boolean
      */
     Response<Long> create({{model}} {{LowerCase model}});
 
     /**
-     *
+     * 更新
      * @param {{LowerCase model}}
      * @return Boolean
      */
     Response<Boolean> update({{model}} {{LowerCase model}});
 
     /**
-     *
+     * 删除
      * @param id
      * @return Boolean
      */

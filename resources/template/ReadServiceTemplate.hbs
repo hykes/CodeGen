@@ -6,21 +6,21 @@ import java.util.Map;
 import java.util.List;
 
 /**
- * Desc:
+ * Desc: {{modelName}}读服务接口
  * Mail: {{$.email}}
- * Date: {{$.now}}
+ * Date: {{$.Now}}
  */
 public interface {{model}}ReadService {
 
     /**
-     *
+     * 查询
      * @param id
      * @return {{LowerCase model}}
      */
     Response<{{model}}> findById(Long id);
 
     /**
-     *
+     * 分页
      * @param pageNo
      * @param pageSize
      * @param criteria
@@ -29,7 +29,7 @@ public interface {{model}}ReadService {
     Response<Paging<{{model}}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria);
 
    /**
-    *
+    * 列表
     * @param criteria
     * @return List<{{model}}>
     */
