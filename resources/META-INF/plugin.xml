@@ -2,7 +2,7 @@
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
   <version>0.5</version>
-  <vendor email="hehaiyangwork@qq.com" url="https://github.com/hehaiyangwork/CodeGen">hehaiyang</vendor>
+  <vendor email="hehaiyangwork@qq.com">hehaiyang</vendor>
 
   <description><![CDATA[
       <p><a href="https://github.com/hehaiyangwork/CodeGen">GitHub</a> | <a href="https://github.com/hehaiyangwork/CodeGen/issues">Issues</a> | <a href="https://github.com/hehaiyangwork/CodeGen/wiki">Wiki</a></p>
@@ -14,7 +14,7 @@
         <li>Generate the sql script</li>
       </ul>
       <br>
-      <p>Please feel free to contact me and ask any questions or suggest some features</p>
+      <p>Please feel free to contact me and ask any questions or suggest some features.</p>
       <br>
     ]]></description>
 

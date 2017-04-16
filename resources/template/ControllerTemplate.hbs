@@ -90,4 +90,18 @@ public class {{model}}s {
         }
         return response.getResult();
     }
+
+   /**
+    * 列表
+    * @return
+    */
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<{{model}}> list{{model}}() {
+       Map<String, Object> criteria = Maps.newHashMap();
+       Response<List<{{model}}>> result =  {{LowerCase model}}ReadService.list(criteria);
+       if(!result.isSuccess()){
+           throw new JsonResponseException(result.getError());
+       }
+       return result.getResult();
+    }
 }

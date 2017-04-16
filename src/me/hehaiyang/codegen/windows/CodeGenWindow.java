@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
-import me.hehaiyang.codegen.constants.DefaultTemplate;
+import me.hehaiyang.codegen.constants.DefaultParams;
 import me.hehaiyang.codegen.file.FileFactory;
 import me.hehaiyang.codegen.file.FileProvider;
 import me.hehaiyang.codegen.model.CodeGenContext;
@@ -14,7 +14,6 @@ import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.setting.FormatSetting;
 import me.hehaiyang.codegen.utils.ParseUtils;
 import me.hehaiyang.codegen.utils.PsiUtil;
-import org.joda.time.DateTime;
 
 import javax.swing.*;
 import java.util.List;
@@ -25,6 +24,8 @@ public class CodeGenWindow extends JFrame {
     private FormatSetting formatSetting;
     private Project project;
     private FileFactory fileFactory;
+
+    private Map<String, CodeTemplate> templateMap;
 
     private JPanel codeGenJPanel;
     private JPanel paramsJPanel;
@@ -51,6 +52,7 @@ public class CodeGenWindow extends JFrame {
         this.project = PsiUtil.getProject(anActionEvent);
         this.formatSetting = FormatSetting.getInstance();
         this.fileFactory = new FileFactory(anActionEvent);
+        this.templateMap = formatSetting.getCodeTemplates();
 
         codeJTextPane.requestFocus(true);
 
@@ -105,33 +107,15 @@ public class CodeGenWindow extends JFrame {
                 // 组装数据
                 CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, fields);
                 Map<String, String> params = Maps.newHashMap();
-                DateTime dte = DateTime.now();
-                params.put("Year", String.valueOf(dte.getYear()));
-                params.put("YearOfCentury", String.valueOf(dte.getYearOfCentury()));
-                params.put("YearOfEra", String.valueOf(dte.getYearOfEra()));
-                params.put("Month", String.valueOf(dte.getMonthOfYear()));
-                params.put("DayOfMonth", String.valueOf(dte.getDayOfMonth()));
-                params.put("DayOfWeek", String.valueOf(dte.getDayOfWeek()));
-                params.put("Hours", String.valueOf(dte.getHourOfDay()));
-                params.put("Mills", String.valueOf(dte.getMinuteOfHour()));
-                params.put("Second", String.valueOf(dte.getSecondOfMinute()));
-                params.put("Now", String.valueOf(dte.getDayOfMonth()));
+                params.putAll(DefaultParams.params);
                 params.putAll(formatSetting.getParams());
-
                 context.set$(params);
                 WriteCommandAction.runWriteCommandAction(project, ()-> {
                     try {
-
-                        createFile(DefaultTemplate.MAPPER, context);
-                        createFile(DefaultTemplate.SQL, context);
-                        createFile(DefaultTemplate.MODEL, context);
-                        createFile(DefaultTemplate.DAO, context);
-                        createFile(DefaultTemplate.CONTROLLER, context);
-                        createFile(DefaultTemplate.WRITE_SERVICE, context);
-                        createFile(DefaultTemplate.WRITE_SERVICE_IMPL, context);
-                        createFile(DefaultTemplate.READ_SERVICE, context);
-                        createFile(DefaultTemplate.READ_SERVICE_IMPL, context);
-
+                        for (CodeTemplate codeTemplate : templateMap.values()) {
+                            FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getType());
+                            fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFileName());
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
