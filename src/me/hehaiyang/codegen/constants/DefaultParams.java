@@ -25,6 +25,6 @@ public class DefaultParams {
         params.put("Hours", String.valueOf(dte.getHourOfDay()));
         params.put("Mills", String.valueOf(dte.getMinuteOfHour()));
         params.put("Second", String.valueOf(dte.getSecondOfMinute()));
-        params.put("Now", String.valueOf(dte.getDayOfMonth()));
+        params.put("Now", dte.toString());
     }
 }

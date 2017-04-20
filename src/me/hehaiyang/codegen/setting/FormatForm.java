@@ -9,6 +9,7 @@ import lombok.Data;
 import me.hehaiyang.codegen.model.CodeTemplate;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Map;
@@ -98,6 +99,13 @@ public class FormatForm {
         JPanel actionPanel = new JPanel();
         // 添加参数
         final JButton addButton = new JButton("添加");
+
+        addButton.setUI(new BasicButtonUI());// 恢复基本视觉效果
+        addButton.setPreferredSize(new Dimension(80, 27));// 设置按钮大小
+        addButton.setContentAreaFilled(false);// 设置按钮透明
+        addButton.setFont(new Font("粗体", Font.PLAIN, 15));// 按钮文本样式
+        addButton.setMargin(new Insets(0, 0, 0, 0));// 按钮内容与边框距离
+
         addButton.addActionListener(e -> {
             String []rowValues = {"NULL", "NULL"};
             tableModel.addRow(rowValues);
@@ -106,6 +114,13 @@ public class FormatForm {
 
         // 删除参数
         final JButton delButton = new JButton("删除");
+
+        delButton.setUI(new BasicButtonUI());// 恢复基本视觉效果
+        delButton.setPreferredSize(new Dimension(80, 27));// 设置按钮大小
+        delButton.setContentAreaFilled(false);// 设置按钮透明
+        delButton.setFont(new Font("粗体", Font.PLAIN, 15));// 按钮文本样式
+        delButton.setMargin(new Insets(0, 0, 0, 0));// 按钮内容与边框距离
+
         delButton.addActionListener( e ->{
             int selectedRow = table.getSelectedRow();
             if(selectedRow!=-1){

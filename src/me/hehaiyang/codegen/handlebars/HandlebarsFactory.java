@@ -22,6 +22,7 @@ public class HandlebarsFactory {
                 return String.valueOf("#{"+value+"}");
             }
         });
+
         /**
          * 首字母小写
          */

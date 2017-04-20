@@ -80,7 +80,7 @@
 
     <!--  查询记录数  -->
     <select id="count" parameterType="map" resultType="long">
-        SELECT COUNT (1)
+        SELECT COUNT(1)
         FROM <include refid="tb"/>
         <include refid="criteria"/>
     </select>
