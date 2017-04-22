@@ -1,16 +1,17 @@
 package me.hehaiyang.codegen.file.impl;
 
 import com.github.jknack.handlebars.Template;
+import com.intellij.ide.IdeView;
 import com.intellij.ide.highlighter.JavaFileType;
-import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.project.Project;
 import me.hehaiyang.codegen.file.FileProvider;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 import me.hehaiyang.codegen.utils.PsiUtil;
 
 public class JavaProviderImpl extends FileProvider {
 
-    public JavaProviderImpl(AnActionEvent anActionEvent) {
-        super(anActionEvent);
+    public JavaProviderImpl(Project project, IdeView ideView) {
+        super(project, ideView);
     }
 
     @Override
@@ -21,7 +22,7 @@ public class JavaProviderImpl extends FileProvider {
         Template fileNameTemp = handlebars.compileInline(fileName);
         String outputName = fileNameTemp.apply(BuilderUtil.transBean2Map(context));
 
-        PsiUtil.createFile(anActionEvent, outputName + JavaFileType.DOT_DEFAULT_EXTENSION, data, JavaFileType.INSTANCE);
+        PsiUtil.createFile(project, ideView, outputName + JavaFileType.DOT_DEFAULT_EXTENSION, data, JavaFileType.INSTANCE);
     }
 
 }

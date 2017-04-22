@@ -23,19 +23,20 @@ public class PsiUtil {
 
     /**
      * 新建文件
-     * @param anActionEvent
+     * @param project
+     * @param ideView
      * @param fileName
      * @param context
+     * @param fileType
      */
-    public static void createFile(AnActionEvent anActionEvent, String fileName, String context, LanguageFileType fileType) {
-        Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
-        IdeView ideView = anActionEvent.getData(LangDataKeys.IDE_VIEW);
+    public static void createFile(Project project, IdeView ideView, String fileName, String context, LanguageFileType fileType) {
         PsiFile psiFile=  PsiFileFactory.getInstance(project).createFileFromText(fileName, fileType, context);
         PsiDirectory psiDirectory = DirectoryChooserUtil.getOrChooseDirectory(ideView);
         WriteCommandAction.runWriteCommandAction(project, () -> {
             psiDirectory.add(psiFile);
         });
     }
+
 
     public static Project getProject(AnActionEvent anActionEvent) {
         return anActionEvent.getData(PlatformDataKeys.PROJECT);

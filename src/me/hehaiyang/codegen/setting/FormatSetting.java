@@ -7,8 +7,6 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import lombok.Data;
-import me.hehaiyang.codegen.constants.DefaultFileType;
-import me.hehaiyang.codegen.constants.DefaultTemplate;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.utils.ParseUtils;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +22,7 @@ import java.util.UUID;
  * Date: 2017/3/17
  */
 @Data
-@State(name = "ss", storages = { @Storage(id = "other", file = "$APP_CONFIG$/format.xml") })
+@State(name = "CodeGen", storages = { @Storage(id = "other", file = "$APP_CONFIG$/format.xml") })
 public class FormatSetting implements PersistentStateComponent<FormatSetting> {
 
     public static FormatSetting getInstance() {
@@ -60,29 +58,20 @@ public class FormatSetting implements PersistentStateComponent<FormatSetting> {
     public void loadDefaultSettings() {
         Map<String, CodeTemplate> codeTemplates = Maps.newHashMap();
         try {
-//            codeTemplates.put(DefaultTemplate.MODEL, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.MODEL, DefaultFileType.JAVA, "{{model}}", getTemplateContext("/template/ModelTemplate.hbs")));
-//            codeTemplates.put(DefaultTemplate.CONTROLLER, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.CONTROLLER, DefaultFileType.JAVA, "{{model}}s", getTemplateContext("/template/ControllerTemplate.hbs")));
-
-            String daoId = UUID.randomUUID().toString();
-            String mapperId = UUID.randomUUID().toString();
+            String javaId = UUID.randomUUID().toString();
+            String xmlId = UUID.randomUUID().toString();
             String sqlId = UUID.randomUUID().toString();
-            codeTemplates.put(daoId, new CodeTemplate(daoId, DefaultTemplate.DAO, DefaultFileType.JAVA, "{{model}}Dao", getTemplateContext("/template/DaoTemplate.hbs")));
-            codeTemplates.put(mapperId, new CodeTemplate(mapperId, DefaultTemplate.MAPPER, DefaultFileType.XML, "{{model}}Mapper", getTemplateContext("/template/MapperTemplate.hbs")));
-            codeTemplates.put(sqlId, new CodeTemplate(sqlId, DefaultTemplate.SQL, DefaultFileType.SQL, "{{model}}Schema", getTemplateContext("/template/SqlTemplate.hbs")));
-//
-//            codeTemplates.put(DefaultTemplate.READ_SERVICE, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.READ_SERVICE, DefaultFileType.JAVA, "{{model}}ReadService", getTemplateContext("/template/ReadServiceTemplate.hbs")));
-//            codeTemplates.put(DefaultTemplate.READ_SERVICE_IMPL, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.READ_SERVICE_IMPL, DefaultFileType.JAVA, "{{model}}ReadServiceImpl", getTemplateContext("/template/ReadServiceImplTemplate.hbs")));
-//            codeTemplates.put(DefaultTemplate.WRITE_SERVICE, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.WRITE_SERVICE, DefaultFileType.JAVA, "{{model}}WriteService", getTemplateContext("/template/WriteServiceTemplate.hbs")));
-//            codeTemplates.put(DefaultTemplate.WRITE_SERVICE_IMPL, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.WRITE_SERVICE_IMPL, DefaultFileType.JAVA, "{{model}}WriteServiceImpl", getTemplateContext("/template/WriteServiceImplTemplate.hbs")));
+            codeTemplates.put(javaId, new CodeTemplate(javaId, "Java Template", "java", "{{model}}", getTemplateContext("/template/JavaTemplate.hbs")));
+            codeTemplates.put(xmlId, new CodeTemplate(xmlId, "Xml Template", "xml", "{{model}}", getTemplateContext("/template/XmlTemplate.hbs")));
+            codeTemplates.put(sqlId, new CodeTemplate(sqlId, "Sql Template", "sql", "{{model}}", getTemplateContext("/template/SqlTemplate.hbs")));
 
         }catch (IOException io){
             // do nothing
         }
-
         this.codeTemplates = codeTemplates;
         Map<String, String> params = Maps.newHashMap();
-        params.put("email", "[ your email ]");
         params.put("author", "[ your name ]");
+        params.put("email", "[ your email ]");
         params.put("mobile", "[ your mobile ]");
         this.params = params;
     }

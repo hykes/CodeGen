@@ -51,7 +51,7 @@ public class CodeGenWindow extends JFrame {
 
         this.project = PsiUtil.getProject(anActionEvent);
         this.formatSetting = FormatSetting.getInstance();
-        this.fileFactory = new FileFactory(anActionEvent);
+        this.fileFactory = new FileFactory(PsiUtil.getProject(anActionEvent), PsiUtil.getIdeView(anActionEvent));
         this.templateMap = formatSetting.getCodeTemplates();
 
         codeJTextPane.requestFocus(true);
@@ -107,7 +107,7 @@ public class CodeGenWindow extends JFrame {
                 // 组装数据
                 CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, fields);
                 Map<String, String> params = Maps.newHashMap();
-                params.putAll(DefaultParams.params);
+                params.putAll(DefaultParams.getInstance());
                 params.putAll(formatSetting.getParams());
                 context.set$(params);
                 WriteCommandAction.runWriteCommandAction(project, ()-> {
