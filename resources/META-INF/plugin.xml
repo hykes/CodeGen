@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>0.5</version>
+  <version>0.6</version>
   <vendor email="hehaiyangwork@qq.com">hehaiyang</vendor>
 
   <description><![CDATA[
@@ -38,7 +38,6 @@
     <applicationService serviceInterface="me.hehaiyang.codegen.setting.FormatSetting"
                         serviceImplementation="me.hehaiyang.codegen.setting.FormatSetting"/>
 
-    <!--<toolWindow id="ToolsWindow.CodeGenAction" anchor="right" factoryClass="me.hehaiyang.plugins.codegen.windows.CodeGenToolsWindow"/>-->
   </extensions>
 
   <actions>
@@ -48,11 +47,5 @@
       <keyboard-shortcut keymap="$default" first-keystroke="shift control G"/>
     </action>
   </actions>
-
-  <application-components>
-    <component>
-      <implementation-class>me.hehaiyang.codegen.HelloCompontent</implementation-class>
-    </component>
-  </application-components>
 
 </idea-plugin>
