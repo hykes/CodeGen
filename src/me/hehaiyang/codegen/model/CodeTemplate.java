@@ -19,6 +19,8 @@ public class CodeTemplate implements Serializable {
 
     private static final long serialVersionUID = -7427380135917659629L;
 
+    private String id;
+
     private String name;
 
     private String type;

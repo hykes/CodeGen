@@ -1,17 +1,20 @@
 package me.hehaiyang.codegen.setting;
 
-import com.google.common.collect.Maps;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.components.JBScrollPane;
-import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.ui.table.JBTable;
 import lombok.Data;
 import me.hehaiyang.codegen.model.CodeTemplate;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Map;
 
 /**
@@ -23,16 +26,17 @@ import java.util.Map;
 public class FormatForm {
 
     private JPanel mainPanel;
+
     private JTabbedPane tabbedPanel;
+
     private JPanel paramPanel;
+    private DefaultTableModel paramsTableModel;
+    private JBTable paramsTable;
 
-
-    private DefaultTableModel tableModel;
-    private JBTable table;
-
-    private JTabbedPane templateTabbedPane;
-
-    private Map<String, TemplateEditPane> editPaneMap;
+    private JPanel templatePanel;
+    private JPanel leftPanel;
+    private JPanel rightPanel;
+    private TemplateEditPane editPane;
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
@@ -40,47 +44,101 @@ public class FormatForm {
         paramPanel = new JPanel();
         paramPanel.setLayout(new BorderLayout());
 
-        table = new JBTable();
+        paramsTable = new JBTable();
         // 单选
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        paramsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         // 支持滚动
-        JScrollPane scrollPane = new JBScrollPane(table);
-        scrollPane.setViewportView(table);
+        JScrollPane scrollPane = new JBScrollPane(paramsTable);
+        scrollPane.setViewportView(paramsTable);
         paramPanel.add(scrollPane, BorderLayout.CENTER);
 
     }
 
     public FormatForm(FormatSetting settings) {
 
-        // 模版配置面板
-        templateTabbedPane = new JBTabbedPane();
-        editPaneMap = Maps.newHashMap();
-        resetTabPane(settings);
-        tabbedPanel.add("模版配置", templateTabbedPane);
+        templatePanel = new JPanel(new BorderLayout());
+
+        DefaultTableModel templateTableModel = getTemplateTableModel(settings);
+
+        leftPanel = new JPanel(new BorderLayout());
+        JBTable table = new JBTable(templateTableModel);
+
+        TableColumnModel columnModel = table.getColumnModel();
+        TableColumn column = columnModel.getColumn(0);
+
+        column.setMinWidth(0);
+        column.setMaxWidth(0);
+        column.setWidth(0);
+        column.setPreferredWidth(0);
+
+        JScrollPane scrollPane = new JBScrollPane(table,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setViewportView(table);
+        scrollPane.setPreferredSize(new Dimension(200,100));
+
+        leftPanel.add(scrollPane,BorderLayout.CENTER);
+        LineBorder lineBorder = (LineBorder)BorderFactory.createLineBorder(Color.LIGHT_GRAY);// 创建线形边框
+
+        JPanel addPanel = new JPanel(new GridBagLayout());
+        addPanel.setBorder(lineBorder);
+
+        JButton jButton = new JButton("+");
+        jButton.setUI(new BasicButtonUI());// 恢复基本视觉效果
+        jButton.setContentAreaFilled(false);// 设置按钮透明
+        jButton.setFont(new Font("粗体", Font.PLAIN, 12));// 按钮文本样式
+        jButton.setMargin(new Insets(0, 0, 0, 0));// 按钮内容与边框距离
+
+        JButton delButton = new JButton("-");
+        delButton.setUI(new BasicButtonUI());// 恢复基本视觉效果
+        delButton.setContentAreaFilled(false);// 设置按钮透明
+        delButton.setFont(new Font("粗体", Font.PLAIN, 12));// 按钮文本样式
+        delButton.setMargin(new Insets(0, 0, 0, 0));// 按钮内容与边框距离
+
+
+        addPanel.add(jButton);
+        addPanel.add(delButton);
+        addPanel.setPreferredSize(new Dimension(200,30));
+        leftPanel.add(addPanel , BorderLayout.SOUTH);
+        templatePanel.add(leftPanel, BorderLayout.WEST);
+
+
+        editPane = new TemplateEditPane(settings, "model_template");
+        editPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+
+        rightPanel = new JPanel(new BorderLayout());
+        rightPanel.add(editPane, BorderLayout.CENTER);
+        templatePanel.add(rightPanel, BorderLayout.CENTER);
+
+        templatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        tabbedPanel.add("模版配置", templatePanel);
 
         // 自定义参数 操作面板
-        resetParams(settings);
+        paramsTableModel = getParamsTableModel(settings);
+        paramsTable.setModel(paramsTableModel);
 
-        paramPanel.add(actionPanel(),BorderLayout.SOUTH);
-    }
+        paramPanel.add(actionPanel(), BorderLayout.SOUTH);
 
-    /**
-     * 模版配置Tab
-     * @param settings
-     */
-    private void resetTabPane(FormatSetting settings) {
-        settings.getCodeTemplates().forEach((key, value) -> {
-            TemplateEditPane editPane = new TemplateEditPane(settings, key);
-            templateTabbedPane.addTab(key, editPane.getTemplatePanel());
-            editPaneMap.put(key, editPane);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);  //单选
+        table.addMouseListener(new MouseAdapter(){    //鼠标事件
+            public void mouseClicked(MouseEvent e){
+                int selectedRow = table.getSelectedRow(); //获得选中行索引
+                String oa = (String)templateTableModel.getValueAt(selectedRow, 1);
+                rightPanel.removeAll();
+                editPane = new TemplateEditPane(settings, oa);
+                rightPanel.add(editPane, BorderLayout.CENTER);
+            }
         });
     }
 
-    private void resetParams(FormatSetting settings){
+    /**
+     * 参数列表
+     * @param settings
+     * @return
+     */
+    private DefaultTableModel getParamsTableModel(FormatSetting settings){
         // 列名
         String[] columnNames = {"参数名","参数值"};
-
         // 默认数据
         Map<String, String> map = settings.getParams();
         Object[][] tableVales = new String[map.size()][2];
@@ -90,9 +148,29 @@ public class FormatForm {
             tableVales[row][0] = keys[row];
             tableVales[row][1] = values[row];
         }
+        return new DefaultTableModel(tableVales,columnNames);
+    }
 
-        tableModel = new DefaultTableModel(tableVales,columnNames);
-        table.setModel(tableModel);
+    /**
+     * 模版列表
+     * @param settings
+     * @return
+     */
+    private DefaultTableModel getTemplateTableModel(FormatSetting settings){
+        String[] columnNames = {"","模版列表"};
+
+        Object[][] tableVales = new String[settings.getCodeTemplates().size()][2];
+        int i = 0;
+        for (CodeTemplate template : settings.getCodeTemplates().values()) {
+            tableVales[i][0] = template.getId();
+            tableVales[i][1] = template.getName();
+            i++;
+        }
+        return new DefaultTableModel(tableVales,columnNames) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
     }
 
     private JPanel actionPanel(){
@@ -108,7 +186,7 @@ public class FormatForm {
 
         addButton.addActionListener(e -> {
             String []rowValues = {"NULL", "NULL"};
-            tableModel.addRow(rowValues);
+            paramsTableModel.addRow(rowValues);
         });
         actionPanel.add(addButton);
 
@@ -122,9 +200,9 @@ public class FormatForm {
         delButton.setMargin(new Insets(0, 0, 0, 0));// 按钮内容与边框距离
 
         delButton.addActionListener( e ->{
-            int selectedRow = table.getSelectedRow();
+            int selectedRow = paramsTable.getSelectedRow();
             if(selectedRow!=-1){
-                tableModel.removeRow(selectedRow);
+                paramsTableModel.removeRow(selectedRow);
             }else{
                 Messages.showMessageDialog("请选择一行参数", "警告", Messages.getWarningIcon());
             }
@@ -150,24 +228,6 @@ public class FormatForm {
         Integer centerY = screenH/2-frameH/2;
 
         return new Point(centerX,centerY);
-    }
-
-    public Map<String, CodeTemplate> getTabTemplates() {
-        Map<String, CodeTemplate> map = Maps.newHashMap();
-        editPaneMap.forEach((key, value) -> {
-            CodeTemplate codeTemplate = new CodeTemplate(value.getTemplateName().getText(),
-                    value.getTemplateType().getText(), value.getFileName().getText(),
-                    value.getEditor().getDocument().getText());
-            map.put(codeTemplate.getName(), codeTemplate);
-        });
-        return map;
-    }
-
-    public void refresh(FormatSetting settings) {
-        templateTabbedPane.removeAll();
-        editPaneMap.clear();
-        resetTabPane(settings);
-        resetParams(settings);
     }
 
 }
