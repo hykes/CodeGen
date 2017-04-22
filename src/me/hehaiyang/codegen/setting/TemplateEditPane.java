@@ -1,5 +1,6 @@
 package me.hehaiyang.codegen.setting;
 
+import com.google.common.base.Strings;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -20,61 +21,54 @@ import java.awt.*;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class TemplateEditPane extends JPanel {
-    private JTextField templateName;
-    private JTextField templateType;
-    private JTextField fileName;
-    private JLabel templateNameLabel;
-    private JLabel templateTypeLabel;
-    private JLabel fileNameLabel;
-    private JPanel configPanel;
 
+    private JTextField id;
+    private JTextField display;
+    private JTextField extension;
+    private JTextField filename;
     private Editor editor;
 
-    public TemplateEditPane(FormatSetting settings, String template) {
+    public TemplateEditPane(FormatSetting settings, String tempId) {
         super();
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
-        CodeTemplate codeTemplate = settings.getCodeTemplate(template);
-        if (codeTemplate == null) {
+
+        CodeTemplate codeTemplate;
+        if(Strings.isNullOrEmpty(tempId)){
             codeTemplate = new CodeTemplate();
+        }else{
+            codeTemplate = settings.getCodeTemplate(tempId);
+            if (codeTemplate == null) {
+                codeTemplate = new CodeTemplate();
+            }
         }
 
         GridBagLayout layout = new GridBagLayout();
         JPanel jPanel = new JPanel(layout);
 
-        templateName = new JTextField(codeTemplate.getName());
-        templateName.setColumns(15);
+        id = new JTextField(codeTemplate.getId());
+        display = new JTextField(codeTemplate.getDisplay());
+        display.setColumns(15);
 
-        templateType = new JTextField(codeTemplate.getType());
-        templateType.setColumns(10);
+        extension = new JTextField(codeTemplate.getExtension());
+        extension.setColumns(10);
 
-        fileName = new JTextField(codeTemplate.getFileName());
-        fileName.setColumns(15);
+        filename = new JTextField(codeTemplate.getFilename());
+        filename.setColumns(15);
+
+        GridBagConstraints s= new GridBagConstraints();
+        s.fill = GridBagConstraints.BOTH;
 
         jPanel.add(new JLabel(" Name:"));
-        jPanel.add(templateName);
-        jPanel.add(new JLabel(" Extension:"));
-        jPanel.add(templateType);
+        jPanel.add(display, s);
         jPanel.add(new JLabel(" Filename:"));
-        jPanel.add(fileName);
+        jPanel.add(filename, s);
+        jPanel.add(new JLabel(" Extension:"));
+        jPanel.add(extension, s);
 
-        GridBagConstraints s= new GridBagConstraints();//定义一个GridBagConstraints，
-        //是用来控制添加进的组件的显示位置
-        s.fill = GridBagConstraints.BOTH;
-        //该方法是为了设置如果组件所在的区域比组件本身要大时的显示情况
-        //NONE：不调整组件大小。
-        //HORIZONTAL：加宽组件，使它在水平方向上填满其显示区域，但是不改变高度。
-        //VERTICAL：加高组件，使它在垂直方向上填满其显示区域，但是不改变宽度。
-        //BOTH：使组件完全填满其显示区域。
-        s.gridwidth=1;//该方法是设置组件水平所占用的格子数，如果为0，就说明该组件是该行的最后一个
-        s.weightx = 0;//该方法设置组件水平的拉伸幅度，如果为0就说明不拉伸，不为0就随着窗口增大进行拉伸，0到1之间
-        s.weighty=0;//该方法设置组件垂直的拉伸幅度，如果为0就说明不拉伸，不为0就随着窗口增大进行拉伸，0到1之间
-        layout.setConstraints(templateName, s);
-        layout.setConstraints(templateType, s);
-        layout.setConstraints(fileName, s);
         this.add(jPanel, BorderLayout.NORTH);
 
-        editor = getEditor(codeTemplate.getTemplate(), codeTemplate.getType());
+        editor = getEditor(codeTemplate.getTemplate(), codeTemplate.getExtension());
         this.add(editor.getComponent(), BorderLayout.CENTER);
     }
 
@@ -85,6 +79,8 @@ public class TemplateEditPane extends JPanel {
      * @return
      */
     private Editor getEditor(String template, String extension) {
+        template = Strings.isNullOrEmpty(template) ? "empty" : template;
+        extension = Strings.isNullOrEmpty(extension) ? "vm" : extension;
         EditorFactory factory = EditorFactory.getInstance();
         Document velocityTemplate = factory.createDocument(template);
         Editor editor = factory.createEditor(velocityTemplate, null, FileTypeManager.getInstance()
@@ -92,6 +88,16 @@ public class TemplateEditPane extends JPanel {
         EditorSettings editorSettings = editor.getSettings();
         editorSettings.setLineNumbersShown(true);
         return editor;
+    }
+
+    public CodeTemplate getCodeTemplate(){
+        CodeTemplate codeTemplate = new CodeTemplate();
+        codeTemplate.setId(id.getText());
+        codeTemplate.setDisplay(display.getText());
+        codeTemplate.setExtension(extension.getText());
+        codeTemplate.setFilename(filename.getText());
+        codeTemplate.setTemplate(editor.getDocument().getText());
+        return codeTemplate;
     }
 
 }

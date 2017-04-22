@@ -24,22 +24,35 @@ import java.util.UUID;
  * Date: 2017/3/17
  */
 @Data
-@State(name = "FormatSetting", storages = { @Storage(id = "other", file = "$APP_CONFIG$/format.xml") })
+@State(name = "ss", storages = { @Storage(id = "other", file = "$APP_CONFIG$/format.xml") })
 public class FormatSetting implements PersistentStateComponent<FormatSetting> {
 
     public static FormatSetting getInstance() {
         return ServiceManager.getService(FormatSetting.class);
     }
 
-    private Map<String, CodeTemplate> codeTemplates;
-
-    private Map<String, String> params;
-
     public FormatSetting() {
-        loadDefaultSettings();
+        this.loadDefaultSettings();
     }
 
-    private static String template(String path) throws IOException{
+    /**
+     * 模版列表
+     */
+    private Map<String, CodeTemplate> codeTemplates;
+
+    /**
+     * 参数列表
+     */
+    private Map<String, String> params;
+
+    /**
+     * 生产方式
+     * 1 markdown
+     * 2 database
+     */
+    private Integer type;
+
+    private static String getTemplateContext(String path) throws IOException{
         InputStream template = FormatSetting.class.getResourceAsStream(path);
         return ParseUtils.stream2String(template);
     }
@@ -47,24 +60,26 @@ public class FormatSetting implements PersistentStateComponent<FormatSetting> {
     public void loadDefaultSettings() {
         Map<String, CodeTemplate> codeTemplates = Maps.newHashMap();
         try {
-            codeTemplates.put(DefaultTemplate.MODEL, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.MODEL, DefaultFileType.JAVA, "{{model}}", template("/template/ModelTemplate.hbs")));
+//            codeTemplates.put(DefaultTemplate.MODEL, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.MODEL, DefaultFileType.JAVA, "{{model}}", getTemplateContext("/template/ModelTemplate.hbs")));
+//            codeTemplates.put(DefaultTemplate.CONTROLLER, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.CONTROLLER, DefaultFileType.JAVA, "{{model}}s", getTemplateContext("/template/ControllerTemplate.hbs")));
 
-            codeTemplates.put(DefaultTemplate.CONTROLLER, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.CONTROLLER, DefaultFileType.JAVA, "{{model}}s", template("/template/ControllerTemplate.hbs")));
-            codeTemplates.put(DefaultTemplate.DAO, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.DAO, DefaultFileType.JAVA, "{{model}}Dao", template("/template/DaoTemplate.hbs")));
-            codeTemplates.put(DefaultTemplate.MAPPER, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.MAPPER, DefaultFileType.XML, "{{model}}Mapper", template("/template/MapperTemplate.hbs")));
-            codeTemplates.put(DefaultTemplate.SQL, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.SQL, DefaultFileType.SQL, "{{model}}Schema", template("/template/SqlTemplate.hbs")));
-
-            codeTemplates.put(DefaultTemplate.READ_SERVICE, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.READ_SERVICE, DefaultFileType.JAVA, "{{model}}ReadService", template("/template/ReadServiceTemplate.hbs")));
-            codeTemplates.put(DefaultTemplate.READ_SERVICE_IMPL, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.READ_SERVICE_IMPL, DefaultFileType.JAVA, "{{model}}ReadServiceImpl", template("/template/ReadServiceImplTemplate.hbs")));
-            codeTemplates.put(DefaultTemplate.WRITE_SERVICE, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.WRITE_SERVICE, DefaultFileType.JAVA, "{{model}}WriteService", template("/template/WriteServiceTemplate.hbs")));
-            codeTemplates.put(DefaultTemplate.WRITE_SERVICE_IMPL, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.WRITE_SERVICE_IMPL, DefaultFileType.JAVA, "{{model}}WriteServiceImpl", template("/template/WriteServiceImplTemplate.hbs")));
+            String daoId = UUID.randomUUID().toString();
+            String mapperId = UUID.randomUUID().toString();
+            String sqlId = UUID.randomUUID().toString();
+            codeTemplates.put(daoId, new CodeTemplate(daoId, DefaultTemplate.DAO, DefaultFileType.JAVA, "{{model}}Dao", getTemplateContext("/template/DaoTemplate.hbs")));
+            codeTemplates.put(mapperId, new CodeTemplate(mapperId, DefaultTemplate.MAPPER, DefaultFileType.XML, "{{model}}Mapper", getTemplateContext("/template/MapperTemplate.hbs")));
+            codeTemplates.put(sqlId, new CodeTemplate(sqlId, DefaultTemplate.SQL, DefaultFileType.SQL, "{{model}}Schema", getTemplateContext("/template/SqlTemplate.hbs")));
+//
+//            codeTemplates.put(DefaultTemplate.READ_SERVICE, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.READ_SERVICE, DefaultFileType.JAVA, "{{model}}ReadService", getTemplateContext("/template/ReadServiceTemplate.hbs")));
+//            codeTemplates.put(DefaultTemplate.READ_SERVICE_IMPL, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.READ_SERVICE_IMPL, DefaultFileType.JAVA, "{{model}}ReadServiceImpl", getTemplateContext("/template/ReadServiceImplTemplate.hbs")));
+//            codeTemplates.put(DefaultTemplate.WRITE_SERVICE, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.WRITE_SERVICE, DefaultFileType.JAVA, "{{model}}WriteService", getTemplateContext("/template/WriteServiceTemplate.hbs")));
+//            codeTemplates.put(DefaultTemplate.WRITE_SERVICE_IMPL, new CodeTemplate(UUID.randomUUID().toString(), DefaultTemplate.WRITE_SERVICE_IMPL, DefaultFileType.JAVA, "{{model}}WriteServiceImpl", getTemplateContext("/template/WriteServiceImplTemplate.hbs")));
 
         }catch (IOException io){
             // do nothing
         }
 
         this.codeTemplates = codeTemplates;
-
         Map<String, String> params = Maps.newHashMap();
         params.put("email", "[ your email ]");
         params.put("author", "[ your name ]");
@@ -81,12 +96,16 @@ public class FormatSetting implements PersistentStateComponent<FormatSetting> {
         XmlSerializerUtil.copyBean(formatSetting, this);
     }
 
-    public CodeTemplate getCodeTemplate(String template) {
-        return codeTemplates.get(template);
+    public CodeTemplate getCodeTemplate(String id) {
+        return codeTemplates.get(id);
     }
 
-    public void removeCodeTemplate(String template) {
-        codeTemplates.remove(template);
+    public void addCodeTemplate(CodeTemplate template) {
+        codeTemplates.put(template.getId(), template);
+    }
+
+    public void removeCodeTemplate(String id) {
+        codeTemplates.remove(id);
     }
 
 }

@@ -113,8 +113,8 @@ public class CodeGenWindow extends JFrame {
                 WriteCommandAction.runWriteCommandAction(project, ()-> {
                     try {
                         for (CodeTemplate codeTemplate : templateMap.values()) {
-                            FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getType());
-                            fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFileName());
+                            FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
+                            fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -140,8 +140,8 @@ public class CodeGenWindow extends JFrame {
      */
     private void createFile(String template, CodeGenContext context) throws Exception{
         CodeTemplate codeTemplate = formatSetting.getCodeTemplate(template);
-        FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getType());
-        fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFileName());
+        FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
+        fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
     }
 
     /**

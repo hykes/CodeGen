@@ -6,7 +6,7 @@ import lombok.*;
 import java.io.Serializable;
 
 /**
- * Desc:
+ * Desc: 模版数据
  * Mail: hehaiyang@terminus.io
  * Date: 2017/4/7
  */
@@ -14,23 +14,45 @@ import java.io.Serializable;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
 public class CodeTemplate implements Serializable {
 
-    private static final long serialVersionUID = -7427380135917659629L;
+    private static final long serialVersionUID = -5333282359902221032L;
 
+    public CodeTemplate(String id, String display, String extension, String filename, String template){
+        this.id = id;
+        this.display = display;
+        this.extension = extension;
+        this.filename = filename;
+        this.template = template;
+    }
+
+    /**
+     * 模版ID，取 UUID 值
+     */
     private String id;
 
-    private String name;
+    /**
+     * 模版名称
+     */
+    private String display;
 
-    private String type;
+    /**
+     * 文件名称
+     */
+    private String filename;
 
-    private String fileName;
+    /**
+     * 扩展名
+     */
+    private String extension;
 
+    /**
+     * 模版内容
+     */
     private String template;
 
     public boolean isValid() {
-        return StringUtil.isNotEmpty(name) && StringUtil.isNotEmpty(type)
-                && StringUtil.isNotEmpty(fileName);
+        return StringUtil.isNotEmpty(display) && StringUtil.isNotEmpty(extension)
+                && StringUtil.isNotEmpty(filename);
     }
 }

@@ -4,6 +4,8 @@ import com.google.common.collect.Maps;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.ui.table.JBTable;
+import lombok.NoArgsConstructor;
+import me.hehaiyang.codegen.model.CodeTemplate;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,13 +19,12 @@ import java.util.Map;
  * Mail: hehaiyangwork@qq.com
  * Date: 2017/3/17
  */
+@NoArgsConstructor
 public class FormatConfigurable implements SearchableConfigurable {
 
-    private FormatForm formatForm;
     private FormatSetting formatSetting = FormatSetting.getInstance();
 
-    public FormatConfigurable() {
-    }
+    private FormatForm formatForm;
 
     @NotNull
     public String getId() {
@@ -48,7 +49,7 @@ public class FormatConfigurable implements SearchableConfigurable {
 
     @Nullable
     public JComponent createComponent() {
-        if(null == formatForm) {
+        if(formatForm == null) {
             formatForm = new FormatForm(formatSetting);
         }
         return formatForm.getMainPanel();
@@ -56,20 +57,18 @@ public class FormatConfigurable implements SearchableConfigurable {
 
     public boolean isModified() {
 
-//        // 模版更新
-//        if (formatSetting.getCodeTemplates().size() != formatForm.getEditPaneMap().size()) {
-//            return true;
-//        }
-//        for (Map.Entry<String, CodeTemplate> entry : formatForm.getTabTemplates().entrySet()) {
-//            CodeTemplate codeTemplate = formatSetting.getCodeTemplate(entry.getKey());
-//            if (codeTemplate == null ||
-//                    !codeTemplate.getTemplate().equals(entry.getValue().getTemplate()) ||
-//                    !codeTemplate.getType().equals(entry.getValue().getType()) ||
-//                    !codeTemplate.getName().equals(entry.getValue().getName()) ||
-//                    !codeTemplate.getFileName().equals(entry.getValue().getFileName())) {
-//                return true;
-//            }
-//        }
+        // 模版更新
+        TemplateEditPane template = formatForm.getEditPane();
+        if(!formatSetting.getCodeTemplates().isEmpty()){
+            CodeTemplate codeTemplate = formatSetting.getCodeTemplate(template.getId().getText());
+            if (codeTemplate == null ||
+                    !codeTemplate.getTemplate().equals(template.getEditor().getDocument().getText()) ||
+                    !codeTemplate.getExtension().equals(template.getExtension().getText()) ||
+                    !codeTemplate.getDisplay().equals(template.getDisplay().getText()) ||
+                    !codeTemplate.getFilename().equals(template.getFilename().getText())) {
+                return true;
+            }
+        }
 
         // 参数更新
         if (formatSetting.getParams().size() != formatForm.getParamsTable().getRowCount()) {
@@ -93,13 +92,7 @@ public class FormatConfigurable implements SearchableConfigurable {
     public void apply() throws ConfigurationException {
 
         // 保存模版
-//        for (Map.Entry<String, CodeTemplate> entry : formatForm.getTabTemplates().entrySet()) {
-//            if (!entry.getValue().isValid()) {
-//                throw new ConfigurationException(
-//                        "Not property can be empty and classNumber should be a number");
-//            }
-//        }
-//        formatSetting.setCodeTemplates(formatForm.getTabTemplates());
+        formatSetting.addCodeTemplate(formatForm.getEditPane().getCodeTemplate());
 
         // 保存参数
         Map<String, String> params = Maps.newHashMap();
@@ -109,6 +102,7 @@ public class FormatConfigurable implements SearchableConfigurable {
             params.put(tableModel.getValueAt(i, 0).toString(), tableModel.getValueAt(i, 1).toString());
         }
         formatSetting.setParams(params);
+        formatForm.refresh(formatSetting);
     }
 
     public void reset() {
@@ -121,6 +115,7 @@ public class FormatConfigurable implements SearchableConfigurable {
                 formatSetting.setCodeTemplates(initSetting.getCodeTemplates());
                 formatSetting.setParams(initSetting.getParams());
             }
+            formatForm.refresh(formatSetting);
         }
     }
 

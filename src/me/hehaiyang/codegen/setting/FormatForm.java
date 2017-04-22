@@ -7,7 +7,6 @@ import lombok.Data;
 import me.hehaiyang.codegen.model.CodeTemplate;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -15,7 +14,9 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Desc: 配置面板
@@ -35,6 +36,9 @@ public class FormatForm {
 
     private JPanel templatePanel;
     private JPanel leftPanel;
+    private DefaultTableModel templateTableModel;
+    private JBTable templateTable;
+
     private JPanel rightPanel;
     private TemplateEditPane editPane;
 
@@ -56,79 +60,56 @@ public class FormatForm {
     }
 
     public FormatForm(FormatSetting settings) {
-
         templatePanel = new JPanel(new BorderLayout());
-
-        DefaultTableModel templateTableModel = getTemplateTableModel(settings);
+        templatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         leftPanel = new JPanel(new BorderLayout());
-        JBTable table = new JBTable(templateTableModel);
+        rightPanel = new JPanel(new BorderLayout());
 
-        TableColumnModel columnModel = table.getColumnModel();
-        TableColumn column = columnModel.getColumn(0);
+        templateTable = new JBTable();
+        templateTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);  //单选
+        refresh(settings);
 
-        column.setMinWidth(0);
-        column.setMaxWidth(0);
-        column.setWidth(0);
-        column.setPreferredWidth(0);
+        templateTable.addMouseListener(new MouseAdapter(){    //鼠标事件
+            public void mouseClicked(MouseEvent e){
+                int selectedRow = templateTable.getSelectedRow(); //获得选中行索引
+                String id = (String) templateTableModel.getValueAt(selectedRow, 0);
+                rightPanel.removeAll();
+                editPane = new TemplateEditPane(settings, id);
+                rightPanel.add(editPane, BorderLayout.CENTER);
+            }
+        });
 
-        JScrollPane scrollPane = new JBScrollPane(table,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setViewportView(table);
+        // 使用滚动条
+        JScrollPane scrollPane = new JBScrollPane(templateTable,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setViewportView(templateTable);
         scrollPane.setPreferredSize(new Dimension(200,100));
 
         leftPanel.add(scrollPane,BorderLayout.CENTER);
-        LineBorder lineBorder = (LineBorder)BorderFactory.createLineBorder(Color.LIGHT_GRAY);// 创建线形边框
+        leftPanel.add(getParamActionPanel() , BorderLayout.SOUTH);
 
-        JPanel addPanel = new JPanel(new GridBagLayout());
-        addPanel.setBorder(lineBorder);
-
-        JButton jButton = new JButton("+");
-        jButton.setUI(new BasicButtonUI());// 恢复基本视觉效果
-        jButton.setContentAreaFilled(false);// 设置按钮透明
-        jButton.setFont(new Font("粗体", Font.PLAIN, 12));// 按钮文本样式
-        jButton.setMargin(new Insets(0, 0, 0, 0));// 按钮内容与边框距离
-
-        JButton delButton = new JButton("-");
-        delButton.setUI(new BasicButtonUI());// 恢复基本视觉效果
-        delButton.setContentAreaFilled(false);// 设置按钮透明
-        delButton.setFont(new Font("粗体", Font.PLAIN, 12));// 按钮文本样式
-        delButton.setMargin(new Insets(0, 0, 0, 0));// 按钮内容与边框距离
-
-
-        addPanel.add(jButton);
-        addPanel.add(delButton);
-        addPanel.setPreferredSize(new Dimension(200,30));
-        leftPanel.add(addPanel , BorderLayout.SOUTH);
         templatePanel.add(leftPanel, BorderLayout.WEST);
 
+        Set<String> keSet= settings.getCodeTemplates().keySet();
+        if(keSet.iterator().hasNext()){
+            editPane = new TemplateEditPane(settings, keSet.iterator().next());
+        }else{
+            editPane = new TemplateEditPane(settings, null);
+        }
 
-        editPane = new TemplateEditPane(settings, "model_template");
         editPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 
-        rightPanel = new JPanel(new BorderLayout());
         rightPanel.add(editPane, BorderLayout.CENTER);
+
         templatePanel.add(rightPanel, BorderLayout.CENTER);
 
-        templatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        tabbedPanel.add("模版配置", templatePanel);
+        tabbedPanel.add("Template", templatePanel);
 
         // 自定义参数 操作面板
         paramsTableModel = getParamsTableModel(settings);
         paramsTable.setModel(paramsTableModel);
 
         paramPanel.add(actionPanel(), BorderLayout.SOUTH);
-
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);  //单选
-        table.addMouseListener(new MouseAdapter(){    //鼠标事件
-            public void mouseClicked(MouseEvent e){
-                int selectedRow = table.getSelectedRow(); //获得选中行索引
-                String oa = (String)templateTableModel.getValueAt(selectedRow, 1);
-                rightPanel.removeAll();
-                editPane = new TemplateEditPane(settings, oa);
-                rightPanel.add(editPane, BorderLayout.CENTER);
-            }
-        });
     }
 
     /**
@@ -138,7 +119,7 @@ public class FormatForm {
      */
     private DefaultTableModel getParamsTableModel(FormatSetting settings){
         // 列名
-        String[] columnNames = {"参数名","参数值"};
+        String[] columnNames = {"Parameter Key","Parameter Value"};
         // 默认数据
         Map<String, String> map = settings.getParams();
         Object[][] tableVales = new String[map.size()][2];
@@ -157,13 +138,13 @@ public class FormatForm {
      * @return
      */
     private DefaultTableModel getTemplateTableModel(FormatSetting settings){
-        String[] columnNames = {"","模版列表"};
+        String[] columnNames = {"ID","Template List"};
 
         Object[][] tableVales = new String[settings.getCodeTemplates().size()][2];
         int i = 0;
         for (CodeTemplate template : settings.getCodeTemplates().values()) {
             tableVales[i][0] = template.getId();
-            tableVales[i][1] = template.getName();
+            tableVales[i][1] = template.getDisplay();
             i++;
         }
         return new DefaultTableModel(tableVales,columnNames) {
@@ -228,6 +209,41 @@ public class FormatForm {
         Integer centerY = screenH/2-frameH/2;
 
         return new Point(centerX,centerY);
+    }
+
+    private JPanel getParamActionPanel(){
+        JPanel paramActionPanel = new JPanel(new GridBagLayout());
+        paramActionPanel.setPreferredSize(new Dimension(200,30));
+        paramActionPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+
+        JButton addParam = new JButton("+");
+        addParam.setUI(new BasicButtonUI());// 恢复基本视觉效果
+        addParam.setContentAreaFilled(false);// 设置按钮透明
+        addParam.setFont(new Font("粗体", Font.PLAIN, 12));// 按钮文本样式
+        addParam.setMargin(new Insets(0, 0, 0, 0));// 按钮内容与边框距离
+        paramActionPanel.add(addParam);
+
+        JButton delParam = new JButton("-");
+        delParam.setUI(new BasicButtonUI());// 恢复基本视觉效果
+        delParam.setContentAreaFilled(false);// 设置按钮透明
+        delParam.setFont(new Font("粗体", Font.PLAIN, 12));// 按钮文本样式
+        delParam.setMargin(new Insets(0, 0, 0, 0));// 按钮内容与边框距离
+        paramActionPanel.add(delParam);
+        return paramActionPanel;
+    }
+
+    public void refresh(FormatSetting settings) {
+        templateTableModel = getTemplateTableModel(settings);
+
+        templateTable.setModel(templateTableModel);
+
+        // 隐藏模版ID
+        TableColumnModel columnModel = templateTable.getColumnModel();
+        TableColumn column = columnModel.getColumn(0);
+        column.setMinWidth(0);
+        column.setMaxWidth(0);
+        column.setWidth(0);
+        column.setPreferredWidth(0);
     }
 
 }
