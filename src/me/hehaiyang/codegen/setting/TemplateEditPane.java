@@ -9,6 +9,7 @@ import com.intellij.openapi.fileTypes.FileTypeManager;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import me.hehaiyang.codegen.model.CodeTemplate;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +29,14 @@ public class TemplateEditPane extends JPanel {
     private JTextField filename;
     private Editor editor;
 
+    public TemplateEditPane(@NotNull String tempId){
+        super();
+        setLayout(new BorderLayout());
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+
+        resetCodeTemplate(new CodeTemplate(tempId, "Unnamed", "", "", ""));
+    }
+
     public TemplateEditPane(FormatSetting settings, String tempId) {
         super();
         setLayout(new BorderLayout());
@@ -39,9 +48,14 @@ public class TemplateEditPane extends JPanel {
         }else{
             codeTemplate = settings.getCodeTemplate(tempId);
             if (codeTemplate == null) {
-                codeTemplate = new CodeTemplate();
+                codeTemplate = new CodeTemplate(tempId, "Unnamed", "", "", "");
             }
         }
+
+        resetCodeTemplate(codeTemplate);
+    }
+
+    private void resetCodeTemplate(CodeTemplate codeTemplate) {
 
         GridBagLayout layout = new GridBagLayout();
         JPanel jPanel = new JPanel(layout);
@@ -79,7 +93,7 @@ public class TemplateEditPane extends JPanel {
      * @return
      */
     private Editor getEditor(String template, String extension) {
-        template = Strings.isNullOrEmpty(template) ? "empty" : template;
+        template = Strings.isNullOrEmpty(template) ? "" : template;
         extension = Strings.isNullOrEmpty(extension) ? "vm" : extension;
         EditorFactory factory = EditorFactory.getInstance();
         Document velocityTemplate = factory.createDocument(template);

@@ -1,6 +1,5 @@
 package me.hehaiyang.codegen.setting;
 
-import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import lombok.Data;
@@ -12,11 +11,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
+import java.util.UUID;
 
 /**
  * Desc: 配置面板
@@ -67,12 +63,13 @@ public class FormatForm {
         rightPanel = new JPanel(new BorderLayout());
 
         templateTable = new JBTable();
+        templateTable.setRowSelectionAllowed(true);
         templateTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);  //单选
         refresh(settings);
 
-        templateTable.addMouseListener(new MouseAdapter(){    //鼠标事件
-            public void mouseClicked(MouseEvent e){
-                int selectedRow = templateTable.getSelectedRow(); //获得选中行索引
+        templateTable.getSelectionModel().addListSelectionListener(e -> {
+            int selectedRow = templateTable.getSelectedRow(); //获得选中行索引
+            if(selectedRow != -1) {
                 String id = (String) templateTableModel.getValueAt(selectedRow, 0);
                 rightPanel.removeAll();
                 editPane = new TemplateEditPane(settings, id);
@@ -86,21 +83,16 @@ public class FormatForm {
         scrollPane.setPreferredSize(new Dimension(200,100));
 
         leftPanel.add(scrollPane,BorderLayout.CENTER);
-        leftPanel.add(getParamActionPanel() , BorderLayout.SOUTH);
+        leftPanel.add(getTemplateActionPanel() , BorderLayout.SOUTH);
 
         templatePanel.add(leftPanel, BorderLayout.WEST);
 
-        Set<String> keSet= settings.getCodeTemplates().keySet();
-        if(keSet.iterator().hasNext()){
-            editPane = new TemplateEditPane(settings, keSet.iterator().next());
-        }else{
-            editPane = new TemplateEditPane(settings, null);
-        }
-
+        editPane = new TemplateEditPane(UUID.randomUUID().toString());
         editPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 
-        rightPanel.add(editPane, BorderLayout.CENTER);
+        templateTable.setRowSelectionInterval(0, 0);
 
+        rightPanel.add(editPane, BorderLayout.CENTER);
         templatePanel.add(rightPanel, BorderLayout.CENTER);
 
         tabbedPanel.add("Template", templatePanel);
@@ -109,7 +101,7 @@ public class FormatForm {
         paramsTableModel = getParamsTableModel(settings);
         paramsTable.setModel(paramsTableModel);
 
-        paramPanel.add(actionPanel(), BorderLayout.SOUTH);
+        paramPanel.add(getParamActionPanel(), BorderLayout.SOUTH);
     }
 
     /**
@@ -154,7 +146,11 @@ public class FormatForm {
         };
     }
 
-    private JPanel actionPanel(){
+    /**
+     * 自定义参数操作按钮
+     * @return
+     */
+    private JPanel getParamActionPanel(){
         JPanel actionPanel = new JPanel();
         // 添加参数
         final JButton addButton = new JButton("添加");
@@ -184,8 +180,6 @@ public class FormatForm {
             int selectedRow = paramsTable.getSelectedRow();
             if(selectedRow!=-1){
                 paramsTableModel.removeRow(selectedRow);
-            }else{
-                Messages.showMessageDialog("请选择一行参数", "警告", Messages.getWarningIcon());
             }
         });
         actionPanel.add(delButton);
@@ -211,7 +205,11 @@ public class FormatForm {
         return new Point(centerX,centerY);
     }
 
-    private JPanel getParamActionPanel(){
+    /**
+     * 模版操作按钮
+     * @return
+     */
+    private JPanel getTemplateActionPanel(){
         JPanel paramActionPanel = new JPanel(new GridBagLayout());
         paramActionPanel.setPreferredSize(new Dimension(200,30));
         paramActionPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -219,15 +217,36 @@ public class FormatForm {
         JButton addParam = new JButton("+");
         addParam.setUI(new BasicButtonUI());// 恢复基本视觉效果
         addParam.setContentAreaFilled(false);// 设置按钮透明
-        addParam.setFont(new Font("粗体", Font.PLAIN, 12));// 按钮文本样式
+        addParam.setFont(new Font("粗体", Font.PLAIN, 16));// 按钮文本样式
         addParam.setMargin(new Insets(0, 0, 0, 0));// 按钮内容与边框距离
+
+        addParam.addActionListener( e ->{
+            String id = UUID.randomUUID().toString();
+            String []rowValues = {id, "Unnamed"};
+            templateTableModel.addRow(rowValues);
+            rightPanel.removeAll();
+            editPane = new TemplateEditPane(id);
+            rightPanel.add(editPane, BorderLayout.CENTER);
+        });
+
         paramActionPanel.add(addParam);
 
         JButton delParam = new JButton("-");
         delParam.setUI(new BasicButtonUI());// 恢复基本视觉效果
         delParam.setContentAreaFilled(false);// 设置按钮透明
-        delParam.setFont(new Font("粗体", Font.PLAIN, 12));// 按钮文本样式
+        delParam.setFont(new Font("粗体", Font.PLAIN, 16));// 按钮文本样式
         delParam.setMargin(new Insets(0, 0, 0, 0));// 按钮内容与边框距离
+
+        delParam.addActionListener( e ->{
+            int selectedRow = templateTable.getSelectedRow();
+            if(selectedRow!=-1){
+                FormatSetting setting = FormatSetting.getInstance();
+                String id = (String) templateTableModel.getValueAt(selectedRow, 0);
+                setting.removeCodeTemplate(id);
+                templateTableModel.removeRow(selectedRow);
+                templateTable.setRowSelectionInterval(0, 0);
+            }
+        });
         paramActionPanel.add(delParam);
         return paramActionPanel;
     }
