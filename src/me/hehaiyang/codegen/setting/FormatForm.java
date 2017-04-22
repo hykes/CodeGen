@@ -87,10 +87,12 @@ public class FormatForm {
 
         templatePanel.add(leftPanel, BorderLayout.WEST);
 
-        editPane = new TemplateEditPane(UUID.randomUUID().toString());
+        editPane = new TemplateEditPane();
         editPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 
-        templateTable.setRowSelectionInterval(0, 0);
+        if(templateTable.getRowCount() > 0){
+            templateTable.setRowSelectionInterval(0, 0);
+        }
 
         rightPanel.add(editPane, BorderLayout.CENTER);
         templatePanel.add(rightPanel, BorderLayout.CENTER);
@@ -244,7 +246,14 @@ public class FormatForm {
                 String id = (String) templateTableModel.getValueAt(selectedRow, 0);
                 setting.removeCodeTemplate(id);
                 templateTableModel.removeRow(selectedRow);
-                templateTable.setRowSelectionInterval(0, 0);
+
+                if(templateTable.getRowCount() > 0){
+                    templateTable.setRowSelectionInterval(0, 0);
+                }else{
+                    rightPanel.removeAll();
+                    editPane = new TemplateEditPane();
+                    rightPanel.add(editPane, BorderLayout.CENTER);
+                }
             }
         });
         paramActionPanel.add(delParam);

@@ -29,6 +29,14 @@ public class TemplateEditPane extends JPanel {
     private JTextField filename;
     private Editor editor;
 
+    public TemplateEditPane(){
+        super();
+        setLayout(new BorderLayout());
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+
+        resetCodeTemplate(new CodeTemplate("", "", "", "", ""));
+    }
+
     public TemplateEditPane(@NotNull String tempId){
         super();
         setLayout(new BorderLayout());

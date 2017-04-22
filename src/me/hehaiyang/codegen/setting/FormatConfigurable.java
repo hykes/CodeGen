@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.ui.table.JBTable;
+import com.yourkit.util.Strings;
 import lombok.NoArgsConstructor;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import org.jetbrains.annotations.Nls;
@@ -60,14 +61,16 @@ public class FormatConfigurable implements SearchableConfigurable {
         // 模版更新
         TemplateEditPane template = formatForm.getEditPane();
         if(!formatSetting.getCodeTemplates().isEmpty()){
-            CodeTemplate codeTemplate = formatSetting.getCodeTemplate(template.getId().getText());
+            CodeTemplate codeTemplate = formatSetting.getCodeTemplate(template.getCodeTemplate().getId());
             if (codeTemplate == null ||
-                    !codeTemplate.getTemplate().equals(template.getEditor().getDocument().getText()) ||
-                    !codeTemplate.getExtension().equals(template.getExtension().getText()) ||
-                    !codeTemplate.getDisplay().equals(template.getDisplay().getText()) ||
-                    !codeTemplate.getFilename().equals(template.getFilename().getText())) {
+                    !codeTemplate.getTemplate().equals(template.getCodeTemplate().getTemplate()) ||
+                    !codeTemplate.getExtension().equals(template.getCodeTemplate().getExtension()) ||
+                    !codeTemplate.getDisplay().equals(template.getCodeTemplate().getDisplay()) ||
+                    !codeTemplate.getFilename().equals(template.getCodeTemplate().getFilename())) {
                 return true;
             }
+        }else if(!Strings.isNullOrEmpty(template.getCodeTemplate().getId())){
+            return true;
         }
 
         // 参数更新
