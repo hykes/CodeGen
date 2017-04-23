@@ -8,8 +8,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
+import me.hehaiyang.codegen.setting.FormatSetting;
 import me.hehaiyang.codegen.utils.PsiUtil;
 import me.hehaiyang.codegen.windows.CodeGenWindow;
+import me.hehaiyang.codegen.windows.DatabaseWindow;
 
 public class CodeGenAction extends AnAction {
 
@@ -20,12 +22,36 @@ public class CodeGenAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
 
-        CodeGenWindow codeGenWindow=new CodeGenWindow(anActionEvent);
+        FormatSetting setting = FormatSetting.getInstance();
 
-        codeGenWindow.setSize(800, 400);
-        codeGenWindow.setAlwaysOnTop(false);
-        codeGenWindow.setLocationRelativeTo(null);
-        codeGenWindow.setVisible(true);
+
+        Integer type = 1;
+
+        for(String va : setting.getParams().values()){
+            if("sql".equals(va)){
+                type = 2;
+                break;
+            }
+        }
+        if(type.equals(1)){
+            CodeGenWindow codeGenWindow=new CodeGenWindow(anActionEvent);
+
+            codeGenWindow.setSize(800, 400);
+            codeGenWindow.setAlwaysOnTop(false);
+            codeGenWindow.setLocationRelativeTo(null);
+            codeGenWindow.setVisible(true);
+        }else{
+            DatabaseWindow databaseWindow=new DatabaseWindow();
+
+            databaseWindow.setSize(800, 400);
+            databaseWindow.setAlwaysOnTop(false);
+            databaseWindow.setLocationRelativeTo(null);
+            databaseWindow.setVisible(true);
+        }
+
+
+
+
     }
 
     @Override
