@@ -10,8 +10,10 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import me.hehaiyang.codegen.setting.FormatSetting;
 import me.hehaiyang.codegen.utils.PsiUtil;
-import me.hehaiyang.codegen.windows.CodeGenWindow;
+import me.hehaiyang.codegen.windows.MarkDownWindow;
 import me.hehaiyang.codegen.windows.DatabaseWindow;
+
+import javax.swing.*;
 
 public class CodeGenAction extends AnAction {
 
@@ -24,33 +26,18 @@ public class CodeGenAction extends AnAction {
 
         FormatSetting setting = FormatSetting.getInstance();
 
+        JFrame startFrame;
 
-        Integer type = 1;
-
-        for(String va : setting.getParams().values()){
-            if("sql".equals(va)){
-                type = 2;
-                break;
-            }
-        }
-        if(type.equals(1)){
-            CodeGenWindow codeGenWindow=new CodeGenWindow(anActionEvent);
-
-            codeGenWindow.setSize(800, 400);
-            codeGenWindow.setAlwaysOnTop(false);
-            codeGenWindow.setLocationRelativeTo(null);
-            codeGenWindow.setVisible(true);
+        if(setting.getParams().containsKey("sql") && setting.getParams().get("sql").equals("true")){
+            startFrame = new DatabaseWindow();
         }else{
-            DatabaseWindow databaseWindow=new DatabaseWindow();
-
-            databaseWindow.setSize(800, 400);
-            databaseWindow.setAlwaysOnTop(false);
-            databaseWindow.setLocationRelativeTo(null);
-            databaseWindow.setVisible(true);
+            startFrame = new MarkDownWindow(anActionEvent);
         }
 
-
-
+        startFrame.setSize(800, 400);
+        startFrame.setAlwaysOnTop(false);
+        startFrame.setLocationRelativeTo(null);
+        startFrame.setVisible(true);
 
     }
 

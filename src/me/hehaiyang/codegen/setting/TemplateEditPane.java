@@ -81,7 +81,7 @@ public class TemplateEditPane extends JPanel {
         GridBagConstraints s= new GridBagConstraints();
         s.fill = GridBagConstraints.BOTH;
 
-        jPanel.add(new JLabel(" Name:"));
+        jPanel.add(new JLabel("Name:"));
         jPanel.add(display, s);
         jPanel.add(new JLabel(" Filename:"));
         jPanel.add(filename, s);

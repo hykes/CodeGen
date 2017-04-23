@@ -19,7 +19,7 @@ import javax.swing.*;
 import java.util.List;
 import java.util.Map;
 
-public class CodeGenWindow extends JFrame {
+public class MarkDownWindow extends JFrame {
 
     private FormatSetting formatSetting;
     private Project project;
@@ -45,7 +45,7 @@ public class CodeGenWindow extends JFrame {
     private JLabel modelNameLabel;
     private JLabel tableNameLabel;
 
-    public CodeGenWindow(AnActionEvent anActionEvent) {
+    public MarkDownWindow(AnActionEvent anActionEvent) {
         setContentPane(codeGenJPanel);
         setTitle("CodeGen");
 
