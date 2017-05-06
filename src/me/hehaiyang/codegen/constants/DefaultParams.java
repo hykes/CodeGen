@@ -1,9 +1,8 @@
 package me.hehaiyang.codegen.constants;
 
-import com.google.common.collect.Maps;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,7 +13,7 @@ import java.util.Map;
 public class DefaultParams {
 
     public static Map<String, String> getInstance () {
-        Map<String, String> params = Maps.newHashMap();
+        Map<String, String> params = new HashMap<>();
         Calendar calendar = Calendar.getInstance();
         params.put("Year", String.valueOf(calendar.get(Calendar.YEAR)));
         params.put("Month", String.valueOf(calendar.get(Calendar.MONTH) + 1));

@@ -1,6 +1,5 @@
 package me.hehaiyang.codegen.setting;
 
-import com.google.common.collect.Maps;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
@@ -13,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -56,7 +56,7 @@ public class FormatSetting implements PersistentStateComponent<FormatSetting> {
     }
 
     public void loadDefaultSettings() {
-        Map<String, CodeTemplate> codeTemplates = Maps.newHashMap();
+        Map<String, CodeTemplate> codeTemplates = new HashMap<>();
         try {
             String javaId = UUID.randomUUID().toString();
             String xmlId = UUID.randomUUID().toString();
@@ -69,7 +69,7 @@ public class FormatSetting implements PersistentStateComponent<FormatSetting> {
             // do nothing
         }
         this.codeTemplates = codeTemplates;
-        Map<String, String> params = Maps.newHashMap();
+        Map<String, String> params = new HashMap<>();
         params.put("author", "[ your name ]");
         params.put("email", "[ your email ]");
         params.put("mobile", "[ your mobile ]");

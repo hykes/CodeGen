@@ -1,10 +1,9 @@
 package me.hehaiyang.codegen.windows;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
+import com.yourkit.util.Strings;
 import me.hehaiyang.codegen.constants.DefaultParams;
 import me.hehaiyang.codegen.file.FileFactory;
 import me.hehaiyang.codegen.file.FileProvider;
@@ -16,6 +15,7 @@ import me.hehaiyang.codegen.utils.ParseUtils;
 import me.hehaiyang.codegen.utils.PsiUtil;
 
 import javax.swing.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -106,7 +106,7 @@ public class MarkDownWindow extends JFrame {
 
                 // 组装数据
                 CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, fields);
-                Map<String, String> params = Maps.newHashMap();
+                Map<String, String> params = new HashMap<>();
                 params.putAll(DefaultParams.getInstance());
                 params.putAll(formatSetting.getParams());
                 context.set$(params);

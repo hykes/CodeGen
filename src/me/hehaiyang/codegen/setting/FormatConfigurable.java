@@ -1,6 +1,5 @@
 package me.hehaiyang.codegen.setting;
 
-import com.google.common.collect.Maps;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.ui.table.JBTable;
@@ -13,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -98,7 +98,7 @@ public class FormatConfigurable implements SearchableConfigurable {
         formatSetting.addCodeTemplate(formatForm.getEditPane().getCodeTemplate());
 
         // 保存参数
-        Map<String, String> params = Maps.newHashMap();
+        Map<String, String> params = new HashMap<>();
         DefaultTableModel tableModel = formatForm.getParamsTableModel();
         JBTable table = formatForm.getParamsTable();
         for(int i = 0;i< table.getRowCount(); i++){

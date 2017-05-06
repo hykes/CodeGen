@@ -1,11 +1,11 @@
 package me.hehaiyang.codegen.setting;
 
-import com.google.common.base.Strings;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.EditorSettings;
 import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.yourkit.util.Strings;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import me.hehaiyang.codegen.model.CodeTemplate;
