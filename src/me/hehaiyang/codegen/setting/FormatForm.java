@@ -4,6 +4,7 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import lombok.Data;
 import me.hehaiyang.codegen.model.CodeTemplate;
+import me.hehaiyang.codegen.utils.ParseUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -11,6 +12,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.UUID;
 
@@ -104,6 +107,11 @@ public class FormatForm {
         paramsTable.setModel(paramsTableModel);
 
         paramPanel.add(getParamActionPanel(), BorderLayout.SOUTH);
+
+        tabbedPanel.add("Config", new JPanel());
+
+        JScrollPane wikiScroll = new JBScrollPane(new WikiTextArea());
+        tabbedPanel.add("Wiki", wikiScroll);
     }
 
     /**
