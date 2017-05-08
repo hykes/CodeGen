@@ -22,7 +22,7 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 1. 数据字典表格排序
 2. 新增模版
-3. 任意生成代码模版组合
+3. 任意生成代码模版组合 模版组优先级概念
 4. serialVersionUID
 5. jdbc方式
 6. wiki
