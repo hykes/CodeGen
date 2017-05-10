@@ -46,6 +46,9 @@
       <add-to-group group-id="ToolsBasicGroup" anchor="first"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift control G"/>
     </action>
+      <action id="hh" class="me.hehaiyang.codegen.hh" text="hh" description="hh">
+          <add-to-group group-id="ActiveToolwindowGroup" anchor="first"/>
+      </action>
   </actions>
 
 </idea-plugin>

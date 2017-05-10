@@ -13,6 +13,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiPackage;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
+import javafx.stage.FileChooser;
 import me.hehaiyang.codegen.setting.FormatSetting;
 import me.hehaiyang.codegen.utils.PsiUtil;
 import me.hehaiyang.codegen.windows.MarkDownWindow;
@@ -29,8 +30,9 @@ public class CodeGenAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         Project project = PsiUtil.getProject(anActionEvent);
-        PsiPackage psiPackage = PsiUtil.choosePackage(project);
-        PsiUtil.createFile(project, psiPackage,"ss.java", "public class ss{}", JavaFileType.INSTANCE);
+        PsiDirectory psiDirectory = PsiUtil.browseForFile(project);
+//        PsiPackage psiPackage = PsiUtil.choosePackage(project);
+        PsiUtil.createFile(project, psiDirectory,"ss.java", "public class ss{}", JavaFileType.INSTANCE);
 
 //        FormatSetting setting = FormatSetting.getInstance();
 //
