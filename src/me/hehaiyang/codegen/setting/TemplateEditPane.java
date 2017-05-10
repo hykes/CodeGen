@@ -67,16 +67,16 @@ public class TemplateEditPane extends JPanel {
 
         GridBagLayout layout = new GridBagLayout();
         JPanel jPanel = new JPanel(layout);
-
+        jPanel.setPreferredSize(new Dimension(0, 30));
         id = new JTextField(codeTemplate.getId());
         display = new JTextField(codeTemplate.getDisplay());
-        display.setColumns(15);
+        display.setSize(new Dimension(200, 20));
 
         extension = new JTextField(codeTemplate.getExtension());
-        extension.setColumns(10);
+        extension.setSize(new Dimension(80,20));
 
         filename = new JTextField(codeTemplate.getFilename());
-        filename.setColumns(15);
+        filename.setSize(new Dimension(200,20));
 
         GridBagConstraints s= new GridBagConstraints();
         s.fill = GridBagConstraints.BOTH;

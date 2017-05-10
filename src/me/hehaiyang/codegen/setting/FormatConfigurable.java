@@ -53,13 +53,13 @@ public class FormatConfigurable implements SearchableConfigurable {
         if(formatForm == null) {
             formatForm = new FormatForm(formatSetting);
         }
-        return formatForm.getMainPanel();
+        return formatForm;
     }
 
     public boolean isModified() {
 
         // 模版更新
-        TemplateEditPane template = formatForm.getEditPane();
+        TemplateEditPane template = formatForm.getTemplatePanel().getEditPane();
         if(!formatSetting.getCodeTemplates().isEmpty()){
             CodeTemplate codeTemplate = formatSetting.getCodeTemplate(template.getCodeTemplate().getId());
             if (codeTemplate == null ||
@@ -74,12 +74,12 @@ public class FormatConfigurable implements SearchableConfigurable {
         }
 
         // 参数更新
-        if (formatSetting.getParams().size() != formatForm.getParamsTable().getRowCount()) {
+        if (formatSetting.getParams().size() != formatForm.getParamPanel().getParamsTable().getRowCount()) {
             return true;
         }
         Map<String, String> params = formatSetting.getParams();
-        DefaultTableModel tableModel = formatForm.getParamsTableModel();
-        for(int i = 0; i< formatForm.getParamsTable().getRowCount(); i++){
+        DefaultTableModel tableModel = formatForm.getParamPanel().getParamsTableModel();
+        for(int i = 0; i< formatForm.getParamPanel().getParamsTable().getRowCount(); i++){
             String key = tableModel.getValueAt(i, 0).toString();
             String value = tableModel.getValueAt(i, 1).toString();
             if(!params.containsKey(key)){
@@ -95,30 +95,30 @@ public class FormatConfigurable implements SearchableConfigurable {
     public void apply() throws ConfigurationException {
 
         // 保存模版
-        formatSetting.addCodeTemplate(formatForm.getEditPane().getCodeTemplate());
+        formatSetting.addCodeTemplate(formatForm.getTemplatePanel().getEditPane().getCodeTemplate());
 
         // 保存参数
         Map<String, String> params = new HashMap<>();
-        DefaultTableModel tableModel = formatForm.getParamsTableModel();
-        JBTable table = formatForm.getParamsTable();
+        DefaultTableModel tableModel = formatForm.getParamPanel().getParamsTableModel();
+        JBTable table = formatForm.getParamPanel().getParamsTable();
         for(int i = 0;i< table.getRowCount(); i++){
             params.put(tableModel.getValueAt(i, 0).toString(), tableModel.getValueAt(i, 1).toString());
         }
         formatSetting.setParams(params);
-        formatForm.refresh(formatSetting);
+        formatForm.getTemplatePanel().refresh(formatSetting);
     }
 
     public void reset() {
         if (formatForm != null) {
 
             // 黑魔法，初始化配置
-            if(formatForm.getParamsTable().getRowCount() == 1 &&
-                    "init".equals(formatForm.getParamsTableModel().getValueAt(0, 0).toString())) {
+            if(formatForm.getParamPanel().getParamsTable().getRowCount() == 1 &&
+                    "init".equals(formatForm.getParamPanel().getParamsTableModel().getValueAt(0, 0).toString())) {
                 FormatSetting initSetting = new FormatSetting();
                 formatSetting.setCodeTemplates(initSetting.getCodeTemplates());
                 formatSetting.setParams(initSetting.getParams());
             }
-            formatForm.refresh(formatSetting);
+            formatForm.getTemplatePanel().refresh(formatSetting);
         }
     }
 

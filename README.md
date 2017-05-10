@@ -69,3 +69,35 @@ ${PROJECT_NAME}
  
 the name of the current project
 ```
+
+- 预定义变量
+
+系统
+
+project_name
+module_name
+date
+
+用户
+autor
+email
+
+- 配置
+生成模式 database markdown    
+
+- 模版
+
+模版组 
+
+模版 生成子目录
+
+- 维基
+
+系统预定义变量
+
+
+1. 根据配置弹窗(markdown、database)
+2. mk弹窗，输入表设计／db弹窗，选择数据源(CRUD)，选择表
+3. 字段表格，可勾选字段，可编辑表格
+4. 勾选模版组
+5. 自动根据模版组存在的优先级，弹窗选择package，完成。
