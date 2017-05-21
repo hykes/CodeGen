@@ -2,6 +2,7 @@ package me.hehaiyang.codegen.model;
 
 import com.intellij.openapi.util.text.StringUtil;
 import lombok.*;
+import org.apache.xmlbeans.impl.xb.ltgfmt.Code;
 
 import java.io.Serializable;
 
@@ -54,5 +55,31 @@ public class CodeTemplate implements Serializable {
     public boolean isValid() {
         return StringUtil.isNotEmpty(display) && StringUtil.isNotEmpty(extension)
                 && StringUtil.isNotEmpty(filename);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        CodeTemplate that = (CodeTemplate) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (display != null ? !display.equals(that.display) : that.display != null) return false;
+        if (filename != null ? !filename.equals(that.filename) : that.filename != null) return false;
+        if (extension != null ? !extension.equals(that.extension) : that.extension != null) return false;
+        return template != null ? template.equals(that.template) : that.template == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (display != null ? display.hashCode() : 0);
+        result = 31 * result + (filename != null ? filename.hashCode() : 0);
+        result = 31 * result + (extension != null ? extension.hashCode() : 0);
+        result = 31 * result + (template != null ? template.hashCode() : 0);
+        return result;
     }
 }

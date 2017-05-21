@@ -1,4 +1,4 @@
-<idea-plugin version="2">
+<idea-plugin>
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
   <version>0.6</version>
@@ -34,21 +34,26 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-    <applicationConfigurable instance="me.hehaiyang.codegen.setting.FormatConfigurable"/>
-    <applicationService serviceInterface="me.hehaiyang.codegen.setting.FormatSetting"
-                        serviceImplementation="me.hehaiyang.codegen.setting.FormatSetting"/>
+    <applicationConfigurable groupId="tools" id="codeGen.configs" displayName="CodeGen" instance="me.hehaiyang.codegen.setting.configurable.ConfigsSettingConfigurable">
+      <configurable id="codeGen.variables" displayName="Variables"
+                    instance="me.hehaiyang.codegen.setting.configurable.VariablesSettingConfigurable"/>
+      <configurable id="codeGen.templates" displayName="Templates"
+                    instance="me.hehaiyang.codegen.setting.configurable.TemplatesSettingConfigurable"/>
+      <!--<configurable id="codeGen.wiki" displayName="Wiki"-->
+                    <!--instance="me.hehaiyang.codegen.setting.configurable.WikiSettingConfigurable"/>-->
+    </applicationConfigurable>
+
+    <applicationService serviceInterface="me.hehaiyang.codegen.setting.SettingManager"
+                        serviceImplementation="me.hehaiyang.codegen.setting.SettingManager"/>
 
   </extensions>
 
   <actions>
     <!-- Add your actions here -->
-    <action id="NewGroup.CodeGenAction" class="me.hehaiyang.codegen.CodeGenAction" text="CodeGen">
+    <action id="codeGen.baseAction" class="me.hehaiyang.codegen.CodeGenAction" text="CodeGen">
       <add-to-group group-id="ToolsBasicGroup" anchor="first"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift control G"/>
     </action>
-      <action id="hh" class="me.hehaiyang.codegen.hh" text="hh" description="hh">
-          <add-to-group group-id="ActiveToolwindowGroup" anchor="first"/>
-      </action>
   </actions>
 
 </idea-plugin>

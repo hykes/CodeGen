@@ -10,7 +10,7 @@ import me.hehaiyang.codegen.file.FileProvider;
 import me.hehaiyang.codegen.model.CodeGenContext;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.model.Field;
-import me.hehaiyang.codegen.setting.FormatSetting;
+import me.hehaiyang.codegen.setting.SettingManager;
 import me.hehaiyang.codegen.utils.ParseUtils;
 import me.hehaiyang.codegen.utils.PsiUtil;
 
@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class MarkDownWindow extends JFrame {
 
-    private FormatSetting formatSetting;
+    private SettingManager formatSetting;
     private Project project;
     private FileFactory fileFactory;
 
@@ -50,9 +50,9 @@ public class MarkDownWindow extends JFrame {
         setTitle("CodeGen");
 
         this.project = PsiUtil.getProject(anActionEvent);
-        this.formatSetting = FormatSetting.getInstance();
+        this.formatSetting = SettingManager.getInstance();
         this.fileFactory = new FileFactory(PsiUtil.getProject(anActionEvent), PsiUtil.getIdeView(anActionEvent));
-        this.templateMap = formatSetting.getCodeTemplates();
+        this.templateMap = formatSetting.getTemplatesSetting().getCodeTemplateTree().get("SpringMvc");
 
         codeJTextPane.requestFocus(true);
 
@@ -108,7 +108,7 @@ public class MarkDownWindow extends JFrame {
                 CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, fields);
                 Map<String, String> params = new HashMap<>();
                 params.putAll(DefaultParams.getInstance());
-                params.putAll(formatSetting.getParams());
+                params.putAll(formatSetting.getVariablesSetting().getParams());
                 context.set$(params);
                 WriteCommandAction.runWriteCommandAction(project, ()-> {
                     try {
@@ -139,7 +139,7 @@ public class MarkDownWindow extends JFrame {
      * @throws Exception
      */
     private void createFile(String template, CodeGenContext context) throws Exception{
-        CodeTemplate codeTemplate = formatSetting.getCodeTemplate(template);
+        CodeTemplate codeTemplate = formatSetting.getTemplatesSetting().getCodeTemplate("SpringMvc", template);
         FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
         fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
     }
