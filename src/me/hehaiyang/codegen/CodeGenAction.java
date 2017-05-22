@@ -19,7 +19,7 @@ public class CodeGenAction extends AnAction {
     public void actionPerformed(AnActionEvent anActionEvent) {
 //        Project project = PsiUtil.getProject(anActionEvent);
 //        PsiDirectory psiDirectory = PsiUtil.browseForFile(project);
-//        PsiUtil.createFile(project, psiDirectory,"VariablesUI.java", "public class ss{}", JavaFileType.INSTANCE);
+//        PsiUtil.createFile(project, psiDirectory,"ColumnEditorFrame.java", "public class ss{}", JavaFileType.INSTANCE);
 
         SettingManager settingManager = SettingManager.getInstance();
 

@@ -41,9 +41,14 @@ public class Field implements Serializable{
     private String column;
 
     /**
-     * 数据库备注
+     * 数据库字段类型
      */
     private String columnType;
+
+    /**
+     * 数据库字段长度
+     */
+    private String columnSize;
 
     /**
      * 备注

@@ -1,11 +1,5 @@
 package me.hehaiyang.codegen.setting.ui;
 
-import com.google.common.base.Strings;
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.ui.AnActionButton;
-import com.intellij.ui.AnActionButtonUpdater;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
@@ -18,9 +12,9 @@ import me.hehaiyang.codegen.setting.ui.template.TemplateTreeCellRenderer;
 import me.hehaiyang.codegen.setting.ui.variable.AddDialog;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.*;
 import java.awt.*;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -247,14 +241,11 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
     private void setTemplates(TemplatesSetting templatesSetting){
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("TemplateList");
 
-        Map<String, Map<String, CodeTemplate>> codeTemplateTree = templatesSetting.getCodeTemplateTree();
-
+        Map<String, List<CodeTemplate>> codeTemplateTree = templatesSetting.getCodeTemplateTree();
         for (String pStr : codeTemplateTree.keySet()) {
-
             DefaultMutableTreeNode group = new DefaultMutableTreeNode(pStr);
-            Map<String, CodeTemplate> codeTemplates = codeTemplateTree.get(pStr);
-            for (String id : codeTemplates.keySet()) {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode(codeTemplates.get(id));
+            for (CodeTemplate template : codeTemplateTree.get(pStr)) {
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode(template);
                 group.add(node);
             }
             root.add(group);

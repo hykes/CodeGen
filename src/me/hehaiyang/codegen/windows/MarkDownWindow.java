@@ -21,11 +21,9 @@ import java.util.Map;
 
 public class MarkDownWindow extends JFrame {
 
-    private SettingManager formatSetting;
+    private final SettingManager settingManager = SettingManager.getInstance();
     private Project project;
     private FileFactory fileFactory;
-
-    private Map<String, CodeTemplate> templateMap;
 
     private JPanel codeGenJPanel;
     private JPanel paramsJPanel;
@@ -50,9 +48,7 @@ public class MarkDownWindow extends JFrame {
         setTitle("CodeGen");
 
         this.project = PsiUtil.getProject(anActionEvent);
-        this.formatSetting = SettingManager.getInstance();
         this.fileFactory = new FileFactory(PsiUtil.getProject(anActionEvent), PsiUtil.getIdeView(anActionEvent));
-        this.templateMap = formatSetting.getTemplatesSetting().getCodeTemplateTree().get("SpringMvc");
 
         codeJTextPane.requestFocus(true);
 
@@ -108,11 +104,11 @@ public class MarkDownWindow extends JFrame {
                 CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, fields);
                 Map<String, String> params = new HashMap<>();
                 params.putAll(DefaultParams.getInstance());
-                params.putAll(formatSetting.getVariablesSetting().getParams());
+                params.putAll(settingManager.getVariablesSetting().getParams());
                 context.set$(params);
                 WriteCommandAction.runWriteCommandAction(project, ()-> {
                     try {
-                        for (CodeTemplate codeTemplate : templateMap.values()) {
+                        for (CodeTemplate codeTemplate : settingManager.getTemplatesSetting().getCodeTemplateTree().get("default")) {
                             FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
                             fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
                         }
@@ -134,14 +130,17 @@ public class MarkDownWindow extends JFrame {
 
     /**
      * 模版+ 数据，生成文件
-     * @param template 模版名称
+     * @param group 模版组
      * @param context 数据
      * @throws Exception
      */
-    private void createFile(String template, CodeGenContext context) throws Exception{
-        CodeTemplate codeTemplate = formatSetting.getTemplatesSetting().getCodeTemplate("SpringMvc", template);
-        FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
-        fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
+    private void createFile(String group, CodeGenContext context) throws Exception{
+        List<CodeTemplate> codeTemplates = settingManager.getTemplatesSetting().getCodeTemplateTree().get(group);
+        for(CodeTemplate codeTemplate: codeTemplates){
+            FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
+            fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
+        }
+
     }
 
     /**
