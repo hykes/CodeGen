@@ -44,7 +44,7 @@ public class DatabaseWindow extends JFrame{
 
         configPanel.add(new JLabel(" url:"));
         configPanel.add(urlField, s);
-        configPanel.add(new JLabel(" user:"));
+        configPanel.add(new JLabel(" username:"));
         configPanel.add(userField, s);
         configPanel.add(new JLabel(" password:"));
         configPanel.add(passwordField, s);

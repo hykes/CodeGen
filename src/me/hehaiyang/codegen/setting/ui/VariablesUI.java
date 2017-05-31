@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Desc:
+ * Desc: 自定义变量设置面板
  * Mail: hehaiyang@terminus.io
  * Date: 2017/5/12
  */
@@ -185,7 +185,6 @@ public class VariablesUI extends JPanel implements UIConfigurable {
                 String key = keyJTextField.getText();
                 String value = valueJTextField.getText();
 
-                tableModel.getValueAt(selectedRow, 1);
                 tableModel.setValueAt(key, selectedRow, 0);
                 tableModel.setValueAt(value, selectedRow, 1);
                 dialog.setVisible(false);

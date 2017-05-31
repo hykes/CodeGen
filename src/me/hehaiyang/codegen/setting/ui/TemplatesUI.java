@@ -1,5 +1,7 @@
 package me.hehaiyang.codegen.setting.ui;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
@@ -14,6 +16,7 @@ import me.hehaiyang.codegen.setting.ui.variable.AddDialog;
 import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -67,7 +70,23 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
     @Override
     public void apply() {
+        Map<String, List<CodeTemplate>> codeTemplateTree = Maps.newHashMap();
 
+        DefaultTreeModel treeModel = (DefaultTreeModel) templateTree.getModel();
+        DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) treeModel.getRoot();
+        Enumeration enumeration = rootNode.children();
+        while(enumeration.hasMoreElements()){
+            List<CodeTemplate> codeTemplates = Lists.newArrayList();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
+
+            Enumeration childEnum = node.children();
+            while(childEnum.hasMoreElements()){
+                DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) childEnum.nextElement();
+                codeTemplates.add((CodeTemplate) childNode.getUserObject());
+            }
+            codeTemplateTree.put((String)node.getUserObject(), codeTemplates);
+        }
+        settingManager.getTemplatesSetting().setCodeTemplateTree(codeTemplateTree);
     }
 
     @Override

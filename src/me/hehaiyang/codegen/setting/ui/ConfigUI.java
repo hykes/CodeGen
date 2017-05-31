@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Desc:
+ * Desc: 通用配置设置面板
  * Mail: hehaiyang@terminus.io
  * Date: 2017/5/19
  */
