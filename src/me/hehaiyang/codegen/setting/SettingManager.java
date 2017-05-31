@@ -6,14 +6,11 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import lombok.Data;
-import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.setting.ui.ConfigSetting;
+import me.hehaiyang.codegen.setting.ui.DatabasesSetting;
 import me.hehaiyang.codegen.setting.ui.TemplatesSetting;
 import me.hehaiyang.codegen.setting.ui.VariablesSetting;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Desc:
@@ -34,10 +31,13 @@ public class SettingManager implements PersistentStateComponent<SettingManager> 
 
     private TemplatesSetting templatesSetting;
 
+    private DatabasesSetting databasesSetting;
+
     public SettingManager() {
         this.configSetting = new ConfigSetting();
         this.variablesSetting = new VariablesSetting();
         this.templatesSetting = new TemplatesSetting();
+        this.databasesSetting = new DatabasesSetting();
     }
 
     @Nullable
