@@ -4,12 +4,15 @@ import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.util.ui.JBUI;
+import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.model.Field;
+import me.hehaiyang.codegen.setting.SettingManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Connection;
 import java.util.List;
+
 /**
  * Desc:
  * Mail: hehaiyang@terminus.io
@@ -28,41 +31,28 @@ public class DatabaseWindow extends JFrame{
 
         JPanel configPanel = new JPanel();
 
-        JTextField urlField = new JTextField();
-        urlField.setColumns(10);
-
-        JTextField userField = new JTextField();
-        userField.setColumns(10);
-
-        JTextField passwordField = new JTextField();
-        passwordField.setColumns(10);
+        ComboBox databaseBox=new ComboBox();
+        databaseBox.setRenderer(new ComboBoxCellRenderer());
+        SettingManager settingManager = SettingManager.getInstance();
+        List<Database> databases = settingManager.getDatabasesSetting().getDatabases();
+        for(Database database: databases){
+            databaseBox.addItem(database);
+        }
 
         JButton connectBtn = new JButton("connect");
 
-        GridBagConstraints s= new GridBagConstraints();
-        s.fill = GridBagConstraints.BOTH;
 
-        configPanel.add(new JLabel(" url:"));
-        configPanel.add(urlField, s);
-        configPanel.add(new JLabel(" username:"));
-        configPanel.add(userField, s);
-        configPanel.add(new JLabel(" password:"));
-        configPanel.add(passwordField, s);
-        configPanel.add(connectBtn, s);
+        configPanel.add(databaseBox);
+        configPanel.add(connectBtn);
         ComboBox comboBox=new ComboBox();
         comboBox.addItem("请选择");
         comboBox.setEnabled(false);
-        // 驱动程序名
-        String driver = "com.mysql.jdbc.Driver";
-        // URL指向要访问的数据库名
-//        String url = "jdbc:mysql://127.0.0.1:3306/hsh";
 
         connectBtn.addActionListener( e ->{
-            String url = urlField.getText();
-            String user = userField.getText();
-            String password = passwordField.getText();
+
+            Database database = (Database) databaseBox.getSelectedItem();
             DBOperation op = new DBOperation();
-            Connection conn = op.getConnection(driver, url, user, password);
+            Connection conn = op.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
 
             List<String> list = op.getAllTables(conn);
             comboBox.removeAllItems();
@@ -77,20 +67,18 @@ public class DatabaseWindow extends JFrame{
 
         JButton tableColumnBtn = new JButton("getColumn");
         tableColumnBtn.addActionListener( e ->{
-            String url = urlField.getText();
-            String user = userField.getText();
-            String password = passwordField.getText();
+            Database database = (Database) databaseBox.getSelectedItem();
             String table = comboBox.getSelectedItem().toString();
             DBOperation op = new DBOperation();
-            Connection conn = op.getConnection(driver, url, user, password);
+            Connection conn = op.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
             List<Field> fields = op.getTableColumn(table, conn);
             ColumnEditorFrame frame = new ColumnEditorFrame(fields);
             frame.setSize(800, 400);
             frame.setAlwaysOnTop(false);
-            frame.setLocationRelativeTo(null);
-
-            thisFrame.setVisible(false);
+            frame.setLocationRelativeTo(thisFrame);
             frame.setVisible(true);
+            frame.setResizable(false);
+            thisFrame.setVisible(false);
 
         });
 

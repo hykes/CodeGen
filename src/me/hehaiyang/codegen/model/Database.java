@@ -14,7 +14,10 @@ public class Database implements Serializable {
 
     private static final long serialVersionUID = -6611073974504244920L;
 
-    private String url;
+
+    private String driver = "com.mysql.jdbc.Driver";
+
+    private String url = "jdbc:mysql://127.0.0.1:3306/hsh";
 
     private String username;
 

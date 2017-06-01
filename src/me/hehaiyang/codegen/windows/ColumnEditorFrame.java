@@ -1,7 +1,5 @@
 package me.hehaiyang.codegen.windows;
 
-import com.google.common.collect.Lists;
-import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
@@ -39,6 +37,8 @@ public class ColumnEditorFrame extends JFrame {
         mainPanel.setPreferredSize(JBUI.size(300, 400));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
 
+        variablesTable.getTableHeader().setReorderingAllowed(false);   //不可整列移动
+        variablesTable.getTableHeader().setResizingAllowed(false);   //不可拉动表格
         JPanel panel = ToolbarDecorator.createDecorator(variablesTable)
             .setAddAction( it -> addAction())
             .setRemoveAction( it -> removeAction())
@@ -58,8 +58,7 @@ public class ColumnEditorFrame extends JFrame {
             JCheckBox groupBox = new JCheckBox(group);
             groupPanel.add(groupBox);
         }
-
-        groupPanel.add(Box.createHorizontalGlue());
+        groupPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         add(groupPanel, BorderLayout.SOUTH);
 
