@@ -47,17 +47,17 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
             return true;
         }
         List<Database> databases = setting.getDatabases();
-//        for(int i = 0; i< tableModel.getRowCount(); i++){
-//            String url = tableModel.getValueAt(i, 0).toString();
-//            String username = tableModel.getValueAt(i, 1).toString();
-//            String password = tableModel.getValueAt(i, 2).toString();
-//            for(Database database : databases){
-//                if(database.getUrl().equals(url)
-//                        && (!database.getUsername().equals(username) || !database.getPassword().equals(password))){
-//                    return true;
-//                }
-//            }
-//        }
+        for(int i = 0; i< tableModel.getRowCount(); i++){
+            String url = tableModel.getValueAt(i, 0).toString();
+            String username = tableModel.getValueAt(i, 1).toString();
+            String password = tableModel.getValueAt(i, 2).toString();
+            for(Database database : databases){
+                if(database.getName().equals(url)
+                        && (!database.getUsername().equals(username) || !database.getPassword().equals(password))){
+                    return true;
+                }
+            }
+        }
         return true;
     }
 

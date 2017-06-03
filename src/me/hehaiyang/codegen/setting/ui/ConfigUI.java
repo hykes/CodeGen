@@ -4,7 +4,6 @@ import com.intellij.ui.IdeBorderFactory;
 import me.hehaiyang.codegen.setting.SettingManager;
 import me.hehaiyang.codegen.setting.UIConfigurable;
 import org.jetbrains.annotations.NotNull;
-import sun.security.krb5.Config;
 
 import javax.swing.*;
 import java.awt.*;

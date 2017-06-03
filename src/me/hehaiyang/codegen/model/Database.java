@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * Desc:
+ * Desc: 数据库信息
  * Mail: hehaiyang@terminus.io
  * Date: 2017/5/31
  */
@@ -14,6 +14,8 @@ public class Database implements Serializable {
 
     private static final long serialVersionUID = -6611073974504244920L;
 
+
+    private String name;
 
     private String driver = "com.mysql.jdbc.Driver";
 
