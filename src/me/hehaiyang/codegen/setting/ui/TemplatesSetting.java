@@ -3,6 +3,7 @@ package me.hehaiyang.codegen.setting.ui;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Data;
+import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.setting.SettingManager;
 import me.hehaiyang.codegen.utils.ParseUtils;
@@ -22,18 +23,20 @@ import java.util.UUID;
 @Data
 public class TemplatesSetting {
 
-    private Map<String, List<CodeTemplate>> codeTemplateTree = Maps.newHashMap();
+    private List<CodeGroup> groups = Lists.newArrayList();
 
     public TemplatesSetting() {
         try {
             String javaId = UUID.randomUUID().toString();
             String xmlId = UUID.randomUUID().toString();
             String sqlId = UUID.randomUUID().toString();
-            List<CodeTemplate> codeTemplates = Lists.newArrayList();
-            codeTemplates.add(new CodeTemplate(javaId, "Java Template", "java", "{{model}}", getTemplateContext("/template/JavaTemplate.hbs")));
-            codeTemplates.add(new CodeTemplate(xmlId, "Xml Template", "xml", "{{model}}", getTemplateContext("/template/XmlTemplate.hbs")));
-            codeTemplates.add( new CodeTemplate(sqlId, "Sql Template", "sql", "{{model}}", getTemplateContext("/template/SqlTemplate.hbs")));
-            codeTemplateTree.put("default", codeTemplates);
+            List<CodeTemplate> templates = Lists.newArrayList();
+            templates.add(new CodeTemplate(javaId, "Java Template", "java", "{{model}}", getTemplateContext("/template/JavaTemplate.hbs")));
+            templates.add(new CodeTemplate(xmlId, "Xml Template", "xml", "{{model}}", getTemplateContext("/template/XmlTemplate.hbs")));
+            templates.add( new CodeTemplate(sqlId, "Sql Template", "sql", "{{model}}", getTemplateContext("/template/SqlTemplate.hbs")));
+            String groupId = UUID.randomUUID().toString();
+            CodeGroup group = new CodeGroup(groupId, "default", 1, templates);
+            groups.add(group);
 
         }catch (IOException io){
         // do nothing
@@ -45,12 +48,10 @@ public class TemplatesSetting {
       return ParseUtils.stream2String(template);
     }
 
-    public Integer getCount(){
-        Integer count = 0;
-        for (String pStr : codeTemplateTree.keySet()) {
-            count += 1;
-            count += codeTemplateTree.get(pStr).size();
-        }
-        return count;
+    public Map<String, List<CodeTemplate>> getTemplatesMap(List<CodeGroup> groups){
+        Map<String, List<CodeTemplate>> result = Maps.newHashMap();
+        groups.forEach( it -> result.put(it.getId(), it.getTemplates()));
+        return result;
     }
+
 }

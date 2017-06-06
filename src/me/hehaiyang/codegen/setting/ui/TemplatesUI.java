@@ -1,11 +1,11 @@
 package me.hehaiyang.codegen.setting.ui;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
 import lombok.Data;
+import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.setting.SettingManager;
 import me.hehaiyang.codegen.setting.UIConfigurable;
@@ -18,7 +18,6 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -47,11 +46,9 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
         DefaultMutableTreeNode gen=(DefaultMutableTreeNode)templateTree.getModel().getRoot();
         Integer count = 0;
-        for (int i=0;i<gen.getChildCount();i++) {
-            count += 1;
-            count += gen.getChildAt(i).getChildCount();
-        }
-        if(!count.equals(setting.getCount())){
+        Integer groupCount = gen.getChildCount();
+        // 组size不相等
+        if(!groupCount.equals(setting.getGroups().size())){
             return true;
         }
 
@@ -70,23 +67,23 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
     @Override
     public void apply() {
-        Map<String, List<CodeTemplate>> codeTemplateTree = Maps.newHashMap();
-
+        List<CodeGroup> groups = Lists.newArrayList();
         DefaultTreeModel treeModel = (DefaultTreeModel) templateTree.getModel();
         DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) treeModel.getRoot();
         Enumeration enumeration = rootNode.children();
         while(enumeration.hasMoreElements()){
-            List<CodeTemplate> codeTemplates = Lists.newArrayList();
+            List<CodeTemplate> templates = Lists.newArrayList();
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
-
             Enumeration childEnum = node.children();
             while(childEnum.hasMoreElements()){
                 DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) childEnum.nextElement();
-                codeTemplates.add((CodeTemplate) childNode.getUserObject());
+                templates.add((CodeTemplate) childNode.getUserObject());
             }
-            codeTemplateTree.put((String)node.getUserObject(), codeTemplates);
+            CodeGroup group = (CodeGroup) node.getUserObject();
+            group.setTemplates(templates);
+            groups.add(group);
         }
-        settingManager.getTemplatesSetting().setCodeTemplateTree(codeTemplateTree);
+        settingManager.getTemplatesSetting().setGroups(groups);
     }
 
     @Override
@@ -258,17 +255,18 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
     }
 
     private void setTemplates(TemplatesSetting templatesSetting){
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("TemplateList");
 
-        Map<String, List<CodeTemplate>> codeTemplateTree = templatesSetting.getCodeTemplateTree();
-        for (String pStr : codeTemplateTree.keySet()) {
-            DefaultMutableTreeNode group = new DefaultMutableTreeNode(pStr);
-            for (CodeTemplate template : codeTemplateTree.get(pStr)) {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Template Group");
+
+        List<CodeGroup> groups = templatesSetting.getGroups();
+        groups.forEach( it -> {
+            DefaultMutableTreeNode group = new DefaultMutableTreeNode(it);
+            it.getTemplates().forEach( template -> {
                 DefaultMutableTreeNode node = new DefaultMutableTreeNode(template);
                 group.add(node);
-            }
+            });
             root.add(group);
-        }
+        });
         templateTree.setModel(new DefaultTreeModel(root, false));
     }
 

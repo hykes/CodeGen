@@ -11,6 +11,7 @@ import me.hehaiyang.codegen.model.CodeGenContext;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.setting.SettingManager;
+import me.hehaiyang.codegen.setting.ui.TemplatesSetting;
 import me.hehaiyang.codegen.utils.ParseUtils;
 import me.hehaiyang.codegen.utils.PsiUtil;
 
@@ -108,7 +109,7 @@ public class MarkDownWindow extends JFrame {
                 context.set$(params);
                 WriteCommandAction.runWriteCommandAction(project, ()-> {
                     try {
-                        for (CodeTemplate codeTemplate : settingManager.getTemplatesSetting().getCodeTemplateTree().get("default")) {
+                        for (CodeTemplate codeTemplate : settingManager.getTemplatesSetting().getGroups().get(0).getTemplates()) {
                             FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
                             fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
                         }
@@ -135,7 +136,8 @@ public class MarkDownWindow extends JFrame {
      * @throws Exception
      */
     private void createFile(String group, CodeGenContext context) throws Exception{
-        List<CodeTemplate> codeTemplates = settingManager.getTemplatesSetting().getCodeTemplateTree().get(group);
+        TemplatesSetting setting = settingManager.getTemplatesSetting();
+        List<CodeTemplate> codeTemplates = setting.getTemplatesMap(setting.getGroups()).get(group);
         for(CodeTemplate codeTemplate: codeTemplates){
             FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
             fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());

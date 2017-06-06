@@ -1,6 +1,7 @@
 package me.hehaiyang.codegen.setting.ui.template;
 
 import com.intellij.icons.AllIcons;
+import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
 
 import javax.swing.*;
@@ -36,13 +37,16 @@ public class TemplateTreeCellRenderer extends DefaultTreeCellRenderer{
             CodeTemplate node = (CodeTemplate) obj;
             DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
             return tempCellRenderer.getTreeCellRendererComponent(tree, node.getDisplay(), selected, expanded, true, row, hasFocus);
-        } else if (obj instanceof String) {
+        } else if (obj instanceof CodeGroup) {
+            CodeGroup group = (CodeGroup) obj;
+            DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
+//            tempCellRenderer.setOpenIcon(AllIcons.Actions.Refresh);
+//            tempCellRenderer.setClosedIcon(AllIcons.Actions.Refresh);
+            return tempCellRenderer.getTreeCellRendererComponent(tree, group.getName(), selected, expanded, false, row, hasFocus);
+        }else{
             String text = (String) obj;
             DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
-            tempCellRenderer.setOpenIcon(AllIcons.Actions.Refresh);
-            tempCellRenderer.setClosedIcon(AllIcons.Actions.Refresh);
             return tempCellRenderer.getTreeCellRendererComponent(tree, text, selected, expanded, false, row, hasFocus);
         }
-        return super.getTreeCellRendererComponent(tree, value, selected, expanded, isLeaf, row, hasFocus);
     }
 }

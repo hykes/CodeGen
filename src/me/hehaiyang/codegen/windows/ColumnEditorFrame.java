@@ -4,6 +4,7 @@ import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.JBUI;
+import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.setting.SettingManager;
 import me.hehaiyang.codegen.setting.ui.TemplatesSetting;
@@ -53,11 +54,11 @@ public class ColumnEditorFrame extends JFrame {
         final JPanel groupPanel = new JPanel();
         groupPanel.setLayout(new BoxLayout(groupPanel, BoxLayout.X_AXIS));
 
-        TemplatesSetting setting = settingManager.getTemplatesSetting();
-        for(String group: setting.getCodeTemplateTree().keySet()){
-            JCheckBox groupBox = new JCheckBox(group);
+        List<CodeGroup> groups = settingManager.getTemplatesSetting().getGroups();
+        groups.forEach( it -> {
+            JCheckBox groupBox = new JCheckBox(it.getName());
             groupPanel.add(groupBox);
-        }
+        });
         groupPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         add(groupPanel, BorderLayout.SOUTH);
