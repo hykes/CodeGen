@@ -7,7 +7,7 @@ import me.hehaiyang.codegen.utils.BuilderUtil;
 import java.io.Serializable;
 
 /**
- * Desc:
+ * Desc: 字段
  * Mail: hehaiyang@terminus.io
  * Date: 16/4/21
  */
@@ -15,15 +15,6 @@ import java.io.Serializable;
 public class Field implements Serializable{
 
     private static final long serialVersionUID = -7928412682947631640L;
-
-    public Field(){}
-
-    public Field(String fieldName, String fieldType, String comment){
-        this.field = fieldName;
-        this.fieldType = fieldType;
-        this.comment = comment;
-        this.column = BuilderUtil.camelToUnderline(fieldName);
-    }
 
     /**
      * 属性名
@@ -54,5 +45,22 @@ public class Field implements Serializable{
      * 备注
      */
     private String comment;
-    
+
+    public void setField(String field) {
+        this.field = field;
+        this.column = BuilderUtil.camelToUnderline(this.field);
+    }
+
+    public void setFieldType(String fieldType) {
+        this.fieldType = fieldType;
+    }
+
+    public void setColumn(String column) {
+        this.column = column;
+        this.field = BuilderUtil.underlineToCamel(this.column);
+    }
+
+    public void setColumnType(String columnType) {
+        this.columnType = columnType;
+    }
 }

@@ -17,6 +17,7 @@ public class ConfigUI extends JPanel implements UIConfigurable {
 
     private JCheckBox markdownBox;
     private JCheckBox databaseBox;
+    private JCheckBox sqlScriptBox;
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
@@ -33,11 +34,17 @@ public class ConfigUI extends JPanel implements UIConfigurable {
         markdownBox.setMnemonic('M');
         markdownBox.setToolTipText("generate code by markdown schema");
         markdownBox.addActionListener(e -> markdownChanged());
+        markdownBox.setEnabled(false);
 
         databaseBox = new JCheckBox("Use Database Schema");
         databaseBox.setMnemonic('D');
-        markdownBox.setToolTipText("generate code by database schema");
+        databaseBox.setToolTipText("generate code by database schema");
         databaseBox.addActionListener(e -> databaseChanged());
+
+        sqlScriptBox = new JCheckBox("Use SqlScript Schema");
+        sqlScriptBox.setMnemonic('S');
+        sqlScriptBox.setToolTipText("generate code by sqlScript schema");
+        sqlScriptBox.setEnabled(false);
 
         JPanel generate = new JPanel(new BorderLayout());
         generate.setBorder(IdeBorderFactory.createTitledBorder("Generate", true));
@@ -47,6 +54,8 @@ public class ConfigUI extends JPanel implements UIConfigurable {
         generate.add(markdownBox, BorderLayout.NORTH);
         generate.add(generate = new JPanel(new BorderLayout()), BorderLayout.SOUTH);
         generate.add(databaseBox, BorderLayout.NORTH);
+        generate.add(generate = new JPanel(new BorderLayout()), BorderLayout.SOUTH);
+        generate.add(sqlScriptBox, BorderLayout.NORTH);
     }
 
     public void setConfig(@NotNull ConfigSetting configuration) {

@@ -1,9 +1,6 @@
 package me.hehaiyang.codegen.windows;
 
 import com.intellij.openapi.ui.ComboBox;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.ui.IdeBorderFactory;
-import com.intellij.util.ui.JBUI;
 import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.setting.SettingManager;
@@ -22,28 +19,29 @@ public class DatabaseWindow extends JFrame{
 
     public DatabaseWindow(){
         setLayout(new BorderLayout());
-        setSize(JBUI.size(200, 200));
         JFrame thisFrame = this;
 
-        final JPanel mainPanel = new JPanel(new GridLayout(1, 1));
-        mainPanel.setPreferredSize(JBUI.size(200, 200));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
+        SettingManager settingManager = SettingManager.getInstance();
 
         JPanel configPanel = new JPanel();
 
         ComboBox databaseBox=new ComboBox();
-        databaseBox.setRenderer(new ComboBoxCellRenderer());
-        SettingManager settingManager = SettingManager.getInstance();
-        List<Database> databases = settingManager.getDatabasesSetting().getDatabases();
-        for(Database database: databases){
-            databaseBox.addItem(database);
-        }
-
         JButton connectBtn = new JButton("connect");
 
 
+        List<Database> databases = settingManager.getDatabasesSetting().getDatabases();
+        if(databases != null && !databases.isEmpty()){
+            databaseBox.setRenderer(new ComboBoxCellRenderer());
+            databases.forEach( it -> databaseBox.addItem(it));
+        }else{
+            databaseBox.addItem("无数据源");
+            databaseBox.setEnabled(false);
+            connectBtn.setEnabled(false);
+        }
+
         configPanel.add(databaseBox);
         configPanel.add(connectBtn);
+
         ComboBox comboBox=new ComboBox();
         comboBox.addItem("请选择");
         comboBox.setEnabled(false);
@@ -84,19 +82,8 @@ public class DatabaseWindow extends JFrame{
 
         configPanel.add(tableColumnBtn);
 
+        add(configPanel, BorderLayout.CENTER);
 
-        final JPanel localPanel = new JPanel(new BorderLayout());
-        localPanel.setBorder(IdeBorderFactory.createTitledBorder("User Defined Variables", false));
-        localPanel.add(configPanel, BorderLayout.CENTER);
-        mainPanel.add(localPanel);
-
-        add(mainPanel, BorderLayout.CENTER);
-
-        final JPanel infoPanel = new JPanel(new BorderLayout());
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        infoPanel.add(new JLabel("You can defined some variables for template.",
-                MessageType.INFO.getDefaultIcon(), SwingConstants.LEFT));
-        add(infoPanel, BorderLayout.SOUTH);
     }
 
     public static void main(String[] args){

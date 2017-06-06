@@ -27,11 +27,12 @@ public class CodeGenAction extends AnAction {
 
         if(settingManager.getConfigSetting().isDatabaseBox()){
             startFrame = new DatabaseWindow();
+            startFrame.setSize(350, 180);
         }else{
             startFrame = new MarkDownWindow(anActionEvent);
+            startFrame.setSize(800, 400);
         }
 
-        startFrame.setSize(800, 400);
         startFrame.setAlwaysOnTop(true);
         startFrame.setLocationRelativeTo(null);
         startFrame.setVisible(true);

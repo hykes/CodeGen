@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class ConfigSetting {
 
-  private boolean markdownBox = true;
+  private boolean markdownBox = false;
   private boolean databaseBox = true;
 
 }

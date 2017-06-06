@@ -69,6 +69,9 @@ public class VariablesUI extends JPanel implements UIConfigurable {
     private void init(){
         setLayout(new BorderLayout());
 
+        variablesTable.getTableHeader().setReorderingAllowed(false);   //不可整列移动
+        variablesTable.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+
         final JPanel mainPanel = new JPanel(new GridLayout(1, 1));
         mainPanel.setPreferredSize(JBUI.size(300, 400));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));

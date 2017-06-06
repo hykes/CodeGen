@@ -67,14 +67,16 @@ public class ColumnEditorFrame extends JFrame {
 
     private void setFields(List<Field> fields){
         // 列名
-        String[] columnNames = {"Column_Name","Column_Type", "Column_Size", "Comment"};
+        String[] columnNames = {"Field_Name", "Field_Type", "Column_Name","Column_Type", "Column_Size", "Comment"};
         // 默认数据
-        Object[][] tableVales = new String[fields.size()][4];
+        Object[][] tableVales = new String[fields.size()][6];
         for (int row = 0; row < fields.size(); row++) {
-            tableVales[row][0] = fields.get(row).getColumn();
-            tableVales[row][1] = fields.get(row).getColumnType();
-            tableVales[row][2] = fields.get(row).getColumnSize();
-            tableVales[row][3] = fields.get(row).getComment();
+            tableVales[row][0] = fields.get(row).getField();
+            tableVales[row][1] = fields.get(row).getFieldType();
+            tableVales[row][2] = fields.get(row).getColumn();
+            tableVales[row][3] = fields.get(row).getColumnType();
+            tableVales[row][4] = fields.get(row).getColumnSize();
+            tableVales[row][5] = fields.get(row).getComment();
         }
         DefaultTableModel tableModel = new DefaultTableModel(tableVales,columnNames){
             @Override

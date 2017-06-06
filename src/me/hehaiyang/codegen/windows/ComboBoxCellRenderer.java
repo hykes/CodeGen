@@ -12,10 +12,12 @@ import java.awt.*;
  */
 public class ComboBoxCellRenderer extends JLabel implements ListCellRenderer {
 
+    ComboBoxCellRenderer(){ setOpaque(true); }
+
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Database database = (Database) value;
-        setText(database.getUrl());
+        setText(database.getName());
         return this;
     }
 }

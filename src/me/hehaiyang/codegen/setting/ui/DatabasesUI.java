@@ -46,18 +46,18 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         if(setting.getDatabases().size() != tableModel.getRowCount()){
             return true;
         }
-        List<Database> databases = setting.getDatabases();
-        for(int i = 0; i< tableModel.getRowCount(); i++){
-            String url = tableModel.getValueAt(i, 0).toString();
-            String username = tableModel.getValueAt(i, 1).toString();
-            String password = tableModel.getValueAt(i, 2).toString();
-            for(Database database : databases){
-                if(database.getName().equals(url)
-                        && (!database.getUsername().equals(username) || !database.getPassword().equals(password))){
-                    return true;
-                }
-            }
-        }
+//        List<Database> databases = setting.getDatabases();
+//        for(int i = 0; i< tableModel.getRowCount(); i++){
+//            String url = tableModel.getValueAt(i, 0).toString();
+//            String username = tableModel.getValueAt(i, 1).toString();
+//            String password = tableModel.getValueAt(i, 2).toString();
+//            for(Database database : databases){
+//                if(database.getName().equals(url)
+//                        && (!database.getUsername().equals(username) || !database.getPassword().equals(password))){
+//                    return true;
+//                }
+//            }
+//        }
         return true;
     }
 
@@ -67,9 +67,11 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         DefaultTableModel tableModel = (DefaultTableModel) databasesTable.getModel();
         for(int i = 0;i< tableModel.getRowCount(); i++){
             Database database = new Database();
-            database.setUrl(tableModel.getValueAt(i, 0).toString());
-            database.setUsername(tableModel.getValueAt(i, 1).toString());
-            database.setPassword(tableModel.getValueAt(i, 2).toString());
+            database.setName(tableModel.getValueAt(i, 0).toString());
+            database.setDriver(tableModel.getValueAt(i, 1).toString());
+            database.setUrl(tableModel.getValueAt(i, 2).toString());
+            database.setUsername(tableModel.getValueAt(i, 3).toString());
+            database.setPassword(tableModel.getValueAt(i, 4).toString());
             databases.add(database);
         }
         settingManager.getDatabasesSetting().setDatabases(databases);
@@ -83,6 +85,9 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
     private void init(){
         setLayout(new BorderLayout());
 
+        databasesTable.getTableHeader().setReorderingAllowed(false);   //不可整列移动
+        databasesTable.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+
         final JPanel mainPanel = new JPanel(new GridLayout(1, 1));
         mainPanel.setPreferredSize(JBUI.size(300, 400));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
@@ -95,9 +100,9 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
                     int selectedRow = databasesTable.getSelectedRow();
                     if(selectedRow != -1) {
                         DefaultTableModel tableModel = (DefaultTableModel) databasesTable.getModel();
-                        String url = (String) tableModel.getValueAt(selectedRow, 0);
-                        String username = (String) tableModel.getValueAt(selectedRow, 1);
-                        String password = (String) tableModel.getValueAt(selectedRow, 2);
+                        String url = (String) tableModel.getValueAt(selectedRow, 2);
+                        String username = (String) tableModel.getValueAt(selectedRow, 3);
+                        String password = (String) tableModel.getValueAt(selectedRow, 4);
 
                         DBOperation dbOperation = new DBOperation();
                         String driver = "com.mysql.jdbc.Driver";
@@ -140,15 +145,17 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
 
     private void setDatabases(DatabasesSetting databasesSetting){
         // 列名
-        String[] columnNames = {"Url","Username", "Password"};
+        String[] columnNames = {"Name", "Driver", "Url","Username", "Password"};
         // 默认数据
-        Object[][] tableVales = new String[databasesSetting.getDatabases().size()][3];
+        Object[][] tableVales = new String[databasesSetting.getDatabases().size()][5];
         List<Database> databases = databasesSetting.getDatabases();
         for (int row = 0; row < databases.size(); row++) {
             Database database = databases.get(row);
-            tableVales[row][0] = database.getUrl();
-            tableVales[row][1] = database.getUsername();
-            tableVales[row][2] = database.getPassword();
+            tableVales[row][0] = database.getName();
+            tableVales[row][1] = database.getDriver();
+            tableVales[row][2] = database.getUrl();
+            tableVales[row][3] = database.getUsername();
+            tableVales[row][4] = database.getPassword();
         }
         DefaultTableModel tableModel = new DefaultTableModel(tableVales,columnNames){
             @Override
@@ -163,15 +170,21 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         JDialog dialog = new AddDialog();
         dialog.setLayout(new BorderLayout());
 
-        JPanel form = new JPanel(new GridLayout(3,2));
-        form.add(new Label("url"));
+        JPanel form = new JPanel(new GridLayout(5,2));
+        form.add(new Label("Name"));
+        JTextField nameText = new JTextField();
+        form.add(nameText);
+        form.add(new Label("Driver"));
+        JTextField driverText = new JTextField();
+        form.add(driverText);
+        form.add(new Label("Url"));
         JTextField urlText = new JTextField();
         form.add(urlText);
-        form.add(new Label("username"));
+        form.add(new Label("Username"));
         JTextField usernameText = new JTextField();
         form.add(usernameText);
 
-        form.add(new Label("password"));
+        form.add(new Label("Password"));
         JTextField passwordText = new JTextField();
         form.add(passwordText);
 
@@ -179,18 +192,20 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
 
         JButton add = new JButton("ADD");
         add.addActionListener( it ->{
+            String name = nameText.getText();
+            String driver = driverText.getText();
             String url = urlText.getText();
             String username = usernameText.getText();
             String password = passwordText.getText();
 
             DefaultTableModel tableModel = (DefaultTableModel) databasesTable.getModel();
-            String []rowValues = {url, username, password};
+            String []rowValues = {name, driver, url, username, password};
             tableModel.addRow(rowValues);
             dialog.setVisible(false);
         });
         dialog.add(add, BorderLayout.SOUTH);
 
-        dialog.setSize(300, 130);
+        dialog.setSize(300, 200);
         dialog.setAlwaysOnTop(true);
         dialog.setLocationRelativeTo(this);
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
@@ -214,14 +229,22 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         int selectedRow = databasesTable.getSelectedRow();
         if(selectedRow != -1){
             DefaultTableModel tableModel = (DefaultTableModel) databasesTable.getModel();
-            String oldUrl = (String) tableModel.getValueAt(selectedRow, 0);
-            String oldUsername = (String) tableModel.getValueAt(selectedRow, 1);
-            String oldPassword = (String) tableModel.getValueAt(selectedRow, 2);
+            String oldName = (String) tableModel.getValueAt(selectedRow, 0);
+            String oldDriver = (String) tableModel.getValueAt(selectedRow, 1);
+            String oldUrl = (String) tableModel.getValueAt(selectedRow, 2);
+            String oldUsername = (String) tableModel.getValueAt(selectedRow, 3);
+            String oldPassword = (String) tableModel.getValueAt(selectedRow, 4);
 
             JDialog dialog = new AddDialog();
             dialog.setLayout(new BorderLayout());
 
-            JPanel form = new JPanel(new GridLayout(3,2));
+            JPanel form = new JPanel(new GridLayout(5,2));
+            form.add(new Label("Name"));
+            JTextField nameText = new JTextField(oldName);
+            form.add(nameText);
+            form.add(new Label("Driver"));
+            JTextField driverText = new JTextField(oldDriver);
+            form.add(driverText);
             form.add(new Label("url"));
             JTextField urlText = new JTextField(oldUrl);
             form.add(urlText);
@@ -237,18 +260,22 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
 
             JButton add = new JButton("Confirm");
             add.addActionListener( it ->{
+                String name = nameText.getText();
+                String driver = driverText.getText();
                 String url = urlText.getText();
                 String username = usernameText.getText();
                 String password = passwordText.getText();
 
-                tableModel.setValueAt(url, selectedRow, 0);
-                tableModel.setValueAt(username, selectedRow, 1);
-                tableModel.setValueAt(password, selectedRow, 2);
+                tableModel.setValueAt(name, selectedRow, 0);
+                tableModel.setValueAt(driver, selectedRow, 1);
+                tableModel.setValueAt(url, selectedRow, 2);
+                tableModel.setValueAt(username, selectedRow, 3);
+                tableModel.setValueAt(password, selectedRow, 4);
                 dialog.setVisible(false);
             });
             dialog.add(add, BorderLayout.SOUTH);
 
-            dialog.setSize(300, 130);
+            dialog.setSize(300, 200);
             dialog.setAlwaysOnTop(true);
             dialog.setLocationRelativeTo(this);
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
