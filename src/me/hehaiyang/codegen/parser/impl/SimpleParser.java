@@ -1,6 +1,7 @@
 package me.hehaiyang.codegen.parser.impl;
 
 import me.hehaiyang.codegen.model.Field;
+import me.hehaiyang.codegen.parser.Parser;
 import me.hehaiyang.codegen.utils.ParseUtils;
 
 import java.util.List;
@@ -25,8 +26,8 @@ import java.util.List;
  * Created by IceMimosa
  * Date: 2017/6/20
  */
-@Deprecated
-public class SimpleParser extends DefaultParser {
+
+public class SimpleParser implements Parser {
 
     @Override
     public List<Field> parseSQL(String sql) {

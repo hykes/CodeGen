@@ -1,7 +1,7 @@
 package me.hehaiyang.codegen.file;
 
-import com.intellij.ide.IdeView;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiDirectory;
 import me.hehaiyang.codegen.file.impl.JavaProviderImpl;
 import me.hehaiyang.codegen.file.impl.SqlProviderImpl;
 import me.hehaiyang.codegen.file.impl.XmlProviderImpl;
@@ -10,23 +10,23 @@ public class FileFactory {
 
     private Project project;
 
-    private IdeView ideView;
+    private PsiDirectory psiDirectory ;
 
-    public FileFactory(Project project, IdeView ideView) {
+    public FileFactory(Project project, PsiDirectory psiDirectory) {
         this.project = project;
-        this.ideView = ideView;
+        this.psiDirectory = psiDirectory;
     }
 
     public FileProvider getInstance(String type) {
 
         if("java".equals(type)) {
-            return new JavaProviderImpl(project, ideView);
+            return new JavaProviderImpl(project, psiDirectory);
         } else if("sql".equals(type)) {
-            return new SqlProviderImpl(project, ideView);
+            return new SqlProviderImpl(project, psiDirectory);
         } else if("xml".equals(type)) {
-            return new XmlProviderImpl(project, ideView);
+            return new XmlProviderImpl(project, psiDirectory);
         }else{
-            return new JavaProviderImpl(project, ideView);
+            return new JavaProviderImpl(project, psiDirectory);
         }
     }
 }

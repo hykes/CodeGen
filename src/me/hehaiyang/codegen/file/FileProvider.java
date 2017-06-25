@@ -1,8 +1,8 @@
 package me.hehaiyang.codegen.file;
 
 import com.github.jknack.handlebars.Handlebars;
-import com.intellij.ide.IdeView;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiDirectory;
 import me.hehaiyang.codegen.handlebars.HandlebarsFactory;
 
 public abstract class FileProvider {
@@ -11,11 +11,11 @@ public abstract class FileProvider {
 
     public Project project;
 
-    public IdeView ideView;
+    public PsiDirectory psiDirectory;
 
-    public FileProvider(Project project, IdeView ideView) {
+    public FileProvider(Project project, PsiDirectory psiDirectory) {
         this.project = project;
-        this.ideView = ideView;
+        this.psiDirectory = psiDirectory;
     }
 
     public abstract void create(String template, Object context, String fileName) throws Exception;

@@ -1,30 +1,20 @@
 package me.hehaiyang.codegen.windows;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.project.Project;
 import com.google.common.base.Strings;
-import me.hehaiyang.codegen.constants.DefaultParams;
-import me.hehaiyang.codegen.file.FileFactory;
-import me.hehaiyang.codegen.file.FileProvider;
-import me.hehaiyang.codegen.model.CodeGenContext;
-import me.hehaiyang.codegen.model.CodeTemplate;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.project.Project;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.setting.SettingManager;
-import me.hehaiyang.codegen.setting.ui.TemplatesSetting;
 import me.hehaiyang.codegen.utils.ParseUtils;
 import me.hehaiyang.codegen.utils.PsiUtil;
 
 import javax.swing.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MarkDownWindow extends JFrame {
 
     private final SettingManager settingManager = SettingManager.getInstance();
     private Project project;
-    private FileFactory fileFactory;
 
     private JPanel codeGenJPanel;
     private JPanel paramsJPanel;
@@ -49,7 +39,6 @@ public class MarkDownWindow extends JFrame {
         setTitle("CodeGen");
 
         this.project = PsiUtil.getProject(anActionEvent);
-        this.fileFactory = new FileFactory(PsiUtil.getProject(anActionEvent), PsiUtil.getIdeView(anActionEvent));
 
         codeJTextPane.requestFocus(true);
 
@@ -101,22 +90,6 @@ public class MarkDownWindow extends JFrame {
                     return;
                 }
 
-                // 组装数据
-                CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, fields);
-                Map<String, String> params = new HashMap<>();
-                params.putAll(DefaultParams.getInstance());
-                params.putAll(settingManager.getVariablesSetting().getParams());
-                context.set$(params);
-                WriteCommandAction.runWriteCommandAction(project, ()-> {
-                    try {
-                        for (CodeTemplate codeTemplate : settingManager.getTemplatesSetting().getGroups().get(0).getTemplates()) {
-                            FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
-                            fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                });
 
                 this.dispose();
 
@@ -127,22 +100,6 @@ public class MarkDownWindow extends JFrame {
         cancel.addActionListener(e -> {
             dispose();
         });
-    }
-
-    /**
-     * 模版+ 数据，生成文件
-     * @param group 模版组
-     * @param context 数据
-     * @throws Exception
-     */
-    private void createFile(String group, CodeGenContext context) throws Exception{
-        TemplatesSetting setting = settingManager.getTemplatesSetting();
-        List<CodeTemplate> codeTemplates = setting.getTemplatesMap(setting.getGroups()).get(group);
-        for(CodeTemplate codeTemplate: codeTemplates){
-            FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
-            fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
-        }
-
     }
 
     /**

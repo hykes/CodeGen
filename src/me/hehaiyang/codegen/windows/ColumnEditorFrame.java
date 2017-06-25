@@ -1,19 +1,32 @@
 package me.hehaiyang.codegen.windows;
 
+import com.google.common.collect.Lists;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
+import com.intellij.psi.PsiDirectory;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.JBUI;
+import me.hehaiyang.codegen.constants.DefaultParams;
+import me.hehaiyang.codegen.file.FileFactory;
+import me.hehaiyang.codegen.file.FileProvider;
+import me.hehaiyang.codegen.model.CodeGenContext;
 import me.hehaiyang.codegen.model.CodeGroup;
+import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.setting.SettingManager;
-import me.hehaiyang.codegen.setting.ui.TemplatesSetting;
 import me.hehaiyang.codegen.setting.ui.variable.AddDialog;
+import me.hehaiyang.codegen.utils.PsiUtil;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Desc:
@@ -26,13 +39,29 @@ public class ColumnEditorFrame extends JFrame {
 
     private final JBTable variablesTable = new JBTable();
 
-    public ColumnEditorFrame(List<Field> fields) {
-        init();
+    public ColumnEditorFrame(AnActionEvent anActionEvent, List<Field> fields) {
+        init(anActionEvent);
         setFields(fields);
     }
 
-    private void init(){
+    private void init(AnActionEvent anActionEvent){
         setLayout(new BorderLayout());
+
+        final JPanel topPanel = new JPanel(new GridLayout(2, 4));
+        topPanel.add(new JLabel("model"));
+        JTextField modelText = new JTextField();
+        topPanel.add(modelText);
+        topPanel.add(new JLabel("table"));
+        JTextField tableText = new JTextField();
+        topPanel.add(tableText);
+        topPanel.add(new JLabel("model_cn"));
+        JTextField modelCnText = new JTextField();
+        topPanel.add(modelCnText);
+        topPanel.add(new JLabel("table_cn"));
+        JTextField tableCnText = new JTextField();
+        topPanel.add(tableCnText);
+
+        add(topPanel, BorderLayout.NORTH);
 
         final JPanel mainPanel = new JPanel(new GridLayout(1, 1));
         mainPanel.setPreferredSize(JBUI.size(300, 400));
@@ -61,9 +90,59 @@ public class ColumnEditorFrame extends JFrame {
         });
         groupPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
+
+        JButton genButton = new JButton("Gen");
+        genButton.addActionListener( it ->{
+            List<String> list = Lists.newArrayList();
+            getAllJCheckBoxValue(groupPanel, list);
+
+            String model = modelText.getText().trim();
+            String modelName = modelCnText.getText().trim();
+            String table = tableText.getText().trim();
+            String tableName = tableCnText.getText().trim();
+            // 组装数据
+            CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, getFields());
+
+            gen(anActionEvent, list, context);
+        });
+        groupPanel.add(genButton);
+
         add(groupPanel, BorderLayout.SOUTH);
 
         variablesTable.getEmptyText().setText("No Variables");
+    }
+
+    public static List<String> getAllJCheckBoxValue(Container ct, List<String> list){
+        if(list==null){
+            list= Lists.newArrayList();
+        }
+        int count=ct.getComponentCount();
+        for(int i=0;i<count;i++){
+            Component c=ct.getComponent(i);
+            if(c instanceof JCheckBox && ((JCheckBox)c).isSelected()){
+                list.add(((JCheckBox) c).getText());
+            }
+            else if(c instanceof Container){
+                getAllJCheckBoxValue((Container)c,list);
+            }
+        }
+        return list;
+    }
+
+    private List<Field> getFields(){
+        List<Field> fields = Lists.newArrayList();
+        DefaultTableModel tableModel = (DefaultTableModel) variablesTable.getModel();
+        for(int i = 0;i< tableModel.getRowCount(); i++){
+            Field field = new Field();
+            field.setField(tableModel.getValueAt(i, 0).toString());
+            field.setFieldType(tableModel.getValueAt(i, 0).toString());
+            field.setColumn(tableModel.getValueAt(i, 2).toString());
+            field.setColumnType(tableModel.getValueAt(i, 3).toString());
+            field.setColumnSize(tableModel.getValueAt(i, 4).toString());
+            field.setComment(tableModel.getValueAt(i, 5).toString());
+            fields.add(field);
+        }
+        return fields;
     }
 
     private void setFields(List<Field> fields){
@@ -175,6 +254,29 @@ public class ColumnEditorFrame extends JFrame {
             dialog.setVisible(true);
 
         }
+    }
+
+    public void gen(AnActionEvent anActionEvent, List<String> groups, CodeGenContext context){
+
+        Project project = PsiUtil.getProject(anActionEvent);
+        PsiDirectory psiDirectory = PsiUtil.browseForFile(project);
+        FileFactory fileFactory = new FileFactory(project, psiDirectory);
+
+        Map<String, String> params = new HashMap<>();
+        params.putAll(DefaultParams.getInstance());
+        params.putAll(settingManager.getVariablesSetting().getParams());
+        context.set$(params);
+
+        WriteCommandAction.runWriteCommandAction(PsiUtil.getProject(anActionEvent), ()-> {
+            try {
+                for (CodeTemplate codeTemplate : settingManager.getTemplatesSetting().getGroups().get(0).getTemplates()) {
+                    FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
+                    fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
 }

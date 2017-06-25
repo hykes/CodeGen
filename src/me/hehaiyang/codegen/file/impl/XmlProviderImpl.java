@@ -1,17 +1,17 @@
 package me.hehaiyang.codegen.file.impl;
 
 import com.github.jknack.handlebars.Template;
-import com.intellij.ide.IdeView;
 import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiDirectory;
 import me.hehaiyang.codegen.file.FileProvider;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 import me.hehaiyang.codegen.utils.PsiUtil;
 
 public class XmlProviderImpl extends FileProvider {
 
-    public XmlProviderImpl(Project project, IdeView ideView) {
-        super(project, ideView);
+    public XmlProviderImpl(Project project, PsiDirectory psiDirectory) {
+        super(project, psiDirectory);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class XmlProviderImpl extends FileProvider {
         Template fileNameTemp = handlebars.compileInline(fileName);
         String outputName = fileNameTemp.apply(BuilderUtil.transBean2Map(context));
 
-        PsiUtil.createFile(project, ideView, outputName + XmlFileType.DOT_DEFAULT_EXTENSION, data, XmlFileType.INSTANCE);
+        PsiUtil.createFile(project, psiDirectory, outputName + XmlFileType.DOT_DEFAULT_EXTENSION, data, XmlFileType.INSTANCE);
     }
 
 }

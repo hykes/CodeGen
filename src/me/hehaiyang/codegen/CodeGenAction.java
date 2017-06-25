@@ -17,16 +17,13 @@ public class CodeGenAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-//        Project project = PsiUtil.getProject(anActionEvent);
-//        PsiDirectory psiDirectory = PsiUtil.browseForFile(project);
-//        PsiUtil.createFile(project, psiDirectory,"ColumnEditorFrame.java", "public class ss{}", JavaFileType.INSTANCE);
 
         SettingManager settingManager = SettingManager.getInstance();
 
         JFrame startFrame;
 
         if(settingManager.getConfigSetting().isDatabaseBox()){
-            startFrame = new DatabaseWindow();
+            startFrame = new DatabaseWindow(anActionEvent);
             startFrame.setSize(350, 180);
         }else{
             startFrame = new MarkDownWindow(anActionEvent);
