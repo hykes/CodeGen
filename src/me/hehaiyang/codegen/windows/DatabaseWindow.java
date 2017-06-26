@@ -26,6 +26,7 @@ public class DatabaseWindow extends JFrame{
 
         JPanel configPanel = new JPanel();
 
+        configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
         ComboBox databaseBox=new ComboBox();
         JButton connectBtn = new JButton("connect");
 

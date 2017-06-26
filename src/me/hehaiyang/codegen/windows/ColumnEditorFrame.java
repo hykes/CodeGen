@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
@@ -102,8 +101,9 @@ public class ColumnEditorFrame extends JFrame {
             String tableName = tableCnText.getText().trim();
             // 组装数据
             CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, getFields());
-
-            gen(anActionEvent, list, context);
+            Project project = PsiUtil.getProject(anActionEvent);
+            PsiDirectory psiDirectory = PsiUtil.browseForFile(project);
+            gen(project, psiDirectory, list, context);
         });
         groupPanel.add(genButton);
 
@@ -256,10 +256,8 @@ public class ColumnEditorFrame extends JFrame {
         }
     }
 
-    public void gen(AnActionEvent anActionEvent, List<String> groups, CodeGenContext context){
+    public void gen(Project project, PsiDirectory psiDirectory, List<String> groups, CodeGenContext context){
 
-        Project project = PsiUtil.getProject(anActionEvent);
-        PsiDirectory psiDirectory = PsiUtil.browseForFile(project);
         FileFactory fileFactory = new FileFactory(project, psiDirectory);
 
         Map<String, String> params = new HashMap<>();
@@ -267,7 +265,7 @@ public class ColumnEditorFrame extends JFrame {
         params.putAll(settingManager.getVariablesSetting().getParams());
         context.set$(params);
 
-        WriteCommandAction.runWriteCommandAction(PsiUtil.getProject(anActionEvent), ()-> {
+        WriteCommandAction.runWriteCommandAction(project, ()-> {
             try {
                 for (CodeTemplate codeTemplate : settingManager.getTemplatesSetting().getGroups().get(0).getTemplates()) {
                     FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());

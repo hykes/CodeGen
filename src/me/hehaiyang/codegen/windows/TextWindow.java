@@ -17,7 +17,6 @@ public class TextWindow extends JFrame {
     private Project project;
 
     private JPanel codeGenJPanel;
-    private JPanel paramsJPanel;
     private JPanel actionJpanel;
     private JButton cancel;
     private JButton sure;
@@ -25,7 +24,6 @@ public class TextWindow extends JFrame {
     private JTextPane codeJTextPane;
     private JPanel tipsJPanel;
     private JLabel tipslabel;
-
 
     private JCheckBox markdownBox;
     private JCheckBox sqlScriptBox;
@@ -45,14 +43,7 @@ public class TextWindow extends JFrame {
     private void init() {
 
         markdownBox = new JCheckBox("Use MarkDown");
-        markdownBox.setMnemonic('b');
-        markdownBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
+        markdownBox.setMnemonic('m');
         sqlScriptBox = new JCheckBox("Use SqlScript");
         sqlScriptBox.setMnemonic('s');
         sqlScriptBox.setVisible(true);
@@ -61,7 +52,7 @@ public class TextWindow extends JFrame {
         boxes.setLayout(new BoxLayout(boxes, BoxLayout.Y_AXIS));
         boxes.add(markdownBox);
         boxes.add(sqlScriptBox);
-        add(boxes, BorderLayout.NORTH);
+        codeGenJPanel.add(boxes, BorderLayout.NORTH);
 
         sure.addActionListener(e -> {
             try {

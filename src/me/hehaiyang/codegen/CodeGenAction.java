@@ -30,6 +30,7 @@ public class CodeGenAction extends AnAction {
             startFrame.setSize(800, 400);
         }
 
+        startFrame.setResizable(false);
         startFrame.setAlwaysOnTop(true);
         startFrame.setLocationRelativeTo(null);
         startFrame.setVisible(true);
