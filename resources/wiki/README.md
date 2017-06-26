@@ -8,6 +8,10 @@ Preferences -> Plugins -> Browse repositories -> [search] CodeGen
 
 ## Usage
 
+shift + command + g
+
+Tools -> CodeGen
+
 
 ## Options
 

@@ -100,8 +100,6 @@ public class ColumnEditorFrame extends JFrame {
             String table = tableText.getText().trim();
             String tableName = tableCnText.getText().trim();
 
-            thisFrame.setVisible(false);
-
             // 组装数据
             CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, getFields());
             PsiDirectory psiDirectory = PsiUtil.browseForFile(ideaContext.getProject());
