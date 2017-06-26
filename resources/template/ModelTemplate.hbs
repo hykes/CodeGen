@@ -1,0 +1,37 @@
+
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * Desc:
+ * Mail: {{$.email}}
+ * Date: {{$.Now}}
+ */
+@Data
+public class {{model}} implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 自增主键
+     */
+    private Long id;
+    {{#each fields}}
+    /**
+     * {{comment}}
+     */
+    private {{fieldType}} {{field}};
+    {{/each}}
+    /**
+     * 创建时间
+     */
+    private Date createdAt;
+
+    /**
+     * 更新时间
+     */
+    private Date updatedAt;
+
+}

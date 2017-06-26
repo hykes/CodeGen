@@ -87,6 +87,7 @@ public class ColumnEditorFrame extends JFrame {
         List<CodeGroup> groups = settingManager.getTemplatesSetting().getGroups();
         groups.forEach( it -> {
             JCheckBox groupBox = new JCheckBox(it.getName());
+            groupBox.setName(it.getId());
             groupPanel.add(groupBox);
         });
         groupPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -104,8 +105,7 @@ public class ColumnEditorFrame extends JFrame {
 
             // 组装数据
             CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, getFields());
-            PsiDirectory psiDirectory = PsiUtil.browseForFile(ideaContext.getProject());
-            gen(ideaContext.getProject(), psiDirectory, list, context);
+            gen(ideaContext.getProject(), list, context);
             dispose();
         });
         groupPanel.add(genButton);
@@ -123,7 +123,7 @@ public class ColumnEditorFrame extends JFrame {
         for(int i=0;i<count;i++){
             Component c=ct.getComponent(i);
             if(c instanceof JCheckBox && ((JCheckBox)c).isSelected()){
-                list.add(((JCheckBox) c).getText());
+                list.add(c.getName());
             }
             else if(c instanceof Container){
                 getAllJCheckBoxValue((Container)c,list);
@@ -263,25 +263,32 @@ public class ColumnEditorFrame extends JFrame {
         }
     }
 
-    public void gen(Project project, PsiDirectory psiDirectory, List<String> groups, CodeGenContext context){
-
-        FileFactory fileFactory = new FileFactory(project, psiDirectory);
+    public void gen(Project project, List<String> groups, CodeGenContext context){
 
         Map<String, String> params = new HashMap<>();
         params.putAll(DefaultParams.getInstance());
         params.putAll(settingManager.getVariablesSetting().getParams());
         context.set$(params);
 
-        WriteCommandAction.runWriteCommandAction(project, ()-> {
-            try {
-                for (CodeTemplate codeTemplate : settingManager.getTemplatesSetting().getGroups().get(0).getTemplates()) {
-                    FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
-                    fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
+        Map<String, List<CodeTemplate>> templatesMap = settingManager.getTemplatesSetting().getTemplatesMap();
+
+        for(String id: groups){
+
+            PsiDirectory psiDirectory = PsiUtil.browseForFile(project);
+            FileFactory fileFactory = new FileFactory(project, psiDirectory);
+
+            WriteCommandAction.runWriteCommandAction(project, ()-> {
+                try {
+                    for (CodeTemplate codeTemplate : templatesMap.get(id)) {
+                        FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
+                        fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
+            });
+        }
+
     }
 
 }

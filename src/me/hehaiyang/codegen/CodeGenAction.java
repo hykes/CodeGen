@@ -31,7 +31,7 @@ public class CodeGenAction extends AnAction {
             startFrame.setSize(350, 180);
         }else{
             startFrame = new TextWindow(ideaContext);
-            startFrame.setSize(800, 400);
+            startFrame.setSize(500, 350);
         }
 
         startFrame.setResizable(false);

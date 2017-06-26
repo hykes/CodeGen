@@ -8,7 +8,6 @@ import me.hehaiyang.codegen.model.IdeaContext;
 import me.hehaiyang.codegen.parser.Parser;
 import me.hehaiyang.codegen.parser.impl.DefaultParser;
 import me.hehaiyang.codegen.parser.impl.SimpleParser;
-import me.hehaiyang.codegen.utils.ParseUtils;
 
 import javax.swing.*;
 import java.awt.*;

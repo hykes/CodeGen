@@ -29,7 +29,7 @@ public class DatabaseWindow extends JFrame{
         configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
         ComboBox databaseBox=new ComboBox();
         JButton connectBtn = new JButton("connect");
-        
+
         List<Database> databases = settingManager.getDatabasesSetting().getDatabases();
         if(databases != null && !databases.isEmpty()){
             databaseBox.setRenderer(new ComboBoxCellRenderer());
@@ -64,8 +64,8 @@ public class DatabaseWindow extends JFrame{
 
         configPanel.add(comboBox);
 
-        JButton tableColumnBtn = new JButton("getColumn");
-        tableColumnBtn.addActionListener( e ->{
+        JButton sureBtn = new JButton("sure");
+        sureBtn.addActionListener( e ->{
             Database database = (Database) databaseBox.getSelectedItem();
             String table = comboBox.getSelectedItem().toString();
             DBOperation op = new DBOperation();
@@ -78,11 +78,9 @@ public class DatabaseWindow extends JFrame{
             frame.setVisible(true);
             frame.setResizable(false);
             dispose();
-//            thisFrame.setVisible(false);
-
         });
 
-        configPanel.add(tableColumnBtn);
+        configPanel.add(sureBtn);
 
         add(configPanel, BorderLayout.CENTER);
 

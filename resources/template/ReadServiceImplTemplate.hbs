@@ -1,0 +1,59 @@
+
+import io.terminus.common.model.PageInfo;
+import io.terminus.common.model.Paging;
+import io.terminus.common.model.Response;
+import io.terminus.boot.rpc.common.annotation.RpcProvider;
+
+import com.google.common.base.Throwables;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+/**
+ * Desc: {{modelName}}读服务实现
+ * Mail: {{$.email}}
+ * Date: {{$.Now}}
+ */
+@Slf4j
+@Service
+@RpcProvider
+public class {{model}}ReadServiceImpl implements {{model}}ReadService {
+
+    @Autowired
+    private {{model}}Dao {{LowerCase model}}Dao;
+
+    @Override
+    public Response<{{model}}> findById(Long id) {
+        try{
+            return Response.ok({{LowerCase model}}Dao.load(id));
+        }catch (Exception e){
+            log.error("failed to find {{LowerCase model}} by id:{}, cause:{}", id, Throwables.getStackTraceAsString(e));
+            return Response.fail("{{LowerCase model}}.find.fail");
+        }
+    }
+
+    @Override
+    public Response<Paging<{{model}}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria) {
+        try{
+            PageInfo pageInfo = new PageInfo(pageNo, pageSize);
+            return Response.ok({{LowerCase model}}Dao.paging(pageInfo.getOffset(), pageInfo.getLimit(), criteria));
+        }catch (Exception e){
+            log.error("failed to paging {{LowerCase model}} by pageNo:{} pageSize:{}, cause:{}", pageNo, pageSize, Throwables.getStackTraceAsString(e));
+            return Response.fail("{{LowerCase model}}.paging.fail");
+        }
+    }
+
+    @Override
+    public Response<List<{{model}}>> list(Map<String, Object> criteria) {
+        try{
+            return Response.ok({{LowerCase model}}Dao.list(criteria));
+        }catch (Exception e){
+            log.error("failed to list {{LowerCase model}} , cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("{{LowerCase model}} .list.fail");
+        }
+    }
+
+}
