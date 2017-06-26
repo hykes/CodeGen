@@ -3,6 +3,7 @@ package me.hehaiyang.codegen.model;
 
 import lombok.Data;
 import me.hehaiyang.codegen.utils.BuilderUtil;
+import me.hehaiyang.codegen.windows.DBOperation;
 
 import java.io.Serializable;
 
@@ -61,6 +62,8 @@ public class Field implements Serializable{
     }
 
     public void setColumnType(String columnType) {
+
         this.columnType = columnType;
+        this.fieldType = DBOperation.toJavaType(columnType);
     }
 }

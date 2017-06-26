@@ -1,6 +1,5 @@
 package me.hehaiyang.codegen.windows;
 
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.model.Field;
@@ -30,8 +29,7 @@ public class DatabaseWindow extends JFrame{
         configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
         ComboBox databaseBox=new ComboBox();
         JButton connectBtn = new JButton("connect");
-
-
+        
         List<Database> databases = settingManager.getDatabasesSetting().getDatabases();
         if(databases != null && !databases.isEmpty()){
             databaseBox.setRenderer(new ComboBoxCellRenderer());

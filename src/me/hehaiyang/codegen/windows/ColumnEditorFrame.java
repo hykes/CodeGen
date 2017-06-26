@@ -22,6 +22,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Desc:
@@ -47,6 +48,7 @@ public class ColumnEditorFrame extends JFrame {
         setLayout(new BorderLayout());
 
         final JPanel topPanel = new JPanel(new GridLayout(2, 4));
+        topPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         topPanel.add(new JLabel("model"));
         JTextField modelText = new JTextField();
         topPanel.add(modelText);
@@ -64,7 +66,7 @@ public class ColumnEditorFrame extends JFrame {
 
         final JPanel mainPanel = new JPanel(new GridLayout(1, 1));
         mainPanel.setPreferredSize(JBUI.size(300, 400));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
         variablesTable.getTableHeader().setReorderingAllowed(false);   //不可整列移动
         variablesTable.getTableHeader().setResizingAllowed(false);   //不可拉动表格
@@ -139,8 +141,12 @@ public class ColumnEditorFrame extends JFrame {
             field.setFieldType(tableModel.getValueAt(i, 0).toString());
             field.setColumn(tableModel.getValueAt(i, 2).toString());
             field.setColumnType(tableModel.getValueAt(i, 3).toString());
-            field.setColumnSize(tableModel.getValueAt(i, 4).toString());
-            field.setComment(tableModel.getValueAt(i, 5).toString());
+            if(Objects.nonNull(tableModel.getValueAt(i, 4))){
+                field.setColumnSize(tableModel.getValueAt(i, 4).toString());
+            }
+            if(Objects.nonNull(tableModel.getValueAt(i, 5))){
+                field.setComment(tableModel.getValueAt(i, 5).toString());
+            }
             fields.add(field);
         }
         return fields;

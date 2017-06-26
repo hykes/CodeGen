@@ -30,7 +30,7 @@ public class CodeGenAction extends AnAction {
             startFrame = new DatabaseWindow(ideaContext);
             startFrame.setSize(350, 180);
         }else{
-            startFrame = new TextWindow();
+            startFrame = new TextWindow(ideaContext);
             startFrame.setSize(800, 400);
         }
 

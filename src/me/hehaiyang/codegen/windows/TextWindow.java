@@ -1,8 +1,13 @@
 package me.hehaiyang.codegen.windows;
 
+import com.google.common.collect.Lists;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.ScrollPaneFactory;
 import me.hehaiyang.codegen.model.Field;
+import me.hehaiyang.codegen.model.IdeaContext;
+import me.hehaiyang.codegen.parser.Parser;
+import me.hehaiyang.codegen.parser.impl.DefaultParser;
+import me.hehaiyang.codegen.parser.impl.SimpleParser;
 import me.hehaiyang.codegen.utils.ParseUtils;
 
 import javax.swing.*;
@@ -21,19 +26,23 @@ public class TextWindow extends JFrame {
     private JButton cancel;
     private JButton sure;
 
-    public TextWindow() {
+    private JFrame thisFrame;
+
+    public TextWindow(IdeaContext ideaContext) {
         setTitle("CodeGen");
         setLayout(new BorderLayout());
-
-        this.init();
+        thisFrame = this;
+        this.init(ideaContext);
     }
 
-    private void init() {
+    private void init(IdeaContext ideaContext) {
 
         markdownBox = new JCheckBox("Use MarkDown");
         markdownBox.setMnemonic('m');
+        markdownBox.setName("markdown");
         sqlScriptBox = new JCheckBox("Use SqlScript");
         sqlScriptBox.setMnemonic('s');
+        sqlScriptBox.setName("sqlScript");
         sqlScriptBox.setVisible(true);
 
         JPanel boxes = new JPanel();
@@ -62,38 +71,62 @@ public class TextWindow extends JFrame {
 
         sure.addActionListener(e -> {
             try {
+                List<String> list = Lists.newArrayList();
+                getAllJCheckBoxValue(boxes, list);
 
-                String markdown = codeJTextPane.getText().trim();
+                String text = codeJTextPane.getText().trim();
 
-                List<Field> fields = ParseUtils.parseString(markdown);
+                List<Field> fields;
+                if("sqlScript".endsWith(list.get(0))){
+
+                    Parser parser = new DefaultParser();
+                    fields = parser.parseSQL(text);
+
+                }else {
+
+                    Parser parser = new SimpleParser();
+                    fields = parser.parseSQL(text);
+                }
+
                 if (fields == null || fields.isEmpty()) {
-                    setTips(true, "表结构设计读取失败，请检查！");
+                    setTips(true, "解析失败，请检查文本格式！");
                     return;
                 }
+                ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, fields);
+                frame.setSize(800, 400);
+                frame.setAlwaysOnTop(false);
+                frame.setLocationRelativeTo(thisFrame);
+                frame.setVisible(true);
+                frame.setResizable(false);
 
                 dispose();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
-        cancel.addActionListener(e -> {
-            dispose();
-        });
+        cancel.addActionListener(e -> dispose());
+    }
+
+    public static List<String> getAllJCheckBoxValue(Container ct, List<String> list){
+        if(list==null){
+            list= Lists.newArrayList();
+        }
+        int count=ct.getComponentCount();
+        for(int i=0;i<count;i++){
+            Component c=ct.getComponent(i);
+            if(c instanceof JCheckBox && ((JCheckBox)c).isSelected()){
+                list.add(c.getName());
+            }
+            else if(c instanceof Container){
+                getAllJCheckBoxValue((Container)c,list);
+            }
+        }
+        return list;
     }
 
     private void setTips(boolean operator, String tips) {
         tipsLabel.setText(tips);
         tipsLabel.setVisible(operator);
-    }
-
-    public static void main(String[] args) {
-
-        TextWindow startFrame = new TextWindow();
-        startFrame.setSize(800, 400);
-        startFrame.setResizable(false);
-        startFrame.setAlwaysOnTop(true);
-        startFrame.setLocationRelativeTo(null);
-        startFrame.setVisible(true);
     }
 
 }
