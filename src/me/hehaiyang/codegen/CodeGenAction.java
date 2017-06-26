@@ -3,7 +3,9 @@ package me.hehaiyang.codegen;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import me.hehaiyang.codegen.model.IdeaContext;
 import me.hehaiyang.codegen.setting.SettingManager;
+import me.hehaiyang.codegen.utils.PsiUtil;
 import me.hehaiyang.codegen.windows.DatabaseWindow;
 import me.hehaiyang.codegen.windows.TextWindow;
 
@@ -20,13 +22,15 @@ public class CodeGenAction extends AnAction {
 
         SettingManager settingManager = SettingManager.getInstance();
 
-        JFrame startFrame;
+        IdeaContext ideaContext = new IdeaContext();
+        ideaContext.setProject(PsiUtil.getProject(anActionEvent));
 
+        JFrame startFrame;
         if(settingManager.getConfigSetting().isDatabaseBox()){
-            startFrame = new DatabaseWindow(anActionEvent);
+            startFrame = new DatabaseWindow(ideaContext);
             startFrame.setSize(350, 180);
         }else{
-            startFrame = new TextWindow(anActionEvent);
+            startFrame = new TextWindow(ideaContext);
             startFrame.setSize(800, 400);
         }
 

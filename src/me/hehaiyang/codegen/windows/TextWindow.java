@@ -1,15 +1,12 @@
 package me.hehaiyang.codegen.windows;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import me.hehaiyang.codegen.model.Field;
+import me.hehaiyang.codegen.model.IdeaContext;
 import me.hehaiyang.codegen.utils.ParseUtils;
-import me.hehaiyang.codegen.utils.PsiUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class TextWindow extends JFrame {
@@ -28,11 +25,11 @@ public class TextWindow extends JFrame {
     private JCheckBox markdownBox;
     private JCheckBox sqlScriptBox;
 
-    public TextWindow(AnActionEvent anActionEvent) {
+    public TextWindow(IdeaContext ideaContext) {
         setContentPane(codeGenJPanel);
         setTitle("CodeGen");
 
-        this.project = PsiUtil.getProject(anActionEvent);
+        this.project = ideaContext.getProject();
 
         codeJTextPane.requestFocus(true);
 

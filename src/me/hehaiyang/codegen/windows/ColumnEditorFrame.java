@@ -1,7 +1,6 @@
 package me.hehaiyang.codegen.windows;
 
 import com.google.common.collect.Lists;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
@@ -12,10 +11,7 @@ import com.intellij.util.ui.JBUI;
 import me.hehaiyang.codegen.constants.DefaultParams;
 import me.hehaiyang.codegen.file.FileFactory;
 import me.hehaiyang.codegen.file.FileProvider;
-import me.hehaiyang.codegen.model.CodeGenContext;
-import me.hehaiyang.codegen.model.CodeGroup;
-import me.hehaiyang.codegen.model.CodeTemplate;
-import me.hehaiyang.codegen.model.Field;
+import me.hehaiyang.codegen.model.*;
 import me.hehaiyang.codegen.setting.SettingManager;
 import me.hehaiyang.codegen.setting.ui.variable.AddDialog;
 import me.hehaiyang.codegen.utils.PsiUtil;
@@ -38,12 +34,16 @@ public class ColumnEditorFrame extends JFrame {
 
     private final JBTable variablesTable = new JBTable();
 
-    public ColumnEditorFrame(AnActionEvent anActionEvent, List<Field> fields) {
-        init(anActionEvent);
+    private JFrame thisFrame;
+
+    public ColumnEditorFrame(IdeaContext ideaContext, List<Field> fields) {
+        thisFrame = this;
+
+        init(ideaContext);
         setFields(fields);
     }
 
-    private void init(AnActionEvent anActionEvent){
+    private void init(IdeaContext ideaContext){
         setLayout(new BorderLayout());
 
         final JPanel topPanel = new JPanel(new GridLayout(2, 4));
@@ -99,11 +99,13 @@ public class ColumnEditorFrame extends JFrame {
             String modelName = modelCnText.getText().trim();
             String table = tableText.getText().trim();
             String tableName = tableCnText.getText().trim();
+
+            thisFrame.setVisible(false);
+
             // 组装数据
             CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, getFields());
-            Project project = PsiUtil.getProject(anActionEvent);
-            PsiDirectory psiDirectory = PsiUtil.browseForFile(project);
-            gen(project, psiDirectory, list, context);
+            PsiDirectory psiDirectory = PsiUtil.browseForFile(ideaContext.getProject());
+            gen(ideaContext.getProject(), psiDirectory, list, context);
         });
         groupPanel.add(genButton);
 

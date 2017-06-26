@@ -1,9 +1,10 @@
 package me.hehaiyang.codegen.windows;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.model.Field;
+import me.hehaiyang.codegen.model.IdeaContext;
 import me.hehaiyang.codegen.setting.SettingManager;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public class DatabaseWindow extends JFrame{
 
-    public DatabaseWindow(AnActionEvent anActionEvent){
+    public DatabaseWindow(IdeaContext ideaContext){
         setLayout(new BorderLayout());
         JFrame thisFrame = this;
 
@@ -72,7 +73,7 @@ public class DatabaseWindow extends JFrame{
             DBOperation op = new DBOperation();
             Connection conn = op.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
             List<Field> fields = op.getTableColumn(table, conn);
-            ColumnEditorFrame frame = new ColumnEditorFrame(anActionEvent, fields);
+            ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, fields);
             frame.setSize(800, 400);
             frame.setAlwaysOnTop(false);
             frame.setLocationRelativeTo(thisFrame);
