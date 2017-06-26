@@ -1,8 +1,8 @@
 package me.hehaiyang.codegen.windows;
 
-import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageType;
+import com.intellij.ui.ScrollPaneFactory;
 import me.hehaiyang.codegen.model.Field;
-import me.hehaiyang.codegen.model.IdeaContext;
 import me.hehaiyang.codegen.utils.ParseUtils;
 
 import javax.swing.*;
@@ -11,30 +11,21 @@ import java.util.List;
 
 public class TextWindow extends JFrame {
 
-    private Project project;
-
-    private JPanel codeGenJPanel;
-    private JPanel actionJpanel;
-    private JButton cancel;
-    private JButton sure;
-    private JScrollPane codeJScrollPane;
-    private JTextPane codeJTextPane;
-    private JPanel tipsJPanel;
-    private JLabel tipslabel;
-
     private JCheckBox markdownBox;
     private JCheckBox sqlScriptBox;
 
-    public TextWindow(IdeaContext ideaContext) {
-        setContentPane(codeGenJPanel);
+    private JTextPane codeJTextPane;
+
+    private JPanel actionPanel;
+    private JLabel tipsLabel;
+    private JButton cancel;
+    private JButton sure;
+
+    public TextWindow() {
         setTitle("CodeGen");
-
-        this.project = ideaContext.getProject();
-
-        codeJTextPane.requestFocus(true);
+        setLayout(new BorderLayout());
 
         this.init();
-
     }
 
     private void init() {
@@ -46,10 +37,28 @@ public class TextWindow extends JFrame {
         sqlScriptBox.setVisible(true);
 
         JPanel boxes = new JPanel();
-        boxes.setLayout(new BoxLayout(boxes, BoxLayout.Y_AXIS));
+        boxes.setLayout(new BoxLayout(boxes, BoxLayout.X_AXIS));
+        boxes.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         boxes.add(markdownBox);
         boxes.add(sqlScriptBox);
-        codeGenJPanel.add(boxes, BorderLayout.NORTH);
+        add(boxes, BorderLayout.NORTH);
+
+        codeJTextPane = new JTextPane();
+        codeJTextPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        add(ScrollPaneFactory.createScrollPane(codeJTextPane), BorderLayout.CENTER);
+
+        actionPanel = new JPanel();
+        actionPanel.add(cancel = new JButton("cancel"));
+        actionPanel.add(sure = new JButton("sure"));
+
+        final JPanel infoPanel = new JPanel(new BorderLayout());
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        tipsLabel = new JLabel("You can defined some variables for template.",
+                MessageType.INFO.getDefaultIcon(), SwingConstants.LEFT);
+        infoPanel.add(tipsLabel, BorderLayout.WEST);
+
+        infoPanel.add(actionPanel, BorderLayout.CENTER);
+        add(infoPanel, BorderLayout.SOUTH);
 
         sure.addActionListener(e -> {
             try {
@@ -58,14 +67,11 @@ public class TextWindow extends JFrame {
 
                 List<Field> fields = ParseUtils.parseString(markdown);
                 if (fields == null || fields.isEmpty()) {
-                    setTipsVisbile(true, "表结构设计读取失败，请检查！");
-                    codeJTextPane.requestFocus(true);
+                    setTips(true, "表结构设计读取失败，请检查！");
                     return;
                 }
 
-
-                this.dispose();
-
+                dispose();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -75,14 +81,19 @@ public class TextWindow extends JFrame {
         });
     }
 
-    /**
-     * 设置tips
-     * @param operator
-     * @param tips
-     */
-    private void setTipsVisbile(boolean operator, String tips) {
-        tipslabel.setText(tips);
-        tipslabel.setVisible(operator);
+    private void setTips(boolean operator, String tips) {
+        tipsLabel.setText(tips);
+        tipsLabel.setVisible(operator);
+    }
+
+    public static void main(String[] args) {
+
+        TextWindow startFrame = new TextWindow();
+        startFrame.setSize(800, 400);
+        startFrame.setResizable(false);
+        startFrame.setAlwaysOnTop(true);
+        startFrame.setLocationRelativeTo(null);
+        startFrame.setVisible(true);
     }
 
 }

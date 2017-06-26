@@ -104,6 +104,7 @@ public class ColumnEditorFrame extends JFrame {
             CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, getFields());
             PsiDirectory psiDirectory = PsiUtil.browseForFile(ideaContext.getProject());
             gen(ideaContext.getProject(), psiDirectory, list, context);
+            dispose();
         });
         groupPanel.add(genButton);
 

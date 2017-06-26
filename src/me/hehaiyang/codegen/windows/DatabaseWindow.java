@@ -79,7 +79,8 @@ public class DatabaseWindow extends JFrame{
             frame.setLocationRelativeTo(thisFrame);
             frame.setVisible(true);
             frame.setResizable(false);
-            thisFrame.setVisible(false);
+            dispose();
+//            thisFrame.setVisible(false);
 
         });
 
