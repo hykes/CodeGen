@@ -15,9 +15,8 @@ import java.awt.*;
  */
 public class ConfigUI extends JPanel implements UIConfigurable {
 
-    private JCheckBox markdownBox;
+    private JCheckBox textBox;
     private JCheckBox databaseBox;
-    private JCheckBox sqlScriptBox;
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
@@ -30,46 +29,39 @@ public class ConfigUI extends JPanel implements UIConfigurable {
         setLayout(new BorderLayout());
         JPanel c = this;
 
-        markdownBox = new JCheckBox("Use MarkDown Schema");
-        markdownBox.setMnemonic('M');
-        markdownBox.setToolTipText("generate code by markdown schema");
-        markdownBox.addActionListener(e -> markdownChanged());
-        markdownBox.setEnabled(false);
+        textBox = new JCheckBox("Use Text");
+        textBox.setMnemonic('M');
+        textBox.setToolTipText("generate code by text");
+        textBox.addActionListener(e -> markdownChanged());
+        textBox.setEnabled(false);
 
-        databaseBox = new JCheckBox("Use Database Schema");
+        databaseBox = new JCheckBox("Use Database");
         databaseBox.setMnemonic('D');
-        databaseBox.setToolTipText("generate code by database schema");
+        databaseBox.setToolTipText("generate code by database");
         databaseBox.addActionListener(e -> databaseChanged());
-
-        sqlScriptBox = new JCheckBox("Use SqlScript Schema");
-        sqlScriptBox.setMnemonic('S');
-        sqlScriptBox.setToolTipText("generate code by sqlScript schema");
-        sqlScriptBox.setEnabled(false);
 
         JPanel generate = new JPanel(new BorderLayout());
         generate.setBorder(IdeBorderFactory.createTitledBorder("Generate", true));
         c.add(c = new JPanel(new BorderLayout()), BorderLayout.NORTH);
         c.add(generate, BorderLayout.NORTH);
 
-        generate.add(markdownBox, BorderLayout.NORTH);
+        generate.add(textBox, BorderLayout.NORTH);
         generate.add(generate = new JPanel(new BorderLayout()), BorderLayout.SOUTH);
         generate.add(databaseBox, BorderLayout.NORTH);
-        generate.add(generate = new JPanel(new BorderLayout()), BorderLayout.SOUTH);
-        generate.add(sqlScriptBox, BorderLayout.NORTH);
     }
 
     public void setConfig(@NotNull ConfigSetting configuration) {
-        markdownBox.setSelected(configuration.isMarkdownBox());
+        textBox.setSelected(configuration.isMarkdownBox());
         databaseBox.setSelected(configuration.isDatabaseBox());
         databaseChanged();
     }
 
     private void markdownChanged() {
-        databaseBox.setSelected(!markdownBox.isSelected());
+        databaseBox.setSelected(!textBox.isSelected());
     }
 
     private void databaseChanged() {
-        markdownBox.setSelected(!databaseBox.isSelected());
+        textBox.setSelected(!databaseBox.isSelected());
     }
 
     @Override
@@ -78,7 +70,7 @@ public class ConfigUI extends JPanel implements UIConfigurable {
         if(setting.isDatabaseBox() && !databaseBox.isSelected()){
             return true;
         }
-        if(setting.isMarkdownBox() && !markdownBox.isSelected()){
+        if(setting.isMarkdownBox() && !textBox.isSelected()){
             return true;
         }
         return false;
@@ -87,7 +79,7 @@ public class ConfigUI extends JPanel implements UIConfigurable {
     @Override
     public void apply() {
         settingManager.getConfigSetting().setDatabaseBox(databaseBox.isSelected());
-        settingManager.getConfigSetting().setMarkdownBox(markdownBox.isSelected());
+        settingManager.getConfigSetting().setMarkdownBox(textBox.isSelected());
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import me.hehaiyang.codegen.setting.SettingManager;
 import me.hehaiyang.codegen.windows.DatabaseWindow;
-import me.hehaiyang.codegen.windows.MarkDownWindow;
+import me.hehaiyang.codegen.windows.TextWindow;
 
 import javax.swing.*;
 
@@ -26,7 +26,7 @@ public class CodeGenAction extends AnAction {
             startFrame = new DatabaseWindow(anActionEvent);
             startFrame.setSize(350, 180);
         }else{
-            startFrame = new MarkDownWindow(anActionEvent);
+            startFrame = new TextWindow(anActionEvent);
             startFrame.setSize(800, 400);
         }
 
