@@ -30,7 +30,7 @@ public class ConfigUI extends JPanel implements UIConfigurable {
         JPanel c = this;
 
         textBox = new JCheckBox("Use Text");
-        textBox.setMnemonic('M');
+        textBox.setMnemonic('T');
         textBox.setToolTipText("generate code by text");
         textBox.addActionListener(e -> markdownChanged());
         textBox.setEnabled(false);

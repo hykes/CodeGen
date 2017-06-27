@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  * Date: 2017/3/17
  */
 @Data
-@State(name = "CodeGen", storages = { @Storage(id = "other", file = "$APP_CONFIG$/format.xml") })
+@State(name = "CodeGen", storages = { @Storage(value = "$APP_CONFIG$/format.xml") })
 public class SettingManager implements PersistentStateComponent<SettingManager> {
 
     public static SettingManager getInstance() {

@@ -128,7 +128,7 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
             .setRemoveAction( it -> removeAction())
             .setEditAction( it -> editAction()).createPanel();
         final JPanel localPanel = new JPanel(new BorderLayout());
-        localPanel.setBorder(IdeBorderFactory.createTitledBorder("Database List", false));
+        localPanel.setBorder(IdeBorderFactory.createTitledBorder("Data Sources", false));
         localPanel.add(panel, BorderLayout.CENTER);
         mainPanel.add(localPanel);
 
@@ -136,11 +136,11 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
 
         final JPanel infoPanel = new JPanel(new BorderLayout());
         infoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        infoPanel.add(new JLabel("You can save some database .",
+        infoPanel.add(new JLabel("You can save some data sources .",
                 MessageType.INFO.getDefaultIcon(), SwingConstants.LEFT));
         add(infoPanel, BorderLayout.SOUTH);
 
-        databasesTable.getEmptyText().setText("No Databases");
+        databasesTable.getEmptyText().setText("No data sources");
     }
 
     private void setDatabases(DatabasesSetting databasesSetting){
