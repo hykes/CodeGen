@@ -52,7 +52,6 @@ ${MODULE_NAME} the name of the current module
 - 用户自定义变量
 
 
-
 - 配置
 生成模式 database markdown    
 

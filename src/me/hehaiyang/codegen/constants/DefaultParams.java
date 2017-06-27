@@ -17,6 +17,9 @@ public class DefaultParams {
         Calendar calendar = Calendar.getInstance();
         params.put("Year", String.valueOf(calendar.get(Calendar.YEAR)));
         params.put("Month", String.valueOf(calendar.get(Calendar.MONTH) + 1));
+        params.put("Day_Of_Month", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
+        params.put("Day_Of_Week", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)));
+        params.put("Day_Of_Week_In_Month", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH)));
         params.put("Date", String.valueOf(calendar.get(Calendar.DATE)));
         params.put("Hour", String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
         params.put("Minute", String.valueOf(calendar.get(Calendar.MINUTE)));

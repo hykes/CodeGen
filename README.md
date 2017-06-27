@@ -1,10 +1,60 @@
-# Intellij ideal 插件开发教程
+## CodeGen
 
-## 官方教程
-http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
+This plugin helps you to generate specific code by template.
 
+## Install
 
-## 使用案例
+Preferences -> Plugins -> Browse repositories -> [search] CodeGen
+
+## Usage
+
+shift + command + g
+
+Tools -> CodeGen
+
+## Options
+
+Preferences -> Tools -> CodeGen
+    
+1. use Text / use database
+2. in-house variables / predefined variables
+3. code templates
+4. data sources
+
+### In-house Variables
+
+```
+Predefined variables will take the following values:
+
+{{$.Year}} current year
+
+{{$.Month}} current month
+
+{{$.Date}} current system date
+
+{{$.Now}} current system time
+
+{{$.Day_Of_Month}} current day of the month
+
+{{$.Hour}} current hour
+
+{{$.Minute}} current minute
+
+{{$.Second}} current second
+
+<del>
+${PACKAGE_NAME} name of the package in which the new interface is created
+${NAME} name of the new interface specified by you in the Create New Class dialog
+${USER} current username system login name
+${PROJECT_NAME} the name of the current project
+${MODULE_NAME} the name of the current module
+${MONTH_NAME_SHORT} first 3 letters of the current month name. Example: Jan, Feb, etc.
+${MONTH_NAME_FULL} full name of the current month. Example: January, February, etc.
+<del>
+
+```
+
+### Text Cases
 根据下面的格式生成module、mapper、sql
 
 ```
@@ -20,16 +70,8 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 ## TODO
 
-1. 数据字典表格排序
-2. 新增模版
-3. 任意生成代码模版组合 模版组优先级概念
-4. serialVersionUID
-5. jdbc方式
-6. wiki
+1. serialVersionUID
+2. wiki
 
-
-1. 根据配置弹窗(markdown、database)
-2. mk弹窗，输入表设计／db弹窗，选择数据源(CRUD)，选择表
-3. 字段表格，可勾选字段，可编辑表格
-4. 勾选模版组
-5. 自动根据模版组存在的优先级，弹窗选择package，完成。
+## IDEA SDK DOCS
+http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
