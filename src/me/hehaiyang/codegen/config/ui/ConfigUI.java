@@ -1,8 +1,9 @@
-package me.hehaiyang.codegen.setting.ui;
+package me.hehaiyang.codegen.config.ui;
 
 import com.intellij.ui.IdeBorderFactory;
-import me.hehaiyang.codegen.setting.SettingManager;
-import me.hehaiyang.codegen.setting.UIConfigurable;
+import me.hehaiyang.codegen.config.SettingManager;
+import me.hehaiyang.codegen.config.UIConfigurable;
+import me.hehaiyang.codegen.config.setting.ConfigSetting;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

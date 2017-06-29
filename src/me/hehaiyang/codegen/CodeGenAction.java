@@ -4,7 +4,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import me.hehaiyang.codegen.model.IdeaContext;
-import me.hehaiyang.codegen.setting.SettingManager;
+import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.utils.PsiUtil;
 import me.hehaiyang.codegen.windows.DatabaseWindow;
 import me.hehaiyang.codegen.windows.TextWindow;

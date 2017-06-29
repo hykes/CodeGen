@@ -1,4 +1,4 @@
-package me.hehaiyang.codegen.setting.ui.variable;
+package me.hehaiyang.codegen.config.ui.variable;
 
 import javax.swing.*;
 

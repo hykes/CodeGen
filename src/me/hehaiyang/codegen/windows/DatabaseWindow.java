@@ -4,7 +4,7 @@ import com.intellij.openapi.ui.ComboBox;
 import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.IdeaContext;
-import me.hehaiyang.codegen.setting.SettingManager;
+import me.hehaiyang.codegen.config.SettingManager;
 
 import javax.swing.*;
 import java.awt.*;

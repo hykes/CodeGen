@@ -1,4 +1,4 @@
-package me.hehaiyang.codegen.setting.ui;
+package me.hehaiyang.codegen.config.ui;
 
 import me.hehaiyang.codegen.utils.ParseUtils;
 

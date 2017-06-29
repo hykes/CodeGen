@@ -3,7 +3,7 @@ package me.hehaiyang.codegen.constants;
 import com.google.common.collect.Lists;
 import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
-import me.hehaiyang.codegen.setting.SettingManager;
+import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.utils.ParseUtils;
 
 import java.io.IOException;

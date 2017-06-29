@@ -1,6 +1,7 @@
-package me.hehaiyang.codegen.setting.ui;
+package me.hehaiyang.codegen.config.setting;
 
 import lombok.Data;
+import me.hehaiyang.codegen.constants.DefaultParams;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,9 +17,7 @@ public class VariablesSetting {
    private Map<String, String> params = new HashMap<>();
 
     public VariablesSetting() {
-      params.put("author", "[ your name ]");
-      params.put("email", "[ your email ]");
-      params.put("mobile", "[ your mobile ]");
+        params.putAll(DefaultParams.getDefaultVariables());
     }
 
 }

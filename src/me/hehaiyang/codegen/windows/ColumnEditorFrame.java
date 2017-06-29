@@ -12,8 +12,8 @@ import me.hehaiyang.codegen.constants.DefaultParams;
 import me.hehaiyang.codegen.file.FileFactory;
 import me.hehaiyang.codegen.file.FileProvider;
 import me.hehaiyang.codegen.model.*;
-import me.hehaiyang.codegen.setting.SettingManager;
-import me.hehaiyang.codegen.setting.ui.variable.AddDialog;
+import me.hehaiyang.codegen.config.SettingManager;
+import me.hehaiyang.codegen.config.ui.variable.AddDialog;
 import me.hehaiyang.codegen.utils.PsiUtil;
 
 import javax.swing.*;

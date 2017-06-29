@@ -34,19 +34,19 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-    <applicationConfigurable groupId="tools" id="codeGen.configs" displayName="CodeGen" instance="me.hehaiyang.codegen.setting.configurable.ConfigsSettingConfigurable">
+    <applicationConfigurable groupId="tools" id="codeGen.configs" displayName="CodeGen" instance="me.hehaiyang.codegen.config.configurable.ConfigsSettingConfigurable">
       <configurable id="codeGen.variables" displayName="Variables"
-                    instance="me.hehaiyang.codegen.setting.configurable.VariablesSettingConfigurable"/>
+                    instance="me.hehaiyang.codegen.config.configurable.VariablesSettingConfigurable"/>
       <configurable id="codeGen.templates" displayName="Templates"
-                    instance="me.hehaiyang.codegen.setting.configurable.TemplatesSettingConfigurable"/>
+                    instance="me.hehaiyang.codegen.config.configurable.TemplatesSettingConfigurable"/>
       <configurable id="codeGen.databases" displayName="Databases"
-                    instance="me.hehaiyang.codegen.setting.configurable.DatabasesSettingConfigurable"/>
+                    instance="me.hehaiyang.codegen.config.configurable.DatabasesSettingConfigurable"/>
       <!--<configurable id="codeGen.wiki" displayName="Wiki"-->
                     <!--instance="me.hehaiyang.codegen.setting.configurable.WikiSettingConfigurable"/>-->
     </applicationConfigurable>
 
-    <applicationService serviceInterface="me.hehaiyang.codegen.setting.SettingManager"
-                        serviceImplementation="me.hehaiyang.codegen.setting.SettingManager"/>
+    <applicationService serviceInterface="me.hehaiyang.codegen.config.SettingManager"
+                        serviceImplementation="me.hehaiyang.codegen.config.SettingManager"/>
 
   </extensions>
 

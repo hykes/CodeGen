@@ -1,17 +1,18 @@
-package me.hehaiyang.codegen.setting.ui;
+package me.hehaiyang.codegen.config.ui;
 
 import com.google.common.collect.Lists;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
 import lombok.Data;
+import me.hehaiyang.codegen.config.setting.TemplatesSetting;
 import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
-import me.hehaiyang.codegen.setting.SettingManager;
-import me.hehaiyang.codegen.setting.UIConfigurable;
-import me.hehaiyang.codegen.setting.ui.template.TemplateEditor;
-import me.hehaiyang.codegen.setting.ui.template.TemplateTreeCellRenderer;
-import me.hehaiyang.codegen.setting.ui.variable.AddDialog;
+import me.hehaiyang.codegen.config.SettingManager;
+import me.hehaiyang.codegen.config.UIConfigurable;
+import me.hehaiyang.codegen.config.ui.template.TemplateEditor;
+import me.hehaiyang.codegen.config.ui.template.TemplateTreeCellRenderer;
+import me.hehaiyang.codegen.config.ui.variable.AddDialog;
 
 import javax.swing.*;
 import javax.swing.tree.*;

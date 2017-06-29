@@ -65,5 +65,3 @@ ${MODULE_NAME} the name of the current module
 ## Logs
 
 
-## License
-Copyright © 2017 [MIT License](https://spdx.org/licenses/MIT.html)

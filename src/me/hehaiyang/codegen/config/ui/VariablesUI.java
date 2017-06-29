@@ -1,13 +1,14 @@
-package me.hehaiyang.codegen.setting.ui;
+package me.hehaiyang.codegen.config.ui;
 
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.JBUI;
-import me.hehaiyang.codegen.setting.SettingManager;
-import me.hehaiyang.codegen.setting.UIConfigurable;
-import me.hehaiyang.codegen.setting.ui.variable.AddDialog;
+import me.hehaiyang.codegen.config.SettingManager;
+import me.hehaiyang.codegen.config.UIConfigurable;
+import me.hehaiyang.codegen.config.setting.VariablesSetting;
+import me.hehaiyang.codegen.config.ui.variable.AddDialog;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

@@ -85,12 +85,14 @@ CREATE TABLE `t_addresses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
+## Idea sdk docs
 
+http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 ## TODO
 
 1. serialVersionUID
 2. wiki
 
-## IDEA SDK DOCS
-http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
+## License
+Copyright © 2017 [MIT License](https://spdx.org/licenses/MIT.html)

@@ -1,6 +1,5 @@
-package me.hehaiyang.codegen.setting.ui.template;
+package me.hehaiyang.codegen.config.ui.template;
 
-import com.intellij.icons.AllIcons;
 import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
 

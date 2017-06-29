@@ -1,8 +1,8 @@
-package me.hehaiyang.codegen.setting.configurable;
+package me.hehaiyang.codegen.config.configurable;
 
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
-import me.hehaiyang.codegen.setting.ui.DatabasesUI;
+import me.hehaiyang.codegen.config.ui.VariablesUI;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,17 +10,17 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 /**
- * Desc: 数据库
+ * Desc: 变量
  * Mail: hehaiyangwork@qq.com
- * Date: 2017/5/31
+ * Date: 2017/3/17
  */
-public class DatabasesSettingConfigurable implements SearchableConfigurable {
+public class VariablesSettingConfigurable implements SearchableConfigurable {
 
-    private DatabasesUI databasesUI;
+    private VariablesUI variablesUI;
 
     @NotNull
     public String getId() {
-        return "codeGen.databases";
+        return "codeGen.variables";
     }
 
     @Nullable
@@ -41,31 +41,31 @@ public class DatabasesSettingConfigurable implements SearchableConfigurable {
 
     @Nullable
     public JComponent createComponent() {
-        if(databasesUI == null) {
-            databasesUI = new DatabasesUI();
+        if(variablesUI == null) {
+            variablesUI = new VariablesUI();
         }
-        return databasesUI;
+        return variablesUI;
     }
 
     public boolean isModified() {
-        return databasesUI != null && databasesUI.isModified();
+        return variablesUI != null && variablesUI.isModified();
     }
 
     public void apply() throws ConfigurationException {
-        if(databasesUI != null){
-            databasesUI.apply();
+        if(variablesUI != null){
+            variablesUI.apply();
         }
     }
 
     public void reset() {
-        if(databasesUI != null){
-            databasesUI.reset();
+        if(variablesUI != null){
+            variablesUI.reset();
         }
     }
 
     @Override
     public void disposeUIResources() {
-        this.databasesUI = null;
+        this.variablesUI = null;
     }
 
 }

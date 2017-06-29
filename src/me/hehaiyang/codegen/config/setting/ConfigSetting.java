@@ -1,4 +1,4 @@
-package me.hehaiyang.codegen.setting.ui;
+package me.hehaiyang.codegen.config.setting;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package me.hehaiyang.codegen.setting.ui.template;
+package me.hehaiyang.codegen.config.ui.template;
 
 import com.google.common.base.Strings;
 import com.intellij.openapi.editor.Document;

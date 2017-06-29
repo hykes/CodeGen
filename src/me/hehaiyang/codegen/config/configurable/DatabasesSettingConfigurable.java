@@ -1,8 +1,8 @@
-package me.hehaiyang.codegen.setting.configurable;
+package me.hehaiyang.codegen.config.configurable;
 
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
-import me.hehaiyang.codegen.setting.ui.TemplatesUI;
+import me.hehaiyang.codegen.config.ui.DatabasesUI;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,17 +10,17 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 /**
- * Desc: 模版
+ * Desc: 数据库
  * Mail: hehaiyangwork@qq.com
- * Date: 2017/3/17
+ * Date: 2017/5/31
  */
-public class TemplatesSettingConfigurable implements SearchableConfigurable {
+public class DatabasesSettingConfigurable implements SearchableConfigurable {
 
-    private TemplatesUI templatesUI;
+    private DatabasesUI databasesUI;
 
     @NotNull
     public String getId() {
-        return "codeGen.template";
+        return "codeGen.databases";
     }
 
     @Nullable
@@ -41,31 +41,31 @@ public class TemplatesSettingConfigurable implements SearchableConfigurable {
 
     @Nullable
     public JComponent createComponent() {
-        if(templatesUI == null) {
-            templatesUI = new TemplatesUI();
+        if(databasesUI == null) {
+            databasesUI = new DatabasesUI();
         }
-        return templatesUI;
+        return databasesUI;
     }
 
     public boolean isModified() {
-        return templatesUI != null && templatesUI.isModified();
+        return databasesUI != null && databasesUI.isModified();
     }
 
     public void apply() throws ConfigurationException {
-        if(templatesUI != null){
-            templatesUI.apply();
+        if(databasesUI != null){
+            databasesUI.apply();
         }
     }
 
     public void reset() {
-        if(templatesUI != null){
-            templatesUI.reset();
+        if(databasesUI != null){
+            databasesUI.reset();
         }
     }
 
     @Override
     public void disposeUIResources() {
-        this.templatesUI = null;
+        this.databasesUI = null;
     }
 
 }
