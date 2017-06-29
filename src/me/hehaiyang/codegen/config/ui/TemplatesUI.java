@@ -19,6 +19,7 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -43,25 +44,34 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
     @Override
     public boolean isModified(){
 
-        TemplatesSetting setting = settingManager.getTemplatesSetting();
+        TemplatesSetting templatesSetting = settingManager.getTemplatesSetting();
+        List<CodeGroup> groups = templatesSetting.getGroups();
+        Map<String, List<CodeTemplate>> templateMap = templatesSetting.getTemplatesMap();
 
-        DefaultMutableTreeNode gen=(DefaultMutableTreeNode)templateTree.getModel().getRoot();
-        Integer count = 0;
-        Integer groupCount = gen.getChildCount();
-        // 组size不相等
-        if(!groupCount.equals(setting.getGroups().size())){
+        DefaultMutableTreeNode rootNode=(DefaultMutableTreeNode)templateTree.getModel().getRoot();
+        if(rootNode.getChildCount() != groups.size()){
             return true;
         }
 
-//        TemplateEditor template = this.getTemplateEditor();
-//        if(!setting.getCodeTemplateTree().isEmpty() && template != null){
-//            CodeTemplate codeTemplate = setting.getCodeTemplate("SpringMvc", template.getCodeTemplate().getId());
-//            if (codeTemplate != null && codeTemplate.hashCode() != template.hashCode()) {
-//                return true;
-//            }
-//        }else if(!Strings.isNullOrEmpty(template.getCodeTemplate().getId())){
-//            return true;
-//        }
+        Enumeration enumeration = rootNode.children();
+        while(enumeration.hasMoreElements()){
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
+            CodeGroup group = (CodeGroup) node.getUserObject();
+            if(node.getChildCount() != templateMap.get(group.getId()).size()){
+                return true;
+            }
+            if(templateEditor != null){
+                Enumeration childEnum = node.children();
+                while(childEnum.hasMoreElements()){
+                    DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) childEnum.nextElement();
+                    CodeTemplate template = (CodeTemplate) childNode.getUserObject();
+                    CodeTemplate tmp = templateEditor.getCodeTemplate();
+                    if(template.getId().equals(tmp.getId()) && !template.equals(tmp)){
+                       return true;
+                    }
+                }
+            }
+        }
 
         return false;
     }
@@ -78,18 +88,27 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             Enumeration childEnum = node.children();
             while(childEnum.hasMoreElements()){
                 DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) childEnum.nextElement();
-                templates.add((CodeTemplate) childNode.getUserObject());
+                CodeTemplate template = (CodeTemplate) childNode.getUserObject();
+                if(templateEditor != null){
+                    CodeTemplate tmp = templateEditor.getCodeTemplate();
+                    if(template.getId().equals(tmp.getId())){
+                        template = tmp;
+                    }
+                }
+                templates.add(template);
             }
             CodeGroup group = (CodeGroup) node.getUserObject();
             group.setTemplates(templates);
             groups.add(group);
         }
+
         settingManager.getTemplatesSetting().setGroups(groups);
+        setTemplates(settingManager.getTemplatesSetting());
     }
 
     @Override
     public void reset() {
-
+        setTemplates(settingManager.getTemplatesSetting());
     }
 
     private void init(){
@@ -151,77 +170,72 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         Object object = selectedNode.getUserObject();
         if(object instanceof CodeTemplate) return;
         if(object instanceof String) {
+            // 新增模版组
+            JDialog dialog = new AddDialog();
+            dialog.setTitle("Create New Group");
+            dialog.setLayout(new BorderLayout());
 
-            String text = (String)object;
-            if("TemplateList".equals(text)){
-                //创建一个新节点
+            JPanel form = new JPanel(new GridLayout(2,2));
+            form.add(new Label("Group Name"));
+            JTextField keyJTextField = new JTextField();
+            form.add(keyJTextField);
 
-                JDialog dialog = new AddDialog();
-                dialog.setTitle("Create New Group");
-                dialog.setLayout(new BorderLayout());
+            dialog.add(form, BorderLayout.CENTER);
 
-                JPanel form = new JPanel(new GridLayout(2,2));
-                form.add(new Label("Group Name"));
-                JTextField keyJTextField = new JTextField();
-                form.add(keyJTextField);
+            JButton add = new JButton("ADD");
+            add.addActionListener( it ->{
+                String key = keyJTextField.getText();
 
-                dialog.add(form, BorderLayout.CENTER);
+                addNode(selectedNode, new DefaultMutableTreeNode(key));
 
-                JButton add = new JButton("ADD");
-                add.addActionListener( it ->{
-                    String key = keyJTextField.getText();
+                dialog.setVisible(false);
+            });
+            dialog.add(add, BorderLayout.SOUTH);
 
-                    addNode(selectedNode, new DefaultMutableTreeNode(key));
+            dialog.setSize(300, 100);
+            dialog.setAlwaysOnTop(true);
+            dialog.setLocationRelativeTo(this);
+            dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            dialog.setResizable(false);
+            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setVisible(true);
+        }
+        if(object instanceof CodeGroup){
+            // 新增模版
+            CodeGroup group = (CodeGroup) object;
 
-                    dialog.setVisible(false);
-                });
-                dialog.add(add, BorderLayout.SOUTH);
+            JDialog dialog = new AddDialog();
+            dialog.setTitle("Create New Template");
+            dialog.setLayout(new BorderLayout());
 
-                dialog.setSize(300, 100);
-                dialog.setAlwaysOnTop(true);
-                dialog.setLocationRelativeTo(this);
-                dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                dialog.setResizable(false);
-                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                dialog.setVisible(true);
+            JPanel form = new JPanel(new GridLayout(2,2));
+            form.add(new Label("display"));
+            JTextField displayJTextField = new JTextField();
+            form.add(displayJTextField);
+            form.add(new Label("extension"));
+            JTextField extensionJTextField = new JTextField();
+            form.add(extensionJTextField);
 
-            }else{
+            dialog.add(form, BorderLayout.CENTER);
 
-                //创建一个新节点
+            JButton add = new JButton("ADD");
+            add.addActionListener( it ->{
+                String display = displayJTextField.getText();
+                String extension = extensionJTextField.getText();
 
-                JDialog dialog = new AddDialog();
-                dialog.setTitle("Create New Template");
-                dialog.setLayout(new BorderLayout());
+                addNode(selectedNode, new DefaultMutableTreeNode(new CodeTemplate(UUID.randomUUID().toString(), display, extension, "Unnamed", "")));
 
-                JPanel form = new JPanel(new GridLayout(2,2));
-                form.add(new Label("display"));
-                JTextField displayJTextField = new JTextField();
-                form.add(displayJTextField);
-                form.add(new Label("extension"));
-                JTextField extensionJTextField = new JTextField();
-                form.add(extensionJTextField);
+                dialog.setVisible(false);
+            });
+            dialog.add(add, BorderLayout.SOUTH);
 
-                dialog.add(form, BorderLayout.CENTER);
-
-                JButton add = new JButton("ADD");
-                add.addActionListener( it ->{
-                    String display = displayJTextField.getText();
-                    String extension = extensionJTextField.getText();
-
-                    addNode(selectedNode, new DefaultMutableTreeNode(new CodeTemplate(UUID.randomUUID().toString(), display, extension, "Unnamed", "")));
-
-                    dialog.setVisible(false);
-                });
-                dialog.add(add, BorderLayout.SOUTH);
-
-                dialog.setSize(300, 100);
-                dialog.setAlwaysOnTop(true);
-                dialog.setLocationRelativeTo(this);
-                dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                dialog.setResizable(false);
-                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                dialog.setVisible(true);
-            }
+            dialog.setSize(300, 100);
+            dialog.setAlwaysOnTop(true);
+            dialog.setLocationRelativeTo(this);
+            dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            dialog.setResizable(false);
+            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setVisible(true);
         }
     }
 

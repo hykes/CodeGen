@@ -94,10 +94,10 @@ public class TemplateEditor extends JPanel {
 
     public CodeTemplate getCodeTemplate(){
         CodeTemplate codeTemplate = new CodeTemplate();
-        codeTemplate.setId(id.getText());
-        codeTemplate.setDisplay(display.getText());
-        codeTemplate.setExtension(extension.getText());
-        codeTemplate.setFilename(filename.getText());
+        codeTemplate.setId(id.getText().trim());
+        codeTemplate.setDisplay(display.getText().trim());
+        codeTemplate.setExtension(extension.getText().trim());
+        codeTemplate.setFilename(filename.getText().trim());
         codeTemplate.setTemplate(editor.getDocument().getText());
         return codeTemplate;
     }
