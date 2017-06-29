@@ -34,12 +34,12 @@ public class VariablesUI extends JPanel implements UIConfigurable {
 
     @Override
     public boolean isModified() {
-        VariablesSetting setting = settingManager.getVariablesSetting();
+        VariablesSetting variablesSetting = settingManager.getVariablesSetting();
         DefaultTableModel tableModel = (DefaultTableModel) variablesTable.getModel();
-        if(setting.getParams().size() != tableModel.getRowCount()){
+        if(variablesSetting.getParams().size() != tableModel.getRowCount()){
             return true;
         }
-        Map<String, String> params = setting.getParams();
+        Map<String, String> params = variablesSetting.getParams();
         for(int i = 0; i< tableModel.getRowCount(); i++){
             String key = tableModel.getValueAt(i, 0).toString();
             String value = tableModel.getValueAt(i, 1).toString();
@@ -57,7 +57,7 @@ public class VariablesUI extends JPanel implements UIConfigurable {
         Map<String, String> params = new HashMap<>();
         DefaultTableModel tableModel = (DefaultTableModel) variablesTable.getModel();
         for(int i = 0;i< tableModel.getRowCount(); i++){
-            params.put(tableModel.getValueAt(i, 0).toString(), tableModel.getValueAt(i, 1).toString());
+            params.put(tableModel.getValueAt(i, 0).toString().trim(), tableModel.getValueAt(i, 1).toString().trim());
         }
         settingManager.getVariablesSetting().setParams(params);
     }
@@ -82,7 +82,7 @@ public class VariablesUI extends JPanel implements UIConfigurable {
             .setRemoveAction( it -> removeAction())
             .setEditAction( it -> editAction()).createPanel();
         final JPanel localPanel = new JPanel(new BorderLayout());
-        localPanel.setBorder(IdeBorderFactory.createTitledBorder("User Defined Variables", false));
+        localPanel.setBorder(IdeBorderFactory.createTitledBorder("Predefined Variables", false));
         localPanel.add(panel, BorderLayout.CENTER);
         mainPanel.add(localPanel);
 
@@ -134,8 +134,8 @@ public class VariablesUI extends JPanel implements UIConfigurable {
 
         JButton add = new JButton("ADD");
         add.addActionListener( it ->{
-            String key = keyJTextField.getText();
-            String value = valueJTextField.getText();
+            String key = keyJTextField.getText().trim();
+            String value = valueJTextField.getText().trim();
 
             DefaultTableModel tableModel = (DefaultTableModel) variablesTable.getModel();
             String []rowValues = {key, value};
@@ -186,8 +186,8 @@ public class VariablesUI extends JPanel implements UIConfigurable {
 
             JButton add = new JButton("Confirm");
             add.addActionListener( it ->{
-                String key = keyJTextField.getText();
-                String value = valueJTextField.getText();
+                String key = keyJTextField.getText().trim();
+                String value = valueJTextField.getText().trim();
 
                 tableModel.setValueAt(key, selectedRow, 0);
                 tableModel.setValueAt(value, selectedRow, 1);
@@ -202,7 +202,6 @@ public class VariablesUI extends JPanel implements UIConfigurable {
             dialog.setResizable(false);
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
-
         }
     }
 
