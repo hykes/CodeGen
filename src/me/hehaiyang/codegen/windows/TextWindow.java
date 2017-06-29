@@ -1,6 +1,5 @@
 package me.hehaiyang.codegen.windows;
 
-import com.google.common.collect.Lists;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.ScrollPaneFactory;
 import me.hehaiyang.codegen.model.Field;
@@ -15,8 +14,8 @@ import java.util.List;
 
 public class TextWindow extends JFrame {
 
-    private JCheckBox markdownBox;
-    private JCheckBox sqlScriptBox;
+    final JRadioButton markDownRadio = new JRadioButton("MarkDown", true);
+    final JRadioButton sqlScriptRadio = new JRadioButton("SqlScript");
 
     private JTextPane codeJTextPane;
 
@@ -36,19 +35,20 @@ public class TextWindow extends JFrame {
 
     private void init(IdeaContext ideaContext) {
 
-        markdownBox = new JCheckBox("Use MarkDown");
-        markdownBox.setMnemonic('m');
-        markdownBox.setName("markdown");
-        sqlScriptBox = new JCheckBox("Use SqlScript");
-        sqlScriptBox.setMnemonic('s');
-        sqlScriptBox.setName("sqlScript");
-        sqlScriptBox.setVisible(true);
+        markDownRadio.setMnemonic('m');
+        markDownRadio.setToolTipText("generate code by markDown");
+        sqlScriptRadio.setMnemonic('s');
+        sqlScriptRadio.setToolTipText("generate code by sqlScript");
+
+        ButtonGroup group = new ButtonGroup();
+        group.add(markDownRadio);
+        group.add(sqlScriptRadio);
 
         JPanel boxes = new JPanel();
         boxes.setLayout(new BoxLayout(boxes, BoxLayout.X_AXIS));
         boxes.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        boxes.add(markdownBox);
-        boxes.add(sqlScriptBox);
+        boxes.add(markDownRadio);
+        boxes.add(sqlScriptRadio);
         add(boxes, BorderLayout.NORTH);
 
         codeJTextPane = new JTextPane();
@@ -56,12 +56,12 @@ public class TextWindow extends JFrame {
         add(ScrollPaneFactory.createScrollPane(codeJTextPane), BorderLayout.CENTER);
 
         actionPanel = new JPanel();
-        actionPanel.add(cancel = new JButton("cancel"));
-        actionPanel.add(sure = new JButton("sure"));
+        actionPanel.add(cancel = new JButton("Cancel"));
+        actionPanel.add(sure = new JButton("Sure"));
 
         final JPanel infoPanel = new JPanel(new BorderLayout());
         infoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        tipsLabel = new JLabel("You can defined some variables for template.",
+        tipsLabel = new JLabel("Input text .",
                 MessageType.INFO.getDefaultIcon(), SwingConstants.LEFT);
         infoPanel.add(tipsLabel, BorderLayout.WEST);
 
@@ -70,25 +70,19 @@ public class TextWindow extends JFrame {
 
         sure.addActionListener(e -> {
             try {
-                List<String> list = Lists.newArrayList();
-                getAllJCheckBoxValue(boxes, list);
-
                 String text = codeJTextPane.getText().trim();
 
                 List<Field> fields;
-                if("sqlScript".endsWith(list.get(0))){
-
+                if(sqlScriptRadio.isSelected()){
                     Parser parser = new DefaultParser();
                     fields = parser.parseSQL(text);
-
                 }else {
-
                     Parser parser = new SimpleParser();
                     fields = parser.parseSQL(text);
                 }
 
                 if (fields == null || fields.isEmpty()) {
-                    setTips(true, "解析失败，请检查文本格式！");
+                    setTips(true, "Error ! please check text format.");
                     return;
                 }
                 ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, fields);
@@ -104,23 +98,6 @@ public class TextWindow extends JFrame {
             }
         });
         cancel.addActionListener(e -> dispose());
-    }
-
-    public static List<String> getAllJCheckBoxValue(Container ct, List<String> list){
-        if(list==null){
-            list= Lists.newArrayList();
-        }
-        int count=ct.getComponentCount();
-        for(int i=0;i<count;i++){
-            Component c=ct.getComponent(i);
-            if(c instanceof JCheckBox && ((JCheckBox)c).isSelected()){
-                list.add(c.getName());
-            }
-            else if(c instanceof Container){
-                getAllJCheckBoxValue((Container)c,list);
-            }
-        }
-        return list;
     }
 
     private void setTips(boolean operator, String tips) {

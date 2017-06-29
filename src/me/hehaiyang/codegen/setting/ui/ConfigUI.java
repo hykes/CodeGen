@@ -20,14 +20,16 @@ public class ConfigUI extends JPanel implements UIConfigurable {
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
+    private JPanel thisPanel;
+
     public ConfigUI() {
+        thisPanel = this;
         init();
         setConfig(settingManager.getConfigSetting());
     }
 
     private void init() {
         setLayout(new BorderLayout());
-        JPanel thisPanel = this;
 
         textRadio.setMnemonic('T');
         textRadio.setToolTipText("generate code by text");
