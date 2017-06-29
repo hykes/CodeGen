@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class DefaultParams {
 
-    public static Map<String, String> getInstance () {
+    public static Map<String, String> getDefaults() {
         Map<String, String> params = new HashMap<>();
         Calendar calendar = Calendar.getInstance();
         params.put("Year", String.valueOf(calendar.get(Calendar.YEAR)));

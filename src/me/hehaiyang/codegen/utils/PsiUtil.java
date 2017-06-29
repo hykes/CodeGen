@@ -115,7 +115,7 @@ public class PsiUtil {
 
 
 //    public static PsiPackage chooseFile(Project project) {
-//        FileChooser chooser = TreeFileChooserFactory.getInstance(project).createFileChooser()
+//        FileChooser chooser = TreeFileChooserFactory.getDefaults(project).createFileChooser()
 //        chooser.show();
 //        return chooser.getSelectedPackage();
 //    }

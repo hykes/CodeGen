@@ -266,7 +266,7 @@ public class ColumnEditorFrame extends JFrame {
     public void gen(Project project, List<String> groups, CodeGenContext context){
 
         Map<String, String> params = new HashMap<>();
-        params.putAll(DefaultParams.getInstance());
+        params.putAll(DefaultParams.getDefaults());
         params.putAll(settingManager.getVariablesSetting().getParams());
         context.set$(params);
 

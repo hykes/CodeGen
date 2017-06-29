@@ -9,6 +9,7 @@ import me.hehaiyang.codegen.setting.SettingManager;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -53,12 +54,18 @@ public class DatabaseWindow extends JFrame{
             DBOperation op = new DBOperation();
             Connection conn = op.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
 
-            List<String> list = op.getAllTables(conn);
-            comboBox.removeAllItems();
-            for(String str: list){
-                comboBox.addItem(str);
+            try {
+                if (!conn.isClosed()) {
+                    List<String> list = op.getAllTables(conn);
+                    comboBox.removeAllItems();
+                    for (String str : list) {
+                        comboBox.addItem(str);
+                    }
+                    comboBox.setEnabled(true);
+                }
+            }catch (SQLException sqle){
+                comboBox.addItem("获取表单失败");
             }
-            comboBox.setEnabled(true);
 
         });
 
