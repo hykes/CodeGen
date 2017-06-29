@@ -15,8 +15,8 @@ import java.awt.*;
  */
 public class ConfigUI extends JPanel implements UIConfigurable {
 
-    private JCheckBox textBox;
-    private JCheckBox databaseBox;
+    final JRadioButton textRadio = new JRadioButton("Use Text", true);
+    final JRadioButton databaseRadio = new JRadioButton("Use Database");
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
@@ -27,50 +27,40 @@ public class ConfigUI extends JPanel implements UIConfigurable {
 
     private void init() {
         setLayout(new BorderLayout());
-        JPanel c = this;
+        JPanel thisPanel = this;
 
-        textBox = new JCheckBox("Use Text");
-        textBox.setMnemonic('T');
-        textBox.setToolTipText("generate code by text");
-        textBox.addActionListener(e -> markdownChanged());
-        textBox.setEnabled(false);
+        textRadio.setMnemonic('T');
+        textRadio.setToolTipText("generate code by text");
 
-        databaseBox = new JCheckBox("Use Database");
-        databaseBox.setMnemonic('D');
-        databaseBox.setToolTipText("generate code by database");
-        databaseBox.addActionListener(e -> databaseChanged());
+        textRadio.setMnemonic('D');
+        textRadio.setToolTipText("generate code by database");
 
         JPanel generate = new JPanel(new BorderLayout());
-        generate.setBorder(IdeBorderFactory.createTitledBorder("Generate", true));
-        c.add(c = new JPanel(new BorderLayout()), BorderLayout.NORTH);
-        c.add(generate, BorderLayout.NORTH);
+        generate.setBorder(IdeBorderFactory.createTitledBorder("Generation Type", true));
+        thisPanel.add(thisPanel = new JPanel(new BorderLayout()), BorderLayout.NORTH);
+        thisPanel.add(generate, BorderLayout.NORTH);
 
-        generate.add(textBox, BorderLayout.NORTH);
+        ButtonGroup group = new ButtonGroup();
+        group.add(textRadio);
+        group.add(databaseRadio);
+
+        generate.add(textRadio, BorderLayout.NORTH);
         generate.add(generate = new JPanel(new BorderLayout()), BorderLayout.SOUTH);
-        generate.add(databaseBox, BorderLayout.NORTH);
+        generate.add(databaseRadio, BorderLayout.NORTH);
     }
 
     public void setConfig(@NotNull ConfigSetting configuration) {
-        textBox.setSelected(configuration.isMarkdownBox());
-        databaseBox.setSelected(configuration.isDatabaseBox());
-        databaseChanged();
-    }
-
-    private void markdownChanged() {
-        databaseBox.setSelected(!textBox.isSelected());
-    }
-
-    private void databaseChanged() {
-        textBox.setSelected(!databaseBox.isSelected());
+        textRadio.setSelected(configuration.isTextRadio());
+        databaseRadio.setSelected(configuration.isDatabaseRadio());
     }
 
     @Override
     public boolean isModified() {
-        ConfigSetting setting = settingManager.getConfigSetting();
-        if(setting.isDatabaseBox() && !databaseBox.isSelected()){
+        ConfigSetting configSetting = settingManager.getConfigSetting();
+        if(configSetting.isDatabaseRadio() && !databaseRadio.isSelected()){
             return true;
         }
-        if(setting.isMarkdownBox() && !textBox.isSelected()){
+        if(configSetting.isTextRadio() && !textRadio.isSelected()){
             return true;
         }
         return false;
@@ -78,8 +68,8 @@ public class ConfigUI extends JPanel implements UIConfigurable {
 
     @Override
     public void apply() {
-        settingManager.getConfigSetting().setDatabaseBox(databaseBox.isSelected());
-        settingManager.getConfigSetting().setMarkdownBox(textBox.isSelected());
+        settingManager.getConfigSetting().setDatabaseRadio(databaseRadio.isSelected());
+        settingManager.getConfigSetting().setTextRadio(textRadio.isSelected());
     }
 
     @Override

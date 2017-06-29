@@ -26,7 +26,7 @@ public class CodeGenAction extends AnAction {
         ideaContext.setProject(PsiUtil.getProject(anActionEvent));
 
         JFrame startFrame;
-        if(settingManager.getConfigSetting().isDatabaseBox()){
+        if(settingManager.getConfigSetting().isDatabaseRadio()){
             startFrame = new DatabaseWindow(ideaContext);
             startFrame.setSize(350, 180);
         }else{
