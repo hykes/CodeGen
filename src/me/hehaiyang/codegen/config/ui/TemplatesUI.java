@@ -1,11 +1,16 @@
 package me.hehaiyang.codegen.config.ui;
 
 import com.google.common.collect.Lists;
+import com.intellij.icons.AllIcons;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.ui.Messages;
+import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
 import lombok.Data;
 import me.hehaiyang.codegen.config.setting.TemplatesSetting;
+import me.hehaiyang.codegen.constants.DefaultTemplates;
 import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.config.SettingManager;
@@ -13,10 +18,14 @@ import me.hehaiyang.codegen.config.UIConfigurable;
 import me.hehaiyang.codegen.config.ui.template.TemplateEditor;
 import me.hehaiyang.codegen.config.ui.template.TemplateTreeCellRenderer;
 import me.hehaiyang.codegen.config.ui.variable.AddDialog;
+import me.hehaiyang.codegen.windows.DBOperation;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.*;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +112,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         }
 
         settingManager.getTemplatesSetting().setGroups(groups);
-        setTemplates(settingManager.getTemplatesSetting());
+        reset();
     }
 
     @Override
@@ -140,6 +149,18 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             .setAddAction( it -> addAction())
             .setRemoveAction( it -> removeAction())
             .setEditAction(it -> editorAction())
+                .addExtraAction(new AnActionButton("Connect", AllIcons.Actions.Refresh) {
+                    @Override
+                    public void actionPerformed(AnActionEvent e) {
+                        settingManager.getTemplatesSetting().setGroups(DefaultTemplates.getDefaults());
+                        reset();
+                    }
+
+                    @Override
+                    public boolean isEnabled() {
+                        return super.isEnabled();
+                    }
+                })
             .setEditActionUpdater( it -> {
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
                 return selectedNode != null && selectedNode.getParent() != null && !(selectedNode.getUserObject() instanceof CodeTemplate);
