@@ -20,6 +20,7 @@ import me.hehaiyang.codegen.windows.DBOperation;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -35,31 +36,41 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
+    private JPanel thisPanel;
+
     public DatabasesUI() {
+        thisPanel = this;
         init();
         setDatabases(settingManager.getDatabasesSetting());
     }
 
     @Override
     public boolean isModified() {
-        DatabasesSetting setting = settingManager.getDatabasesSetting();
+        DatabasesSetting databasesSetting = settingManager.getDatabasesSetting();
         DefaultTableModel tableModel = (DefaultTableModel) databasesTable.getModel();
-        if(setting.getDatabases().size() != tableModel.getRowCount()){
+        if(databasesSetting.getDatabases().size() != tableModel.getRowCount()){
             return true;
         }
-//        List<Database> databases = setting.getDatabases();
-//        for(int i = 0; i< tableModel.getRowCount(); i++){
-//            String url = tableModel.getValueAt(i, 0).toString();
-//            String username = tableModel.getValueAt(i, 1).toString();
-//            String password = tableModel.getValueAt(i, 2).toString();
-//            for(Database database : databases){
-//                if(database.getName().equals(url)
-//                        && (!database.getUsername().equals(username) || !database.getPassword().equals(password))){
-//                    return true;
-//                }
-//            }
-//        }
-        return true;
+        Map<String, Database> databaseMap = databasesSetting.getDatabaseMap();
+        for(int i = 0; i< tableModel.getRowCount(); i++){
+            String name = tableModel.getValueAt(i, 0).toString().trim();
+            String driver = tableModel.getValueAt(i, 1).toString().trim();
+            String url = tableModel.getValueAt(i, 2).toString().trim();
+            String username = tableModel.getValueAt(i, 3).toString().trim();
+            String password = tableModel.getValueAt(i, 4).toString().trim();
+            if(!databaseMap.containsKey(name)){
+                return true;
+            }else{
+                Database database = databaseMap.get(name);
+                if(!database.getDriver().equals(driver)
+                        || !database.getUrl().equals(url)
+                        || !database.getUsername().equals(username)
+                        || !database.getPassword().equals(password)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -68,11 +79,11 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         DefaultTableModel tableModel = (DefaultTableModel) databasesTable.getModel();
         for(int i = 0;i< tableModel.getRowCount(); i++){
             Database database = new Database();
-            database.setName(tableModel.getValueAt(i, 0).toString());
-            database.setDriver(tableModel.getValueAt(i, 1).toString());
-            database.setUrl(tableModel.getValueAt(i, 2).toString());
-            database.setUsername(tableModel.getValueAt(i, 3).toString());
-            database.setPassword(tableModel.getValueAt(i, 4).toString());
+            database.setName(tableModel.getValueAt(i, 0).toString().trim());
+            database.setDriver(tableModel.getValueAt(i, 1).toString().trim());
+            database.setUrl(tableModel.getValueAt(i, 2).toString().trim());
+            database.setUsername(tableModel.getValueAt(i, 3).toString().trim());
+            database.setPassword(tableModel.getValueAt(i, 4).toString().trim());
             databases.add(database);
         }
         settingManager.getDatabasesSetting().setDatabases(databases);
@@ -101,21 +112,20 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
                     int selectedRow = databasesTable.getSelectedRow();
                     if(selectedRow != -1) {
                         DefaultTableModel tableModel = (DefaultTableModel) databasesTable.getModel();
-                        String url = (String) tableModel.getValueAt(selectedRow, 2);
-                        String username = (String) tableModel.getValueAt(selectedRow, 3);
-                        String password = (String) tableModel.getValueAt(selectedRow, 4);
-
-                        DBOperation dbOperation = new DBOperation();
-                        String driver = "com.mysql.jdbc.Driver";
+                        String driver = tableModel.getValueAt(selectedRow, 1).toString();
+                        String url = tableModel.getValueAt(selectedRow, 2).toString();
+                        String username = tableModel.getValueAt(selectedRow, 3).toString();
+                        String password = tableModel.getValueAt(selectedRow, 4).toString();
                         try {
-                            Connection connection = dbOperation.getConnection(driver, url, username, password);
+                            Connection connection = DBOperation.getConnection(driver, url, username, password);
                             if (connection != null && !connection.isClosed()) {
-                                Messages.showInfoMessage("连接成功！", "Info");
+                                Messages.showInfoMessage(thisPanel,"连接成功！", "Info");
+                                connection.close();
                             }else{
-                                Messages.showInfoMessage("连接失败！", "Error");
+                                Messages.showInfoMessage(thisPanel, "连接失败！", "Error");
                             }
                         }catch (SQLException se){
-                            Messages.showInfoMessage("连接失败！", "Error");
+                            Messages.showInfoMessage(thisPanel,"连接失败！", "Error");
                         }
                     }
                 }
@@ -141,7 +151,7 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
                 MessageType.INFO.getDefaultIcon(), SwingConstants.LEFT));
         add(infoPanel, BorderLayout.SOUTH);
 
-        databasesTable.getEmptyText().setText("No data sources");
+        databasesTable.getEmptyText().setText("No Data Sources");
     }
 
     private void setDatabases(DatabasesSetting databasesSetting){
@@ -193,11 +203,11 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
 
         JButton add = new JButton("ADD");
         add.addActionListener( it ->{
-            String name = nameText.getText();
-            String driver = driverText.getText();
-            String url = urlText.getText();
-            String username = usernameText.getText();
-            String password = passwordText.getText();
+            String name = nameText.getText().trim();
+            String driver = driverText.getText().trim();
+            String url = urlText.getText().trim();
+            String username = usernameText.getText().trim();
+            String password = passwordText.getText().trim();
 
             DefaultTableModel tableModel = (DefaultTableModel) databasesTable.getModel();
             String []rowValues = {name, driver, url, username, password};
@@ -261,11 +271,11 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
 
             JButton add = new JButton("Confirm");
             add.addActionListener( it ->{
-                String name = nameText.getText();
-                String driver = driverText.getText();
-                String url = urlText.getText();
-                String username = usernameText.getText();
-                String password = passwordText.getText();
+                String name = nameText.getText().trim();
+                String driver = driverText.getText().trim();
+                String url = urlText.getText().trim();
+                String username = usernameText.getText().trim();
+                String password = passwordText.getText().trim();
 
                 tableModel.setValueAt(name, selectedRow, 0);
                 tableModel.setValueAt(driver, selectedRow, 1);

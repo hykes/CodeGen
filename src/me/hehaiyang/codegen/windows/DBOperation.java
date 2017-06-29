@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class DBOperation {
 
-    public Connection getConnection(String driver, String url, String user, String password){
+    public static Connection getConnection(String driver, String url, String user, String password){
         try {
             // 加载驱动程序
             Class.forName(driver);
@@ -31,7 +31,7 @@ public class DBOperation {
 
     }
 
-    public List<String> getAllTables(Connection connection) {
+    public static List<String> getTables(Connection connection) {
         List<String> result = new ArrayList<String>();
         try {
             DatabaseMetaData databaseMetaData = connection.getMetaData();
@@ -52,7 +52,7 @@ public class DBOperation {
      * @param tableName
      * @param connection
      */
-    public List<Field> getTableColumn(String tableName, Connection connection) {
+    public static List<Field> getColumns(String tableName, Connection connection) {
 
         List<Field> fields = Lists.newArrayList();
         try {

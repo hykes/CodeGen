@@ -1,6 +1,7 @@
 package me.hehaiyang.codegen.windows;
 
 import com.intellij.openapi.ui.ComboBox;
+import com.intellij.openapi.ui.Messages;
 import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.IdeaContext;
@@ -29,7 +30,11 @@ public class DatabaseWindow extends JFrame{
 
         configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
         ComboBox databaseBox=new ComboBox();
-        JButton connectBtn = new JButton("connect");
+        JButton connectBtn = new JButton("Connect");
+
+        ComboBox tableBox=new ComboBox();
+
+        JButton sureBtn = new JButton("Sure");
 
         List<Database> databases = settingManager.getDatabasesSetting().getDatabases();
         if(databases != null && !databases.isEmpty()){
@@ -39,58 +44,63 @@ public class DatabaseWindow extends JFrame{
             databaseBox.addItem("无数据源");
             databaseBox.setEnabled(false);
             connectBtn.setEnabled(false);
+
+            tableBox.addItem("请选择");
+            tableBox.setEnabled(false);
+            sureBtn.setEnabled(false);
         }
 
         configPanel.add(databaseBox);
         configPanel.add(connectBtn);
 
-        ComboBox comboBox=new ComboBox();
-        comboBox.addItem("请选择");
-        comboBox.setEnabled(false);
+        configPanel.add(tableBox);
+        configPanel.add(sureBtn);
 
-        connectBtn.addActionListener( e ->{
+        connectBtn.addActionListener( it ->{
 
             Database database = (Database) databaseBox.getSelectedItem();
-            DBOperation op = new DBOperation();
-            Connection conn = op.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
+            if(database != null){
+                try {
+                    Connection conn = DBOperation.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
 
-            try {
-                if (!conn.isClosed()) {
-                    List<String> list = op.getAllTables(conn);
-                    comboBox.removeAllItems();
-                    for (String str : list) {
-                        comboBox.addItem(str);
+                    if (conn != null && !conn.isClosed()) {
+                        List<String> list = DBOperation.getTables(conn);
+                        tableBox.removeAllItems();
+                        for (String str : list) {
+                            tableBox.addItem(str);
+                        }
+                        tableBox.setEnabled(true);
                     }
-                    comboBox.setEnabled(true);
+                }catch (SQLException e){
+                    Messages.showInfoMessage(thisFrame,"connect fail !", "Error");
                 }
-            }catch (SQLException sqle){
-                comboBox.addItem("获取表单失败");
             }
 
         });
 
-        configPanel.add(comboBox);
-
-        JButton sureBtn = new JButton("sure");
-        sureBtn.addActionListener( e ->{
+        sureBtn.addActionListener( it ->{
             Database database = (Database) databaseBox.getSelectedItem();
-            String table = comboBox.getSelectedItem().toString();
-            DBOperation op = new DBOperation();
-            Connection conn = op.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
-            List<Field> fields = op.getTableColumn(table, conn);
-            ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, fields);
-            frame.setSize(800, 400);
-            frame.setAlwaysOnTop(false);
-            frame.setLocationRelativeTo(thisFrame);
-            frame.setVisible(true);
-            frame.setResizable(false);
-            dispose();
+            if(database != null){
+                try {
+                    String table = tableBox.getSelectedItem().toString();
+                    Connection conn = DBOperation.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
+                    if (conn != null && !conn.isClosed()) {
+                        List<Field> fields = DBOperation.getColumns(table, conn);
+                        ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, fields);
+                        frame.setSize(800, 400);
+                        frame.setAlwaysOnTop(false);
+                        frame.setLocationRelativeTo(thisFrame);
+                        frame.setVisible(true);
+                        frame.setResizable(false);
+                        dispose();
+                    }
+                }catch (SQLException e){
+                    Messages.showInfoMessage(thisFrame,"get columns fail !", "Error");
+                }
+            }
         });
 
-        configPanel.add(sureBtn);
-
         add(configPanel, BorderLayout.CENTER);
-
     }
 
 }
