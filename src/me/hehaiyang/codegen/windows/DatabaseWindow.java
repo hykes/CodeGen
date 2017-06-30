@@ -75,7 +75,6 @@ public class DatabaseWindow extends JFrame{
                     Messages.showInfoMessage(thisFrame,"connect fail !", "Error");
                 }
             }
-
         });
 
         sureBtn.addActionListener( it ->{

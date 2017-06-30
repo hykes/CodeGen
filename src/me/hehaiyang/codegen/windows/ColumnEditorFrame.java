@@ -93,20 +93,21 @@ public class ColumnEditorFrame extends JFrame {
         groupPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 
-        JButton genButton = new JButton("Gen");
+        JButton genButton = new JButton("Generate");
         genButton.addActionListener( it ->{
             List<String> list = Lists.newArrayList();
             getAllJCheckBoxValue(groupPanel, list);
 
-            String model = modelText.getText().trim();
-            String modelName = modelCnText.getText().trim();
-            String table = tableText.getText().trim();
-            String tableName = tableCnText.getText().trim();
-
-            // 组装数据
-            CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, getFields());
-            gen(ideaContext.getProject(), list, context);
-            dispose();
+            if(!list.isEmpty()) {
+                String model = modelText.getText().trim();
+                String modelName = modelCnText.getText().trim();
+                String table = tableText.getText().trim();
+                String tableName = tableCnText.getText().trim();
+                // 组装数据
+                CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, getFields());
+                gen(ideaContext.getProject(), list, context);
+                dispose();
+            }
         });
         groupPanel.add(genButton);
 
@@ -275,18 +276,21 @@ public class ColumnEditorFrame extends JFrame {
         for(String id: groups){
 
             PsiDirectory psiDirectory = PsiUtil.browseForFile(project);
-            FileFactory fileFactory = new FileFactory(project, psiDirectory);
-
-            WriteCommandAction.runWriteCommandAction(project, ()-> {
-                try {
-                    for (CodeTemplate codeTemplate : templatesMap.get(id)) {
-                        FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
-                        fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
+            if(psiDirectory != null) {
+                FileFactory fileFactory = new FileFactory(project, psiDirectory);
+                WriteCommandAction.runWriteCommandAction(project, () -> {
+                    try {
+                        for (CodeTemplate codeTemplate : templatesMap.get(id)) {
+                            FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
+                            fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
+                });
+            }else{
+                break;
+            }
         }
 
     }
