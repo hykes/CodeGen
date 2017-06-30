@@ -9,9 +9,11 @@
       <br>
       <p>This plugin helps you to generate specific code by template.</p>
       <ul>
-        <li>Generate the java class</li>
-        <li>Generate the xml file</li>
-        <li>Generate the sql script</li>
+        <li>Template Group</li>
+        <li>Generation Type (Text/Database)</li>
+        <li>In-house variables</li>
+        <li>Predefined variables</li>
+        <li>Data sources</li>
       </ul>
       <br>
       <p>Please feel free to contact me and ask any questions or suggest some features.</p>
