@@ -109,6 +109,8 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 * [x] serialVersionUID
 * [ ] wiki
+* [ ] template sub directory
+* [ ] resources directory
 
 ## License
 Copyright © 2017 [MIT License](https://spdx.org/licenses/MIT.html)

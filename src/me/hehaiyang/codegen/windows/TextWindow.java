@@ -14,8 +14,8 @@ import java.util.List;
 
 public class TextWindow extends JFrame {
 
-    final JRadioButton markDownRadio = new JRadioButton("MarkDown", true);
-    final JRadioButton sqlScriptRadio = new JRadioButton("SqlScript");
+    final JRadioButton markDownRadio = new JRadioButton("MarkDown");
+    final JRadioButton sqlScriptRadio = new JRadioButton("SqlScript", true);
 
     private JTextPane codeJTextPane;
 
@@ -35,20 +35,22 @@ public class TextWindow extends JFrame {
 
     private void init(IdeaContext ideaContext) {
 
-        markDownRadio.setMnemonic('m');
-        markDownRadio.setToolTipText("generate code by markDown");
         sqlScriptRadio.setMnemonic('s');
         sqlScriptRadio.setToolTipText("generate code by sqlScript");
 
+        markDownRadio.setMnemonic('m');
+        markDownRadio.setToolTipText("generate code by markDown");
+
         ButtonGroup group = new ButtonGroup();
-        group.add(markDownRadio);
         group.add(sqlScriptRadio);
+        group.add(markDownRadio);
+
 
         JPanel boxes = new JPanel();
         boxes.setLayout(new BoxLayout(boxes, BoxLayout.X_AXIS));
         boxes.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        boxes.add(markDownRadio);
         boxes.add(sqlScriptRadio);
+        boxes.add(markDownRadio);
         add(boxes, BorderLayout.NORTH);
 
         codeJTextPane = new JTextPane();
