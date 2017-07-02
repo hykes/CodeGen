@@ -108,9 +108,9 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 ## TODO
 
 * [x] serialVersionUID
+* [x] template sub directory
+* [x] resources sub directory
 * [ ] wiki
-* [ ] template sub directory
-* [ ] resources directory
 
 ## Contributions
 

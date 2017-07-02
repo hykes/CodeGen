@@ -86,7 +86,7 @@ public class PsiUtil {
         descriptor.setForcedToUseIdeaFileChooser(true);
         VirtualFile file = FileChooser.chooseFile(descriptor, project, project.getBaseDir());
         if(Objects.isNull(file)){
-            Messages.showInfoMessage("取消当前模版组生成。", "Error");
+            Messages.showInfoMessage("Cancel " + title, "Error");
             return null;
         }
 

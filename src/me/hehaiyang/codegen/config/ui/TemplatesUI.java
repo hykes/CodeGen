@@ -200,9 +200,9 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
             JButton add = new JButton("ADD");
             add.addActionListener( it ->{
-                String key = keyJTextField.getText();
-
-                addNode(selectedNode, new DefaultMutableTreeNode(key));
+                String key = keyJTextField.getText().trim();
+                CodeGroup group = new CodeGroup(UUID.randomUUID().toString(), key, 1, Lists.newArrayList());
+                addNode(selectedNode, new DefaultMutableTreeNode(group));
 
                 dialog.setVisible(false);
             });
