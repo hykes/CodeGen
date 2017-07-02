@@ -6,8 +6,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import me.hehaiyang.codegen.handlebars.HandlebarsFactory;
 
-import java.util.Objects;
-
 public abstract class FileProvider {
 
     public final static Handlebars handlebars = HandlebarsFactory.getInstance();
@@ -27,11 +25,23 @@ public abstract class FileProvider {
         return subDirectory(psiDirectory, null);
     }
 
-    public PsiDirectory subDirectory(PsiDirectory psiDirectory, String subName){
-        if(Strings.isNullOrEmpty(subName)){
+    public PsiDirectory subDirectory(PsiDirectory psiDirectory, String subPath){
+        if(Strings.isNullOrEmpty(subPath)){
             return psiDirectory;
         }else{
-            return psiDirectory.createSubdirectory(subName);
+            String subPathAttr[] = subPath.split("/");
+            return createSubdirectory(psiDirectory, subPathAttr, 0);
         }
+    }
+
+    private PsiDirectory createSubdirectory(PsiDirectory psiDirectory, String temp[], int level){
+        PsiDirectory subdirectory = psiDirectory.findSubdirectory(temp[level]);
+        if(subdirectory == null){
+            subdirectory = psiDirectory.createSubdirectory(temp[level]);
+        }
+        if(temp.length != level + 1){
+            return createSubdirectory(subdirectory, temp, level + 1);
+        }
+        return subdirectory;
     }
 }

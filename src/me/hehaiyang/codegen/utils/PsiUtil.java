@@ -1,7 +1,7 @@
 package me.hehaiyang.codegen.utils;
 
-import com.intellij.ide.IdeView;
-import com.intellij.ide.util.*;
+import com.intellij.ide.util.TreeClassChooser;
+import com.intellij.ide.util.TreeClassChooserFactory;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -13,7 +13,6 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.ui.PackageChooser;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
@@ -31,10 +30,6 @@ public class PsiUtil {
 
     public static Project getProject(AnActionEvent anActionEvent) {
         return anActionEvent.getData(PlatformDataKeys.PROJECT);
-    }
-
-    public static IdeView getIdeView(AnActionEvent anActionEvent) {
-        return anActionEvent.getData(LangDataKeys.IDE_VIEW);
     }
 
     /**
@@ -81,20 +76,6 @@ public class PsiUtil {
         return chooser.getSelected();
     }
 
-    public static PsiPackage choosePackage(Project project) {
-        PackageChooser chooser = new PackageChooserDialog("Select a package", project);
-        chooser.show();
-        return chooser.getSelectedPackage();
-    }
-
-    public static PsiDirectory chooseDirectory(Project project) {
-        DirectoryChooserView view = new DirectoryChooserModuleTreeView(project);
-        DirectoryChooser chooser = new DirectoryChooser(project, view);
-        chooser.showAndGet();
-
-        return chooser.getSelectedDirectory();
-    }
-
     public static PsiDirectory createDirectory(Project project, String title, String description) {
         final FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
         descriptor.setTitle(title);
@@ -118,20 +99,9 @@ public class PsiUtil {
         }
     }
 
-    public static void createFile(Project project, @NotNull PsiPackage psiPackage, String fileName, String context, LanguageFileType fileType) {
-        createFile(project, psiPackage.getDirectories()[0], fileName, context, fileType);
-    }
-
-    public static void createFile(Project project, IdeView ideView, String fileName, String context, LanguageFileType fileType) {
-        PsiFile psiFile=  PsiFileFactory.getInstance(project).createFileFromText(fileName, fileType, context);
-        PsiDirectory psiDirectory = DirectoryChooserUtil.getOrChooseDirectory(ideView);
-        WriteCommandAction.runWriteCommandAction(project, () -> {
-            psiDirectory.add(psiFile);
-        });
-    }
-
     public static void createFile(Project project, @NotNull PsiDirectory psiDirectory, String fileName, String context, LanguageFileType fileType) {
         PsiFile psiFile = PsiFileFactory.getInstance(project).createFileFromText(fileName, fileType, context);
+
         WriteCommandAction.runWriteCommandAction(project, () -> {
             psiDirectory.add(psiFile);
         });
