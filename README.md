@@ -4,6 +4,7 @@ This plugin helps you to generate specific code by template.
 
 [![release](https://img.shields.io/badge/IDEA-v0.6-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hehaiyangwork/CodeGen/blob/master/LICENSE)
 
+![CodeGen](https://raw.githubusercontent.com/hehaiyangwork/CodeGen/master/codegen.gif)
 
 ## Install
 
