@@ -14,6 +14,7 @@ import me.hehaiyang.codegen.file.FileProvider;
 import me.hehaiyang.codegen.model.*;
 import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.config.ui.variable.AddDialog;
+import me.hehaiyang.codegen.utils.BuilderUtil;
 import me.hehaiyang.codegen.utils.PsiUtil;
 
 import javax.swing.*;
@@ -269,6 +270,7 @@ public class ColumnEditorFrame extends JFrame {
         Map<String, String> params = new HashMap<>();
         params.putAll(DefaultParams.getDefaults());
         params.putAll(settingManager.getVariablesSetting().getParams());
+        params.put("serialVersionUID", BuilderUtil.computeDefaultSUID(context.getModel(), context.getFields()) + "");
         context.set$(params);
 
         Map<String, List<CodeTemplate>> templatesMap = settingManager.getTemplatesSetting().getTemplatesMap();
