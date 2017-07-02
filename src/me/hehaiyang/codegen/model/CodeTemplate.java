@@ -1,9 +1,6 @@
 package me.hehaiyang.codegen.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -16,6 +13,7 @@ import java.io.Serializable;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 public class CodeTemplate implements Serializable {
 
     private static final long serialVersionUID = -219970561109552275L;

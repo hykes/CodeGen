@@ -239,7 +239,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 String display = displayJTextField.getText();
                 String extension = extensionJTextField.getText();
 
-                addNode(selectedNode, new DefaultMutableTreeNode(new CodeTemplate(UUID.randomUUID().toString(), display, extension, "Unnamed", "")));
+                addNode(selectedNode, new DefaultMutableTreeNode(new CodeTemplate(UUID.randomUUID().toString(), display, extension, "Unnamed", "", null, false)));
 
                 dialog.setVisible(false);
             });
