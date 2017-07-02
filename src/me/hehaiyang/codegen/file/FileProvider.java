@@ -3,6 +3,7 @@ package me.hehaiyang.codegen.file;
 import com.github.jknack.handlebars.Handlebars;
 import com.google.common.base.Strings;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import me.hehaiyang.codegen.handlebars.HandlebarsFactory;
 import me.hehaiyang.codegen.model.CodeContext;
@@ -23,27 +24,46 @@ public abstract class FileProvider {
 
     public abstract void create(CodeTemplate template, CodeContext context) throws Exception;
 
-    public PsiDirectory subDirectory(PsiDirectory psiDirectory){
-        return subDirectory(psiDirectory, null);
-    }
-
-    public PsiDirectory subDirectory(PsiDirectory psiDirectory, String subPath){
+    public PsiDirectory subDirectory(PsiDirectory psiDirectory, String subPath, Boolean isResources){
         if(Strings.isNullOrEmpty(subPath)){
             return psiDirectory;
         }else{
             String subPathAttr[] = subPath.split("/");
-            return createSubdirectory(psiDirectory, subPathAttr, 0);
+            if(isResources){
+                psiDirectory = findResourcesDirectory(psiDirectory);
+            }
+            return createSubDirectory(psiDirectory, subPathAttr, 0);
         }
     }
 
-    private PsiDirectory createSubdirectory(PsiDirectory psiDirectory, String temp[], int level){
+    // 创建子目录
+    private PsiDirectory createSubDirectory(PsiDirectory psiDirectory, String temp[], int level){
         PsiDirectory subdirectory = psiDirectory.findSubdirectory(temp[level]);
         if(subdirectory == null){
             subdirectory = psiDirectory.createSubdirectory(temp[level]);
         }
         if(temp.length != level + 1){
-            return createSubdirectory(subdirectory, temp, level + 1);
+            return createSubDirectory(subdirectory, temp, level + 1);
         }
         return subdirectory;
     }
+
+    // 根据选择的package目录，找到resources目录
+    private PsiDirectory findResourcesDirectory(PsiDirectory psiDirectory){
+
+        PsiDirectory parentDirectory = psiDirectory.getParentDirectory();
+
+        VirtualFile virtualFile = parentDirectory.getVirtualFile();
+        String path = virtualFile.getPresentableUrl();
+
+        if(!path.endsWith("src/main")){
+            return findResourcesDirectory(parentDirectory);
+        }
+        PsiDirectory resourcesDirectory = parentDirectory.findSubdirectory("resources");
+        if(resourcesDirectory == null){
+            resourcesDirectory = parentDirectory.createSubdirectory("resources");
+        }
+        return resourcesDirectory;
+    }
+
 }

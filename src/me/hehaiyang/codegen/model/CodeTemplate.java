@@ -16,16 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class CodeTemplate implements Serializable {
 
-    private static final long serialVersionUID = -219970561109552275L;
-
-    public CodeTemplate(String id, String display, String extension, String filename, String template){
-        this.id = id;
-        this.display = display;
-        this.extension = extension;
-        this.filename = filename;
-        this.template = template;
-
-    }
+    private static final long serialVersionUID = -329690965910519848L;
 
     /**
      * 模版ID，取 UUID 值

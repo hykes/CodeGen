@@ -24,7 +24,8 @@ public class XmlProviderImpl extends FileProvider {
         Template fileNameTemp = handlebars.compileInline(template.getFilename());
         String outputName = fileNameTemp.apply(BuilderUtil.transBean2Map(context));
 
-        PsiUtil.createFile(project, psiDirectory, outputName + XmlFileType.DOT_DEFAULT_EXTENSION, data, XmlFileType.INSTANCE);
+        PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getIsResources());
+        PsiUtil.createFile(project, directory, outputName + XmlFileType.DOT_DEFAULT_EXTENSION, data, XmlFileType.INSTANCE);
     }
 
 }
