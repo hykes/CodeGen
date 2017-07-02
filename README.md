@@ -112,6 +112,11 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 * [ ] template sub directory
 * [ ] resources directory
 
+## Contributions
+
+* [hehaiyangwork](https://github.com/hehaiyangwork)
+* [IceMimosa](https://github.com/IceMimosa)
+
 ## License
 Copyright © 2017 [MIT License](https://spdx.org/licenses/MIT.html)
 
