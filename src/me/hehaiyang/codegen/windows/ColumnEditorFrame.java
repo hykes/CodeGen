@@ -2,18 +2,17 @@ package me.hehaiyang.codegen.windows;
 
 import com.google.common.collect.Lists;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.JBUI;
+import me.hehaiyang.codegen.config.SettingManager;
+import me.hehaiyang.codegen.config.ui.variable.AddDialog;
 import me.hehaiyang.codegen.constants.DefaultParams;
 import me.hehaiyang.codegen.file.FileFactory;
 import me.hehaiyang.codegen.file.FileProvider;
 import me.hehaiyang.codegen.model.*;
-import me.hehaiyang.codegen.config.SettingManager;
-import me.hehaiyang.codegen.config.ui.variable.AddDialog;
 import me.hehaiyang.codegen.utils.PsiUtil;
 
 import javax.swing.*;
@@ -105,7 +104,7 @@ public class ColumnEditorFrame extends JFrame {
                 String tableName = tableCnText.getText().trim();
                 // 组装数据
                 CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, getFields());
-                gen(ideaContext.getProject(), list, context);
+                gen(ideaContext, list, context);
                 dispose();
             }
         });
@@ -264,7 +263,7 @@ public class ColumnEditorFrame extends JFrame {
         }
     }
 
-    public void gen(Project project, List<String> groups, CodeGenContext context){
+    public void gen(IdeaContext ideaContext, List<String> groups, CodeGenContext context){
 
         Map<String, String> params = new HashMap<>();
         params.putAll(DefaultParams.getDefaults());
@@ -275,10 +274,10 @@ public class ColumnEditorFrame extends JFrame {
 
         for(String id: groups){
 
-            PsiDirectory psiDirectory = PsiUtil.browseForFile(project);
+            PsiDirectory psiDirectory = PsiUtil.createDirectory(ideaContext.getProject(), "Select Package Folder", "");
             if(psiDirectory != null) {
-                FileFactory fileFactory = new FileFactory(project, psiDirectory);
-                WriteCommandAction.runWriteCommandAction(project, () -> {
+                FileFactory fileFactory = new FileFactory(ideaContext.getProject(), psiDirectory);
+                WriteCommandAction.runWriteCommandAction(ideaContext.getProject(), () -> {
                     try {
                         for (CodeTemplate codeTemplate : templatesMap.get(id)) {
                             FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());

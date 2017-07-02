@@ -22,7 +22,7 @@ public class JavaProviderImpl extends FileProvider {
         Template fileNameTemp = handlebars.compileInline(fileName);
         String outputName = fileNameTemp.apply(BuilderUtil.transBean2Map(context));
 
-        PsiUtil.createFile(project, psiDirectory, outputName + JavaFileType.DOT_DEFAULT_EXTENSION, data, JavaFileType.INSTANCE);
+        PsiUtil.createFile(project, subDirectory(psiDirectory, null), outputName + JavaFileType.DOT_DEFAULT_EXTENSION, data, JavaFileType.INSTANCE);
     }
 
 }

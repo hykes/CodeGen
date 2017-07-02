@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Desc:
@@ -22,4 +20,5 @@ public class IdeaContext implements Serializable {
     private static final long serialVersionUID = -3766582517674940760L;
 
     private Project project;
+
 }
