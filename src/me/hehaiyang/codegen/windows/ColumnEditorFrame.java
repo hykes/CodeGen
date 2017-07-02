@@ -11,7 +11,6 @@ import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.config.ui.variable.AddDialog;
 import me.hehaiyang.codegen.constants.DefaultParams;
 import me.hehaiyang.codegen.file.FileProviderFactory;
-import me.hehaiyang.codegen.file.FileProvider;
 import me.hehaiyang.codegen.model.*;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 import me.hehaiyang.codegen.utils.PsiUtil;
@@ -104,7 +103,7 @@ public class ColumnEditorFrame extends JFrame {
                 String table = tableText.getText().trim();
                 String tableName = tableCnText.getText().trim();
                 // 组装数据
-                CodeGenContext context = new CodeGenContext(model, modelName, table, tableName, getFields());
+                CodeContext context = new CodeContext(model, modelName, table, tableName, getFields());
                 gen(ideaContext, list, context);
                 dispose();
             }
@@ -264,7 +263,7 @@ public class ColumnEditorFrame extends JFrame {
         }
     }
 
-    public void gen(IdeaContext ideaContext, List<String> groups, CodeGenContext context){
+    public void gen(IdeaContext ideaContext, List<String> groups, CodeContext context){
 
         Map<String, String> params = new HashMap<>();
         params.putAll(DefaultParams.getDefaults());
@@ -291,6 +290,18 @@ public class ColumnEditorFrame extends JFrame {
             }
         }
 
+    }
+
+    public class ComboBoxCellRenderer extends JLabel implements ListCellRenderer {
+
+        ComboBoxCellRenderer(){ setOpaque(true); }
+
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            Database database = (Database) value;
+            setText(database.getName());
+            return this;
+        }
     }
 
 }

@@ -16,7 +16,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CodeGenContext implements Serializable {
+public class CodeContext implements Serializable {
 
     private static final long serialVersionUID = 6235968905610310027L;
 

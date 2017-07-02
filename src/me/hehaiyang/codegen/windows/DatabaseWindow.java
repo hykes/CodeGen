@@ -102,4 +102,16 @@ public class DatabaseWindow extends JFrame{
         add(configPanel, BorderLayout.CENTER);
     }
 
+    public class ComboBoxCellRenderer extends JLabel implements ListCellRenderer {
+
+        ComboBoxCellRenderer(){ setOpaque(true); }
+
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            Database database = (Database) value;
+            setText(database.getName());
+            return this;
+        }
+    }
+
 }

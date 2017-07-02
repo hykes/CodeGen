@@ -40,14 +40,14 @@ public class CodeTemplate implements Serializable {
     private String display;
 
     /**
-     * 文件名称
-     */
-    private String filename;
-
-    /**
      * 扩展名
      */
     private String extension;
+
+    /**
+     * 文件名称
+     */
+    private String filename;
 
     /**
      * 模版内容

@@ -5,7 +5,7 @@ import com.google.common.base.Strings;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import me.hehaiyang.codegen.handlebars.HandlebarsFactory;
-import me.hehaiyang.codegen.model.CodeGenContext;
+import me.hehaiyang.codegen.model.CodeContext;
 import me.hehaiyang.codegen.model.CodeTemplate;
 
 public abstract class FileProvider {
@@ -21,7 +21,7 @@ public abstract class FileProvider {
         this.psiDirectory = psiDirectory;
     }
 
-    public abstract void create(CodeTemplate template, CodeGenContext context) throws Exception;
+    public abstract void create(CodeTemplate template, CodeContext context) throws Exception;
 
     public PsiDirectory subDirectory(PsiDirectory psiDirectory){
         return subDirectory(psiDirectory, null);

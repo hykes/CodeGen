@@ -5,7 +5,7 @@ import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import me.hehaiyang.codegen.file.FileProvider;
-import me.hehaiyang.codegen.model.CodeGenContext;
+import me.hehaiyang.codegen.model.CodeContext;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 import me.hehaiyang.codegen.utils.PsiUtil;
@@ -17,7 +17,7 @@ public class XmlProviderImpl extends FileProvider {
     }
 
     @Override
-    public void create(CodeTemplate template, CodeGenContext context) throws Exception{
+    public void create(CodeTemplate template, CodeContext context) throws Exception{
         Template input = handlebars.compileInline(template.getTemplate());
         String data = input.apply(BuilderUtil.transBean2Map(context));
 
