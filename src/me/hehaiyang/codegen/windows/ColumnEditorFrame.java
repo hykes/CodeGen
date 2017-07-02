@@ -10,11 +10,9 @@ import com.intellij.util.ui.JBUI;
 import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.config.ui.variable.AddDialog;
 import me.hehaiyang.codegen.constants.DefaultParams;
-import me.hehaiyang.codegen.file.FileFactory;
+import me.hehaiyang.codegen.file.FileProviderFactory;
 import me.hehaiyang.codegen.file.FileProvider;
 import me.hehaiyang.codegen.model.*;
-import me.hehaiyang.codegen.config.SettingManager;
-import me.hehaiyang.codegen.config.ui.variable.AddDialog;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 import me.hehaiyang.codegen.utils.PsiUtil;
 
@@ -280,19 +278,16 @@ public class ColumnEditorFrame extends JFrame {
 
             PsiDirectory psiDirectory = PsiUtil.createDirectory(ideaContext.getProject(), "Select Package Folder", "");
             if(psiDirectory != null) {
-                FileFactory fileFactory = new FileFactory(ideaContext.getProject(), psiDirectory);
+                FileProviderFactory fileFactory = new FileProviderFactory(ideaContext.getProject(), psiDirectory);
                 WriteCommandAction.runWriteCommandAction(ideaContext.getProject(), () -> {
                     try {
                         for (CodeTemplate codeTemplate : templatesMap.get(id)) {
-                            FileProvider fileProvider = fileFactory.getInstance(codeTemplate.getExtension());
-                            fileProvider.create(codeTemplate.getTemplate(), context, codeTemplate.getFilename());
+                            fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context);
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 });
-            }else{
-                break;
             }
         }
 

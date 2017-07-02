@@ -6,18 +6,18 @@ import me.hehaiyang.codegen.file.impl.JavaProviderImpl;
 import me.hehaiyang.codegen.file.impl.SqlProviderImpl;
 import me.hehaiyang.codegen.file.impl.XmlProviderImpl;
 
-public class FileFactory {
+public class FileProviderFactory {
 
-    private Project project;
+    private static Project project;
 
-    private PsiDirectory psiDirectory ;
+    private static PsiDirectory psiDirectory ;
 
-    public FileFactory(Project project, PsiDirectory psiDirectory) {
+    public FileProviderFactory(Project project, PsiDirectory psiDirectory) {
         this.project = project;
         this.psiDirectory = psiDirectory;
     }
 
-    public FileProvider getInstance(String type) {
+    public static FileProvider getInstance(String type) {
 
         if("java".equals(type)) {
             return new JavaProviderImpl(project, psiDirectory);

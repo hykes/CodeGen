@@ -18,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class CodeTemplate implements Serializable {
 
-    private static final long serialVersionUID = -5333282359902221032L;
+    private static final long serialVersionUID = -219970561109552275L;
 
     public CodeTemplate(String id, String display, String extension, String filename, String template){
         this.id = id;
@@ -57,6 +57,11 @@ public class CodeTemplate implements Serializable {
     /**
      * 子目录
      */
-    private String outpath;
+    private String subPath;
+
+    /**
+     * 是否是静态资源
+     */
+    private Boolean isResources;
 
 }

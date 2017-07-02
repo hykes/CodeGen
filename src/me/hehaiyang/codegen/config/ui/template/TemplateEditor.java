@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * Desc: 模版配置
@@ -24,25 +25,28 @@ import java.awt.*;
 @EqualsAndHashCode(callSuper = false)
 public class TemplateEditor extends JPanel {
 
-    private final JPanel textPanel = new JPanel(new GridLayout(3,2));
+    private final JPanel textPanel = new JPanel(new GridLayout(3,4));
     private final JTextField id = new JTextField();
     private final JTextField display = new JTextField();
     private final JTextField extension = new JTextField();
     private final JTextField filename = new JTextField();
+    private final JTextField subPath = new JTextField();
+    private final JCheckBox isResources = new JCheckBox();
     private Editor editor;
 
     public TemplateEditor(){
         setLayout(new BorderLayout());
-        setPreferredSize(JBUI.size(300, 100));
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        setPreferredSize(JBUI.size(340, 100));
+        setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         init();
     }
 
     private void init(){
-        textPanel.setPreferredSize(new Dimension(0, 70));
-        display.setSize(new Dimension(200, 20));
+        textPanel.setPreferredSize(new Dimension(0, 100));
+        display.setSize(new Dimension(100, 20));
         extension.setSize(new Dimension(80,20));
-        filename.setSize(new Dimension(200,20));
+        filename.setSize(new Dimension(100,20));
+        subPath.setSize(new Dimension(100,20));
 
         textPanel.add(new JLabel("Name:"));
         textPanel.add(display);
@@ -50,6 +54,10 @@ public class TemplateEditor extends JPanel {
         textPanel.add(filename);
         textPanel.add(new JLabel("Extension:"));
         textPanel.add(extension);
+        textPanel.add(new JLabel("SubPath:"));
+        textPanel.add(subPath);
+        textPanel.add(new JLabel("Resources:"));
+        textPanel.add(isResources);
 
         this.add(textPanel, BorderLayout.NORTH);
 
@@ -62,7 +70,8 @@ public class TemplateEditor extends JPanel {
         display.setText(codeTemplate.getDisplay());
         extension.setText(codeTemplate.getExtension());
         filename.setText(codeTemplate.getFilename());
-
+        subPath.setText(codeTemplate.getSubPath());
+        isResources.setSelected(Objects.isNull(codeTemplate.getIsResources())?false: codeTemplate.getIsResources());
         editor = createEditor(codeTemplate.getTemplate(), codeTemplate.getExtension());
 
         this.removeAll();
@@ -99,6 +108,8 @@ public class TemplateEditor extends JPanel {
         codeTemplate.setExtension(extension.getText().trim());
         codeTemplate.setFilename(filename.getText().trim());
         codeTemplate.setTemplate(editor.getDocument().getText());
+        codeTemplate.setSubPath(subPath.getText().trim());
+        codeTemplate.setIsResources(isResources.isSelected());
         return codeTemplate;
     }
 
