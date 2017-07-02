@@ -1,6 +1,6 @@
 package me.hehaiyang.codegen.config.ui;
 
-import me.hehaiyang.codegen.utils.ParseUtils;
+import me.hehaiyang.codegen.utils.StringUtils;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class WikiTextAreaUI extends JTextArea {
         String wiki;
         try {
             InputStream template = getClass().getResourceAsStream("/wiki/README.md");
-            wiki = ParseUtils.stream2String(template);
+            wiki = StringUtils.stream2String(template);
         }catch (IOException ioe){
             wiki = "IOException";
         }

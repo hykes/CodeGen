@@ -1,6 +1,9 @@
-# CodeGen V0.6
+# CodeGen
 
 This plugin helps you to generate specific code by template.
+
+[![release](https://img.shields.io/badge/IDEA-v0.6-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hehaiyangwork/CodeGen/blob/master/LICENSE)
+
 
 ## Install
 
@@ -8,9 +11,7 @@ Preferences -> Plugins -> Browse repositories -> [search] CodeGen
 
 ## Usage
 
-shift + command + g
-
-Tools -> CodeGen
+`shift + command + g` OR `Tools -> CodeGen`
 
 ## Options
 
@@ -41,6 +42,8 @@ Predefined variables will take the following values:
 {{$.Minute}} current minute
 
 {{$.Second}} current second
+
+{{$.serialVersionUID}} current model serialVersionUID
 
 <del>
 ${PACKAGE_NAME} name of the package in which the new interface is created
@@ -89,11 +92,27 @@ CREATE TABLE `t_addresses` (
 
 http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
+> How to setup
+
+* Clone the project, and open with IDEA (Community).
+* Modify module type in `.idea/CodeGen.im` from `JAVA_MODULE` to `PLUGIN_MODULE`.
+* Change the project's module compile output path to `/XXX/XXX/CodeGen/out` in `Project Structure -> Modules -> CodeGen -> paths`. You can also modify the Plugin Deployment `plugin.xml path`.
+* Install `lombok` plugin. In `Preferences -> Build -> Annotation Processors`. 
+	* `Enable annotation processing`.
+	* Modify `Production sources directory` to `out`
+	* Modify `Test sources directory` to `out`
+* Run CodeGen and enjoy it.
+
+> Welcome to contribute
+
 ## TODO
 
-1. serialVersionUID
-2. template sub directory
-3. resources directory
+* [x] serialVersionUID
+* [ ] wiki
+* [ ] template sub directory
+* [ ] resources directory
 
 ## License
 Copyright © 2017 [MIT License](https://spdx.org/licenses/MIT.html)
+
+

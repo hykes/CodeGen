@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.config.SettingManager;
-import me.hehaiyang.codegen.utils.ParseUtils;
+import me.hehaiyang.codegen.utils.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,7 +50,7 @@ public class DefaultTemplates {
 
     private static String getTemplateContext(String path) throws IOException{
         InputStream template = SettingManager.class.getResourceAsStream(path);
-        return ParseUtils.stream2String(template);
+        return StringUtils.stream2String(template);
     }
 
 }

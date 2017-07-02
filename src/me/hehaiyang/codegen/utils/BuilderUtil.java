@@ -1,15 +1,15 @@
 package me.hehaiyang.codegen.utils;
 
+import me.hehaiyang.codegen.model.Field;
+
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Modifier;
+import java.security.MessageDigest;
+import java.util.*;
 
 /**
  * Desc:
@@ -142,4 +142,55 @@ public class BuilderUtil {
         return str;
     }
 
+    /**
+     * 计算默认的 serialVersionUID
+     *
+     * @see java.io.ObjectStreamClass#lookup(Class)
+     * @see java.io.ObjectStreamClass#computeDefaultSUID(Class)
+     */
+    public static long computeDefaultSUID(String className, List<Field> fields) {
+        try {
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            DataOutputStream dout = new DataOutputStream(bout);
+
+            // simple class name
+            dout.writeUTF(className);
+            int classMods = Modifier.PUBLIC & (Modifier.PUBLIC | Modifier.FINAL | Modifier.INTERFACE | Modifier.ABSTRACT);
+            dout.writeInt(classMods);
+
+            // interface name
+            dout.writeUTF("java.io.Serializable");
+
+            // fields
+            // fields.sort(Comparator.comparing(Field::getField));
+            for (int i = 0; i < fields.size(); i++) {
+                Field field = fields.get(i);
+                int mods = Modifier.PRIVATE &
+                        (Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED |
+                                Modifier.STATIC | Modifier.FINAL | Modifier.VOLATILE |
+                                Modifier.TRANSIENT);
+                if (((mods & Modifier.PRIVATE) == 0) ||
+                        ((mods & (Modifier.STATIC | Modifier.TRANSIENT)) == 0)) {
+                    dout.writeUTF(field.getField());
+                    dout.writeInt(mods);
+                    dout.writeUTF(field.getFieldType());
+                }
+            }
+
+            // method ignore
+            //
+            dout.flush();
+
+            MessageDigest md = MessageDigest.getInstance("SHA");
+            byte[] hashBytes = md.digest(bout.toByteArray());
+            long hash = 0;
+            for (int i = Math.min(hashBytes.length, 8) - 1; i >= 0; i--) {
+                hash = (hash << 8) | (hashBytes[i] & 0xFF);
+            }
+            return hash;
+        } catch (Exception e) {
+            // ignore
+        }
+        return 1;
+    }
 }

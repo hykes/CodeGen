@@ -8,11 +8,12 @@ import java.util.Date;
  * Desc:
  * Mail: {{$.email}}
  * Date: {{$.Now}}
+ * Created by {{$.author}}
  */
 @Data
 public class {{model}} implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = {{$.serialVersionUID}}L;
 
     /**
      * 自增主键
