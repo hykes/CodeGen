@@ -30,11 +30,6 @@ public class CodeGroup implements Serializable {
      */
     private String name;
 
-    /**
-     * 优先级
-     */
-    private Integer level;
-
     private List<CodeTemplate> templates;
 
 }
