@@ -12,7 +12,6 @@ import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.config.UIConfigurable;
 import me.hehaiyang.codegen.config.setting.TemplatesSetting;
 import me.hehaiyang.codegen.config.ui.template.TemplateEditor;
-import me.hehaiyang.codegen.config.ui.template.TemplateTreeCellRenderer;
 import me.hehaiyang.codegen.config.ui.variable.AddDialog;
 import me.hehaiyang.codegen.constants.DefaultTemplates;
 import me.hehaiyang.codegen.model.CodeGroup;
@@ -299,6 +298,41 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             root.add(group);
         });
         templateTree.setModel(new DefaultTreeModel(root, false));
+    }
+
+    public class TemplateTreeCellRenderer extends DefaultTreeCellRenderer{
+
+        /**
+         * 重写父类DefaultTreeCellRenderer的方法
+         */
+        @Override
+        public Component getTreeCellRendererComponent(JTree tree, Object value,
+                                                      boolean selected, boolean expanded, boolean isLeaf, int row,boolean hasFocus) {
+            // 选中
+            if (selected) {
+                setForeground(getTextSelectionColor());
+            } else {
+                setForeground(getTextNonSelectionColor());
+            }
+            // TreeNode
+            DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) value;
+
+            Object obj = treeNode.getUserObject();
+
+            if (obj instanceof CodeTemplate) {
+                CodeTemplate node = (CodeTemplate) obj;
+                DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
+                return tempCellRenderer.getTreeCellRendererComponent(tree, node.getDisplay(), selected, expanded, true, row, hasFocus);
+            } else if (obj instanceof CodeGroup) {
+                CodeGroup group = (CodeGroup) obj;
+                DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
+                return tempCellRenderer.getTreeCellRendererComponent(tree, group.getName(), selected, expanded, false, row, hasFocus);
+            }else{
+                String text = (String) obj;
+                DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
+                return tempCellRenderer.getTreeCellRendererComponent(tree, text, selected, expanded, false, row, hasFocus);
+            }
+        }
     }
 
     public static void main(String[] args) {
