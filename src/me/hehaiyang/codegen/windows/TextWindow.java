@@ -17,7 +17,7 @@ public class TextWindow extends JFrame {
     final JRadioButton markDownRadio = new JRadioButton("MarkDown");
     final JRadioButton sqlScriptRadio = new JRadioButton("SqlScript", true);
 
-    private JTextPane codeJTextPane;
+    private JTextArea codeJTextPane;
 
     private JPanel actionPanel;
     private JLabel tipsLabel;
@@ -53,7 +53,7 @@ public class TextWindow extends JFrame {
         boxes.add(markDownRadio);
         add(boxes, BorderLayout.NORTH);
 
-        codeJTextPane = new JTextPane();
+        codeJTextPane = new JTextArea();
         codeJTextPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(ScrollPaneFactory.createScrollPane(codeJTextPane), BorderLayout.CENTER);
 
