@@ -3,16 +3,20 @@ package me.hehaiyang.codegen.config.ui;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.JBUI;
 import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.config.UIConfigurable;
 import me.hehaiyang.codegen.config.setting.VariablesSetting;
 import me.hehaiyang.codegen.config.ui.variable.AddDialog;
+import me.hehaiyang.codegen.utils.StringUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,7 +77,7 @@ public class VariablesUI extends JPanel implements UIConfigurable {
         variablesTable.getTableHeader().setReorderingAllowed(false);   //不可整列移动
         variablesTable.getTableHeader().setResizingAllowed(false);   //不可拉动表格
 
-        final JPanel mainPanel = new JPanel(new GridLayout(1, 1));
+        final JPanel mainPanel = new JPanel(new GridLayout(2, 1));
         mainPanel.setPreferredSize(JBUI.size(300, 400));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
 
@@ -86,11 +90,27 @@ public class VariablesUI extends JPanel implements UIConfigurable {
         localPanel.add(panel, BorderLayout.CENTER);
         mainPanel.add(localPanel);
 
+        JTextArea area = new JTextArea();
+        final JPanel inHousePanel = new JPanel(new BorderLayout());
+        inHousePanel.setBorder(IdeBorderFactory.createTitledBorder("In-house Variables", false));
+
+        String inHouseVariables;
+        try {
+            InputStream template = getClass().getResourceAsStream("/wiki/In-house-variables.md");
+            inHouseVariables = StringUtils.stream2String(template);
+        }catch (IOException ioe){
+            inHouseVariables = "IOException";
+        }
+        area.setText(inHouseVariables);
+        area.setEnabled(false);
+        inHousePanel.add(new JBScrollPane(area),BorderLayout.CENTER);
+        mainPanel.add(inHousePanel);
+
         add(mainPanel, BorderLayout.CENTER);
 
         final JPanel infoPanel = new JPanel(new BorderLayout());
         infoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        infoPanel.add(new JLabel("You can defined some variables for template.",
+        infoPanel.add(new JLabel("You can pre-defined variables for template .",
                 MessageType.INFO.getDefaultIcon(), SwingConstants.LEFT));
         add(infoPanel, BorderLayout.SOUTH);
 

@@ -26,8 +26,6 @@ Preferences -> Tools -> CodeGen
 ### In-house Variables
 
 ```
-Predefined variables will take the following values:
-
 {{$.Year}} current year
 
 {{$.Month}} current month
