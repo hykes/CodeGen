@@ -12,15 +12,17 @@ import java.util.Map;
  */
 public class DefaultParams {
 
-    public static Map<String, String> getDefaults() {
+    public static Map<String, String> getInHouseVariables() {
         Map<String, String> params = new HashMap<>();
         Calendar calendar = Calendar.getInstance();
-        params.put("Year", String.valueOf(calendar.get(Calendar.YEAR)));
-        params.put("Month", String.valueOf(calendar.get(Calendar.MONTH) + 1));
-        params.put("Day_Of_Month", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-        params.put("Day_Of_Week", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)));
-        params.put("Day_Of_Week_In_Month", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH)));
-        params.put("Date", String.valueOf(calendar.get(Calendar.DATE)));
+        params.put("YEAR", String.valueOf(calendar.get(Calendar.YEAR)));
+        params.put("MONTH", String.valueOf(calendar.get(Calendar.MONTH) + 1));
+        params.put("WEEK_OF_YEAR", String.valueOf(calendar.get(Calendar.WEEK_OF_YEAR)));
+        params.put("WEEK_OF_MONTH", String.valueOf(calendar.get(Calendar.WEEK_OF_MONTH)));
+        params.put("DATE", String.valueOf(calendar.get(Calendar.DATE)));
+        params.put("DAY_OF_MONTH", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
+        params.put("DAY_OF_YEAR", String.valueOf(calendar.get(Calendar.DAY_OF_YEAR)));
+        params.put("DAY_OF_WEEK", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)));
         params.put("Hour", String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
         params.put("Minute", String.valueOf(calendar.get(Calendar.MINUTE)));
         params.put("Second", String.valueOf(calendar.get(Calendar.SECOND)));
@@ -30,7 +32,7 @@ public class DefaultParams {
         return params;
     }
 
-    public static Map<String, String> getDefaultVariables() {
+    public static Map<String, String> getPreDefinedVariables() {
         Map<String, String> params = new HashMap<>();
         params.put("author", "[ your name ]");
         params.put("email", "[ your email ]");

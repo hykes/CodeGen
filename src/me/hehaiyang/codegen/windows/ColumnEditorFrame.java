@@ -266,7 +266,7 @@ public class ColumnEditorFrame extends JFrame {
     public void gen(IdeaContext ideaContext, List<String> groups, CodeContext context){
 
         Map<String, String> params = new HashMap<>();
-        params.putAll(DefaultParams.getDefaults());
+        params.putAll(DefaultParams.getInHouseVariables());
         params.putAll(settingManager.getVariablesSetting().getParams());
         params.put("serialVersionUID", BuilderUtil.computeDefaultSUID(context.getModel(), context.getFields()) + "");
         context.set$(params);

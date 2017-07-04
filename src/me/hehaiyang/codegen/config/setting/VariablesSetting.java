@@ -15,7 +15,7 @@ public class VariablesSetting {
     private Map<String, String> params = new HashMap<>();
 
     public VariablesSetting() {
-        params.putAll(DefaultParams.getDefaultVariables());
+        params.putAll(DefaultParams.getPreDefinedVariables());
     }
 
     public Map<String, String> getParams() {
