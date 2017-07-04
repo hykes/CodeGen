@@ -21,6 +21,8 @@ public class DefaultTemplates {
     public static List<CodeGroup> getDefaults() {
         List<CodeGroup> groups = Lists.newArrayList();
         try {
+
+            // java templates
             List<CodeTemplate> apiTemplates = Lists.newArrayList();
 
             apiTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Controller", "java", "{{model}}s", getTemplateContext("/template/ControllerTemplate.hbs"), "front", false));
@@ -41,6 +43,15 @@ public class DefaultTemplates {
             implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Mapper", "xml", "{{model}}Mapper", getTemplateContext("/template/MapperTemplate.hbs"), "mapper", true));
             CodeGroup implGroup = new CodeGroup(UUID.randomUUID().toString(), "ServiceImpl", implTemplates);
             groups.add(implGroup);
+
+            // kotlin template
+            List<CodeTemplate> ktTemplates = Lists.newArrayList();
+            ktTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Controller", "kt", "{{model}}s", getTemplateContext("/template/kotlin/ControllerTemplate.hbs"), "restful", false));
+            ktTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Model", "kt", "{{model}}", getTemplateContext("/template/kotlin/ModelTemplate.hbs"), "model", false));
+            ktTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Service", "kt", "{{model}}Service", getTemplateContext("/template/kotlin/ServiceTemplate.hbs"), "service", false));
+            ktTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "ServiceImpl", "kt", "{{model}}ServiceImpl", getTemplateContext("/template/kotlin/ServiceImplTemplate.hbs"), "service/impl", false));
+            CodeGroup ktApiGroup = new CodeGroup(UUID.randomUUID().toString(), "Kotlin", ktTemplates);
+            groups.add(ktApiGroup);
 
         }catch (IOException io){
             // ignore this

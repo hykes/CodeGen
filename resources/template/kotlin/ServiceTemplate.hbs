@@ -1,0 +1,18 @@
+
+import io.terminus.paas.common.model.Paging
+
+/**
+ * Desc: {{modelName}}服务接口
+ * Mail: {{$.email}}
+ * Date: {{$.Now}}
+ * Created by {{$.author}}
+ */
+interface {{model}}Service {
+
+    fun create({{LowerCase model}}: {{model}}): Long
+    fun update({{LowerCase model}}: {{model}})
+    fun delete(id: Long)
+
+    fun findById(id: Long): {{model}}?
+    fun paging(pageNo: Int, pageSize: Int): Paging<{{model}}>
+}

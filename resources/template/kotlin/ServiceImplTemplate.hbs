@@ -1,0 +1,36 @@
+
+import io.terminus.paas.common.model.Paging
+import io.terminus.paas.common.model.pagingList
+import org.springframework.stereotype.Service
+
+
+/**
+ * Desc: {{modelName}}服务接口实现
+ * Mail: {{$.email}}
+ * Date: {{$.Now}}
+ * Created by {{$.author}}
+ */
+@Service
+class {{model}}ServiceImpl : {{model}}Service {
+
+    override fun create({{LowerCase model}}: {{model}}): Long {
+        {{LowerCase model}}.insert()
+        return {{LowerCase model}}.id!!
+    }
+
+    override fun update({{LowerCase model}}: {{model}}) {
+        {{LowerCase model}}.update()
+    }
+
+    override fun delete(id: Long) {
+        {{model}}.find.deleteById(id)
+    }
+
+    override fun findById(id: Long): {{model}}? {
+        return {{model}}.find.byId(id)
+    }
+
+    override fun paging(pageNo: Int, pageSize: Int): Paging<{{model}}> {
+        return {{model}}.find.pagingList(pageNo, pageSize)
+    }
+}

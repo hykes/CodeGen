@@ -1,0 +1,27 @@
+
+import io.terminus.paas.common.model.BaseModel
+import java.io.Serializable
+import javax.persistence.Entity
+import javax.persistence.Table
+
+/**
+ * Desc:
+ * Mail: {{$.email}}
+ * Date: {{$.Now}}
+ * Created by {{$.author}}
+ */
+@Entity
+@Table(name = "{{table}}")
+class {{model}} : BaseModel(), Serializable {
+
+    companion object {
+        val find = object : Find<Long, {{model}}>() {}
+    }
+
+    {{#each fields}}
+    /**
+     * {{comment}}
+     */
+    var {{field}}: {{kotlinType}}? = null
+    {{/each}}
+}
