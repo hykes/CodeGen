@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>0.6</version>
+  <version>0.7</version>
   <vendor email="hehaiyangwork@qq.com">hehaiyang</vendor>
 
   <description><![CDATA[
@@ -19,7 +19,13 @@
     ]]></description>
 
   <change-notes><![CDATA[
-
+      <ul>
+        <li>add in-house variables (serialVersionUID)</li>
+        <li>support template sub directory</li>
+        <li>support resources (sub) directory</li>
+        <li>fix add group bug</li>
+        <li>remove lombok jar</li>
+      </ul>
     ]]>
   </change-notes>
 
