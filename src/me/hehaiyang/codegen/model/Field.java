@@ -24,6 +24,7 @@ public class Field implements Serializable{
      * 属性类型
      */
     private String fieldType;
+    private String kotlinType;
 
     /**
      * 数据库字段名
@@ -53,6 +54,9 @@ public class Field implements Serializable{
     public void setFieldType(String fieldType) {
         this.fieldType = fieldType;
     }
+    public void setKotlinType(String kotlinType) {
+        this.kotlinType = kotlinType;
+    }
 
     public void setColumn(String column) {
         this.column = column;
@@ -60,9 +64,11 @@ public class Field implements Serializable{
     }
 
     public void setColumnType(String columnType) {
-
         this.columnType = columnType;
-        this.fieldType = DBOperation.toJavaType(columnType);
+
+        FieldType fieldType = DBOperation.getFieldType(columnType);
+        this.fieldType = fieldType.getJavaType();
+        this.kotlinType = fieldType.getKotlinType();
     }
 
     public String getField() {
@@ -71,6 +77,10 @@ public class Field implements Serializable{
 
     public String getFieldType() {
         return fieldType;
+    }
+
+    public String getKotlinType() {
+        return kotlinType;
     }
 
     public String getColumn() {

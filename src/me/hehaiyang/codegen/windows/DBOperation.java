@@ -3,12 +3,15 @@ package me.hehaiyang.codegen.windows;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import me.hehaiyang.codegen.model.Field;
+import me.hehaiyang.codegen.model.FieldType;
 import me.hehaiyang.codegen.utils.StringUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static me.hehaiyang.codegen.model.FieldType.build;
 
 public class DBOperation {
 
@@ -83,38 +86,38 @@ public class DBOperation {
      * 如果要转javaType的枚举, 可以使用Types
      * @see Types
      */
-    private static Map<String, String> sqlTypes = Maps.newHashMap();
+    private static Map<String, FieldType> sqlTypes = Maps.newHashMap();
     static {
         // mysql https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-type-conversions.html
-        sqlTypes.put("BIT", "Boolean");
-        sqlTypes.put("BOOL", "Boolean");
-        sqlTypes.put("BOOLEAN", "Boolean");
-        sqlTypes.put("TINYINT", "Integer");
-        sqlTypes.put("SMALLINT", "Integer");
-        sqlTypes.put("MEDIUMINT", "Integer");
-        sqlTypes.put("INT", "Integer");
-        sqlTypes.put("INTEGER", "Integer");
-        sqlTypes.put("FLOAT", "Double"); // 也用Double吧
-        sqlTypes.put("DOUBLE", "Double");
-        sqlTypes.put("BIGINT", "Long");
-        sqlTypes.put("CHAR", "String");
-        sqlTypes.put("VARCHAR", "String");
-        sqlTypes.put("TINYTEXT", "String");
-        sqlTypes.put("TEXT", "String");
-        sqlTypes.put("MEDIUMTEXT", "String");
-        sqlTypes.put("LONGTEXT", "String");
-        sqlTypes.put("SET", "String");
-        sqlTypes.put("DATE", "java.util.Date"); // java.sql.Date ?
-        sqlTypes.put("DATETIME", "java.util.Date"); // java.sql.Timestamp ?
-        sqlTypes.put("TIMESTAMP", "java.util.Date"); // java.sql.Timestamp ?
-        sqlTypes.put("TIME", "java.util.Date"); // java.sql.Time ?
-        sqlTypes.put("DECIMAL", "java.math.BigDecimal"); // java.sql.Time ?
-        sqlTypes.put("BINARY", "Byte[]");
-        sqlTypes.put("VARBINARY", "Byte[]");
-        sqlTypes.put("BLOB", "java.sql.Blob");
-        sqlTypes.put("TINYBLOB", "java.sql.Blob");
-        sqlTypes.put("MEDIUMBLOB", "java.sql.Blob");
-        sqlTypes.put("LONGBLOB", "java.sql.Blob");
+        sqlTypes.put("BIT", build("Boolean"));
+        sqlTypes.put("BOOL", build("Boolean"));
+        sqlTypes.put("BOOLEAN", build("Boolean"));
+        sqlTypes.put("TINYINT", build("Integer", "Int"));
+        sqlTypes.put("SMALLINT", build("Integer", "Int"));
+        sqlTypes.put("MEDIUMINT", build("Integer", "Int"));
+        sqlTypes.put("INT", build("Integer", "Int"));
+        sqlTypes.put("INTEGER", build("Integer", "Int"));
+        sqlTypes.put("FLOAT", build("Double")); // 也用Double吧
+        sqlTypes.put("DOUBLE", build("Double"));
+        sqlTypes.put("BIGINT", build("Long"));
+        sqlTypes.put("CHAR", build("String"));
+        sqlTypes.put("VARCHAR", build("String"));
+        sqlTypes.put("TINYTEXT", build("String"));
+        sqlTypes.put("TEXT", build("String"));
+        sqlTypes.put("MEDIUMTEXT", build("String"));
+        sqlTypes.put("LONGTEXT", build("String"));
+        sqlTypes.put("SET", build("String"));
+        sqlTypes.put("DATE", build("java.util.Date")); // java.sql.Date ?
+        sqlTypes.put("DATETIME", build("java.util.Date")); // java.sql.Timestamp ?
+        sqlTypes.put("TIMESTAMP", build("java.util.Date")); // java.sql.Timestamp ?
+        sqlTypes.put("TIME", build("java.util.Date")); // java.sql.Time ?
+        sqlTypes.put("DECIMAL", build("java.math.BigDecimal")); // java.sql.Time ?
+        sqlTypes.put("BINARY", build("Byte[]", "ByteArray"));
+        sqlTypes.put("VARBINARY", build("Byte[]", "ByteArray"));
+        sqlTypes.put("BLOB", build("java.sql.Blob"));
+        sqlTypes.put("TINYBLOB", build("java.sql.Blob"));
+        sqlTypes.put("MEDIUMBLOB", build("java.sql.Blob"));
+        sqlTypes.put("LONGBLOB", build("java.sql.Blob"));
 
         // 其他数据库类型
         // sqlTypes.put("CLOB", "java.sql.Clob");
@@ -125,8 +128,8 @@ public class DBOperation {
      *
      * @return 对应字段的java类型
      */
-    public static String toJavaType(String typeName) {
-        if (StringUtils.isBlank(typeName)) return typeName;
+    public static FieldType getFieldType(String typeName) {
+        if (StringUtils.isBlank(typeName)) return build(typeName);
         return sqlTypes.get(typeName.trim().toUpperCase());
     }
 }

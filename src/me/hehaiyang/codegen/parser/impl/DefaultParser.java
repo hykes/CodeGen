@@ -42,14 +42,11 @@ public class DefaultParser implements Parser {
 
                 // 字段类型
                 ColDataType colDataType = it.getColDataType();
-                field.setColumnType(colDataType.getDataType());
+                field.setColumnType(colDataType.getDataType()); // 同时设置了字段类型
                 field.setColumnSize(firstOrNull(colDataType.getArgumentsStringList()));
 
                 // comment注释
                 field.setComment(getColumnComment(it.getColumnSpecStrings()));
-
-                // 字段的java类型
-                field.setFieldType(DBOperation.toJavaType(field.getColumnType()));
 
                 fields.add(field);
             });

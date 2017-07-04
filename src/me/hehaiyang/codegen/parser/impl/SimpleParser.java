@@ -59,18 +59,23 @@ public class SimpleParser implements Parser {
                     entity.setColumnType(type);
                     if(type.toUpperCase().contains("INT")){
                         entity.setFieldType("Integer");
+                        entity.setKotlinType("Int");
                     }
                     if(type.toUpperCase().contains("TINYINT")){
                         entity.setFieldType("Integer");
+                        entity.setKotlinType("Int");
                     }
                     if(type.toUpperCase().contains("BIGINT")){
                         entity.setFieldType("Long");
+                        entity.setKotlinType("Long");
                     }
                     if(type.toUpperCase().contains("VARCHAR")){
                         entity.setFieldType("String");
+                        entity.setKotlinType("String");
                     }
                     if(type.toUpperCase().contains("DATETIME")){
                         entity.setFieldType("Date");
+                        entity.setKotlinType("Date");
                     }
                     entity.setField(BuilderUtil.underlineToCamel(field));
                     entity.setComment(comment);
