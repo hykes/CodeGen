@@ -9,6 +9,8 @@ import me.hehaiyang.codegen.handlebars.HandlebarsFactory;
 import me.hehaiyang.codegen.model.CodeContext;
 import me.hehaiyang.codegen.model.CodeTemplate;
 
+import java.util.Objects;
+
 public abstract class FileProvider {
 
     public final static Handlebars handlebars = HandlebarsFactory.getInstance();
@@ -29,7 +31,7 @@ public abstract class FileProvider {
             return psiDirectory;
         }else{
             String subPathAttr[] = subPath.split("/");
-            if(isResources){
+            if(Objects.nonNull(isResources) && isResources){
                 psiDirectory = findResourcesDirectory(psiDirectory);
             }
             return createSubDirectory(psiDirectory, subPathAttr, 0);

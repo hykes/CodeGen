@@ -3,6 +3,7 @@ package me.hehaiyang.codegen.config.ui;
 import com.google.common.collect.Lists;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
@@ -141,11 +142,14 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             .setAddAction( it -> addAction())
             .setRemoveAction( it -> removeAction())
             .setEditAction(it -> editorAction())
-                .addExtraAction(new AnActionButton("Connect", AllIcons.Actions.Refresh) {
+                .addExtraAction(new AnActionButton("Connect", AllIcons.Actions.Reset) {
                     @Override
                     public void actionPerformed(AnActionEvent e) {
-                        settingManager.getTemplatesSetting().setGroups(DefaultTemplates.getDefaults());
-                        reset();
+                        int isResult = Messages.showYesNoDialog("是否使用内置模版覆盖当前模版组", "请选择", AllIcons.Actions.Refresh);
+                        if(isResult == 0){
+                            settingManager.getTemplatesSetting().setGroups(DefaultTemplates.getDefaults());
+                            reset();
+                        }
                     }
 
                     @Override
