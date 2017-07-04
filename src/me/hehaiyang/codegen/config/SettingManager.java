@@ -5,7 +5,6 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import lombok.Data;
 import me.hehaiyang.codegen.config.setting.ConfigSetting;
 import me.hehaiyang.codegen.config.setting.DatabasesSetting;
 import me.hehaiyang.codegen.config.setting.TemplatesSetting;
@@ -17,7 +16,6 @@ import org.jetbrains.annotations.Nullable;
  * Mail: hehaiyangwork@qq.com
  * Date: 2017/3/17
  */
-@Data
 @State(name = "CodeGen", storages = { @Storage(value = "$APP_CONFIG$/format.xml") })
 public class SettingManager implements PersistentStateComponent<SettingManager> {
 
@@ -49,4 +47,35 @@ public class SettingManager implements PersistentStateComponent<SettingManager> 
         XmlSerializerUtil.copyBean(formatSetting, this);
     }
 
+    public ConfigSetting getConfigSetting() {
+        return configSetting;
+    }
+
+    public void setConfigSetting(ConfigSetting configSetting) {
+        this.configSetting = configSetting;
+    }
+
+    public VariablesSetting getVariablesSetting() {
+        return variablesSetting;
+    }
+
+    public void setVariablesSetting(VariablesSetting variablesSetting) {
+        this.variablesSetting = variablesSetting;
+    }
+
+    public TemplatesSetting getTemplatesSetting() {
+        return templatesSetting;
+    }
+
+    public void setTemplatesSetting(TemplatesSetting templatesSetting) {
+        this.templatesSetting = templatesSetting;
+    }
+
+    public DatabasesSetting getDatabasesSetting() {
+        return databasesSetting;
+    }
+
+    public void setDatabasesSetting(DatabasesSetting databasesSetting) {
+        this.databasesSetting = databasesSetting;
+    }
 }

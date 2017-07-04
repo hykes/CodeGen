@@ -7,8 +7,6 @@ import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.EditorSettings;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.util.ui.JBUI;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,8 +19,6 @@ import java.util.Objects;
  * Mail: hehaiyangwork@qq.com
  * Date: 2017/3/17
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
 public class TemplateEditor extends JPanel {
 
     private final JPanel textPanel = new JPanel(new GridLayout(3,4));
@@ -71,7 +67,7 @@ public class TemplateEditor extends JPanel {
         extension.setText(codeTemplate.getExtension());
         filename.setText(codeTemplate.getFilename());
         subPath.setText(codeTemplate.getSubPath());
-        isResources.setSelected(Objects.isNull(codeTemplate.getIsResources())?false: codeTemplate.getIsResources());
+        isResources.setSelected(Objects.isNull(codeTemplate.getResources())?false: codeTemplate.getResources());
         editor = createEditor(codeTemplate.getTemplate(), codeTemplate.getExtension());
 
         this.removeAll();
@@ -109,7 +105,7 @@ public class TemplateEditor extends JPanel {
         codeTemplate.setFilename(filename.getText().trim());
         codeTemplate.setTemplate(editor.getDocument().getText());
         codeTemplate.setSubPath(subPath.getText().trim());
-        codeTemplate.setIsResources(isResources.isSelected());
+        codeTemplate.setResources(isResources.isSelected());
         return codeTemplate;
     }
 

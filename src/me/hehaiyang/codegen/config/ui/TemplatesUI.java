@@ -7,7 +7,6 @@ import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
-import lombok.Data;
 import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.config.UIConfigurable;
 import me.hehaiyang.codegen.config.setting.TemplatesSetting;
@@ -30,7 +29,6 @@ import java.util.UUID;
  * Mail: hehaiyang@terminus.io
  * Date: 2017/5/10
  */
-@Data
 public class TemplatesUI extends JBPanel implements UIConfigurable {
 
     private Tree templateTree;

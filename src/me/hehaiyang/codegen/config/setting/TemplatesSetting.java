@@ -2,7 +2,6 @@ package me.hehaiyang.codegen.config.setting;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import lombok.Data;
 import me.hehaiyang.codegen.constants.DefaultTemplates;
 import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
@@ -10,13 +9,11 @@ import me.hehaiyang.codegen.model.CodeTemplate;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Desc:
  * Mail: hehaiyang@terminus.io
  * Date: 2017/5/10
  */
-@Data
 public class TemplatesSetting {
 
     private List<CodeGroup> groups = Lists.newArrayList();
@@ -37,4 +34,11 @@ public class TemplatesSetting {
         return result;
     }
 
+    public List<CodeGroup> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<CodeGroup> groups) {
+        this.groups = groups;
+    }
 }

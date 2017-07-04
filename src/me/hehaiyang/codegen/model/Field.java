@@ -1,7 +1,6 @@
 package me.hehaiyang.codegen.model;
 
 
-import lombok.Data;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 import me.hehaiyang.codegen.windows.DBOperation;
 
@@ -12,7 +11,6 @@ import java.io.Serializable;
  * Mail: hehaiyang@terminus.io
  * Date: 16/4/21
  */
-@Data
 public class Field implements Serializable{
 
     private static final long serialVersionUID = -7928412682947631640L;
@@ -65,5 +63,37 @@ public class Field implements Serializable{
 
         this.columnType = columnType;
         this.fieldType = DBOperation.toJavaType(columnType);
+    }
+
+    public String getField() {
+        return field;
+    }
+
+    public String getFieldType() {
+        return fieldType;
+    }
+
+    public String getColumn() {
+        return column;
+    }
+
+    public String getColumnType() {
+        return columnType;
+    }
+
+    public String getColumnSize() {
+        return columnSize;
+    }
+
+    public void setColumnSize(String columnSize) {
+        this.columnSize = columnSize;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

@@ -110,6 +110,10 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 * [x] template sub directory
 * [x] resources sub directory
 * [ ] wiki
+* [ ] ResourcesBundle
+* [ ] outer jdbc jar
+* [ ] more in-house variables
+* [ ] more handlebars helpers
 
 ## Contributions
 

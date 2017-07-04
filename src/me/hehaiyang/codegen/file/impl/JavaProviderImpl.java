@@ -24,7 +24,7 @@ public class JavaProviderImpl extends FileProvider {
         Template fileNameTemp = handlebars.compileInline(template.getFilename());
         String outputName = fileNameTemp.apply(BuilderUtil.transBean2Map(context));
 
-        PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getIsResources());
+        PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getResources());
         PsiUtil.createFile(project, directory, outputName + JavaFileType.DOT_DEFAULT_EXTENSION, data, JavaFileType.INSTANCE);
     }
 

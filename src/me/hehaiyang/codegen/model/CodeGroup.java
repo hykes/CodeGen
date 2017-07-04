@@ -1,11 +1,6 @@
 package me.hehaiyang.codegen.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
-
 import java.util.List;
 
 /**
@@ -13,12 +8,18 @@ import java.util.List;
  * Mail: hehaiyang@terminus.io
  * Date: 2017/6/6
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class CodeGroup implements Serializable {
 
     private static final long serialVersionUID = -8843957173498883576L;
+
+    public CodeGroup() {
+    }
+
+    public CodeGroup(String id, String name, List<CodeTemplate> templates) {
+        this.id = id;
+        this.name = name;
+        this.templates = templates;
+    }
 
     /**
      * 分组ID
@@ -32,4 +33,27 @@ public class CodeGroup implements Serializable {
 
     private List<CodeTemplate> templates;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<CodeTemplate> getTemplates() {
+        return templates;
+    }
+
+    public void setTemplates(List<CodeTemplate> templates) {
+        this.templates = templates;
+    }
 }
