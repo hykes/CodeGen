@@ -115,34 +115,6 @@ public class BuilderUtil {
     }
 
     /**
-     * 将第一个字母转换成大写
-     *
-     * @param str
-     * @return
-     */
-    public static String upperFirstLetter(String str) {
-        if (StringUtils.hasText(str)) {
-            String firstUpper = str.substring(0, 1).toUpperCase();
-            str = firstUpper + str.substring(1, str.length());
-        }
-        return str;
-    }
-
-    /**
-     * 将第一个字母转换成小写
-     *
-     * @param str
-     * @return
-     */
-    public static String lowerFirstLetter(String str) {
-        if (StringUtils.hasText(str)) {
-            String firstLower = str.substring(0, 1).toLowerCase();
-            str = firstLower + str.substring(1, str.length());
-        }
-        return str;
-    }
-
-    /**
      * 计算默认的 serialVersionUID
      *
      * @see java.io.ObjectStreamClass#lookup(Class)
