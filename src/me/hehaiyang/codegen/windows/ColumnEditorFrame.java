@@ -278,7 +278,7 @@ public class ColumnEditorFrame extends JFrame {
             CodeGroup group = groupMap.get(id);
             PsiDirectory psiDirectory = PsiUtil.createDirectory(ideaContext.getProject(), "Select Package For " + group.getName(), "");
             if(psiDirectory != null) {
-                FileProviderFactory fileFactory = new FileProviderFactory(ideaContext.getProject(), psiDirectory);
+                FileProviderFactory fileFactory = FileProviderFactory.create(ideaContext.getProject(), psiDirectory);
                 WriteCommandAction.runWriteCommandAction(ideaContext.getProject(), () -> {
                     try {
                         for (CodeTemplate codeTemplate : templatesMap.get(id)) {

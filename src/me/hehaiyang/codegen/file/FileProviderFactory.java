@@ -17,6 +17,10 @@ public class FileProviderFactory {
         this.psiDirectory = psiDirectory;
     }
 
+    public static FileProviderFactory create(Project project, PsiDirectory psiDirectory){
+        return new FileProviderFactory(project,psiDirectory);
+    }
+
     public static FileProvider getInstance(String type) {
 
         if("java".equals(type)) {
