@@ -106,6 +106,12 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 ## Changes Log
 
+- 2017-07-06
+    - add .kt file type & kotlin template
+    - add ESC key event action
+    - modify database ui
+    - fix template reset bug
+
 - v0.7 2017-07-04
     - add in-house variables (serialVersionUID)
     - support template sub directory
