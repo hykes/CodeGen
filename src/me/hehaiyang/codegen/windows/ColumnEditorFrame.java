@@ -18,6 +18,7 @@ import me.hehaiyang.codegen.utils.PsiUtil;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,6 +114,8 @@ public class ColumnEditorFrame extends JFrame {
         add(groupPanel, BorderLayout.SOUTH);
 
         variablesTable.getEmptyText().setText("No Variables");
+        // esc
+        thisFrame.getRootPane().registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     public static List<String> getAllJCheckBoxValue(Container ct, List<String> list){

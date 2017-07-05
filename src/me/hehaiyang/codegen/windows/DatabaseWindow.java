@@ -9,6 +9,7 @@ import me.hehaiyang.codegen.config.SettingManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -100,6 +101,8 @@ public class DatabaseWindow extends JFrame{
         });
 
         add(configPanel, BorderLayout.CENTER);
+        // esc
+        thisFrame.getRootPane().registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_FOCUSED);
     }
 
     public class ComboBoxCellRenderer extends JLabel implements ListCellRenderer {
