@@ -3,6 +3,7 @@ package me.hehaiyang.codegen.config.ui;
 import com.google.common.collect.Lists;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.AnActionButton;
@@ -186,10 +187,11 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         JTextField nameText = new JTextField();
         form.add(nameText);
         form.add(new Label("Driver"));
-        JTextField driverText = new JTextField();
-        form.add(driverText);
+        ComboBox tableBox=new ComboBox();
+        tableBox.addItem("com.mysql.jdbc.Driver");
+        form.add(tableBox);
         form.add(new Label("Url"));
-        JTextField urlText = new JTextField();
+        JTextField urlText = new JTextField("jdbc:mysql://127.0.0.1:3306/test");
         form.add(urlText);
         form.add(new Label("Username"));
         JTextField usernameText = new JTextField();
@@ -204,7 +206,7 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         JButton add = new JButton("ADD");
         add.addActionListener( it ->{
             String name = nameText.getText().trim();
-            String driver = driverText.getText().trim();
+            String driver = (String) tableBox.getSelectedItem();
             String url = urlText.getText().trim();
             String username = usernameText.getText().trim();
             String password = passwordText.getText().trim();
@@ -254,8 +256,9 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
             JTextField nameText = new JTextField(oldName);
             form.add(nameText);
             form.add(new Label("Driver"));
-            JTextField driverText = new JTextField(oldDriver);
-            form.add(driverText);
+            ComboBox tableBox=new ComboBox();
+            tableBox.addItem(oldDriver);
+            form.add(tableBox);
             form.add(new Label("url"));
             JTextField urlText = new JTextField(oldUrl);
             form.add(urlText);
@@ -272,7 +275,7 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
             JButton add = new JButton("Confirm");
             add.addActionListener( it ->{
                 String name = nameText.getText().trim();
-                String driver = driverText.getText().trim();
+                String driver = (String) tableBox.getSelectedItem();
                 String url = urlText.getText().trim();
                 String username = usernameText.getText().trim();
                 String password = passwordText.getText().trim();

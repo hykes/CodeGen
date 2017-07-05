@@ -83,7 +83,7 @@ public class HandlebarsFactory {
     }
 
     public static void main(String[] args) throws Exception{
-        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{CamelTo 'SubUserRole' ' '}}");
+        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{CamelTo (Fix (LowerCase 'SubUserRole') '$' '%') '_'}}");
         String outputName = fileNameTemp.apply(null);
         System.out.println(outputName);
     }

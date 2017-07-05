@@ -35,7 +35,6 @@ public class DatabaseWindow extends JFrame{
         JButton connectBtn = new JButton("Connect");
 
         ComboBox tableBox=new ComboBox();
-
         JButton sureBtn = new JButton("Sure");
 
         List<Database> databases = settingManager.getDatabasesSetting().getDatabases();
@@ -46,11 +45,11 @@ public class DatabaseWindow extends JFrame{
             databaseBox.addItem("无数据源");
             databaseBox.setEnabled(false);
             connectBtn.setEnabled(false);
-
-            tableBox.addItem("请选择");
-            tableBox.setEnabled(false);
-            sureBtn.setEnabled(false);
         }
+
+        tableBox.addItem("请选择");
+        tableBox.setEnabled(false);
+        sureBtn.setEnabled(false);
 
         configPanel.add(databaseBox);
         configPanel.add(connectBtn);
