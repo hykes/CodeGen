@@ -2,7 +2,7 @@ package me.hehaiyang.codegen.model;
 
 
 import me.hehaiyang.codegen.utils.BuilderUtil;
-import me.hehaiyang.codegen.windows.DBOperation;
+import me.hehaiyang.codegen.utils.DBOperationUtil;
 
 import java.io.Serializable;
 
@@ -82,7 +82,7 @@ public class Field implements Serializable{
     public void setColumnType(String columnType) {
         this.columnType = columnType;
 
-        FieldType fieldType = DBOperation.getFieldType(columnType);
+        FieldType fieldType = DBOperationUtil.getFieldType(columnType);
         this.fieldType = fieldType.getJavaType();
         this.kotlinType = fieldType.getKotlinType();
     }

@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.parser.Parser;
 import me.hehaiyang.codegen.utils.StringUtils;
-import me.hehaiyang.codegen.windows.DBOperation;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColDataType;

@@ -15,7 +15,7 @@ import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.config.UIConfigurable;
 import me.hehaiyang.codegen.config.ui.variable.AddDialog;
-import me.hehaiyang.codegen.windows.DBOperation;
+import me.hehaiyang.codegen.utils.DBOperationUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -117,7 +117,7 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
                         String username = tableModel.getValueAt(selectedRow, 3).toString();
                         String password = tableModel.getValueAt(selectedRow, 4).toString();
                         try {
-                            Connection connection = DBOperation.getConnection(driver, url, username, password);
+                            Connection connection = DBOperationUtil.getConnection(driver, url, username, password);
                             if (connection != null && !connection.isClosed()) {
                                 Messages.showInfoMessage(thisPanel,"连接成功！", "Info");
                                 connection.close();

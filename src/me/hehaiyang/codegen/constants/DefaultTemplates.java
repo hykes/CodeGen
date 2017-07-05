@@ -25,22 +25,22 @@ public class DefaultTemplates {
             // java templates
             List<CodeTemplate> apiTemplates = Lists.newArrayList();
 
-            apiTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Controller", "java", "{{model}}s", getTemplateContext("/template/ControllerTemplate.hbs"), "front", false));
+            apiTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Controller", "java", "{{model}}s", getTemplateContext("/template/spring/ControllerTemplate.hbs"), "front", false));
             CodeGroup apiGroup = new CodeGroup(UUID.randomUUID().toString(), "Api", apiTemplates);
             groups.add(apiGroup);
 
             List<CodeTemplate> modelTemplates = Lists.newArrayList();
-            modelTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Model", "java", "{{model}}", getTemplateContext("/template/ModelTemplate.hbs"), "model", false));
-            modelTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "ReadService", "java", "{{model}}ReadService", getTemplateContext("/template/ReadServiceTemplate.hbs"), "service", false));
-            modelTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "WriteService", "java", "{{model}}WriteService", getTemplateContext("/template/WriteServiceTemplate.hbs"), "service", false));
+            modelTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Model", "java", "{{model}}", getTemplateContext("/template/spring/ModelTemplate.hbs"), "model", false));
+            modelTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "ReadService", "java", "{{model}}ReadService", getTemplateContext("/template/spring/ReadServiceTemplate.hbs"), "service", false));
+            modelTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "WriteService", "java", "{{model}}WriteService", getTemplateContext("/template/spring/WriteServiceTemplate.hbs"), "service", false));
             CodeGroup modelGroup = new CodeGroup(UUID.randomUUID().toString(), "Model-Service", modelTemplates);
             groups.add(modelGroup);
 
             List<CodeTemplate> implTemplates = Lists.newArrayList();
-            implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Dao", "java", "{{model}}Dao", getTemplateContext("/template/DaoTemplate.hbs"), "dao", false));
-            implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "ReadService", "java", "{{model}}ReadServiceImpl", getTemplateContext("/template/ReadServiceImplTemplate.hbs"), "service", false));
-            implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "WriteService", "java", "{{model}}WriteServiceImpl", getTemplateContext("/template/WriteServiceImplTemplate.hbs"), "service", false));
-            implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Mapper", "xml", "{{model}}Mapper", getTemplateContext("/template/MapperTemplate.hbs"), "mapper", true));
+            implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Dao", "java", "{{model}}Dao", getTemplateContext("/template/spring/DaoTemplate.hbs"), "dao", false));
+            implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "ReadService", "java", "{{model}}ReadServiceImpl", getTemplateContext("/template/spring/ReadServiceImplTemplate.hbs"), "service", false));
+            implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "WriteService", "java", "{{model}}WriteServiceImpl", getTemplateContext("/template/spring/WriteServiceImplTemplate.hbs"), "service", false));
+            implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Mapper", "xml", "{{model}}Mapper", getTemplateContext("/template/spring/MapperTemplate.hbs"), "mapper", true));
             CodeGroup implGroup = new CodeGroup(UUID.randomUUID().toString(), "ServiceImpl", implTemplates);
             groups.add(implGroup);
 

@@ -1,4 +1,4 @@
-package me.hehaiyang.codegen.windows;
+package me.hehaiyang.codegen.utils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static me.hehaiyang.codegen.model.FieldType.build;
 
-public class DBOperation {
+public class DBOperationUtil {
 
     public static Connection getConnection(String driver, String url, String user, String password){
         try {

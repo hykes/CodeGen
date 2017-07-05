@@ -6,6 +6,7 @@ import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.IdeaContext;
 import me.hehaiyang.codegen.config.SettingManager;
+import me.hehaiyang.codegen.utils.DBOperationUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,10 +62,10 @@ public class DatabaseWindow extends JFrame{
             Database database = (Database) databaseBox.getSelectedItem();
             if(database != null){
                 try {
-                    Connection conn = DBOperation.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
+                    Connection conn = DBOperationUtil.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
 
                     if (conn != null && !conn.isClosed()) {
-                        List<String> list = DBOperation.getTables(conn);
+                        List<String> list = DBOperationUtil.getTables(conn);
                         tableBox.removeAllItems();
                         for (String str : list) {
                             tableBox.addItem(str);
@@ -82,9 +83,9 @@ public class DatabaseWindow extends JFrame{
             if(database != null){
                 try {
                     String table = tableBox.getSelectedItem().toString();
-                    Connection conn = DBOperation.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
+                    Connection conn = DBOperationUtil.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
                     if (conn != null && !conn.isClosed()) {
-                        List<Field> fields = DBOperation.getColumns(table, conn);
+                        List<Field> fields = DBOperationUtil.getColumns(table, conn);
                         ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, fields);
                         frame.setSize(800, 400);
                         frame.setAlwaysOnTop(false);

@@ -3,7 +3,7 @@ package me.hehaiyang.codegen.file.impl;
 import com.github.jknack.handlebars.Template;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
-import me.hehaiyang.codegen.ext.SqlFileType;
+import me.hehaiyang.codegen.file.filetype.SqlFileType;
 import me.hehaiyang.codegen.file.FileProvider;
 import me.hehaiyang.codegen.model.CodeContext;
 import me.hehaiyang.codegen.model.CodeTemplate;

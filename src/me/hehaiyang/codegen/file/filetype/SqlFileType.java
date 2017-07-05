@@ -1,4 +1,4 @@
-package me.hehaiyang.codegen.ext;
+package me.hehaiyang.codegen.file.filetype;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.lang.java.JavaLanguage;
