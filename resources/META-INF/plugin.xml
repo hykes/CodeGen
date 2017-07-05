@@ -7,7 +7,7 @@
   <description><![CDATA[
       <p><a href="https://github.com/hehaiyangwork/CodeGen">GitHub</a> | <a href="https://github.com/hehaiyangwork/CodeGen/issues">Issues</a> </p>
       <br>
-      <p>This plugin helps you to generate specific code by template.</p>
+      <p>This plugin helps you to generate specific template code by create table statement or database .</p>
       <ul>
         <li>Template Group</li>
         <li>Generation Type (Text/Database)</li>
@@ -19,12 +19,21 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      <p>v0.7 2017-07-04</p>
       <ul>
         <li>add in-house variables (serialVersionUID)</li>
         <li>support template sub directory</li>
         <li>support resources (sub) directory</li>
         <li>fix add group bug</li>
         <li>remove lombok jar</li>
+      </ul>
+      <p>v0.6 2017-06-30</p>
+      <ul>
+        <li>Template Group</li>
+        <li>Generation Type (Text/Database)</li>
+        <li>In-house variables</li>
+        <li>Predefined variables</li>
+        <li>Data sources</li>
       </ul>
     ]]>
   </change-notes>

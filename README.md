@@ -1,6 +1,6 @@
 # CodeGen
 
-This plugin helps you to generate specific code by template.
+This plugin helps you to generate specific template code by create table statement or database .
 
 [![release](https://img.shields.io/badge/IDEA-v0.7-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hehaiyangwork/CodeGen/blob/master/LICENSE)
 
@@ -103,6 +103,22 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 * Run CodeGen and enjoy it.
 
 > Welcome to contribute
+
+## Changes Log
+
+- v0.7 2017-07-04
+    - add in-house variables (serialVersionUID)
+    - support template sub directory
+    - support resources (sub) directory
+    - fix add group bug
+    - remove lombok jar
+    
+- v0.6 2017-06-30
+    - Template Group
+    - Generation Type (Text/Database)
+    - In-house variables
+    - Predefined variables
+    - Data sources
 
 ## TODO
 
