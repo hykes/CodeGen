@@ -46,9 +46,17 @@ public class Field implements Serializable{
      */
     private String comment;
 
+    public String getField() {
+        return field;
+    }
+
     public void setField(String field) {
         this.field = field;
         this.column = BuilderUtil.camelToUnderline(this.field);
+    }
+
+    public String getFieldType() {
+        return fieldType;
     }
 
     public void setFieldType(String fieldType) {
@@ -58,9 +66,17 @@ public class Field implements Serializable{
         this.kotlinType = kotlinType;
     }
 
+    public String getColumn() {
+        return column;
+    }
+
     public void setColumn(String column) {
         this.column = column;
         this.field = BuilderUtil.underlineToCamel(this.column);
+    }
+
+    public String getColumnType() {
+        return columnType;
     }
 
     public void setColumnType(String columnType) {
@@ -71,24 +87,8 @@ public class Field implements Serializable{
         this.kotlinType = fieldType.getKotlinType();
     }
 
-    public String getField() {
-        return field;
-    }
-
-    public String getFieldType() {
-        return fieldType;
-    }
-
     public String getKotlinType() {
         return kotlinType;
-    }
-
-    public String getColumn() {
-        return column;
-    }
-
-    public String getColumnType() {
-        return columnType;
     }
 
     public String getColumnSize() {
