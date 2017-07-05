@@ -10,6 +10,7 @@ import me.hehaiyang.codegen.parser.impl.SimpleParser;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class TextWindow extends JFrame {
@@ -100,6 +101,8 @@ public class TextWindow extends JFrame {
             }
         });
         cancel.addActionListener(e -> dispose());
+        // esc
+        thisFrame.getRootPane().registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     private void setTips(boolean operator, String tips) {
