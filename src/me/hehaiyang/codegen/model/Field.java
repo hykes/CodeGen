@@ -45,13 +45,25 @@ public class Field implements Serializable{
      */
     private String comment;
 
+    public String getField() {
+        return field;
+    }
+
     public void setField(String field) {
         this.field = field;
         this.column = BuilderUtil.camelToUnderline(this.field);
     }
 
+    public String getFieldType() {
+        return fieldType;
+    }
+
     public void setFieldType(String fieldType) {
         this.fieldType = fieldType;
+    }
+
+    public String getColumn() {
+        return column;
     }
 
     public void setColumn(String column) {
@@ -59,26 +71,14 @@ public class Field implements Serializable{
         this.field = BuilderUtil.underlineToCamel(this.column);
     }
 
+    public String getColumnType() {
+        return columnType;
+    }
+
     public void setColumnType(String columnType) {
 
         this.columnType = columnType;
         this.fieldType = DBOperation.toJavaType(columnType);
-    }
-
-    public String getField() {
-        return field;
-    }
-
-    public String getFieldType() {
-        return fieldType;
-    }
-
-    public String getColumn() {
-        return column;
-    }
-
-    public String getColumnType() {
-        return columnType;
     }
 
     public String getColumnSize() {
