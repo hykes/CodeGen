@@ -96,10 +96,10 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 * Clone the project, and open with IDEA (Community).
 * Modify module type in `.idea/CodeGen.iml` from `JAVA_MODULE` to `PLUGIN_MODULE`.
 * Change the project's module compile output path to `/XXX/XXX/CodeGen/out` in `Project Structure -> Modules -> CodeGen -> paths`. You can also modify the Plugin Deployment `plugin.xml path`.
-* Install `lombok` plugin. In `Preferences -> Build -> Annotation Processors`. 
-	* `Enable annotation processing`.
-	* Modify `Production sources directory` to `out`
-	* Modify `Test sources directory` to `out`
+* ~~Install lombok plugin. In **Preferences -> Build -> Annotation Processors**.~~ (lombok has been removed.)
+	* ~~**Enable annotation processing**~~.
+	* ~~Modify **Production sources directory** to **out**~~
+	* ~~Modify **Test sources directory** to **out**~~
 * Run CodeGen and enjoy it.
 
 > Welcome to contribute

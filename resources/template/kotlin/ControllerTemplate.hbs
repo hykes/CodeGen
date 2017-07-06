@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+/**
+* Desc:
+* Mail: {{$.email}}
+* Date: {{$.Now}}
+* Created by {{$.author}}
+*/
 @RestController
 @RequestMapping("/api")
 class {{model}}s @Autowired constructor(
@@ -32,7 +38,7 @@ class {{model}}s @Autowired constructor(
         return {{LowerCase model}}Service.create({{LowerCase model}})
     }
 
-    @RequestMapping("", method = arrayOf(RequestMethod.POST))
+    @RequestMapping("", method = arrayOf(RequestMethod.PUT))
     fun update(@RequestBody {{LowerCase model}}: {{model}}) {
         {{LowerCase model}}Service.update({{LowerCase model}})
     }
