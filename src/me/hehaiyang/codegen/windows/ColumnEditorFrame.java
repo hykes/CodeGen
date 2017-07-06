@@ -1,7 +1,9 @@
 package me.hehaiyang.codegen.windows;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
@@ -14,15 +16,15 @@ import me.hehaiyang.codegen.file.FileProviderFactory;
 import me.hehaiyang.codegen.model.*;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 import me.hehaiyang.codegen.utils.PsiUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Desc:
@@ -33,7 +35,7 @@ public class ColumnEditorFrame extends JFrame {
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
-    private final JBTable variablesTable = new JBTable();
+    private final JBTable fieldTable = new JBTable();
 
     private JFrame thisFrame;
 
@@ -47,7 +49,7 @@ public class ColumnEditorFrame extends JFrame {
     private void init(IdeaContext ideaContext){
         setLayout(new BorderLayout());
 
-        final JPanel topPanel = new JPanel(new GridLayout(2, 4));
+        final JPanel topPanel = new JPanel(new GridLayout(1, 4));
         topPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         topPanel.add(new JLabel("model"));
         JTextField modelText = new JTextField();
@@ -55,12 +57,6 @@ public class ColumnEditorFrame extends JFrame {
         topPanel.add(new JLabel("table"));
         JTextField tableText = new JTextField();
         topPanel.add(tableText);
-        topPanel.add(new JLabel("model_cn"));
-        JTextField modelCnText = new JTextField();
-        topPanel.add(modelCnText);
-        topPanel.add(new JLabel("table_cn"));
-        JTextField tableCnText = new JTextField();
-        topPanel.add(tableCnText);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -68,9 +64,9 @@ public class ColumnEditorFrame extends JFrame {
         mainPanel.setPreferredSize(JBUI.size(300, 400));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
-        variablesTable.getTableHeader().setReorderingAllowed(false);   //不可整列移动
-        variablesTable.getTableHeader().setResizingAllowed(false);   //不可拉动表格
-        JPanel panel = ToolbarDecorator.createDecorator(variablesTable)
+        fieldTable.getTableHeader().setReorderingAllowed(false);   //不可整列移动
+        fieldTable.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+        JPanel panel = ToolbarDecorator.createDecorator(fieldTable)
             .setAddAction( it -> addAction())
             .setRemoveAction( it -> removeAction())
             .setEditAction( it -> editAction()).createPanel();
@@ -100,11 +96,9 @@ public class ColumnEditorFrame extends JFrame {
 
             if(!list.isEmpty()) {
                 String model = modelText.getText().trim();
-                String modelName = modelCnText.getText().trim();
                 String table = tableText.getText().trim();
-                String tableName = tableCnText.getText().trim();
                 // 组装数据
-                CodeContext context = new CodeContext(model, modelName, table, tableName, getFields());
+                CodeContext context = new CodeContext(model, table, getFields());
                 gen(ideaContext, list, context);
                 dispose();
             }
@@ -113,7 +107,7 @@ public class ColumnEditorFrame extends JFrame {
 
         add(groupPanel, BorderLayout.SOUTH);
 
-        variablesTable.getEmptyText().setText("No Variables");
+        fieldTable.getEmptyText().setText("No Fields");
         // esc
         thisFrame.getRootPane().registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
@@ -137,7 +131,7 @@ public class ColumnEditorFrame extends JFrame {
 
     private List<Field> getFields(){
         List<Field> fields = Lists.newArrayList();
-        DefaultTableModel tableModel = (DefaultTableModel) variablesTable.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
         for(int i = 0;i< tableModel.getRowCount(); i++){
             Field field = new Field();
             field.setField(tableModel.getValueAt(i, 0).toString());
@@ -174,36 +168,56 @@ public class ColumnEditorFrame extends JFrame {
                 return false;
             }
         };
-        variablesTable.setModel(tableModel);
+        fieldTable.setModel(tableModel);
     }
 
     private void addAction(){
         JDialog dialog = new AddDialog();
         dialog.setLayout(new BorderLayout());
 
-        JPanel form = new JPanel(new GridLayout(2,2));
-        form.add(new Label("Key"));
-        JTextField keyJTextField = new JTextField();
-        form.add(keyJTextField);
-        form.add(new Label("Value"));
-        JTextField valueJTextField = new JTextField();
-        form.add(valueJTextField);
+        JPanel form = new JPanel(new GridLayout(6,2));
+        form.add(new Label("Field"));
+        JTextField field = new JTextField();
+        form.add(field);
+        form.add(new Label("FieldType"));
+        JTextField fieldType = new JTextField();
+        form.add(fieldType);
+
+        form.add(new Label("Column"));
+        JTextField column = new JTextField();
+        form.add(column);
+
+        form.add(new Label("ColumnType"));
+        JTextField columnType = new JTextField();
+        form.add(columnType);
+
+        form.add(new Label("ColumnSize"));
+        JTextField columnSize = new JTextField();
+        form.add(columnSize);
+
+        form.add(new Label("Comment"));
+        JTextField comment = new JTextField();
+        form.add(comment);
 
         dialog.add(form, BorderLayout.CENTER);
 
         JButton add = new JButton("ADD");
         add.addActionListener( it ->{
-            String key = keyJTextField.getText();
-            String value = valueJTextField.getText();
+            String fieldText = field.getText().trim();
+            String fieldTypeText = fieldType.getText().trim();
+            String columnText = column.getText();
+            String columnTypeText = columnType.getText().trim();
+            String columnSizeText = columnSize.getText().trim();
+            String commentText = comment.getText().trim();
 
-            DefaultTableModel tableModel = (DefaultTableModel) variablesTable.getModel();
-            String []rowValues = {key, value};
+            DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
+            String []rowValues = {fieldText, fieldTypeText, columnText, columnTypeText, columnSizeText, commentText};
             tableModel.addRow(rowValues);
             dialog.setVisible(false);
         });
         dialog.add(add, BorderLayout.SOUTH);
 
-        dialog.setSize(300, 100);
+        dialog.setSize(300, 300);
         dialog.setAlwaysOnTop(true);
         dialog.setLocationRelativeTo(this);
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
@@ -213,49 +227,77 @@ public class ColumnEditorFrame extends JFrame {
     }
 
     private void removeAction(){
-        int selectedRow = variablesTable.getSelectedRow();
+        int selectedRow = fieldTable.getSelectedRow();
         if(selectedRow != -1){
-            DefaultTableModel tableModel = (DefaultTableModel) variablesTable.getModel();
+            DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
             tableModel.removeRow(selectedRow);
         }
-        if(variablesTable.getRowCount() > 0){
-            variablesTable.setRowSelectionInterval(0,0);
+        if(fieldTable.getRowCount() > 0){
+            fieldTable.setRowSelectionInterval(0,0);
         }
     }
 
     private void editAction(){
-        int selectedRow = variablesTable.getSelectedRow();
+        int selectedRow = fieldTable.getSelectedRow();
         if(selectedRow != -1){
-            DefaultTableModel tableModel = (DefaultTableModel) variablesTable.getModel();
-            String oldKey = (String) tableModel.getValueAt(selectedRow, 0);
-            String oldValue = (String) tableModel.getValueAt(selectedRow, 1);
+            DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
+            String oldFieldText = (String) tableModel.getValueAt(selectedRow, 0);
+            String oldFieldTypeText = (String) tableModel.getValueAt(selectedRow, 1);
+            String oldColumnText = (String) tableModel.getValueAt(selectedRow, 2);
+            String oldColumnTypeText = (String) tableModel.getValueAt(selectedRow, 3);
+            String oldColumnSizeText = (String) tableModel.getValueAt(selectedRow, 4);
+            String oldCommentText = (String) tableModel.getValueAt(selectedRow, 5);
 
             JDialog dialog = new AddDialog();
             dialog.setLayout(new BorderLayout());
 
-            JPanel form = new JPanel(new GridLayout(2,2));
-            form.add(new Label("Key"));
-            JTextField keyJTextField = new JTextField(oldKey);
-            form.add(keyJTextField);
-            form.add(new Label("Value"));
-            JTextField valueJTextField = new JTextField(oldValue);
-            form.add(valueJTextField);
+            JPanel form = new JPanel(new GridLayout(6,2));
 
+            form.add(new Label("Field"));
+            JTextField field = new JTextField(oldFieldText);
+            form.add(field);
+            form.add(new Label("FieldType"));
+            JTextField fieldType = new JTextField(oldFieldTypeText);
+            form.add(fieldType);
+
+            form.add(new Label("Column"));
+            JTextField column = new JTextField(oldColumnText);
+            form.add(column);
+
+            form.add(new Label("ColumnType"));
+            JTextField columnType = new JTextField(oldColumnTypeText);
+            form.add(columnType);
+
+            form.add(new Label("ColumnSize"));
+            JTextField columnSize = new JTextField(oldColumnSizeText);
+            form.add(columnSize);
+
+            form.add(new Label("Comment"));
+            JTextField comment = new JTextField(oldCommentText);
+            form.add(comment);
+            
             dialog.add(form, BorderLayout.CENTER);
 
             JButton add = new JButton("Confirm");
             add.addActionListener( it ->{
-                String key = keyJTextField.getText();
-                String value = valueJTextField.getText();
+                String fieldText = field.getText().trim();
+                String fieldTypeText = fieldType.getText().trim();
+                String columnText = column.getText();
+                String columnTypeText = columnType.getText().trim();
+                String columnSizeText = columnSize.getText().trim();
+                String commentText = comment.getText().trim();
 
-                tableModel.getValueAt(selectedRow, 1);
-                tableModel.setValueAt(key, selectedRow, 0);
-                tableModel.setValueAt(value, selectedRow, 1);
+                tableModel.setValueAt(fieldText, selectedRow, 0);
+                tableModel.setValueAt(fieldTypeText, selectedRow, 1);
+                tableModel.setValueAt(columnText, selectedRow, 2);
+                tableModel.setValueAt(columnTypeText, selectedRow, 3);
+                tableModel.setValueAt(columnSizeText, selectedRow, 4);
+                tableModel.setValueAt(commentText, selectedRow, 5);
                 dialog.setVisible(false);
             });
             dialog.add(add, BorderLayout.SOUTH);
 
-            dialog.setSize(300, 100);
+            dialog.setSize(300, 300);
             dialog.setAlwaysOnTop(true);
             dialog.setLocationRelativeTo(this);
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
@@ -268,32 +310,72 @@ public class ColumnEditorFrame extends JFrame {
 
     public void gen(IdeaContext ideaContext, List<String> groups, CodeContext context){
 
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = Maps.newHashMap();
         params.putAll(DefaultParams.getInHouseVariables());
         params.putAll(settingManager.getVariablesSetting().getParams());
         params.put("serialVersionUID", BuilderUtil.computeDefaultSUID(context.getModel(), context.getFields()) + "");
-        context.set$(params);
 
-        Map<String, List<CodeTemplate>> templatesMap = settingManager.getTemplatesSetting().getTemplatesMap();
-        Map<String, CodeGroup> groupMap = settingManager.getTemplatesSetting().getGroupMap();
+        List<CodeGroup> groupList = settingManager.getTemplatesSetting().getGroups();
 
-        for(String id: groups){
-            CodeGroup group = groupMap.get(id);
-            PsiDirectory psiDirectory = PsiUtil.createDirectory(ideaContext.getProject(), "Select Package For " + group.getName(), "");
-            if(psiDirectory != null) {
-                FileProviderFactory fileFactory = FileProviderFactory.create(ideaContext.getProject(), psiDirectory);
-                WriteCommandAction.runWriteCommandAction(ideaContext.getProject(), () -> {
-                    try {
-                        for (CodeTemplate codeTemplate : templatesMap.get(id)) {
-                            fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context);
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+        groupList = groupList.stream().filter(it -> groups.contains(it.getId())).collect(Collectors.toList());
+
+        // 模版组优先级排序
+        Collections.sort(groupList, new ComparatorUtil());
+
+        int packageNum = 0;
+        for(CodeGroup g: groupList){
+            packageNum ++;
+
+            PsiDirectory psiDirectory = PsiUtil.createDirectory(ideaContext.getProject(), "Select Package For " + g.getName(), "");
+
+            if(Objects.nonNull(psiDirectory)){
+
+                VirtualFile virtualFile = psiDirectory.getVirtualFile();
+                String path = virtualFile.getPresentableUrl();
+
+                String packagePath = StringUtils.substringAfter(path,"src/main/java");
+
+                if(StringUtils.isNotEmpty(packagePath)){
+                    if(packagePath.substring(0,1).equals("/")){
+                        packagePath = packagePath.substring(1);
                     }
-                });
+                    packagePath = packagePath.replace("/", ".");
+                    params.put("group"+ packageNum, packagePath);
+                }else{
+                    params.put("group"+ packageNum, "");
+                }
+                context.set$(params);
+
+                if(psiDirectory != null) {
+                    FileProviderFactory fileFactory = FileProviderFactory.create(ideaContext.getProject(), psiDirectory);
+                    WriteCommandAction.runWriteCommandAction(ideaContext.getProject(), () -> {
+                        try {
+                            for (CodeTemplate codeTemplate : g.getTemplates()) {
+                                fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context);
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                }
             }
         }
 
+    }
+
+    public class ComparatorUtil implements Comparator<CodeGroup> {
+        //倒序排列即从大到小，若需要从小到大修改返回值1 和 -1
+        public int compare(CodeGroup o1, CodeGroup o2) {
+            double tempResult1 = o1.getLevel();
+            double tempResult2 = o2.getLevel();
+            if (tempResult1 > tempResult2) {
+                return 1;
+            } else if (tempResult1 < tempResult2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
     }
 
 }

@@ -15,21 +15,15 @@ public class CodeContext implements Serializable {
 
     public CodeContext() {}
 
-    public CodeContext(String model, String modelName, String table, String tableName, List<Field> fields) {
+    public CodeContext(String model, String table, List<Field> fields) {
         this.model = model;
-        this.modelName = modelName;
         this.table = table;
-        this.tableName = tableName;
         this.fields = fields;
     }
 
     private String model;
 
-    private String modelName;
-
     private String table;
-
-    private String tableName;
 
     private List<Field> fields;
 
@@ -51,28 +45,12 @@ public class CodeContext implements Serializable {
         this.model = model;
     }
 
-    public String getModelName() {
-        return modelName;
-    }
-
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
-    }
-
     public String getTable() {
         return table;
     }
 
     public void setTable(String table) {
         this.table = table;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
     }
 
     public List<Field> getFields() {

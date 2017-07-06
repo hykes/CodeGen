@@ -12,12 +12,12 @@ public class CodeGroup implements Serializable {
 
     private static final long serialVersionUID = -8843957173498883576L;
 
-    public CodeGroup() {
-    }
+    public CodeGroup() {}
 
-    public CodeGroup(String id, String name, List<CodeTemplate> templates) {
+    public CodeGroup(String id, String name, Integer level, List<CodeTemplate> templates) {
         this.id = id;
         this.name = name;
+        this.level = level;
         this.templates = templates;
     }
 
@@ -31,6 +31,14 @@ public class CodeGroup implements Serializable {
      */
     private String name;
 
+    /**
+     * 优先级
+     */
+    private Integer level;
+
+    /**
+     * 模版列表
+     */
     private List<CodeTemplate> templates;
 
     public String getId() {
@@ -47,6 +55,14 @@ public class CodeGroup implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public List<CodeTemplate> getTemplates() {

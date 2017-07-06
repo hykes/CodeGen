@@ -28,12 +28,6 @@ public class TemplatesSetting {
         return result;
     }
 
-    public Map<String, CodeGroup> getGroupMap(){
-        Map<String, CodeGroup> result = Maps.newHashMap();
-        groups.forEach( it -> result.put(it.getId(), it));
-        return result;
-    }
-
     public List<CodeGroup> getGroups() {
         return groups;
     }

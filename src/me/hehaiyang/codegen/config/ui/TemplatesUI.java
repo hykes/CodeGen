@@ -194,15 +194,21 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
             JPanel form = new JPanel(new GridLayout(2,2));
             form.add(new Label("Group Name"));
-            JTextField keyJTextField = new JTextField();
-            form.add(keyJTextField);
+            JTextField nameField = new JTextField();
+            form.add(nameField);
+
+            form.add(new Label("Group Level"));
+            JTextField levelField = new JTextField();
+            form.add(levelField);
 
             dialog.add(form, BorderLayout.CENTER);
 
             JButton add = new JButton("ADD");
             add.addActionListener( it ->{
-                String key = keyJTextField.getText().trim();
-                CodeGroup group = new CodeGroup(UUID.randomUUID().toString(), key, Lists.newArrayList());
+                String name = nameField.getText().trim();
+                String level = levelField.getText().trim();
+
+                CodeGroup group = new CodeGroup(UUID.randomUUID().toString(), name, Integer.valueOf(level), Lists.newArrayList());
                 addNode(selectedNode, new DefaultMutableTreeNode(group));
 
                 dialog.setVisible(false);
