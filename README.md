@@ -75,8 +75,7 @@ ${PACKAGE_NAME} name of the package in which the new interface is created
 
 - markdown
 
-| COLUMN_NAME | TYPE | COMMENT  |
-|:--------|:--------:|:---------:|
+```
 | id    |  BIGINT(20)  | ID     |
 | pid   |  BIGINT(20)  | 父级ID  |
 | name  |  VARCHAR(64) | 名称    |
@@ -86,6 +85,7 @@ ${PACKAGE_NAME} name of the package in which the new interface is created
 | unicode_code | VARCHAR(200) | ASCII码 |
 | checker_name | VARCHAR(64) | 审核用户名称 |
 | order_no | INT(11) | 排序号 |
+```
 
 - sqlScript
 
