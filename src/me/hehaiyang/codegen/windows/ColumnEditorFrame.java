@@ -71,7 +71,7 @@ public class ColumnEditorFrame extends JFrame {
             .setRemoveAction( it -> removeAction())
             .setEditAction( it -> editAction()).createPanel();
         final JPanel localPanel = new JPanel(new BorderLayout());
-        localPanel.setBorder(IdeBorderFactory.createTitledBorder("User Defined Variables", false));
+        localPanel.setBorder(IdeBorderFactory.createTitledBorder("Field Table", false));
         localPanel.add(panel, BorderLayout.CENTER);
         mainPanel.add(localPanel);
 
@@ -314,7 +314,7 @@ public class ColumnEditorFrame extends JFrame {
         params.putAll(DefaultParams.getInHouseVariables());
         params.putAll(settingManager.getVariablesSetting().getParams());
         params.put("serialVersionUID", BuilderUtil.computeDefaultSUID(context.getModel(), context.getFields()) + "");
-
+        params.put("Project", ideaContext.getProject().getName());
         List<CodeGroup> groupList = settingManager.getTemplatesSetting().getGroups();
 
         groupList = groupList.stream().filter(it -> groups.contains(it.getId())).collect(Collectors.toList());
@@ -333,6 +333,10 @@ public class ColumnEditorFrame extends JFrame {
                 VirtualFile virtualFile = psiDirectory.getVirtualFile();
                 String path = virtualFile.getPresentableUrl();
 
+                String modulePath = StringUtils.substringAfter(path, ideaContext.getProject().getName()+"/");
+                modulePath = StringUtils.substringBefore(modulePath, "/src/main/java");
+                params.put("Module"+ packageNum, modulePath);
+
                 String packagePath = StringUtils.substringAfter(path,"src/main/java");
 
                 if(StringUtils.isNotEmpty(packagePath)){
@@ -340,9 +344,9 @@ public class ColumnEditorFrame extends JFrame {
                         packagePath = packagePath.substring(1);
                     }
                     packagePath = packagePath.replace("/", ".");
-                    params.put("group"+ packageNum, packagePath);
+                    params.put("Package"+ packageNum, packagePath);
                 }else{
-                    params.put("group"+ packageNum, "");
+                    params.put("Package"+ packageNum, "");
                 }
                 context.set$(params);
 
