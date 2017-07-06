@@ -74,4 +74,5 @@
     </action>
   </actions>
 
+  <!--<depends optddional="true">com.intellij.database</depends>-->
 </idea-plugin>

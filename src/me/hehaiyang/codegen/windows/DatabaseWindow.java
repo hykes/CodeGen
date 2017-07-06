@@ -71,6 +71,7 @@ public class DatabaseWindow extends JFrame{
                             tableBox.addItem(str);
                         }
                         tableBox.setEnabled(true);
+                        sureBtn.setEnabled(true);
                     }
                 }catch (SQLException e){
                     Messages.showInfoMessage(thisFrame,"connect fail !", "Error");

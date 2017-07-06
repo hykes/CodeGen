@@ -80,12 +80,19 @@ public class Field implements Serializable{
     }
 
     public void setColumnType(String columnType) {
+       this.setColumnType(columnType, null);
+    }
+    public void setColumnType(String columnType, Integer sqlType) {
         this.columnType = columnType;
 
         FieldType fieldType = DBOperationUtil.getFieldType(columnType);
+        if (fieldType.getJavaType().equals("UNKNOWN")) {
+            fieldType = DBOperationUtil.getFieldType(sqlType);
+        }
         this.fieldType = fieldType.getJavaType();
         this.kotlinType = fieldType.getKotlinType();
     }
+
 
     public String getKotlinType() {
         return kotlinType;

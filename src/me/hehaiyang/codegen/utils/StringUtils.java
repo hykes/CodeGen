@@ -837,4 +837,10 @@ public abstract class StringUtils {
         return baos.toString();
     }
 
+    public static Integer string2Integer(String value) {
+        if (StringUtils.isNotBlank(value)) {
+            return Integer.parseInt(value);
+        }
+        return null;
+    }
 }
