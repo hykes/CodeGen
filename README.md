@@ -45,11 +45,11 @@ Preferences -> Tools -> CodeGen
 
 {{$.serialVersionUID}} current model serialVersionUID
 
-<todo>
-${PROJECT_NAME} the name of the current project
-${MODULE_NAME} the name of the current module
-${PACKAGE_NAME} name of the package in which the new interface is created
-</todo>
+{{$.Project}} the name of the current project
+
+{{$.Module1} the name of the current selected module
+
+{{$.Package1} the name of the current selected package
 ```
 
 ### In-house Helpers
@@ -123,14 +123,13 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 ## Changes Log
 
 - 2017-07-06
-    - add in-house variables ($.group1)
+    - add in-house variables ({{$.Project}}、{{$.Module1}}、{{$.Package1}})
     - add group level
     - add .kt file type & kotlin template
     - add ESC key event action
     - modify database ui
     - fix template reset bug
     
-
 - v0.7 2017-07-04
     - add in-house variables (serialVersionUID)
     - support template sub directory
