@@ -83,6 +83,10 @@ public class {{model}}s {
         return response.getResult();
     }
 
+    /**
+    * 删除
+    * @return
+    */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean delete{{model}}(@PathVariable Long id) {
         Response<Boolean> response = {{LowerCase model}}WriteService.delete(id);
