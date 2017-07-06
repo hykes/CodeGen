@@ -28,13 +28,13 @@
     </sql>
 
     <sql id="vals">
-        {{#each fields}}{{rich field '#{' '}'}}, {{/each}}
+        {{#each fields}}{{Join field '#{' '}'}}, {{/each}}
         now(), now()
     </sql>
 
     <sql id="criteria">
         <where>
-            {{#each fields}}<if test="{{field}} != null">AND `{{column}}` = {{rich field '#{' '}'}}</if>
+            {{#each fields}}<if test="{{field}} != null">AND `{{column}}` = {{Join field '#{' '}'}}</if>
             {{/each}}<if test="createdAt != null">AND <![CDATA[created_at >= #{createdAt}]]> </if>
             <if test="updatedAt != null">AND <![CDATA[updated_at < #{updatedAt}]]> </if>
         </where>
@@ -71,7 +71,7 @@
         UPDATE
         <include refid="tb"/>
         <set>
-            {{#each fields}}<if test="{{field}} != null">`{{column}}` = {{rich field '#{' '}'}},</if>
+            {{#each fields}}<if test="{{field}} != null">`{{column}}` = {{Join field '#{' '}'}},</if>
             {{/each}}updated_at = now()
         </set>
         WHERE id = #{id}

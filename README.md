@@ -18,10 +18,11 @@ Preferences -> Plugins -> Browse repositories -> [search] CodeGen
 
 Preferences -> Tools -> CodeGen
     
-1. use Text / use database
-2. in-house variables / predefined variables
-3. code templates
-4. data sources
+1. Generation type(Text/Database)
+2. In-house variables & helpers
+3. Predefined variables
+4. Template group
+5. Data sources
 
 ### In-house Variables
 
@@ -44,45 +45,60 @@ Preferences -> Tools -> CodeGen
 
 {{$.serialVersionUID}} current model serialVersionUID
 
-<del>
-${PACKAGE_NAME} name of the package in which the new interface is created
-${NAME} name of the new interface specified by you in the Create New Class dialog
-${USER} current username system login name
+<todo>
 ${PROJECT_NAME} the name of the current project
 ${MODULE_NAME} the name of the current module
-${MONTH_NAME_SHORT} first 3 letters of the current month name. Example: Jan, Feb, etc.
-${MONTH_NAME_FULL} full name of the current month. Example: January, February, etc.
-<del>
+${PACKAGE_NAME} name of the package in which the new interface is created
+</todo>
+```
 
+### In-house Helpers
+
+```
+- 首尾拼接字符
+{{Join 'ABC' '#' '%'}}  => #ABC%
+
+- 首字母小写
+{{LowerCase 'ABC'}} => aBC
+
+- 首字母大写
+{{LowerCase 'abc'}} => Abc
+
+- 驼峰分割
+{{Split 'ABcD' '_'}} => A_Bc_D
+
+* 组合用法
+{{Split (Join (LowerCase 'AbcDefGhi') '$' '%') '_'}} => $abc_def_ghi%
 ```
 
 ### Text Cases
 
 - markdown
 
-```
-| user_id |  BIGINT(20) | 申请用户ID |
-| user_name |  VARCHAR(20) | 申请用户名称 |
-| company_id |  BIGINT(20) | 供应商ID |
-| company_name | VARCHAR(64) | 供应商名称 |
-| checked_at | DATETIME | 审核日期 |
-| checker_id | BIGINT(20) | 审核用户名称 |
+| COLUMN_NAME | TYPE | COMMENT  |
+|:--------|:--------:|:---------:|
+| id    |  BIGINT(20)  | ID     |
+| pid   |  BIGINT(20)  | 父级ID  |
+| name  |  VARCHAR(64) | 名称    |
+| level |  INT(11)     | 级别    |
+| pinyin | VARCHAR(100) | 拼音 |
+| english_name | VARCHAR(100) | 英文名 |
+| unicode_code | VARCHAR(200) | ASCII码 |
 | checker_name | VARCHAR(64) | 审核用户名称 |
-| data_json | VARCHAR(1024) | 审核数据 |
-```
+| order_no | INT(11) | 排序号 |
 
 - sqlScript
 
-```
+```sql
 CREATE TABLE `t_addresses` (
-  `id` bigint(20) NOT NULL,
-  `pid` bigint(20) DEFAULT NULL COMMENT '父级ID',
-  `name` varchar(50) DEFAULT NULL COMMENT '名称',
-  `level` int(11) DEFAULT NULL COMMENT '级别',
-  `pinyin` varchar(100) DEFAULT NULL COMMENT '拼音',
-  `english_name` varchar(100) DEFAULT NULL COMMENT '英文名',
-  `unicode_code` varchar(200) DEFAULT NULL COMMENT 'ASCII码',
-  `order_no` varchar(32) DEFAULT NULL COMMENT '排序号',
+  `id` BIGINT(20) NOT NULL,
+  `pid` BIGINT(20) DEFAULT NULL COMMENT '父级ID',
+  `name` VARCHAR(50) DEFAULT NULL COMMENT '名称',
+  `level` INT(11) DEFAULT NULL COMMENT '级别',
+  `pinyin` VARCHAR(100) DEFAULT NULL COMMENT '拼音',
+  `english_name` VARCHAR(100) DEFAULT NULL COMMENT '英文名',
+  `unicode_code` VARCHAR(200) DEFAULT NULL COMMENT 'ASCII码',
+  `order_no` INT(11) DEFAULT NULL COMMENT '排序号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
@@ -131,7 +147,6 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 * [x] serialVersionUID
 * [x] template sub directory
 * [x] resources sub directory
-* [ ] wiki
 * [ ] ResourcesBundle
 * [ ] outer jdbc jar
 * [ ] more in-house variables

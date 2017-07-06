@@ -20,8 +20,9 @@ public class HandlebarsFactory {
 
         /**
          * 首尾拼接字符
+         * {{Join 'ABC' '#' '%'}}  => #ABC%
          */
-        handlebars.registerHelper("Fix", new Helper<String>() {
+        handlebars.registerHelper("Join", new Helper<String>() {
             public CharSequence apply(String context, Options options) throws IOException {
                 if (options.params == null || options.params.length != 2) {
                     return options.fn(context);
@@ -35,6 +36,7 @@ public class HandlebarsFactory {
 
         /**
          * 首字母小写
+         * {{LowerCase 'ABC'}} => aBC
          */
         handlebars.registerHelper("LowerCase", new Helper<String>() {
             public CharSequence apply(String value, Options options) throws IOException {
@@ -44,6 +46,7 @@ public class HandlebarsFactory {
 
         /**
          * 首字母大写
+         * {{LowerCase 'abc'}} => Abc
          */
         handlebars.registerHelper("UpperCase", new Helper<String>() {
             public CharSequence apply(String value, Options options) throws IOException {
@@ -53,8 +56,9 @@ public class HandlebarsFactory {
 
         /**
          * 驼峰转拼接字符
+         * {{Split 'ABcD' '_'}} => A_Bc_D
          */
-        handlebars.registerHelper("CamelTo", new Helper<String>() {
+        handlebars.registerHelper("Split", new Helper<String>() {
             public CharSequence apply(String value, Options options) throws IOException {
                 if (value == null || "".equals(value.trim())) {
                     return "";
@@ -83,7 +87,7 @@ public class HandlebarsFactory {
     }
 
     public static void main(String[] args) throws Exception{
-        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{CamelTo (Fix (LowerCase 'SubUserRole') '$' '%') '_'}}");
+        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{Split (Join (LowerCase 'SubUserRole') '$' '%') '_'}}");
         String outputName = fileNameTemp.apply(null);
         System.out.println(outputName);
     }

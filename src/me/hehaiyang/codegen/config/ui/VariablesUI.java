@@ -96,7 +96,7 @@ public class VariablesUI extends JPanel implements UIConfigurable {
 
         String inHouseVariables;
         try {
-            InputStream template = getClass().getResourceAsStream("/wiki/In-house-variables.md");
+            InputStream template = getClass().getResourceAsStream("/others/In-house-variables.md");
             inHouseVariables = StringUtils.stream2String(template);
         }catch (IOException ioe){
             inHouseVariables = "IOException";

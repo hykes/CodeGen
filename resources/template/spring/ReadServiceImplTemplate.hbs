@@ -31,8 +31,8 @@ public class {{model}}ReadServiceImpl implements {{model}}ReadService {
         try{
             return Response.ok({{LowerCase model}}Dao.load(id));
         }catch (Exception e){
-            log.error("failed to find {{LowerCase model}} by id:{}, cause:{}", id, Throwables.getStackTraceAsString(e));
-            return Response.fail("{{LowerCase model}}.find.fail");
+            log.error("failed to find {{Split (LowerCase model) ' '}} by id:{}, cause:{}", id, Throwables.getStackTraceAsString(e));
+            return Response.fail("{{Split (LowerCase model) '.'}}.find.fail");
         }
     }
 
@@ -42,8 +42,8 @@ public class {{model}}ReadServiceImpl implements {{model}}ReadService {
             PageInfo pageInfo = new PageInfo(pageNo, pageSize);
             return Response.ok({{LowerCase model}}Dao.paging(pageInfo.getOffset(), pageInfo.getLimit(), criteria));
         }catch (Exception e){
-            log.error("failed to paging {{LowerCase model}} by pageNo:{} pageSize:{}, cause:{}", pageNo, pageSize, Throwables.getStackTraceAsString(e));
-            return Response.fail("{{LowerCase model}}.paging.fail");
+            log.error("failed to paging {{Split (LowerCase model) ' '}} by pageNo:{} pageSize:{}, cause:{}", pageNo, pageSize, Throwables.getStackTraceAsString(e));
+            return Response.fail("{{Split (LowerCase model) '.'}}.paging.fail");
         }
     }
 
@@ -52,8 +52,8 @@ public class {{model}}ReadServiceImpl implements {{model}}ReadService {
         try{
             return Response.ok({{LowerCase model}}Dao.list(criteria));
         }catch (Exception e){
-            log.error("failed to list {{LowerCase model}} , cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("{{LowerCase model}} .list.fail");
+            log.error("failed to list {{Split (LowerCase model) ' '}}, cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("{{Split (LowerCase model) '.'}}.list.fail");
         }
     }
 
