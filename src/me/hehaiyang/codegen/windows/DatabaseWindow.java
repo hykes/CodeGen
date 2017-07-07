@@ -2,6 +2,7 @@ package me.hehaiyang.codegen.windows;
 
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.ui.IdeBorderFactory;
 import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.IdeaContext;
@@ -25,15 +26,10 @@ public class DatabaseWindow extends JFrame{
     public DatabaseWindow(IdeaContext ideaContext){
         setLayout(new BorderLayout());
         JFrame thisFrame = this;
-
         SettingManager settingManager = SettingManager.getInstance();
 
-        JPanel configPanel = new JPanel();
-
-        configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
         ComboBox databaseBox=new ComboBox();
         JButton connectBtn = new JButton("Connect");
-
         ComboBox tableBox=new ComboBox();
         JButton sureBtn = new JButton("Sure");
 
@@ -50,12 +46,6 @@ public class DatabaseWindow extends JFrame{
         tableBox.addItem("请选择");
         tableBox.setEnabled(false);
         sureBtn.setEnabled(false);
-
-        configPanel.add(databaseBox);
-        configPanel.add(connectBtn);
-
-        configPanel.add(tableBox);
-        configPanel.add(sureBtn);
 
         connectBtn.addActionListener( it ->{
 
@@ -100,6 +90,15 @@ public class DatabaseWindow extends JFrame{
                 }
             }
         });
+
+        JPanel configPanel = new JPanel();
+        configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
+        configPanel.setSize(300, 150);
+        configPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        configPanel.add(databaseBox);
+        configPanel.add(connectBtn);
+        configPanel.add(tableBox);
+        configPanel.add(sureBtn);
 
         add(configPanel, BorderLayout.CENTER);
         // esc

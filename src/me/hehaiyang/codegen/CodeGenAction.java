@@ -36,7 +36,7 @@ public class CodeGenAction extends AnAction {
         JFrame startFrame;
         if(settingManager.getConfigSetting().isDatabaseRadio()){
             startFrame = new DatabaseWindow(ideaContext);
-            startFrame.setSize(350, 180);
+            startFrame.setSize(350, 160);
         }else{
             startFrame = new TextWindow(ideaContext);
             startFrame.setSize(500, 350);

@@ -88,7 +88,6 @@ public class ColumnEditorFrame extends JFrame {
         });
         groupPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-
         JButton genButton = new JButton("Generate");
         genButton.addActionListener( it ->{
             List<String> list = Lists.newArrayList();
