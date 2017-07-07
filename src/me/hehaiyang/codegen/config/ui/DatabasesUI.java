@@ -1,6 +1,7 @@
 package me.hehaiyang.codegen.config.ui;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.ComboBox;
@@ -30,6 +31,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -83,15 +86,15 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
                 if(!databaseMap.containsKey(name)){
                     return true;
                 }else{
-                    Database dbParama = databaseMap.get(name);
-                    if(!dbParama.getDriver().equals(driver)
-                            || !dbParama.getUrl().equals(url)
-                            || !dbParama.getType().equals(type)
-                            || !dbParama.getHost().equals(host)
-                            || !dbParama.getPort().equals(port)
-                            || !dbParama.getDatabase().equals(database)
-                            || !dbParama.getUsername().equals(username)
-                            || !dbParama.getPassword().equals(password)){
+                    Database dbParam = databaseMap.get(name);
+                    if(!dbParam.getDriver().equals(driver)
+                            || !dbParam.getUrl().equals(url)
+                            || !dbParam.getType().equals(type)
+                            || !dbParam.getHost().equals(host)
+                            || !dbParam.getPort().equals(port)
+                            || !dbParam.getDatabase().equals(database)
+                            || !dbParam.getUsername().equals(username)
+                            || !dbParam.getPassword().equals(password)){
                         return true;
                     }
                 }
@@ -104,7 +107,12 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
 
     @Override
     public void apply() {
-        List<Database> databases = Lists.newArrayList();
+        settingManager.getDatabasesSetting().setDatabases(Lists.newArrayList(getNoPersistentDatabaseMap().values()));
+    }
+
+    // 获取当前窗口的数据源, 还未持久化的
+    private Map<String, Database> getNoPersistentDatabaseMap() {
+        Map<String, Database> databases = Maps.newHashMap();
         DefaultTableModel tableModel = (DefaultTableModel) databasesTable.getModel();
         for(int i = 0;i< tableModel.getRowCount(); i++){
             Database database = new Database();
@@ -115,11 +123,12 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
             database.setDatabase(tableModel.getValueAt(i, 4).toString().trim());
             database.setUsername(tableModel.getValueAt(i, 5).toString().trim());
             database.setPassword(tableModel.getValueAt(i, 6).toString().trim());
-            database.setUrl(tableModel.getValueAt(i, 7).toString().trim());
-            database.setDriver(tableModel.getValueAt(i, 8).toString().trim());
-            databases.add(database);
+            database.setDriver(tableModel.getValueAt(i, 7).toString().trim());
+            database.setUrl(tableModel.getValueAt(i, 8).toString().trim());
+            // 去重
+            databases.put(database.getName(), database);
         }
-        settingManager.getDatabasesSetting().setDatabases(databases);
+        return databases;
     }
 
     @Override
@@ -212,6 +221,29 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
             }
         };
         databasesTable.setModel(tableModel);
+
+        // 处理每个列
+        databasesTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        TableColumnModel columnModel = databasesTable.getColumnModel();
+        TableColumn typeColumn = columnModel.getColumn(0);
+        typeColumn.setPreferredWidth(100);
+        TableColumn nameColumn = columnModel.getColumn(1);
+        nameColumn.setPreferredWidth(134);
+        TableColumn hostColumn = columnModel.getColumn(2);
+        TableColumn portColumn = columnModel.getColumn(3);
+        TableColumn dbColumn = columnModel.getColumn(4);
+        TableColumn userColumn = columnModel.getColumn(5);
+        userColumn.setPreferredWidth(134);
+        TableColumn passColumn = columnModel.getColumn(6);
+        TableColumn driverColumn = columnModel.getColumn(7);
+        TableColumn urlColumn = columnModel.getColumn(8);
+        urlColumn.setPreferredWidth(400);
+        // 隐藏部分列
+        databasesTable.removeColumn(hostColumn);
+        databasesTable.removeColumn(portColumn);
+        databasesTable.removeColumn(dbColumn);
+        databasesTable.removeColumn(passColumn);
+        databasesTable.removeColumn(driverColumn);
     }
 
     private void addAction(){
@@ -368,10 +400,11 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
     private JPanel getMysqlForm(Window dialog, DefaultTableModel tableModel, int selectedRow, Database dbParam) {
         JPanel form = new JPanel(null);
         form.setPreferredSize(new Dimension(540, 520));
+        boolean add = tableModel == null; // 是否是新增
 
         // name
         setLable(form, "Name:", 15, 10, 70, 25);
-        JTextField nameText = setTextField(form, nullOr(dbParam.getName(), ""), 90, 10, 320, 25);
+        JTextField nameText = setTextField(form, nullOr(dbParam.getName(), ""), 90, 10, 320, 25, add);
         // host
         setLable(form, "Host:", 15, 70, 70, 25);
         JTextField hostText = setTextField(form, nullOr(dbParam.getHost(), "localhost"), 90, 70, 320, 25);
@@ -447,13 +480,13 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
             String url = urlText.getText().trim();
 
             // 创建或更行 tableModel
-            Map<String, Database> databaseMap = settingManager.getDatabasesSetting().getDatabaseMap();
-            if (databaseMap.containsKey(name)) {
-                message.setText("Data source name already exists...");
-                message.setForeground(JBColor.RED);
-                return;
-            }
-            if (tableModel == null) {
+            if (add) {
+                Map<String, Database> databaseMap = getNoPersistentDatabaseMap();
+                if (databaseMap.containsKey(name)) {
+                    message.setText("Data source name already exists...");
+                    message.setForeground(JBColor.RED);
+                    return;
+                }
                 DefaultTableModel tModel = (DefaultTableModel) databasesTable.getModel();
                 String []rowValues = {type, name, host, port, database, username, password, driver, url};
                 tModel.addRow(rowValues);
