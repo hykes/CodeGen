@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.FieldType;
-import me.hehaiyang.codegen.utils.StringUtils;
 
 import java.sql.*;
 import java.util.ArrayList;

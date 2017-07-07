@@ -2,11 +2,10 @@ package me.hehaiyang.codegen.windows;
 
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.ui.IdeBorderFactory;
+import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.IdeaContext;
-import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.utils.DBOperationUtil;
 
 import javax.swing.*;
