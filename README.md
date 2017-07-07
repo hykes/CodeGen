@@ -123,7 +123,7 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 ## Changes Log
 
 - v0.8 2017-07-07
-    - add in-house variables ({{$.Project}}、{{$.Module1}}、{{$.Package1}})
+    - add in-house variables ({{$.Project}},{{$.Module1}},{{$.Package1}})
     - add group level
     - add .kt file type & kotlin templates
     - add ESC key event action

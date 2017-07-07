@@ -5,7 +5,7 @@
   <vendor email="hehaiyangwork@qq.com">hehaiyang</vendor>
 
   <description><![CDATA[
-      <p><a href="https://github.com/hehaiyangwork/CodeGen">GitHub</a> | <a href="https://github.com/hehaiyangwork/CodeGen/issues">Issues</a> </p>
+      <p><a href="https://github.com/hehaiyangwork/CodeGen">GitHub</a> | <a href="https://github.com/hehaiyangwork/CodeGen/issues">Issues</a> | <a href="https://plugins.jetbrains.com/plugin/9574-codegen">JetBrains</a> </p>
       <br>
       <p>This plugin helps you to generate specific template code by create table statement or database .</p>
       <ul>
@@ -15,13 +15,13 @@
         <li>Custom template groups</li>
         <li>Data sources manager</li>
       </ul>
-      <p>Please feel free to contact me and ask any questions or suggest some features.</p>
+      <p>Please feel free to contact me and ask any questions or suggest some features .</p>
     ]]></description>
 
   <change-notes><![CDATA[
       <p>v0.8 2017-07-07</p>
       <ul>
-        <li>add in-house variables ({{$.Project}}、{{$.Module1}}、{{$.Package1}})</li>
+        <li>add in-house variables ({{$.Project}},{{$.Module1}},{{$.Package1}})</li>
         <li>add group level</li>
         <li>add .kt file type & kotlin templates</li>
         <li>add ESC key event action</li>
