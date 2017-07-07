@@ -4,11 +4,7 @@ In-house Variables:
 
 {{$.Month}} current month
 
-{{$.Date}} current system date
-
-{{$.Now}} current system time
-
-{{$.Day_Of_Month}} current day of the month
+{{$.Day}} current day of the month
 
 {{$.Hour}} current hour
 
@@ -16,7 +12,17 @@ In-house Variables:
 
 {{$.Second}} current second
 
+{{$.Date}} current system date
+
+{{$.Now}} current system time
+
 {{$.serialVersionUID}} current model serialVersionUID
+
+{{$.Project}} the name of the current project
+
+{{$.Module1} the name of the current selected module
+
+{{$.Package1} the name of the current selected package
 
 In-house Helpers:
 

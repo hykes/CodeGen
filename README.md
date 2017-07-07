@@ -31,17 +31,17 @@ Preferences -> Tools -> CodeGen
 
 {{$.Month}} current month
 
-{{$.Date}} current system date
-
-{{$.Now}} current system time
-
-{{$.Day_Of_Month}} current day of the month
+{{$.Day}} current day of the month
 
 {{$.Hour}} current hour
 
 {{$.Minute}} current minute
 
 {{$.Second}} current second
+
+{{$.Date}} current system date
+
+{{$.Now}} current system time
 
 {{$.serialVersionUID}} current model serialVersionUID
 
