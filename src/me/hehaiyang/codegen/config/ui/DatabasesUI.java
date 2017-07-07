@@ -76,10 +76,10 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
                 String host = tableModel.getValueAt(i, 2).toString().trim();
                 String port = tableModel.getValueAt(i, 3).toString().trim();
                 String database = tableModel.getValueAt(i, 4).toString().trim();
-                String driver = tableModel.getValueAt(i, 5).toString().trim();
-                String url = tableModel.getValueAt(i, 6).toString().trim();
-                String username = tableModel.getValueAt(i, 7).toString().trim();
-                String password = tableModel.getValueAt(i, 8).toString().trim();
+                String username = tableModel.getValueAt(i, 5).toString().trim();
+                String password = tableModel.getValueAt(i, 6).toString().trim();
+                String driver = tableModel.getValueAt(i, 7).toString().trim();
+                String url = tableModel.getValueAt(i, 8).toString().trim();
                 if(!databaseMap.containsKey(name)){
                     return true;
                 }else{
@@ -447,6 +447,12 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
             String url = urlText.getText().trim();
 
             // 创建或更行 tableModel
+            Map<String, Database> databaseMap = settingManager.getDatabasesSetting().getDatabaseMap();
+            if (databaseMap.containsKey(name)) {
+                message.setText("Data source name already exists...");
+                message.setForeground(JBColor.RED);
+                return;
+            }
             if (tableModel == null) {
                 DefaultTableModel tModel = (DefaultTableModel) databasesTable.getModel();
                 String []rowValues = {type, name, host, port, database, username, password, driver, url};
