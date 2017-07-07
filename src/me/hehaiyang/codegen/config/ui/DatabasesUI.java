@@ -324,7 +324,7 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
                 }
             });
 
-            dialog.setSize(300, 200);
+            dialog.setSize(660, 520);
             dialog.setAlwaysOnTop(true);
             dialog.setLocationRelativeTo(this);
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
