@@ -65,7 +65,7 @@ Preferences -> Tools -> CodeGen
 {{LowerCase 'abc'}} => Abc
 
 - 驼峰分割
-{{Split 'ABcD' '_'}} => A_Bc_D
+{{Split 'ABcD' '_'}} => A_bc_d
 
 * 组合用法
 {{Split (Join (LowerCase 'AbcDefGhi') '$' '%') '_'}} => $abc_def_ghi%

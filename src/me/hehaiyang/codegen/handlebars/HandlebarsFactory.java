@@ -56,7 +56,7 @@ public class HandlebarsFactory {
 
         /**
          * 驼峰转拼接字符
-         * {{Split 'ABcD' '_'}} => A_Bc_D
+         * {{Split 'ABcD' '_'}} => A_bc_d
          */
         handlebars.registerHelper("Split", new Helper<String>() {
             public CharSequence apply(String value, Options options) throws IOException {
