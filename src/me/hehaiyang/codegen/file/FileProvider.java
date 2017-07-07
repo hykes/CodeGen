@@ -30,6 +30,9 @@ public abstract class FileProvider {
         if(Strings.isNullOrEmpty(subPath)){
             return psiDirectory;
         }else{
+            if(subPath.substring(0,1).equals("/")){
+                subPath = subPath.substring(1);
+            }
             String subPathAttr[] = subPath.split("/");
             if(Objects.nonNull(isResources) && isResources){
                 psiDirectory = findResourcesDirectory(psiDirectory);

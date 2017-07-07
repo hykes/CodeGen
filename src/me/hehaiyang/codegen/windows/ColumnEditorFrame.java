@@ -217,7 +217,7 @@ public class ColumnEditorFrame extends JFrame {
         });
         dialog.add(add, BorderLayout.SOUTH);
 
-        dialog.setSize(300, 300);
+        dialog.setSize(300, 260);
         dialog.setAlwaysOnTop(true);
         dialog.setLocationRelativeTo(this);
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
@@ -297,7 +297,7 @@ public class ColumnEditorFrame extends JFrame {
             });
             dialog.add(add, BorderLayout.SOUTH);
 
-            dialog.setSize(300, 300);
+            dialog.setSize(300, 260);
             dialog.setAlwaysOnTop(true);
             dialog.setLocationRelativeTo(this);
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
