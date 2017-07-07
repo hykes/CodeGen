@@ -2,7 +2,7 @@
 
 This plugin helps you to generate specific template code by create table statement or database .
 
-[![release](https://img.shields.io/badge/IDEA-v0.7-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hehaiyangwork/CodeGen/blob/master/LICENSE)
+[![release](https://img.shields.io/badge/IDEA-v0.8-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hehaiyangwork/CodeGen/blob/master/LICENSE)
 
 ![CodeGen](https://raw.githubusercontent.com/hehaiyangwork/CodeGen/master/codegen.gif)
 
@@ -19,10 +19,10 @@ Preferences -> Plugins -> Browse repositories -> [search] CodeGen
 Preferences -> Tools -> CodeGen
     
 1. Generation type(Text/Database)
-2. In-house variables & helpers
+2. In-house variables and (handlebars) helpers
 3. Predefined variables
-4. Template group
-5. Data sources
+4. Custom template groups
+5. Data sources manager
 
 ### In-house Variables
 
@@ -122,12 +122,13 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 ## Changes Log
 
-- 2017-07-06
+- v0.8 2017-07-07
     - add in-house variables ({{$.Project}}、{{$.Module1}}、{{$.Package1}})
     - add group level
-    - add .kt file type & kotlin template
+    - add .kt file type & kotlin templates
     - add ESC key event action
     - modify database ui
+    - update spring templates
     - fix template reset bug
     
 - v0.7 2017-07-04
