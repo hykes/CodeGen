@@ -843,4 +843,11 @@ public abstract class StringUtils {
         }
         return null;
     }
+
+    public static String nullOr(String value, String defaultString) {
+        if (value == null) {
+            return defaultString;
+        }
+        return value;
+    }
 }
