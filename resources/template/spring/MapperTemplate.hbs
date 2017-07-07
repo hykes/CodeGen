@@ -83,15 +83,13 @@
         DELETE FROM <include refid="tb"/>
         WHERE id = #{id}
     </delete>
-
-    <!--  查询记录数  -->
+    
     <select id="count" parameterType="map" resultType="long">
         SELECT COUNT(1)
         FROM <include refid="tb"/>
         <include refid="criteria"/>
     </select>
 
-    <!--  分页  -->
     <select id="paging" parameterType="map" resultMap="{{model}}Map">
         SELECT <include refid="cols_all"/>
         FROM <include refid="tb"/>
