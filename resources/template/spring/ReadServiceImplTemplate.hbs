@@ -1,3 +1,8 @@
+package {{$.Package2}}.service;
+
+import {{$.Package1}}.model.{{model}};
+import {{$.Package2}}.dao.{{model}}Dao;
+import {{$.Package1}}.service.{{model}}ReadService;
 
 import io.terminus.common.model.PageInfo;
 import io.terminus.common.model.Paging;
@@ -14,7 +19,7 @@ import java.util.Map;
 import java.util.List;
 
 /**
- * Desc: {{modelName}}读服务实现
+ * Desc:
  * Mail: {{$.email}}
  * Date: {{$.Now}}
  * Created by {{$.author}}
@@ -30,7 +35,7 @@ public class {{model}}ReadServiceImpl implements {{model}}ReadService {
     @Override
     public Response<{{model}}> findById(Long id) {
         try{
-            return Response.ok({{LowerCase model}}Dao.load(id));
+            return Response.ok({{LowerCase model}}Dao.findById(id));
         }catch (Exception e){
             log.error("failed to find {{Split (LowerCase model) ' '}} by id:{}, cause:{}", id, Throwables.getStackTraceAsString(e));
             return Response.fail("{{Split (LowerCase model) '.'}}.find.fail");

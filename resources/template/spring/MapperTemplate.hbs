@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
+ ~ Desc:
+ ~ Mail: {{$.email}}
  ~ Date: {{$.Now}}
  ~ Created by {{$.author}}
 -->
@@ -48,7 +50,7 @@
         (<include refid="vals"/>)
     </insert>
 
-    <select id="load" parameterType="long" resultMap="{{model}}Map">
+    <select id="findById" parameterType="long" resultMap="{{model}}Map">
         SELECT
         <include refid="cols_all"/>
         FROM
@@ -56,7 +58,7 @@
         WHERE id = #{id} LIMIT 1
     </select>
 
-    <select id="loads" parameterType="list" resultMap="{{model}}Map">
+    <select id="findByIds" parameterType="list" resultMap="{{model}}Map">
         SELECT
         <include refid="cols_all"/>
         FROM

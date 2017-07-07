@@ -1,3 +1,8 @@
+package {{$.Package2}}.service;
+
+import {{$.Package1}}.model.{{model}};
+import {{$.Package2}}.dao.{{model}}Dao;
+import {{$.Package1}}.service.{{model}}WriteService;
 
 import io.terminus.common.model.Response;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
@@ -9,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Desc: {{modelName}}写服务实现
+ * Desc:
  * Mail: {{$.email}}
  * Date: {{$.Now}}
  * Created by {{$.author}}

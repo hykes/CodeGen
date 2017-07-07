@@ -1,3 +1,8 @@
+package {{$.Package3}}.front;
+
+import {{$.Package1}}.model.{{model}};
+import {{$.Package1}}.service.{{model}}ReadService;
+import {{$.Package1}}.service.{{model}}WriteService;
 
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import io.terminus.common.exception.JsonResponseException;
@@ -35,6 +40,10 @@ public class {{model}}s {
     @RpcConsumer
     private {{model}}ReadService {{LowerCase model}}ReadService;
 
+    /**
+     * 查询
+     * @param
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public {{model}} find{{model}}(@PathVariable Long id) {
         Response<{{model}}> response =  {{LowerCase model}}ReadService.findById(id);
@@ -44,6 +53,10 @@ public class {{model}}s {
         return response.getResult();
     }
 
+    /**
+     * 分页
+     * @param
+     */
     @RequestMapping(value = "/paging", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Paging<{{model}}> paging{{model}}(@RequestParam(value = "pageNo", required = false) Integer pageNo,
                                                  @RequestParam(value = "pageSize", required = false) Integer pageSize) {
