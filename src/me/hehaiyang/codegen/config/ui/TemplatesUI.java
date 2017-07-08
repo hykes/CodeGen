@@ -16,6 +16,7 @@ import me.hehaiyang.codegen.config.ui.variable.AddDialog;
 import me.hehaiyang.codegen.constants.DefaultTemplates;
 import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
+import org.apache.xmlbeans.impl.xb.ltgfmt.Code;
 
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -132,6 +133,9 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 CodeTemplate template = (CodeTemplate) object;
                 templateEditor.refresh(template);
                 System.out.println("你点击了：" + template.getDisplay());
+            }else if(object instanceof CodeGroup) {
+                CodeGroup group = (CodeGroup) object;
+                System.out.println("你点击了：" + group.getName());
             } else if(object instanceof String) {
                 String text = (String)object;
                 System.out.println("你点击了：" + text);
@@ -158,14 +162,17 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                     }
                 })
             .setEditActionUpdater( it -> {
+                // 只能允许CodeGroup在树中编辑
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
-                return selectedNode != null && selectedNode.getParent() != null && !(selectedNode.getUserObject() instanceof CodeTemplate);
+                return selectedNode != null && (selectedNode.getUserObject() instanceof CodeGroup);
             })
             .setAddActionUpdater( it -> {
+                // 只允许Root、CodeGroup添加子节点
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
                 return selectedNode != null && !(selectedNode.getUserObject() instanceof CodeTemplate);
             })
             .setRemoveActionUpdater( it -> {
+                // 只允许CodeGroup、CodeTemplate删除
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
                 return selectedNode != null && selectedNode.getParent() != null;
             });
@@ -193,6 +200,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             dialog.setLayout(new BorderLayout());
 
             JPanel form = new JPanel(new GridLayout(2,2));
+            form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             form.add(new Label("Group Name"));
             JTextField nameField = new JTextField();
             form.add(nameField);
@@ -215,7 +223,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             });
             dialog.add(add, BorderLayout.SOUTH);
 
-            dialog.setSize(300, 100);
+            dialog.setSize(300, 120);
             dialog.setAlwaysOnTop(true);
             dialog.setLocationRelativeTo(this);
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
@@ -225,13 +233,12 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         }
         if(object instanceof CodeGroup){
             // 新增模版
-            CodeGroup group = (CodeGroup) object;
-
             JDialog dialog = new AddDialog();
             dialog.setTitle("Create New Template");
             dialog.setLayout(new BorderLayout());
 
             JPanel form = new JPanel(new GridLayout(2,2));
+            form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             form.add(new Label("display"));
             JTextField displayJTextField = new JTextField();
             form.add(displayJTextField);
@@ -252,7 +259,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             });
             dialog.add(add, BorderLayout.SOUTH);
 
-            dialog.setSize(300, 100);
+            dialog.setSize(300, 120);
             dialog.setAlwaysOnTop(true);
             dialog.setLocationRelativeTo(this);
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
@@ -285,10 +292,57 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
     }
 
     private void editorAction(){
-        TreePath selectedPath = templateTree.getSelectionPath();
-        if (selectedPath != null) {
-            //编辑选中节点
-            templateTree.startEditingAtPath(selectedPath);
+
+        //获取选中节点
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
+        //如果节点为空，直接返回
+        if (selectedNode == null) {
+            return;
+        }
+        Object object = selectedNode.getUserObject();
+        if(object instanceof CodeGroup){
+
+            CodeGroup group = (CodeGroup) object;
+
+            // 新增模版组
+            JDialog dialog = new AddDialog();
+            dialog.setTitle("Edit Group");
+            dialog.setLayout(new BorderLayout());
+
+            JPanel form = new JPanel(new GridLayout(2,2));
+            form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            form.add(new Label("Group Name"));
+            JTextField nameField = new JTextField(group.getName());
+            form.add(nameField);
+
+            form.add(new Label("Group Level"));
+            JTextField levelField = new JTextField(String.valueOf(group.getLevel()));
+            form.add(levelField);
+
+            dialog.add(form, BorderLayout.CENTER);
+
+            JButton add = new JButton("Confirm");
+            add.addActionListener( it ->{
+                String name = nameField.getText().trim();
+                String level = levelField.getText().trim();
+
+                group.setName(name);
+                group.setLevel(Integer.valueOf(level));
+
+                selectedNode.setUserObject(group);
+
+                dialog.setVisible(false);
+            });
+            dialog.add(add, BorderLayout.SOUTH);
+
+            dialog.setSize(300, 120);
+            dialog.setAlwaysOnTop(true);
+            dialog.setLocationRelativeTo(this);
+            dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            dialog.setResizable(false);
+            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setVisible(true);
+
         }
     }
 
