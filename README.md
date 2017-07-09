@@ -122,20 +122,7 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 ## TODO
 
-* [x] serialVersionUID
-* [x] template sub directory
-* [x] resources sub directory
-* [ ] ResourcesBundle
-* [ ] outer jdbc jar
-* [ ] more in-house variables
-* [ ] more handlebars helpers
-* [ ] 各个UI的优化
-* [ ] Field把一些更详细的内容放进去，如长度，是否必须等等（文档）
-* [ ] 生成模板时，model和table自动填上
-* [ ] 模板大分组，拉取远程的模板项目
-* [ ] 在配置项中添加忽略字段的功能，比如默认忽略id，created_at，updated_at。
-* [ ] 同时生成多个model
-
+* [TODO](https://github.com/hehaiyangwork/CodeGen/projects/1)
 
 ## Contributions
 
