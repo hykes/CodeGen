@@ -1,8 +1,8 @@
-package {{$.Package2}}.service;
+package {{#if $.Package2}}{{$.Package2}}.{{/if}}service;
 
-import {{$.Package1}}.model.{{model}};
-import {{$.Package2}}.dao.{{model}}Dao;
-import {{$.Package1}}.service.{{model}}ReadService;
+import {{#if $.Package1}}{{$.Package1}}.{{/if}}model.{{model}};
+import {{#if $.Package2}}{{$.Package2}}.{{/if}}dao.{{model}}Dao;
+import {{#if $.Package1}}{{$.Package1}}.{{/if}}service.{{model}}ReadService;
 
 import io.terminus.common.model.PageInfo;
 import io.terminus.common.model.Paging;

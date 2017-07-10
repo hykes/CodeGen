@@ -1,6 +1,6 @@
-package {{$.Package2}}.dao;
+package {{#if $.Package2}}{{$.Package2}}.{{/if}}dao;
 
-import {{$.Package1}}.model.{{model}};
+import {{#if $.Package1}}{{$.Package1}}.{{/if}}model.{{model}};
 import io.terminus.common.mysql.dao.MyBatisDao;
 
 import org.springframework.stereotype.Repository;

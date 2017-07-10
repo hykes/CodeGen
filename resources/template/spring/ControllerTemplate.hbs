@@ -1,8 +1,8 @@
-package {{$.Package3}}.front;
+package {{#if $.Package3}}{{$.Package3}}.{{/if}}front;
 
-import {{$.Package1}}.model.{{model}};
-import {{$.Package1}}.service.{{model}}ReadService;
-import {{$.Package1}}.service.{{model}}WriteService;
+import {{#if $.Package1}}{{$.Package1}}.{{/if}}model.{{model}};
+import {{#if $.Package1}}{{$.Package1}}.{{/if}}service.{{model}}ReadService;
+import {{#if $.Package1}}{{$.Package1}}.{{/if}}service.{{model}}WriteService;
 
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import io.terminus.common.exception.JsonResponseException;

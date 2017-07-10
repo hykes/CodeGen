@@ -1,8 +1,8 @@
-package {{$.Package2}}.service;
+package {{#if $.Package2}}{{$.Package2}}.{{/if}}service;
 
-import {{$.Package1}}.model.{{model}};
-import {{$.Package2}}.dao.{{model}}Dao;
-import {{$.Package1}}.service.{{model}}WriteService;
+import {{#if $.Package1}}{{$.Package1}}.{{/if}}model.{{model}};
+import {{#if $.Package2}}{{$.Package2}}.{{/if}}dao.{{model}}Dao;
+import {{#if $.Package1}}{{$.Package1}}.{{/if}}service.{{model}}WriteService;
 
 import io.terminus.common.model.Response;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;

@@ -1,6 +1,6 @@
-package {{$.Package1}}.service;
+package {{#if $.Package1}}{{$.Package1}}.{{/if}}service;
 
-import {{$.Package1}}.model.{{model}};
+import {{#if $.Package1}}{{$.Package1}}.{{/if}}model.{{model}};
 import io.terminus.common.model.Paging;
 import io.terminus.common.model.Response;
 
