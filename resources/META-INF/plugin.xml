@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>0.8</version>
+  <version>0.8.1</version>
   <vendor email="hehaiyangwork@qq.com">hehaiyang</vendor>
 
   <description><![CDATA[
@@ -19,6 +19,11 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      <p>v0.8.1 2017-07-10</p>
+      <ul>
+        <li>fix edit template group</li>
+        <li>fix spring templates {{$.package}} is null</li>
+       </ul>
       <p>v0.8 2017-07-07</p>
       <ul>
         <li>add in-house variables ({{$.Project}},{{$.Module1}},{{$.Package1}})</li>

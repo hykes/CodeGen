@@ -1,5 +1,9 @@
 # Change Logs
 
+- v0.8.1 2017-07-10
+    - fix edit template group
+    - fix spring templates {{$.package1}} is null
+
 - v0.8 2017-07-07
     - add in-house variables ({{$.Project}},{{$.Module1}},{{$.Package1}})
     - add group level
