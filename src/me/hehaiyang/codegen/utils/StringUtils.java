@@ -7,6 +7,18 @@ import java.util.*;
 
 public abstract class StringUtils {
 
+    /**
+     * The empty String {@code ""}.
+     * @since 2.0
+     */
+    public static final String EMPTY = "";
+
+    /**
+     * Represents a failed index search.
+     * @since 2.1
+     */
+    public static final int INDEX_NOT_FOUND = -1;
+
     private static final String FOLDER_SEPARATOR = "/";
 
     private static final char EXTENSION_SEPARATOR = '.';
@@ -29,6 +41,25 @@ public abstract class StringUtils {
      */
     public static boolean isEmpty(Object str) {
         return (str == null || "".equals(str));
+    }
+
+    /**
+     * <p>Checks if a CharSequence is not empty ("") and not null.</p>
+     *
+     * <pre>
+     * StringUtils.isNotEmpty(null)      = false
+     * StringUtils.isNotEmpty("")        = false
+     * StringUtils.isNotEmpty(" ")       = true
+     * StringUtils.isNotEmpty("bob")     = true
+     * StringUtils.isNotEmpty("  bob  ") = true
+     * </pre>
+     *
+     * @param cs  the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is not empty and not null
+     * @since 3.0 Changed signature from isNotEmpty(String) to isNotEmpty(CharSequence)
+     */
+    public static boolean isNotEmpty(CharSequence cs) {
+        return !org.apache.commons.lang3.StringUtils.isEmpty(cs);
     }
 
     /**
@@ -265,6 +296,92 @@ public abstract class StringUtils {
             sb.deleteCharAt(sb.length() - 1);
         }
         return sb.toString();
+    }
+
+
+    // SubStringAfter/SubStringBefore
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Gets the substring before the first occurrence of a separator.
+     * The separator is not returned.</p>
+     *
+     * <p>A {@code null} string input will return {@code null}.
+     * An empty ("") string input will return the empty string.
+     * A {@code null} separator will return the input string.</p>
+     *
+     * <p>If nothing is found, the string input is returned.</p>
+     *
+     * <pre>
+     * StringUtils.substringBefore(null, *)      = null
+     * StringUtils.substringBefore("", *)        = ""
+     * StringUtils.substringBefore("abc", "a")   = ""
+     * StringUtils.substringBefore("abcba", "b") = "a"
+     * StringUtils.substringBefore("abc", "c")   = "ab"
+     * StringUtils.substringBefore("abc", "d")   = "abc"
+     * StringUtils.substringBefore("abc", "")    = ""
+     * StringUtils.substringBefore("abc", null)  = "abc"
+     * </pre>
+     *
+     * @param str  the String to get a substring from, may be null
+     * @param separator  the String to search for, may be null
+     * @return the substring before the first occurrence of the separator,
+     *  {@code null} if null String input
+     * @since 2.0
+     */
+    public static String substringBefore(String str, String separator) {
+        if (isEmpty(str) || separator == null) {
+            return str;
+        }
+        if (separator.length() == 0) {
+            return EMPTY;
+        }
+        int pos = str.indexOf(separator);
+        if (pos == INDEX_NOT_FOUND) {
+            return str;
+        }
+        return str.substring(0, pos);
+    }
+
+    /**
+     * <p>Gets the substring after the first occurrence of a separator.
+     * The separator is not returned.</p>
+     *
+     * <p>A {@code null} string input will return {@code null}.
+     * An empty ("") string input will return the empty string.
+     * A {@code null} separator will return the empty string if the
+     * input string is not {@code null}.</p>
+     *
+     * <p>If nothing is found, the empty string is returned.</p>
+     *
+     * <pre>
+     * StringUtils.substringAfter(null, *)      = null
+     * StringUtils.substringAfter("", *)        = ""
+     * StringUtils.substringAfter(*, null)      = ""
+     * StringUtils.substringAfter("abc", "a")   = "bc"
+     * StringUtils.substringAfter("abcba", "b") = "cba"
+     * StringUtils.substringAfter("abc", "c")   = ""
+     * StringUtils.substringAfter("abc", "d")   = ""
+     * StringUtils.substringAfter("abc", "")    = "abc"
+     * </pre>
+     *
+     * @param str  the String to get a substring from, may be null
+     * @param separator  the String to search for, may be null
+     * @return the substring after the first occurrence of the separator,
+     *  {@code null} if null String input
+     * @since 2.0
+     */
+    public static String substringAfter(String str, String separator) {
+        if (isEmpty(str)) {
+            return str;
+        }
+        if (separator == null) {
+            return EMPTY;
+        }
+        int pos = str.indexOf(separator);
+        if (pos == INDEX_NOT_FOUND) {
+            return EMPTY;
+        }
+        return str.substring(pos + separator.length());
     }
 
 

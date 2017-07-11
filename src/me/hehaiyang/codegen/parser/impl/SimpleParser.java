@@ -1,6 +1,7 @@
 package me.hehaiyang.codegen.parser.impl;
 
 import me.hehaiyang.codegen.model.Field;
+import me.hehaiyang.codegen.model.Table;
 import me.hehaiyang.codegen.parser.Parser;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 
@@ -34,8 +35,9 @@ import java.util.List;
 public class SimpleParser implements Parser {
 
     @Override
-    public List<Field> parseSQL(String sql) {
+    public Table parseSQL(String sql) {
         List<Field> fiellist = new ArrayList<Field>();
+        Table table = new Table(fiellist);
 
         String a = sql;
         ByteArrayInputStream is = new ByteArrayInputStream(a.getBytes());
@@ -96,7 +98,9 @@ public class SimpleParser implements Parser {
         }
         if (totolline != fiellist.size())
             fiellist = new ArrayList<>();
-        return fiellist;
+
+        table.setFields(fiellist);
+        return table;
     }
 
     private String Trim(String str) {

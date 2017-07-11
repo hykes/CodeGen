@@ -2,6 +2,7 @@ package me.hehaiyang.codegen.parser.impl;
 
 import com.google.common.collect.Lists;
 import me.hehaiyang.codegen.model.Field;
+import me.hehaiyang.codegen.model.Table;
 import me.hehaiyang.codegen.parser.Parser;
 import me.hehaiyang.codegen.utils.StringUtils;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
@@ -21,10 +22,12 @@ import java.util.List;
 public class DefaultParser implements Parser {
 
     @Override
-    public List<Field> parseSQL(String sql) {
+    public Table parseSQL(String sql) {
         List<Field> fields = Lists.newArrayList();
+        Table table = new Table(fields);
+
         if (StringUtils.isBlank(sql)) {
-            return fields;
+            return table;
         }
         // 解析sql语句
         try {
@@ -33,6 +36,7 @@ public class DefaultParser implements Parser {
                 throw new RuntimeException("Only support create table statement !!!");
             }
             CreateTable createTable = (CreateTable) statement;
+            table.setTableName(removeQuotes(createTable.getTable().getName()));
             createTable.getColumnDefinitions().forEach(it -> {
                 Field field = new Field();
                 // 字段名称
@@ -53,7 +57,7 @@ public class DefaultParser implements Parser {
             // 需要异常统一下
             e.printStackTrace();
         }
-        return fields;
+        return table;
     }
 
     /**

@@ -6,6 +6,7 @@ import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.IdeaContext;
+import me.hehaiyang.codegen.model.Table;
 import me.hehaiyang.codegen.utils.DBOperationUtil;
 
 import javax.swing.*;
@@ -74,11 +75,11 @@ public class DatabaseWindow extends JFrame{
             Database database = (Database) databaseBox.getSelectedItem();
             if(database != null){
                 try {
-                    String table = tableBox.getSelectedItem().toString();
+                    String tableName = tableBox.getSelectedItem().toString();
                     Connection conn = DBOperationUtil.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
                     if (conn != null && !conn.isClosed()) {
-                        List<Field> fields = DBOperationUtil.getColumns(table, conn);
-                        ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, fields);
+                        List<Field> fields = DBOperationUtil.getColumns(tableName, conn);
+                        ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, new Table(tableName, fields));
                         frame.setSize(800, 400);
                         frame.setAlwaysOnTop(false);
                         frame.setLocationRelativeTo(thisFrame);

@@ -1,6 +1,7 @@
 package me.hehaiyang.codegen.parser;
 
 import me.hehaiyang.codegen.model.Field;
+import me.hehaiyang.codegen.model.Table;
 
 import java.util.List;
 
@@ -15,12 +16,13 @@ public interface Parser {
 
 
     /**
-     * 将输入的sql语句解析成 Field
+     * 将输入的sql语句解析成 Table 对象
      *
+     * @see Table
      * @see Field
      * @param sql sql语句
      */
-    List<Field> parseSQL(String sql);
+    Table parseSQL(String sql);
 
 
 }

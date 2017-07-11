@@ -16,7 +16,7 @@ import me.hehaiyang.codegen.file.FileProviderFactory;
 import me.hehaiyang.codegen.model.*;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 import me.hehaiyang.codegen.utils.PsiUtil;
-import org.apache.commons.lang3.StringUtils;
+import me.hehaiyang.codegen.utils.StringUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -39,23 +39,23 @@ public class ColumnEditorFrame extends JFrame {
 
     private JFrame thisFrame;
 
-    public ColumnEditorFrame(IdeaContext ideaContext, List<Field> fields) {
+    public ColumnEditorFrame(IdeaContext ideaContext, Table table) {
         thisFrame = this;
 
-        init(ideaContext);
-        setFields(fields);
+        init(ideaContext, table);
+        setFields(table.getFields());
     }
 
-    private void init(IdeaContext ideaContext){
+    private void init(IdeaContext ideaContext, Table table){
         setLayout(new BorderLayout());
 
         final JPanel topPanel = new JPanel(new GridLayout(1, 4));
         topPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         topPanel.add(new JLabel("model"));
-        JTextField modelText = new JTextField();
+        JTextField modelText = new JTextField(StringUtils.nullOr(table.getModelName(), ""));
         topPanel.add(modelText);
         topPanel.add(new JLabel("table"));
-        JTextField tableText = new JTextField();
+        JTextField tableText = new JTextField(StringUtils.nullOr(table.getTableName(), ""));
         topPanel.add(tableText);
 
         add(topPanel, BorderLayout.NORTH);
@@ -94,10 +94,10 @@ public class ColumnEditorFrame extends JFrame {
             getAllJCheckBoxValue(groupPanel, list);
 
             if(!list.isEmpty()) {
-                String model = modelText.getText().trim();
-                String table = tableText.getText().trim();
+                String modelName = modelText.getText().trim();
+                String tableName = tableText.getText().trim();
                 // 组装数据
-                CodeContext context = new CodeContext(model, table, getFields());
+                CodeContext context = new CodeContext(modelName, tableName, getFields());
                 gen(ideaContext, list, context);
                 dispose();
             }

@@ -4,6 +4,7 @@ import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.ScrollPaneFactory;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.IdeaContext;
+import me.hehaiyang.codegen.model.Table;
 import me.hehaiyang.codegen.parser.Parser;
 import me.hehaiyang.codegen.parser.impl.DefaultParser;
 import me.hehaiyang.codegen.parser.impl.SimpleParser;
@@ -75,20 +76,20 @@ public class TextWindow extends JFrame {
             try {
                 String text = codeJTextPane.getText().trim();
 
-                List<Field> fields;
+                Table table;
                 if(sqlScriptRadio.isSelected()){
                     Parser parser = new DefaultParser();
-                    fields = parser.parseSQL(text);
+                    table = parser.parseSQL(text);
                 }else {
                     Parser parser = new SimpleParser();
-                    fields = parser.parseSQL(text);
+                    table = parser.parseSQL(text);
                 }
 
-                if (fields == null || fields.isEmpty()) {
+                if (table == null || table.getFields() == null || table.getFields().isEmpty()) {
                     setTips(true, "Error ! please check text format.");
                     return;
                 }
-                ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, fields);
+                ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, table);
                 frame.setSize(800, 400);
                 frame.setAlwaysOnTop(false);
                 frame.setLocationRelativeTo(thisFrame);
