@@ -124,6 +124,14 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 * [TODO](https://github.com/hehaiyangwork/CodeGen/projects/1)
 
+## Guide
+
+* [Guide_cn](https://github.com/hehaiyangwork/CodeGen/blob/master/Guide_cn.md)
+
+## Change Logs
+
+* [CHANGELOG](https://github.com/hehaiyangwork/CodeGen/blob/master/CHANGELOG.md)
+
 ## Contributions
 
 * [hehaiyangwork](https://github.com/hehaiyangwork)
