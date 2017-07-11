@@ -5,6 +5,7 @@ import com.intellij.ide.util.TreeClassChooserFactory;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileChooser.FileChooser;
@@ -13,6 +14,7 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.BuildNumber;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
@@ -83,6 +85,8 @@ public class PsiUtil {
         descriptor.setDescription(description);
         descriptor.setHideIgnored(true);
         descriptor.setRoots(project.getBaseDir());
+        // todo: setForcedToUseIdeaFileChooser 方法应该存在版本兼容问题，待处理
+//        BuildNumber number = ApplicationInfo.getInstance().getBuild();
         descriptor.setForcedToUseIdeaFileChooser(true);
         VirtualFile file = FileChooser.chooseFile(descriptor, project, project.getBaseDir());
         if(Objects.isNull(file)){

@@ -348,7 +348,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
     private void setTemplates(TemplatesSetting templatesSetting){
 
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Template Group");
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Terminus.io");
 
         List<CodeGroup> groups = templatesSetting.getGroups();
         groups.forEach( it -> {
