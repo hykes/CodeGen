@@ -9,6 +9,7 @@ public class ConfigSetting {
 
   private boolean textRadio = false;
   private boolean databaseRadio = true;
+  private String ignoreFields = "id,created_at,updated_at";
 
   public boolean isTextRadio() {
     return textRadio;
@@ -24,5 +25,13 @@ public class ConfigSetting {
 
   public void setDatabaseRadio(boolean databaseRadio) {
     this.databaseRadio = databaseRadio;
+  }
+
+  public String getIgnoreFields() {
+    return ignoreFields;
+  }
+
+  public void setIgnoreFields(String ignoreFields) {
+    this.ignoreFields = ignoreFields;
   }
 }

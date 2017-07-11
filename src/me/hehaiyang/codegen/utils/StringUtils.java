@@ -807,6 +807,33 @@ public abstract class StringUtils {
         return new String[] {beforeDelimiter, afterDelimiter};
     }
 
+
+    /**
+     * split string to List
+     */
+    public static List<String> splitToList(String toSplit, String delimiter, boolean upper) {
+        if (!hasLength(toSplit) || !hasLength(delimiter)) {
+            return null;
+        }
+        int offset = toSplit.indexOf(delimiter);
+        if (offset < 0) {
+            return null;
+        }
+        String[] split = toSplit.split(delimiter);
+        List<String> lists = new ArrayList<>();
+        for (String str: split) {
+            if (upper) {
+                str = str.toUpperCase();
+            }
+            lists.add(str);
+        }
+        return lists;
+    }
+
+    public static List<String> splitToList(String toSplit, String delimiter) {
+        return splitToList(toSplit, delimiter, false);
+    }
+
     /**
      * Tokenize the given String into a String array via a StringTokenizer.
      * Trims tokens and omits empty tokens.

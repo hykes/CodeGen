@@ -130,6 +130,7 @@ public class ColumnEditorFrame extends JFrame {
 
     private List<Field> getFields(){
         List<Field> fields = Lists.newArrayList();
+        List<String> ignoreList = StringUtils.splitToList(settingManager.getConfigSetting().getIgnoreFields(), ",", true);
         DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
         for(int i = 0;i< tableModel.getRowCount(); i++){
             Field field = new Field();
@@ -143,7 +144,10 @@ public class ColumnEditorFrame extends JFrame {
             if(Objects.nonNull(tableModel.getValueAt(i, 5))){
                 field.setComment(tableModel.getValueAt(i, 5).toString());
             }
-            fields.add(field);
+            // 过滤
+            if (!ignoreList.contains(field.getColumn().toUpperCase().trim())) {
+                fields.add(field);
+            }
         }
         return fields;
     }
