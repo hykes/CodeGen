@@ -1,5 +1,9 @@
 # Change Logs
 
+- 2017-07-11
+    - Add default ignore fields
+    - Modify table parser
+
 - v0.8.1 2017-07-10
     - fix edit template group
     - fix spring templates {{$.package1}} is null
