@@ -41,7 +41,8 @@ public class {{model}}s {
 
     /**
      * 查询
-     * @param
+     * @param id
+     * @return
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public {{model}} find{{model}}(@PathVariable Long id) {
@@ -54,7 +55,9 @@ public class {{model}}s {
 
     /**
      * 分页
-     * @param
+     * @param pageNo
+     * @param pageSize
+     * @return
      */
     @RequestMapping(value = "/paging", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Paging<{{model}}> paging{{model}}(@RequestParam(value = "pageNo", required = false) Integer pageNo,
@@ -71,7 +74,8 @@ public class {{model}}s {
 
     /**
      * 创建
-     * @param
+     * @param {{LowerCase model}}
+     * @return
      */
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Long create{{model}}(@RequestBody {{model}} {{LowerCase model}}) {
@@ -84,7 +88,8 @@ public class {{model}}s {
 
     /**
      * 更新
-     * @param
+     * @param {{LowerCase model}}
+     * @return
      */
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean update{{model}}(@RequestBody {{model}} {{LowerCase model}}) {
@@ -97,6 +102,7 @@ public class {{model}}s {
 
     /**
     * 删除
+    * @param id
     * @return
     */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)

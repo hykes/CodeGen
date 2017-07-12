@@ -54,7 +54,7 @@ public class {{model}}WriteServiceImpl implements {{model}}WriteService {
             return Response.ok({{LowerCase model}}Dao.delete(id));
         }catch (Exception e){
             log.error("failed to delete {{Split (LowerCase model) ' '}} by id:{}, cause:{}", id,  Throwables.getStackTraceAsString(e));
-            return Response.fail("delete.{{Split (LowerCase model) '.'}}.fail");
+            return Response.fail("{{Split (LowerCase model) '.'}}.delete.fail");
         }
     }
 
