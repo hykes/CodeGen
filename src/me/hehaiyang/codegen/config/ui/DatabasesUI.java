@@ -423,7 +423,27 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         // message
         String mess = "Select Mysql...";
         JLabel message = setMessage(form, mess);
-
+        // test button
+        setTestConnection(form, e -> {
+            String tUser = userText.getText().trim();
+            String tPass = new String(passwordText.getPassword()).trim();
+            String tDriver = "com.mysql.jdbc.Driver";
+            String tUrl = urlText.getText().trim();
+            try {
+                Connection connection = DBOperationUtil.getConnection(tDriver, tUrl, tUser, tPass);
+                if (connection != null && !connection.isClosed()) {
+                    message.setText("Successful !!!");
+                    message.setForeground(JBColor.GREEN);
+                    connection.close();
+                }else{
+                    message.setText("Connect failed !!!");
+                    message.setForeground(JBColor.RED);
+                }
+            } catch (Exception te) {
+                message.setText("Connect failed !!!");
+                message.setForeground(JBColor.RED);
+            }
+        });
         // 设置事件
         nameText.getDocument().addDocumentListener(new MessageResetAdapter(message, mess));
         hostText.getDocument().addDocumentListener(new MessageResetAdapter(message, mess, e ->
@@ -544,6 +564,14 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         cancel.setBounds(380, 460, 70, 30);
         cancel.addActionListener(onCancel);
         form.add(cancel);
+    }
+
+    // 设置Test按钮
+    private void setTestConnection(Container form, ActionListener onOk) {
+        JButton test = new JButton("Test Connection");
+        test.setBounds(87, 220, 130, 30);
+        test.addActionListener(onOk);
+        form.add(test);
     }
 
     // 获取提示message
