@@ -1,8 +1,9 @@
 # Change Logs
 
-- 2017-07-11
+- 2017-07-13
     - Add default ignore fields
     - Modify table parser
+    - Add database connection test
 
 - v0.8.1 2017-07-10
     - fix edit template group
