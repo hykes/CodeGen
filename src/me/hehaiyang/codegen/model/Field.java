@@ -37,6 +37,12 @@ public class Field implements Serializable{
     private String columnType;
 
     /**
+     * 数据库字段类型
+     * @see java.sql.Types
+     */
+    private Integer sqlType;
+
+    /**
      * 数据库字段长度
      */
     private String columnSize;
@@ -80,10 +86,11 @@ public class Field implements Serializable{
     }
 
     public void setColumnType(String columnType) {
-       this.setColumnType(columnType, null);
+       this.setColumnType(columnType, sqlType);
     }
     public void setColumnType(String columnType, Integer sqlType) {
         this.columnType = columnType;
+        this.sqlType = sqlType;
 
         FieldType fieldType = DBOperationUtil.getFieldType(columnType);
         if (fieldType.getJavaType().equals("UNKNOWN")) {
@@ -96,6 +103,14 @@ public class Field implements Serializable{
 
     public String getKotlinType() {
         return kotlinType;
+    }
+
+    public Integer getSqlType() {
+        return sqlType;
+    }
+
+    public void setSqlType(Integer sqlType) {
+        this.sqlType = sqlType;
     }
 
     public String getColumnSize() {

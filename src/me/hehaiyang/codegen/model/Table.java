@@ -16,7 +16,7 @@ public class Table implements Serializable {
     private static final long serialVersionUID = 6739294315192751908L;
 
     /**
-     * 表对应的model名称（驼峰）
+     * 表对应的model名称（驼峰, 首字符大写）
      */
     private String modelName;
 
@@ -55,7 +55,7 @@ public class Table implements Serializable {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
-        this.modelName = BuilderUtil.underlineToCamel(tableName);
+        this.modelName = BuilderUtil.underlineToCamel(tableName, true);
     }
 
     public List<Field> getFields() {

@@ -134,15 +134,20 @@ public class ColumnEditorFrame extends JFrame {
         DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
         for(int i = 0;i< tableModel.getRowCount(); i++){
             Field field = new Field();
+            // field
             field.setField(tableModel.getValueAt(i, 0).toString());
-            field.setFieldType(tableModel.getValueAt(i, 0).toString());
+            // field.setFieldType(tableModel.getValueAt(i, 1).toString()); // setColumnType设置
+            // column and type
             field.setColumn(tableModel.getValueAt(i, 2).toString());
-            field.setColumnType(tableModel.getValueAt(i, 3).toString());
-            if(Objects.nonNull(tableModel.getValueAt(i, 4))){
-                field.setColumnSize(tableModel.getValueAt(i, 4).toString());
+            if (Objects.nonNull(tableModel.getValueAt(i, 4))) {
+                field.setSqlType(Integer.parseInt(tableModel.getValueAt(i, 4).toString()));
             }
+            field.setColumnType(tableModel.getValueAt(i, 3).toString());
             if(Objects.nonNull(tableModel.getValueAt(i, 5))){
-                field.setComment(tableModel.getValueAt(i, 5).toString());
+                field.setColumnSize(tableModel.getValueAt(i, 5).toString());
+            }
+            if(Objects.nonNull(tableModel.getValueAt(i, 6))){
+                field.setComment(tableModel.getValueAt(i, 6).toString());
             }
             // 过滤
             if (!ignoreList.contains(field.getColumn().toUpperCase().trim())) {
@@ -154,16 +159,17 @@ public class ColumnEditorFrame extends JFrame {
 
     private void setFields(List<Field> fields){
         // 列名
-        String[] columnNames = {"Field_Name", "Field_Type", "Column_Name","Column_Type", "Column_Size", "Comment"};
+        String[] columnNames = {"Field_Name", "Field_Type", "Column_Name","Column_Type", "Sql_Type", "Column_Size", "Comment"};
         // 默认数据
-        Object[][] tableVales = new String[fields.size()][6];
+        Object[][] tableVales = new String[fields.size()][7];
         for (int row = 0; row < fields.size(); row++) {
             tableVales[row][0] = fields.get(row).getField();
             tableVales[row][1] = fields.get(row).getFieldType();
             tableVales[row][2] = fields.get(row).getColumn();
             tableVales[row][3] = fields.get(row).getColumnType();
-            tableVales[row][4] = fields.get(row).getColumnSize();
-            tableVales[row][5] = fields.get(row).getComment();
+            tableVales[row][4] = fields.get(row).getSqlType() + "";
+            tableVales[row][5] = fields.get(row).getColumnSize();
+            tableVales[row][6] = fields.get(row).getComment();
         }
         DefaultTableModel tableModel = new DefaultTableModel(tableVales,columnNames){
             @Override
@@ -194,6 +200,10 @@ public class ColumnEditorFrame extends JFrame {
         JTextField columnType = new JTextField();
         form.add(columnType);
 
+        form.add(new Label("SqlType"));
+        JTextField sqlType = new JTextField();
+        form.add(sqlType);
+
         form.add(new Label("ColumnSize"));
         JTextField columnSize = new JTextField();
         form.add(columnSize);
@@ -210,11 +220,12 @@ public class ColumnEditorFrame extends JFrame {
             String fieldTypeText = fieldType.getText().trim();
             String columnText = column.getText();
             String columnTypeText = columnType.getText().trim();
+            String sqlTypeText = sqlType.getText().trim();
             String columnSizeText = columnSize.getText().trim();
             String commentText = comment.getText().trim();
 
             DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
-            String []rowValues = {fieldText, fieldTypeText, columnText, columnTypeText, columnSizeText, commentText};
+            String []rowValues = {fieldText, fieldTypeText, columnText, columnTypeText, sqlTypeText, columnSizeText, commentText};
             tableModel.addRow(rowValues);
             dialog.setVisible(false);
         });
@@ -248,8 +259,9 @@ public class ColumnEditorFrame extends JFrame {
             String oldFieldTypeText = (String) tableModel.getValueAt(selectedRow, 1);
             String oldColumnText = (String) tableModel.getValueAt(selectedRow, 2);
             String oldColumnTypeText = (String) tableModel.getValueAt(selectedRow, 3);
-            String oldColumnSizeText = (String) tableModel.getValueAt(selectedRow, 4);
-            String oldCommentText = (String) tableModel.getValueAt(selectedRow, 5);
+            String oldSqlTypeText = (String) tableModel.getValueAt(selectedRow, 4);
+            String oldColumnSizeText = (String) tableModel.getValueAt(selectedRow, 5);
+            String oldCommentText = (String) tableModel.getValueAt(selectedRow, 6);
 
             JDialog dialog = new AddDialog();
             dialog.setLayout(new BorderLayout());
@@ -270,6 +282,10 @@ public class ColumnEditorFrame extends JFrame {
             form.add(new Label("ColumnType"));
             JTextField columnType = new JTextField(oldColumnTypeText);
             form.add(columnType);
+
+            form.add(new Label("SqlType"));
+            JTextField sqlType = new JTextField(oldSqlTypeText);
+            form.add(sqlType);
 
             form.add(new Label("ColumnSize"));
             JTextField columnSize = new JTextField(oldColumnSizeText);
