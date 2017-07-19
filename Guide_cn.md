@@ -59,7 +59,7 @@ codegen 使用**handlebars.java模板引擎**进行生成，支持使用**原生
 {{LowerCase 'ABC'}} => aBC
 
 - 首字母大写
-{{LowerCase 'abc'}} => Abc
+{{UpperCase 'abc'}} => Abc
 
 - 驼峰分割
 {{Split 'ABcD' '_'}} => A_bc_d

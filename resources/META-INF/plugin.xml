@@ -20,9 +20,11 @@
 
   <change-notes><![CDATA[
       <p>v0.8.2 2017-07-14</p>
+        <ul>
         <li>Add default ignore fields</li>
         <li>Add database connection test</li>
         <li>Modify table parser</li>
+        </ul>
       <p>v0.8.1 2017-07-10</p>
       <ul>
         <li>fix edit template group</li>

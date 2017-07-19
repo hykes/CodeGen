@@ -33,7 +33,7 @@ In-house Helpers:
 {{LowerCase 'ABC'}} => aBC
 
 * 首字母大写
-{{LowerCase 'abc'}} => Abc
+{{UpperCase 'abc'}} => Abc
 
 * 驼峰分割
 {{Split 'ABcD' '_'}} => A_bc_d
