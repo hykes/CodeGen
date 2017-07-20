@@ -1,13 +1,13 @@
 package me.hehaiyang.codegen.file;
 
 import com.github.jknack.handlebars.Handlebars;
-import com.google.common.base.Strings;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import me.hehaiyang.codegen.handlebars.HandlebarsFactory;
 import me.hehaiyang.codegen.model.CodeContext;
 import me.hehaiyang.codegen.model.CodeTemplate;
+import me.hehaiyang.codegen.utils.StringUtils;
 
 import java.util.Objects;
 
@@ -27,7 +27,7 @@ public abstract class FileProvider {
     public abstract void create(CodeTemplate template, CodeContext context) throws Exception;
 
     public PsiDirectory subDirectory(PsiDirectory psiDirectory, String subPath, Boolean isResources){
-        if(Strings.isNullOrEmpty(subPath)){
+        if(StringUtils.isEmpty(subPath)){
             return psiDirectory;
         }else{
             if(subPath.substring(0,1).equals("/")){

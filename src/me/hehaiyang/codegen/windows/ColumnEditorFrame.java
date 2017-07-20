@@ -1,7 +1,5 @@
 package me.hehaiyang.codegen.windows;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
@@ -90,7 +88,7 @@ public class ColumnEditorFrame extends JFrame {
 
         JButton genButton = new JButton("Generate");
         genButton.addActionListener( it ->{
-            List<String> list = Lists.newArrayList();
+            List<String> list = new ArrayList<>();
             getAllJCheckBoxValue(groupPanel, list);
 
             if(!list.isEmpty()) {
@@ -113,7 +111,7 @@ public class ColumnEditorFrame extends JFrame {
 
     public static List<String> getAllJCheckBoxValue(Container ct, List<String> list){
         if(list==null){
-            list= Lists.newArrayList();
+            list = new ArrayList<>();
         }
         int count=ct.getComponentCount();
         for(int i=0;i<count;i++){
@@ -129,7 +127,7 @@ public class ColumnEditorFrame extends JFrame {
     }
 
     private List<Field> getFields(){
-        List<Field> fields = Lists.newArrayList();
+        List<Field> fields = new ArrayList<>();
         List<String> ignoreList = StringUtils.splitToList(settingManager.getConfigSetting().getIgnoreFields(), ",", true);
         DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
         for(int i = 0;i< tableModel.getRowCount(); i++){
@@ -329,7 +327,7 @@ public class ColumnEditorFrame extends JFrame {
 
     public void gen(IdeaContext ideaContext, List<String> groups, CodeContext context){
 
-        Map<String, String> params = Maps.newHashMap();
+        Map<String, String> params = new HashMap<>();
         params.putAll(DefaultParams.getInHouseVariables());
         params.putAll(settingManager.getVariablesSetting().getParams());
         params.put("serialVersionUID", BuilderUtil.computeDefaultSUID(context.getModel(), context.getFields()) + "");

@@ -1,6 +1,5 @@
 package me.hehaiyang.codegen.parser.impl;
 
-import com.google.common.collect.Lists;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.Table;
 import me.hehaiyang.codegen.parser.Parser;
@@ -10,6 +9,7 @@ import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColDataType;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +23,7 @@ public class DefaultParser implements Parser {
 
     @Override
     public Table parseSQL(String sql) {
-        List<Field> fields = Lists.newArrayList();
+        List<Field> fields = new ArrayList<>();
         Table table = new Table(fields);
 
         if (StringUtils.isBlank(sql)) {

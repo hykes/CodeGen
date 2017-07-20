@@ -1,6 +1,5 @@
 package me.hehaiyang.codegen.config.ui.template;
 
-import com.google.common.base.Strings;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -8,6 +7,7 @@ import com.intellij.openapi.editor.EditorSettings;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.util.ui.JBUI;
 import me.hehaiyang.codegen.model.CodeTemplate;
+import me.hehaiyang.codegen.utils.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -86,8 +86,8 @@ public class TemplateEditor extends JPanel {
      * @return
      */
     private Editor createEditor(String template, String extension) {
-        template = Strings.isNullOrEmpty(template) ? "" : template;
-        extension = Strings.isNullOrEmpty(extension) ? "vm" : extension;
+        template = StringUtils.isEmpty(template) ? "" : template;
+        extension = StringUtils.isEmpty(extension) ? "vm" : extension;
         EditorFactory factory = EditorFactory.getInstance();
         Document velocityTemplate = factory.createDocument(template);
         Editor editor = factory.createEditor(velocityTemplate, null, FileTypeManager.getInstance()

@@ -1,6 +1,5 @@
 package me.hehaiyang.codegen.constants;
 
-import com.google.common.collect.Lists;
 import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
 import me.hehaiyang.codegen.config.SettingManager;
@@ -8,6 +7,7 @@ import me.hehaiyang.codegen.utils.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,24 +19,24 @@ import java.util.UUID;
 public class DefaultTemplates {
 
     public static List<CodeGroup> getDefaults() {
-        List<CodeGroup> groups = Lists.newArrayList();
+        List<CodeGroup> groups = new ArrayList<>();
         try {
 
             // spring templates
-            List<CodeTemplate> apiTemplates = Lists.newArrayList();
+            List<CodeTemplate> apiTemplates = new ArrayList<>();
 
             apiTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Controller", "java", "{{model}}s", getTemplateContext("/template/spring/ControllerTemplate.hbs"), "front", false));
             CodeGroup apiGroup = new CodeGroup(UUID.randomUUID().toString(), "Api", 3, apiTemplates);
             groups.add(apiGroup);
 
-            List<CodeTemplate> modelTemplates = Lists.newArrayList();
+            List<CodeTemplate> modelTemplates = new ArrayList<>();
             modelTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Model", "java", "{{model}}", getTemplateContext("/template/spring/ModelTemplate.hbs"), "model", false));
             modelTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "ReadService", "java", "{{model}}ReadService", getTemplateContext("/template/spring/ReadServiceTemplate.hbs"), "service", false));
             modelTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "WriteService", "java", "{{model}}WriteService", getTemplateContext("/template/spring/WriteServiceTemplate.hbs"), "service", false));
             CodeGroup modelGroup = new CodeGroup(UUID.randomUUID().toString(), "Model-Service", 1, modelTemplates);
             groups.add(modelGroup);
 
-            List<CodeTemplate> implTemplates = Lists.newArrayList();
+            List<CodeTemplate> implTemplates = new ArrayList<>();
             implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Dao", "java", "{{model}}Dao", getTemplateContext("/template/spring/DaoTemplate.hbs"), "dao", false));
             implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "ReadService", "java", "{{model}}ReadServiceImpl", getTemplateContext("/template/spring/ReadServiceImplTemplate.hbs"), "service", false));
             implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "WriteService", "java", "{{model}}WriteServiceImpl", getTemplateContext("/template/spring/WriteServiceImplTemplate.hbs"), "service", false));
@@ -45,7 +45,7 @@ public class DefaultTemplates {
             groups.add(implGroup);
 
             // kotlin template
-            List<CodeTemplate> ktTemplates = Lists.newArrayList();
+            List<CodeTemplate> ktTemplates = new ArrayList<>();
             ktTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Controller", "kt", "{{model}}s", getTemplateContext("/template/kotlin/ControllerTemplate.hbs"), "restful", false));
             ktTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Model", "kt", "{{model}}", getTemplateContext("/template/kotlin/ModelTemplate.hbs"), "model", false));
             ktTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Service", "kt", "{{model}}Service", getTemplateContext("/template/kotlin/ServiceTemplate.hbs"), "service", false));

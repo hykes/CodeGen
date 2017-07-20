@@ -1,9 +1,9 @@
 package me.hehaiyang.codegen.config.setting;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import me.hehaiyang.codegen.model.Database;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +14,10 @@ import java.util.Map;
  */
 public class DatabasesSetting {
 
-   private List<Database> databases = Lists.newArrayList();
+   private List<Database> databases = new ArrayList<>();
 
    public Map<String, Database> getDatabaseMap(){
-      Map<String, Database> result = Maps.newHashMap();
+      Map<String, Database> result = new HashMap<>();
       databases.forEach( it -> result.put(it.getName(), it));
       return result;
    }

@@ -1,12 +1,11 @@
 package me.hehaiyang.codegen.utils;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.FieldType;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +55,7 @@ public class DBOperationUtil {
      */
     public static List<Field> getColumns(String tableName, Connection connection) {
 
-        List<Field> fields = Lists.newArrayList();
+        List<Field> fields = new ArrayList<>();
         try {
             DatabaseMetaData databaseMetaData  = connection.getMetaData();
             ResultSet resultSet = databaseMetaData.getColumns(null, null, tableName, null);
@@ -86,7 +85,7 @@ public class DBOperationUtil {
      * 如果要转javaType的枚举, 可以使用Types
      * @see Types
      */
-    private static Map<String, FieldType> sqlTypes = Maps.newHashMap();
+    private static Map<String, FieldType> sqlTypes = new HashMap<>();
     static {
         // mysql https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-type-conversions.html
         sqlTypes.put("UNKNOWN", build("UNKNOWN"));

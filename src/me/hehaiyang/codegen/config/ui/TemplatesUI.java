@@ -1,6 +1,5 @@
 package me.hehaiyang.codegen.config.ui;
 
-import com.google.common.collect.Lists;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.Messages;
@@ -16,15 +15,12 @@ import me.hehaiyang.codegen.config.ui.variable.AddDialog;
 import me.hehaiyang.codegen.constants.DefaultTemplates;
 import me.hehaiyang.codegen.model.CodeGroup;
 import me.hehaiyang.codegen.model.CodeTemplate;
-import org.apache.xmlbeans.impl.xb.ltgfmt.Code;
 
 import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
-import java.util.Enumeration;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Desc:
@@ -81,12 +77,12 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
     @Override
     public void apply() {
-        List<CodeGroup> groups = Lists.newArrayList();
+        List<CodeGroup> groups = new ArrayList<>();
         DefaultTreeModel treeModel = (DefaultTreeModel) templateTree.getModel();
         DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) treeModel.getRoot();
         Enumeration enumeration = rootNode.children();
         while(enumeration.hasMoreElements()){
-            List<CodeTemplate> templates = Lists.newArrayList();
+            List<CodeTemplate> templates = new ArrayList<>();
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
             Enumeration childEnum = node.children();
             while(childEnum.hasMoreElements()){
@@ -216,7 +212,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 String name = nameField.getText().trim();
                 String level = levelField.getText().trim();
 
-                CodeGroup group = new CodeGroup(UUID.randomUUID().toString(), name, Integer.valueOf(level), Lists.newArrayList());
+                CodeGroup group = new CodeGroup(UUID.randomUUID().toString(), name, Integer.valueOf(level), new ArrayList<>());
                 addNode(selectedNode, new DefaultMutableTreeNode(group));
 
                 dialog.setVisible(false);

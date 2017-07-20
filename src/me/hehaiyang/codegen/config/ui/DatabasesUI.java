@@ -1,7 +1,5 @@
 package me.hehaiyang.codegen.config.ui;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.MessageType;
@@ -29,9 +27,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import static me.hehaiyang.codegen.utils.StringUtils.nullOr;
@@ -103,12 +100,12 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
 
     @Override
     public void apply() {
-        settingManager.getDatabasesSetting().setDatabases(Lists.newArrayList(getNoPersistentDatabaseMap().values()));
+        settingManager.getDatabasesSetting().setDatabases(new ArrayList<>(getNoPersistentDatabaseMap().values()));
     }
 
     // 获取当前窗口的数据源, 还未持久化的
     private Map<String, Database> getNoPersistentDatabaseMap() {
-        Map<String, Database> databases = Maps.newHashMap();
+        Map<String, Database> databases = new HashMap<>();
         DefaultTableModel tableModel = (DefaultTableModel) databasesTable.getModel();
         for(int i = 0;i< tableModel.getRowCount(); i++){
             Database database = new Database();
