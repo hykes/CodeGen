@@ -3,23 +3,27 @@ package me.hehaiyang.codegen.parser.impl;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.Table;
 import me.hehaiyang.codegen.parser.Parser;
+import me.hehaiyang.codegen.parser.ParserAware;
 import me.hehaiyang.codegen.utils.StringUtils;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColDataType;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Desc: 默认的解析器, 使用 JSqlParser 进行解析.
  *
+ *  不提供DB连接解析 !!!
+ *
  * Mail: chk19940609@gmail.com
  * Created by IceMimosa
  * Date: 2017/6/20
  */
-public class DefaultParser implements Parser {
+public class DefaultParser extends ParserAware {
 
     @Override
     public Table parseSQL(String sql) {
@@ -58,32 +62,6 @@ public class DefaultParser implements Parser {
             e.printStackTrace();
         }
         return table;
-    }
-
-    /**
-     * 去除一些特殊的引号字符
-     */
-    private String removeQuotes(String input) {
-        if (StringUtils.isBlank(input)) return "";
-
-        StringBuilder sb = new StringBuilder();
-        for (char ch : input.toCharArray()) {
-            if (ch == '`' || ch == '\'' || ch == '\"') {
-                continue;
-            }
-            sb.append(ch);
-        }
-        return sb.toString();
-    }
-
-    /**
-     * 获取第一个元素或者null
-     */
-    private <T> T firstOrNull(List<T> lists) {
-        if (lists == null || lists.isEmpty()) {
-            return null;
-        }
-        return lists.get(0);
     }
 
     /**

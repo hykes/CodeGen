@@ -1,6 +1,8 @@
 package me.hehaiyang.codegen.model;
 
+import javax.swing.table.DefaultTableModel;
 import java.io.Serializable;
+import java.util.List;
 
 import static me.hehaiyang.codegen.config.ui.DatabasesUI.*;
 
@@ -15,6 +17,7 @@ public class Database implements Serializable {
 
     /**
      * 数据库类型
+     *
      * @see MYSQL
      * @see ORACLE
      * @see SQLSERVER
@@ -32,6 +35,8 @@ public class Database implements Serializable {
     private String driver;
     // 连接url
     private String url;
+    // 连接类型(Oracle) @see OracleParser
+    private String serviceType;
     // 用户名
     private String username;
     // 密码
@@ -40,7 +45,7 @@ public class Database implements Serializable {
     public Database() {
     }
 
-    public Database(String type, String name, String host, String port, String database, String username, String password, String driver, String url) {
+    public Database(String type, String name, String host, String port, String database, String username, String password, String driver, String url, String serviceType) {
         this.type = type;
         this.name = name;
         this.host = host;
@@ -50,6 +55,7 @@ public class Database implements Serializable {
         this.password = password;
         this.driver = driver;
         this.url = url;
+        this.serviceType = serviceType;
     }
 
     public String getName() {
@@ -122,5 +128,59 @@ public class Database implements Serializable {
 
     public void setDatabase(String database) {
         this.database = database;
+    }
+
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+
+    /**
+     * 从tableModel中创建对象
+     */
+    public static Database fromTableModel(DefaultTableModel tableModel, Integer row) {
+        String type = tableModel.getValueAt(row, 0).toString().trim();
+        String name = tableModel.getValueAt(row, 1).toString().trim();
+        String host = tableModel.getValueAt(row, 2).toString().trim();
+        String port = tableModel.getValueAt(row, 3).toString().trim();
+        String database = tableModel.getValueAt(row, 4).toString().trim();
+        String username = tableModel.getValueAt(row, 5).toString().trim();
+        String password = tableModel.getValueAt(row, 6).toString().trim();
+        String driver = tableModel.getValueAt(row, 7).toString().trim();
+        String url = tableModel.getValueAt(row, 8).toString().trim();
+        String serviceType = tableModel.getValueAt(row, 9).toString().trim();
+        return new Database(type, name, host, port, database, username, password, driver, url, serviceType);
+    }
+
+    public static DefaultTableModel toTableModel(List<Database> databases) {
+        // 列名
+        String[] columnNames = {"Type", "Name", "Host", "Port", "Database", "Username", "Password", "Driver", "URL", "ServiceType"};
+        // 默认数据
+        Object[][] tableVales = new String[databases.size()][10];
+        for (int row = 0; row < databases.size(); row++) {
+            Database database = databases.get(row);
+            tableVales[row][0] = database.getType();
+            tableVales[row][1] = database.getName();
+            tableVales[row][2] = database.getHost();
+            tableVales[row][3] = database.getPort();
+            tableVales[row][4] = database.getDatabase();
+            tableVales[row][5] = database.getUsername();
+            tableVales[row][6] = database.getPassword();
+            tableVales[row][7] = database.getDriver();
+            tableVales[row][8] = database.getUrl();
+            tableVales[row][9] = database.getServiceType();
+        }
+        return new DefaultTableModel(tableVales, columnNames) {
+            private static final long serialVersionUID = 5495876077995275501L;
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
     }
 }

@@ -7,7 +7,7 @@ import me.hehaiyang.codegen.model.Database;
 import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.IdeaContext;
 import me.hehaiyang.codegen.model.Table;
-import me.hehaiyang.codegen.utils.DBOperationUtil;
+import me.hehaiyang.codegen.parser.Parser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,23 +21,23 @@ import java.util.List;
  * Mail: hehaiyang@terminus.io
  * Date: 2017/4/23
  */
-public class DatabaseWindow extends JFrame{
+public class DatabaseWindow extends JFrame {
 
-    public DatabaseWindow(IdeaContext ideaContext){
+    public DatabaseWindow(IdeaContext ideaContext) {
         setLayout(new BorderLayout());
         JFrame thisFrame = this;
         SettingManager settingManager = SettingManager.getInstance();
 
-        ComboBox databaseBox=new ComboBox();
+        ComboBox databaseBox = new ComboBox();
         JButton connectBtn = new JButton("Connect");
-        ComboBox tableBox=new ComboBox();
+        ComboBox tableBox = new ComboBox();
         JButton sureBtn = new JButton("Sure");
 
         List<Database> databases = settingManager.getDatabasesSetting().getDatabases();
-        if(databases != null && !databases.isEmpty()){
+        if (databases != null && !databases.isEmpty()) {
             databaseBox.setRenderer(new ComboBoxCellRenderer());
-            databases.forEach( it -> databaseBox.addItem(it));
-        }else{
+            databases.forEach(it -> databaseBox.addItem(it));
+        } else {
             databaseBox.addItem("无数据源");
             databaseBox.setEnabled(false);
             connectBtn.setEnabled(false);
@@ -47,15 +47,15 @@ public class DatabaseWindow extends JFrame{
         tableBox.setEnabled(false);
         sureBtn.setEnabled(false);
 
-        connectBtn.addActionListener( it ->{
+        connectBtn.addActionListener(it -> {
 
             Database database = (Database) databaseBox.getSelectedItem();
-            if(database != null){
+            if (database != null) {
+                Parser parser = Parser.fromType(database.getType());
+                Connection conn = parser.getConnection(database.getUrl(), database.getUsername(), database.getPassword());
                 try {
-                    Connection conn = DBOperationUtil.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
-
                     if (conn != null && !conn.isClosed()) {
-                        List<String> list = DBOperationUtil.getTables(conn);
+                        List<String> list = parser.getTables(conn);
                         tableBox.removeAllItems();
                         for (String str : list) {
                             tableBox.addItem(str);
@@ -63,22 +63,29 @@ public class DatabaseWindow extends JFrame{
                         tableBox.setEnabled(true);
                         sureBtn.setEnabled(true);
                     } else {
-                        Messages.showInfoMessage(thisFrame,"connect fail !", "Error");
+                        Messages.showInfoMessage(thisFrame, "connect fail !", "Error");
                     }
-                }catch (SQLException e){
-                    Messages.showInfoMessage(thisFrame,"connect fail !", "Error");
+                } catch (SQLException e) {
+                    Messages.showInfoMessage(thisFrame, "connect fail !", "Error");
+                } finally {
+                    try {
+                        if (conn != null) conn.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
 
-        sureBtn.addActionListener( it ->{
+        sureBtn.addActionListener(it -> {
             Database database = (Database) databaseBox.getSelectedItem();
-            if(database != null){
+            if (database != null) {
+                String tableName = tableBox.getSelectedItem().toString();
+                Parser parser = Parser.fromType(database.getType());
+                Connection conn = parser.getConnection(database.getUrl(), database.getUsername(), database.getPassword());
                 try {
-                    String tableName = tableBox.getSelectedItem().toString();
-                    Connection conn = DBOperationUtil.getConnection(database.getDriver(), database.getUrl(), database.getUsername(), database.getPassword());
                     if (conn != null && !conn.isClosed()) {
-                        List<Field> fields = DBOperationUtil.getColumns(tableName, conn);
+                        List<Field> fields = parser.getColumns(tableName, conn);
                         ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, new Table(tableName, fields));
                         frame.setSize(800, 400);
                         frame.setAlwaysOnTop(false);
@@ -87,8 +94,14 @@ public class DatabaseWindow extends JFrame{
                         frame.setResizable(false);
                         dispose();
                     }
-                }catch (SQLException e){
-                    Messages.showInfoMessage(thisFrame,"get columns fail !", "Error");
+                } catch (SQLException e) {
+                    Messages.showInfoMessage(thisFrame, "get columns fail !", "Error");
+                } finally {
+                    try {
+                        if (conn != null) conn.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -109,7 +122,9 @@ public class DatabaseWindow extends JFrame{
 
     public class ComboBoxCellRenderer extends JLabel implements ListCellRenderer {
 
-        ComboBoxCellRenderer(){ setOpaque(true); }
+        ComboBoxCellRenderer() {
+            setOpaque(true);
+        }
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

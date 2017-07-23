@@ -1,83 +1,15 @@
-package me.hehaiyang.codegen.utils;
+package me.hehaiyang.codegen.parser;
 
-import me.hehaiyang.codegen.model.Field;
 import me.hehaiyang.codegen.model.FieldType;
+import me.hehaiyang.codegen.utils.StringUtils;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Types;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static me.hehaiyang.codegen.model.FieldType.build;
 
-public class DBOperationUtil {
-
-    public static Connection getConnection(String driver, String url, String user, String password){
-        try {
-            // 加载驱动程序
-            Class.forName(driver);
-
-            // 连续数据库
-           return DriverManager.getConnection(url, user, password);
-
-        } catch(ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch(SQLException e) {
-            e.printStackTrace();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
-    public static List<String> getTables(Connection connection) {
-        List<String> result = new ArrayList<String>();
-        try {
-            DatabaseMetaData databaseMetaData = connection.getMetaData();
-            String[] types = {"TABLE"};
-            ResultSet resultSet = databaseMetaData.getTables(null,null,null, types);
-
-            while (resultSet.next()) {
-                result.add((String)resultSet.getObject("TABLE_NAME"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    /**
-     *
-     * @param tableName
-     * @param connection
-     */
-    public static List<Field> getColumns(String tableName, Connection connection) {
-
-        List<Field> fields = new ArrayList<>();
-        try {
-            DatabaseMetaData databaseMetaData  = connection.getMetaData();
-            ResultSet resultSet = databaseMetaData.getColumns(null, null, tableName, null);
-            while(resultSet.next()) {
-                Field field = new Field();
-                String colName=resultSet.getString("COLUMN_NAME");
-                field.setColumn(colName);
-                String typeName=resultSet.getString("TYPE_NAME");
-                Integer sqlType=StringUtils.string2Integer(resultSet.getString("DATA_TYPE"));
-                field.setColumnType(typeName, sqlType);
-                String columnSize=resultSet.getString("COLUMN_SIZE");
-                field.setColumnSize(columnSize);
-                String remarks=resultSet.getString("REMARKS");
-                field.setComment(remarks);
-                fields.add(field);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return fields;
-    }
-
+public class ParserUtils {
 
     /**
      * sqlType <-> javaType
@@ -121,8 +53,44 @@ public class DBOperationUtil {
         sqlTypes.put("MEDIUMBLOB", build("java.sql.Blob"));
         sqlTypes.put("LONGBLOB", build("java.sql.Blob"));
 
-        // 其他数据库类型
+        // oracle https://docs.oracle.com/cd/B19306_01/java.102/b14188/datamap.htm
+        // 与上重复的忽略
         sqlTypes.put("CLOB", build("java.sql.Clob"));
+        sqlTypes.put("NCLOB", build("java.sql.NClob"));
+        sqlTypes.put("CHARACTER", build("String"));
+        sqlTypes.put("VARCHAR2", build("String"));
+        sqlTypes.put("NCHAR", build("String"));
+        sqlTypes.put("NVARCHAR2", build("String"));
+        sqlTypes.put("RAW", build("Byte[]", "ByteArray"));
+        sqlTypes.put("LONG RAW", build("Byte[]", "ByteArray"));
+        sqlTypes.put("BINARY_INTEGER", build("Integer", "Int"));
+        sqlTypes.put("NATURAL", build("Integer", "Int"));
+        sqlTypes.put("NATURALN", build("Integer", "Int"));
+        sqlTypes.put("PLS_INTEGER", build("Integer", "Int"));
+        sqlTypes.put("POSITIVE", build("Integer", "Int"));
+        sqlTypes.put("POSITIVEN", build("Integer", "Int"));
+        sqlTypes.put("SIGNTYPE", build("Integer", "Int"));
+        sqlTypes.put("DEC", build("java.math.BigDecimal"));
+        sqlTypes.put("NUMBER", build("java.math.BigDecimal"));
+        sqlTypes.put("NUMERIC", build("java.math.BigDecimal"));
+        sqlTypes.put("DOUBLE PRECISION", build("Double"));
+        sqlTypes.put("ROWID", build("java.sql.RowId"));
+        sqlTypes.put("UROWID", build("java.sql.RowId"));
+        sqlTypes.put("VARRAY", build("java.sql.Array"));
+
+        // sql server https://docs.microsoft.com/en-us/sql/connect/jdbc/using-basic-data-types
+        // 与上重复的忽略
+        sqlTypes.put("DATETIME2", build("java.util.Date")); // java.sql.Timestamp ?
+        sqlTypes.put("SMALLDATETIME", build("java.util.Date")); // java.sql.Timestamp ?
+        sqlTypes.put("IMAGE", build("Byte[]", "ByteArray"));
+        sqlTypes.put("MONEY", build("java.math.BigDecimal"));
+        sqlTypes.put("SMALLMONEY", build("java.math.BigDecimal"));
+        sqlTypes.put("NTEXT", build("String"));
+        sqlTypes.put("NVARCHAR", build("String"));
+        sqlTypes.put("UNIQUEIDENTIFIER", build("String"));
+        sqlTypes.put("UDT", build("Byte[]", "ByteArray"));
+        sqlTypes.put("VARBINARY", build("Byte[]", "ByteArray"));
+        sqlTypes.put("XML", build("java.sql.SQLXML"));
     }
 
     /**

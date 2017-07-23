@@ -1,8 +1,8 @@
 package me.hehaiyang.codegen.model;
 
 
+import me.hehaiyang.codegen.parser.ParserUtils;
 import me.hehaiyang.codegen.utils.BuilderUtil;
-import me.hehaiyang.codegen.utils.DBOperationUtil;
 
 import java.io.Serializable;
 
@@ -92,9 +92,9 @@ public class Field implements Serializable{
         this.columnType = columnType;
         this.sqlType = sqlType;
 
-        FieldType fieldType = DBOperationUtil.getFieldType(columnType);
+        FieldType fieldType = ParserUtils.getFieldType(columnType);
         if (fieldType.getJavaType().equals("UNKNOWN")) {
-            fieldType = DBOperationUtil.getFieldType(sqlType);
+            fieldType = ParserUtils.getFieldType(sqlType);
         }
         this.fieldType = fieldType.getJavaType();
         this.kotlinType = fieldType.getKotlinType();

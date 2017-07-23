@@ -62,7 +62,10 @@ public abstract class FileProvider {
         String path = virtualFile.getPresentableUrl();
 
         if(!path.endsWith("src/main")){
-            return findResourcesDirectory(parentDirectory);
+            // 如果已经找到了项目根路径, 终止递归
+            if (!path.endsWith("/" + project.getName())) {
+                return findResourcesDirectory(parentDirectory);
+            }
         }
         PsiDirectory resourcesDirectory = parentDirectory.findSubdirectory("resources");
         if(resourcesDirectory == null){
