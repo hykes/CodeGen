@@ -99,7 +99,7 @@ public class ParserUtils {
      * @return 对应字段的java类型
      */
     public static FieldType getFieldType(String typeName) {
-        if (StringUtils.isBlank(typeName)) return build(typeName);
+        if (StringUtils.isBlank(typeName)) sqlTypes.get("UNKNOWN");
         FieldType fieldType = sqlTypes.get(typeName.trim().toUpperCase());
         if (fieldType == null) {
             return sqlTypes.get("UNKNOWN");
@@ -115,6 +115,7 @@ public class ParserUtils {
      */
     public static FieldType getFieldType(Integer sqlType) {
         FieldType fieldType = sqlTypes.get("UNKNOWN");
+        if (sqlType == null) return fieldType;
 
         // https://docs.oracle.com/javase/1.5.0/docs/guide/jdbc/getstart/mapping.html
         if (sqlType == Types.INTEGER) {
