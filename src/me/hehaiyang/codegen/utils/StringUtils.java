@@ -994,4 +994,11 @@ public abstract class StringUtils {
         }
         return value;
     }
+
+    public static String trimObject(Object value) {
+        if (value == null) {
+            return "";
+        }
+        return value.toString().trim();
+    }
 }

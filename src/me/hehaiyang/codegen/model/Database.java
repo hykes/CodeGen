@@ -1,10 +1,11 @@
 package me.hehaiyang.codegen.model;
 
+
 import javax.swing.table.DefaultTableModel;
 import java.io.Serializable;
 import java.util.List;
 
-import static me.hehaiyang.codegen.config.ui.DatabasesUI.*;
+import static me.hehaiyang.codegen.utils.StringUtils.trimObject;
 
 /**
  * Desc: 数据库信息
@@ -143,16 +144,16 @@ public class Database implements Serializable {
      * 从tableModel中创建对象
      */
     public static Database fromTableModel(DefaultTableModel tableModel, Integer row) {
-        String type = tableModel.getValueAt(row, 0).toString().trim();
-        String name = tableModel.getValueAt(row, 1).toString().trim();
-        String host = tableModel.getValueAt(row, 2).toString().trim();
-        String port = tableModel.getValueAt(row, 3).toString().trim();
-        String database = tableModel.getValueAt(row, 4).toString().trim();
-        String username = tableModel.getValueAt(row, 5).toString().trim();
-        String password = tableModel.getValueAt(row, 6).toString().trim();
-        String driver = tableModel.getValueAt(row, 7).toString().trim();
-        String url = tableModel.getValueAt(row, 8).toString().trim();
-        String serviceType = tableModel.getValueAt(row, 9).toString().trim();
+        String type = trimObject(tableModel.getValueAt(row, 0));
+        String name = trimObject(tableModel.getValueAt(row, 1));
+        String host = trimObject(tableModel.getValueAt(row, 2));
+        String port = trimObject(tableModel.getValueAt(row, 3));
+        String database = trimObject(tableModel.getValueAt(row, 4));
+        String username = trimObject(tableModel.getValueAt(row, 5));
+        String password = trimObject(tableModel.getValueAt(row, 6));
+        String driver = trimObject(tableModel.getValueAt(row, 7));
+        String url = trimObject(tableModel.getValueAt(row, 8));
+        String serviceType = trimObject(tableModel.getValueAt(row, 9));
         return new Database(type, name, host, port, database, username, password, driver, url, serviceType);
     }
 
