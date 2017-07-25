@@ -62,7 +62,7 @@ Preferences -> Tools -> CodeGen
 {{LowerCase 'ABC'}} => aBC
 
 - 首字母大写
-{{LowerCase 'abc'}} => Abc
+{{UpperCase 'abc'}} => Abc
 
 - 驼峰分割
 {{Split 'ABcD' '_'}} => A_bc_d
@@ -106,6 +106,6 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 * [IceMimosa](https://github.com/IceMimosa)
 
 ## License
-Copyright © 2017 [MIT License](https://spdx.org/licenses/MIT.html)
+Copyright © 2017 [MIT License](https://github.com/hehaiyangwork/CodeGen/blob/master/LICENSE)
 
 
