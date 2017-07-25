@@ -22,6 +22,8 @@ import java.util.List;
  */
 public class DBWindow extends BaseWindow {
 
+    private final String type = "DB";
+
     public DBWindow(IdeaContext ideaContext) {
         super();
         setTitle("CodeGen-Create by DB");
@@ -29,7 +31,7 @@ public class DBWindow extends BaseWindow {
         JFrame thisFrame = this;
         SettingManager settingManager = SettingManager.getInstance();
 
-        add(generationTypePanel(), BorderLayout.NORTH);
+        add(generationTypePanel(type), BorderLayout.NORTH);
 
         ComboBox databaseBox = new ComboBox();
         JButton connectBtn = new JButton("Connect");
@@ -120,6 +122,28 @@ public class DBWindow extends BaseWindow {
 
         add(configPanel, BorderLayout.CENTER);
 
+        sqlRadio.addActionListener(e -> {
+            if(!type.equals("SQL")){
+                JFrame startFrame = new SQLWindow(ideaContext);
+                startFrame.setSize(500, 350);
+                startFrame.setResizable(false);
+                startFrame.setAlwaysOnTop(true);
+                startFrame.setLocationRelativeTo(null);
+                startFrame.setVisible(true);
+                dispose();
+            }
+        });
+        dbRadio.addActionListener(e -> {
+            if(!type.equals("DB")){
+                JFrame startFrame = new DBWindow(ideaContext);
+                startFrame.setSize(350, 180);
+                startFrame.setResizable(false);
+                startFrame.setAlwaysOnTop(true);
+                startFrame.setLocationRelativeTo(null);
+                startFrame.setVisible(true);
+                dispose();
+            }
+        });
     }
 
     public class ComboBoxCellRenderer extends JLabel implements ListCellRenderer {

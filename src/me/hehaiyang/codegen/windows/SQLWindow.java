@@ -12,6 +12,8 @@ import java.awt.*;
 
 public class SQLWindow extends BaseWindow{
 
+    private final String type = "SQL";
+
     private JTextArea codeJTextPane;
 
     private JPanel actionPanel;
@@ -31,7 +33,7 @@ public class SQLWindow extends BaseWindow{
 
     private void init(IdeaContext ideaContext) {
 
-        add(generationTypePanel(), BorderLayout.NORTH);
+        add(generationTypePanel(type), BorderLayout.NORTH);
 
         codeJTextPane = new JTextArea();
         codeJTextPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -74,6 +76,30 @@ public class SQLWindow extends BaseWindow{
             }
         });
         cancel.addActionListener(e -> dispose());
+
+        sqlRadio.addActionListener(e -> {
+            if(!type.equals("SQL")){
+                JFrame startFrame = new SQLWindow(ideaContext);
+                startFrame.setSize(500, 350);
+                startFrame.setResizable(false);
+                startFrame.setAlwaysOnTop(true);
+                startFrame.setLocationRelativeTo(null);
+                startFrame.setVisible(true);
+                dispose();
+            }
+        });
+        dbRadio.addActionListener(e -> {
+            if(!type.equals("DB")){
+                JFrame startFrame = new DBWindow(ideaContext);
+                startFrame.setSize(350, 180);
+                startFrame.setResizable(false);
+                startFrame.setAlwaysOnTop(true);
+                startFrame.setLocationRelativeTo(null);
+                startFrame.setVisible(true);
+                dispose();
+            }
+        });
+
    }
 
     private void setTips(boolean operator, String tips) {
