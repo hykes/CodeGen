@@ -16,8 +16,8 @@ import java.awt.*;
  */
 public class ConfigUI extends JPanel implements UIConfigurable {
 
-    final JRadioButton textRadio = new JRadioButton("Use Text", true);
-    final JRadioButton databaseRadio = new JRadioButton("Use Database");
+    final JRadioButton sqlRadio = new JRadioButton("Use SQL", true);
+    final JRadioButton dbRadio = new JRadioButton("Use DB");
     final JTextField ignoreFields = new JTextField();
 
     private final SettingManager settingManager = SettingManager.getInstance();
@@ -33,21 +33,21 @@ public class ConfigUI extends JPanel implements UIConfigurable {
     private void init() {
         setLayout(new BorderLayout());
 
-        // 设置生成类型, Text or DataBase
-        textRadio.setMnemonic('T');
-        textRadio.setToolTipText("generate code by text");
-        textRadio.setMnemonic('D');
-        textRadio.setToolTipText("generate code by database");
+        // 设置生成类型, SQL or DB
+        sqlRadio.setMnemonic('S');
+        sqlRadio.setToolTipText("generate code by SQL");
+        sqlRadio.setMnemonic('D');
+        sqlRadio.setToolTipText("generate code by DB");
         JPanel generate = new JPanel(new BorderLayout());
         generate.setBorder(IdeBorderFactory.createTitledBorder("Generation Type", true));
         thisPanel.add(thisPanel = new JPanel(new BorderLayout()), BorderLayout.NORTH);
         thisPanel.add(generate, BorderLayout.NORTH);
         ButtonGroup group = new ButtonGroup();
-        group.add(textRadio);
-        group.add(databaseRadio);
-        generate.add(textRadio, BorderLayout.NORTH);
+        group.add(sqlRadio);
+        group.add(dbRadio);
+        generate.add(sqlRadio, BorderLayout.NORTH);
         generate.add(generate = new JPanel(new BorderLayout()), BorderLayout.SOUTH);
-        generate.add(databaseRadio, BorderLayout.NORTH);
+        generate.add(dbRadio, BorderLayout.NORTH);
 
         // 设置需要忽略的字段
         JPanel ignorePane = new JPanel(new BorderLayout());
@@ -61,18 +61,18 @@ public class ConfigUI extends JPanel implements UIConfigurable {
     }
 
     public void setConfig(@NotNull ConfigSetting configuration) {
-        textRadio.setSelected(configuration.isTextRadio());
-        databaseRadio.setSelected(configuration.isDatabaseRadio());
+        sqlRadio.setSelected(configuration.isSqlRadio());
+        dbRadio.setSelected(configuration.isDbRadio());
         ignoreFields.setText(configuration.getIgnoreFields());
     }
 
     @Override
     public boolean isModified() {
         ConfigSetting configSetting = settingManager.getConfigSetting();
-        if(configSetting.isDatabaseRadio() && !databaseRadio.isSelected()){
+        if(configSetting.isDbRadio() && !dbRadio.isSelected()){
             return true;
         }
-        if(configSetting.isTextRadio() && !textRadio.isSelected()){
+        if(configSetting.isSqlRadio() && !sqlRadio.isSelected()){
             return true;
         }
         if (!configSetting.getIgnoreFields().equals(ignoreFields.getText())) {
@@ -83,8 +83,8 @@ public class ConfigUI extends JPanel implements UIConfigurable {
 
     @Override
     public void apply() {
-        settingManager.getConfigSetting().setDatabaseRadio(databaseRadio.isSelected());
-        settingManager.getConfigSetting().setTextRadio(textRadio.isSelected());
+        settingManager.getConfigSetting().setDbRadio(dbRadio.isSelected());
+        settingManager.getConfigSetting().setSqlRadio(sqlRadio.isSelected());
         settingManager.getConfigSetting().setIgnoreFields(ignoreFields.getText());
     }
 

@@ -22,7 +22,7 @@ public class DefaultParams {
         params.put("Hour", String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
         params.put("Minute", String.valueOf(calendar.get(Calendar.MINUTE)));
         params.put("Second", String.valueOf(calendar.get(Calendar.SECOND)));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:generationTypePanel");
         params.put("Now", formatter.format(calendar.getTime()));
         return params;
     }

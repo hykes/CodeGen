@@ -7,24 +7,25 @@ package me.hehaiyang.codegen.config.setting;
  */
 public class ConfigSetting {
 
-  private boolean textRadio = false;
-  private boolean databaseRadio = true;
+  private boolean sqlRadio = false;
+  private boolean dbRadio = true;
+
   private String ignoreFields = "id,created_at,updated_at";
 
-  public boolean isTextRadio() {
-    return textRadio;
+  public boolean isSqlRadio() {
+    return sqlRadio;
   }
 
-  public void setTextRadio(boolean textRadio) {
-    this.textRadio = textRadio;
+  public void setSqlRadio(boolean sqlRadio) {
+    this.sqlRadio = sqlRadio;
   }
 
-  public boolean isDatabaseRadio() {
-    return databaseRadio;
+  public boolean isDbRadio() {
+    return dbRadio;
   }
 
-  public void setDatabaseRadio(boolean databaseRadio) {
-    this.databaseRadio = databaseRadio;
+  public void setDbRadio(boolean dbRadio) {
+    this.dbRadio = dbRadio;
   }
 
   public String getIgnoreFields() {

@@ -11,7 +11,6 @@ import me.hehaiyang.codegen.parser.Parser;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,12 +20,16 @@ import java.util.List;
  * Mail: hehaiyang@terminus.io
  * Date: 2017/4/23
  */
-public class DatabaseWindow extends JFrame {
+public class DBWindow extends BaseWindow {
 
-    public DatabaseWindow(IdeaContext ideaContext) {
+    public DBWindow(IdeaContext ideaContext) {
+        super();
+        setTitle("CodeGen-Create by DB");
         setLayout(new BorderLayout());
         JFrame thisFrame = this;
         SettingManager settingManager = SettingManager.getInstance();
+
+        add(generationTypePanel(), BorderLayout.NORTH);
 
         ComboBox databaseBox = new ComboBox();
         JButton connectBtn = new JButton("Connect");
@@ -116,8 +119,7 @@ public class DatabaseWindow extends JFrame {
         configPanel.add(sureBtn);
 
         add(configPanel, BorderLayout.CENTER);
-        // esc
-        thisFrame.getRootPane().registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_FOCUSED);
+
     }
 
     public class ComboBoxCellRenderer extends JLabel implements ListCellRenderer {

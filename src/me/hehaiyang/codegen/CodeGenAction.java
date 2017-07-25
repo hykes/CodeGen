@@ -6,8 +6,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import me.hehaiyang.codegen.config.SettingManager;
 import me.hehaiyang.codegen.model.IdeaContext;
 import me.hehaiyang.codegen.utils.PsiUtil;
-import me.hehaiyang.codegen.windows.DatabaseWindow;
-import me.hehaiyang.codegen.windows.TextWindow;
+import me.hehaiyang.codegen.windows.DBWindow;
+import me.hehaiyang.codegen.windows.SQLWindow;
 
 import javax.swing.*;
 import java.util.Locale;
@@ -34,11 +34,11 @@ public class CodeGenAction extends AnAction {
         ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
 
         JFrame startFrame;
-        if(settingManager.getConfigSetting().isDatabaseRadio()){
-            startFrame = new DatabaseWindow(ideaContext);
-            startFrame.setSize(350, 160);
+        if(settingManager.getConfigSetting().isDbRadio()){
+            startFrame = new DBWindow(ideaContext);
+            startFrame.setSize(350, 180);
         }else{
-            startFrame = new TextWindow(ideaContext);
+            startFrame = new SQLWindow(ideaContext);
             startFrame.setSize(500, 350);
         }
 //        startFrame.setTitle(bundle.getString("aaa"));
