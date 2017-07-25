@@ -1,4 +1,10 @@
 # Change Logs
+- v0.8.2 2017-07-20
+    - Add mssql support
+    - Add oracle support
+    - Modify generation ui
+    - Fix field type npe
+    - Remove guava api
 
 - v0.8.2 2017-07-14
     - Add default ignore fields

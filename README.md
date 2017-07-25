@@ -18,7 +18,7 @@ Preferences -> Plugins -> Browse repositories -> [search] CodeGen
 
 Preferences -> Tools -> CodeGen
     
-1. Generation type(Text/Database)
+1. Generation type(SQL/DB)
 2. In-house variables and (handlebars) helpers
 3. Predefined variables
 4. Custom template groups
@@ -69,38 +69,6 @@ Preferences -> Tools -> CodeGen
 
 * 组合用法
 {{Split (Join (LowerCase 'AbcDefGhi') '$' '%') '_'}} => $abc_def_ghi%
-```
-
-### Text Cases
-
-- markdown
-
-```
-| id    |  BIGINT(20)  | ID     |
-| pid   |  BIGINT(20)  | 父级ID  |
-| name  |  VARCHAR(64) | 名称    |
-| level |  INT(11)     | 级别    |
-| pinyin | VARCHAR(100) | 拼音 |
-| english_name | VARCHAR(100) | 英文名 |
-| unicode_code | VARCHAR(200) | ASCII码 |
-| checker_name | VARCHAR(64) | 审核用户名称 |
-| order_no | INT(11) | 排序号 |
-```
-
-- sqlScript
-
-```sql
-CREATE TABLE `t_addresses` (
-  `id` BIGINT(20) NOT NULL,
-  `pid` BIGINT(20) DEFAULT NULL COMMENT '父级ID',
-  `name` VARCHAR(50) DEFAULT NULL COMMENT '名称',
-  `level` INT(11) DEFAULT NULL COMMENT '级别',
-  `pinyin` VARCHAR(100) DEFAULT NULL COMMENT '拼音',
-  `english_name` VARCHAR(100) DEFAULT NULL COMMENT '英文名',
-  `unicode_code` VARCHAR(200) DEFAULT NULL COMMENT 'ASCII码',
-  `order_no` INT(11) DEFAULT NULL COMMENT '排序号',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 ## Idea sdk docs

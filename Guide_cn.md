@@ -11,7 +11,7 @@
 ### 生成方式
 
 codegen 支持两种生成方式：
-(1) **文本**，解析文本获取字段列表，支持两种格式：**建表Sql**，**Markdown**
+(1) **SQL**，解析建表Sql获取字段列表
 (2) **数据库**，直接连接查询字段列表
 
 ![Alt text](images/1499451091051.png)
@@ -91,13 +91,10 @@ codegen 在使用数据库方式生成代码时，需要先**配置数据源**�
 
 `shift + command + g` OR `Tools -> CodeGen`
 
-### 文本生成方式
+### SQL生成方式
 
-选择**SqlScript**格式时，将建表Sql复制到输入框；
+当使用SQL生成方式时，将建表Sql复制到输入框；
 ![Alt text](images/1499451179039.png)
-
-选择**MarkDown**格式时，将markdown格式文本复制到输入框；
-![Alt text](images/1499451323197.png)
 
 ### 数据库生成方式
 

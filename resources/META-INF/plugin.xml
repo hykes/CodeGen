@@ -9,7 +9,7 @@
       <br>
       <p>This plugin helps you to generate specific template code by create table statement or database .</p>
       <ul>
-        <li>Generation type (Text/Database)</li>
+        <li>Generation type (SQL/DB)</li>
         <li>In-house variables and (handlebars) helpers</li>
         <li>Predefined variables</li>
         <li>Custom template groups</li>
@@ -20,11 +20,11 @@
 
   <change-notes><![CDATA[
       <p>v0.8.2 2017-07-14</p>
-        <ul>
-        <li>Add default ignore fields</li>
-        <li>Add database connection test</li>
-        <li>Modify table parser</li>
-        </ul>
+      <ul>
+      <li>Add default ignore fields</li>
+      <li>Add database connection test</li>
+      <li>Modify table parser</li>
+      </ul>
       <p>v0.8.1 2017-07-10</p>
       <ul>
         <li>fix edit template group</li>
