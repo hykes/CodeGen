@@ -24,7 +24,6 @@ public class DefaultTemplates {
 
             // spring templates
             List<CodeTemplate> apiTemplates = new ArrayList<>();
-
             apiTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Controller", "java", "{{model}}s", getTemplateContext("/template/spring/ControllerTemplate.hbs"), "front", false));
             CodeGroup apiGroup = new CodeGroup(UUID.randomUUID().toString(), "Api", 3, apiTemplates);
             groups.add(apiGroup);
@@ -43,6 +42,11 @@ public class DefaultTemplates {
             implTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "Mapper", "xml", "{{model}}Mapper", getTemplateContext("/template/spring/MapperTemplate.hbs"), "mapper", true));
             CodeGroup implGroup = new CodeGroup(UUID.randomUUID().toString(), "ServiceImpl", 2,  implTemplates);
             groups.add(implGroup);
+
+            List<CodeTemplate> testTemplates = new ArrayList<>();
+            testTemplates.add(new CodeTemplate(UUID.randomUUID().toString(), "DaoTest", "java", "{{model}}DaoTest", getTemplateContext("/template/spring/DaoTest.hbs"), "dao", false));
+            CodeGroup testGroup = new CodeGroup(UUID.randomUUID().toString(), "DaoTest", 4, testTemplates);
+            groups.add(testGroup);
 
             // kotlin template
             List<CodeTemplate> ktTemplates = new ArrayList<>();
