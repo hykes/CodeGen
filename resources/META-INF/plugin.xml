@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>0.8.2</version>
+  <version>0.8.3</version>
   <vendor email="hehaiyangwork@qq.com">hehaiyang</vendor>
 
   <description><![CDATA[
