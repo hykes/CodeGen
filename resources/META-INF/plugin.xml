@@ -19,26 +19,25 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      <p>v0.8.3 2017-07-28</p>
+      <ul>
+        <li>Add mssql support</li>
+        <li>Add oracle support</li>
+        <li>Add dao test template</li>
+        <li>Modify generation ui</li>
+        <li>Fix field type npe error</li>
+        <li>Remove guava api</li>
+      </ul>
       <p>v0.8.2 2017-07-14</p>
       <ul>
-      <li>Add default ignore fields</li>
-      <li>Add database connection test</li>
-      <li>Modify table parser</li>
+        <li>Add default ignore fields</li>
+        <li>Add database connection test</li>
+        <li>Modify table parser</li>
       </ul>
       <p>v0.8.1 2017-07-10</p>
       <ul>
         <li>fix edit template group</li>
         <li>fix spring templates {{$.package}} is null</li>
-       </ul>
-      <p>v0.8 2017-07-07</p>
-      <ul>
-        <li>add in-house variables ({{$.Project}},{{$.Module1}},{{$.Package1}})</li>
-        <li>add group level</li>
-        <li>add .kt file type & kotlin templates</li>
-        <li>add ESC key event action</li>
-        <li>modify database ui</li>
-        <li>update spring templates</li>
-        <li>fix template reset bug</li>
       </ul>
       <a href="https://github.com/hehaiyangwork/CodeGen/blob/master/CHANGELOG.md">Read More ...</a>
     ]]>
