@@ -30,11 +30,11 @@ public class BaseWindow extends JFrame {
         boxes.add(sqlRadio);
         if("SQL".equals(type)){
             sqlRadio.setSelected(true);
-            dbRadio.setFocusPainted(false);
+            dbRadio.setFocusable(false);
         }
         if("DB".equals(type)){
             dbRadio.setSelected(true);
-            sqlRadio.setFocusPainted(false);
+            sqlRadio.setFocusable(false);
         }
         return boxes;
     }
