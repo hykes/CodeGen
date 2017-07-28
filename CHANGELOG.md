@@ -1,7 +1,7 @@
 # Change Logs
 - v0.8.3 2017-07-28
-    - Add mssql support
-    - Add oracle support
+    - Add SQLServer support
+    - Add Oracle support
     - Add dao test template
     - Modify generation ui
     - Fix field type npe

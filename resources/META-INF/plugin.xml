@@ -21,8 +21,8 @@
   <change-notes><![CDATA[
       <p>v0.8.3 2017-07-28</p>
       <ul>
-        <li>Add mssql support</li>
-        <li>Add oracle support</li>
+        <li>Add SQLServer support</li>
+        <li>Add Oracle support</li>
         <li>Add dao test template</li>
         <li>Modify generation ui</li>
         <li>Fix field type npe error</li>
