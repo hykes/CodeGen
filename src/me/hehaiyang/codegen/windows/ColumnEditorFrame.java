@@ -137,8 +137,9 @@ public class ColumnEditorFrame extends JFrame {
             // field.setFieldType(tableModel.getValueAt(i, 1).toString()); // setColumnType设置
             // column and type
             field.setColumn(tableModel.getValueAt(i, 2).toString());
-            if (Objects.nonNull(tableModel.getValueAt(i, 4))) {
-                field.setSqlType(Integer.parseInt(tableModel.getValueAt(i, 4).toString()));
+            Object sqlType = tableModel.getValueAt(i, 4);
+            if (Objects.nonNull(sqlType)) {
+                field.setSqlType(sqlType.toString());
             }
             field.setColumnType(tableModel.getValueAt(i, 3).toString());
             if(Objects.nonNull(tableModel.getValueAt(i, 5))){

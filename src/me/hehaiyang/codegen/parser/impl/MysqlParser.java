@@ -20,6 +20,7 @@ public class MysqlParser extends DefaultParser {
     public Connection getConnection(String url, String username, String password) {
         try {
             Class.forName(DRIVER);
+            DriverManager.setLoginTimeout(10);
             return DriverManager.getConnection(url, username, password);
         } catch (Exception e) {
             e.printStackTrace();

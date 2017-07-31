@@ -27,6 +27,7 @@ public class OracleParser extends DefaultParser {
     public Connection getConnection(String url, String username, String password) {
         try {
             Class.forName(DRIVER);
+            DriverManager.setLoginTimeout(10);
             OracleConnection connection = (OracleConnection) DriverManager.getConnection(url, username, password);
             // 设置remark为true
             connection.setRemarksReporting(true);

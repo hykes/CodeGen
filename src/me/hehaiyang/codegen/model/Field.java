@@ -5,6 +5,7 @@ import me.hehaiyang.codegen.parser.ParserUtils;
 import me.hehaiyang.codegen.utils.BuilderUtil;
 
 import java.io.Serializable;
+import java.sql.Types;
 
 /**
  * Desc: 字段
@@ -86,7 +87,8 @@ public class Field implements Serializable{
     }
 
     public void setColumnType(String columnType) {
-       this.setColumnType(columnType, sqlType);
+        // 默认sqlType为NULL类型
+       this.setColumnType(columnType, sqlType == null ? Types.NULL : sqlType);
     }
     public void setColumnType(String columnType, Integer sqlType) {
         this.columnType = columnType;
@@ -111,6 +113,13 @@ public class Field implements Serializable{
 
     public void setSqlType(Integer sqlType) {
         this.sqlType = sqlType;
+    }
+    public void setSqlType(String sqlType) {
+        try {
+            this.sqlType = Integer.parseInt(sqlType);
+        } catch (Exception e) { // ignore error
+            this.sqlType = Types.NULL;
+        }
     }
 
     public String getColumnSize() {

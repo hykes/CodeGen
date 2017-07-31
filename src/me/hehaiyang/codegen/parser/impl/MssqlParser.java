@@ -20,6 +20,7 @@ public class MssqlParser extends DefaultParser {
     public Connection getConnection(String url, String username, String password) {
         try {
             Class.forName(DRIVER);
+            DriverManager.setLoginTimeout(10);
             Connection connection = DriverManager.getConnection(url, username, password);
             return connection;
         } catch (Exception e) {
