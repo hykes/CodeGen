@@ -1,4 +1,7 @@
 # Change Logs
+- v0.8.4 2017-07-31
+    - Fix sqlType NumberFormatException
+
 - v0.8.3 2017-07-28
     - Add SQLServer support
     - Add Oracle support

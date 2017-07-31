@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>0.8.3</version>
+  <version>0.8.4</version>
   <vendor email="hehaiyangwork@qq.com">hehaiyang</vendor>
 
   <description><![CDATA[
@@ -19,6 +19,10 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      <p>v0.8.4 2017-07-31</p>
+      <ul>
+        <li>Fix sqlType NumberFormatException</li>
+      </ul>
       <p>v0.8.3 2017-07-28</p>
       <ul>
         <li>Add SQLServer support</li>
