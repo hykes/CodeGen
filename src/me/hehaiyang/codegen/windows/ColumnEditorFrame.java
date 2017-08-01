@@ -183,7 +183,7 @@ public class ColumnEditorFrame extends JFrame {
         JDialog dialog = new AddDialog();
         dialog.setLayout(new BorderLayout());
 
-        JPanel form = new JPanel(new GridLayout(6,2));
+        JPanel form = new JPanel(new GridLayout(7,2));
         form.add(new Label("Field"));
         JTextField field = new JTextField();
         form.add(field);
@@ -265,7 +265,7 @@ public class ColumnEditorFrame extends JFrame {
             JDialog dialog = new AddDialog();
             dialog.setLayout(new BorderLayout());
 
-            JPanel form = new JPanel(new GridLayout(6,2));
+            JPanel form = new JPanel(new GridLayout(7,2));
 
             form.add(new Label("Field"));
             JTextField field = new JTextField(oldFieldText);
