@@ -92,7 +92,7 @@ public class VariablesUI extends JPanel implements UIConfigurable {
 
         JTextArea area = new JTextArea();
         final JPanel inHousePanel = new JPanel(new BorderLayout());
-        inHousePanel.setBorder(IdeBorderFactory.createTitledBorder("In-house Variables And Helpers", false));
+        inHousePanel.setBorder(IdeBorderFactory.createTitledBorder("Description", false));
 
         String inHouseVariables;
         try {

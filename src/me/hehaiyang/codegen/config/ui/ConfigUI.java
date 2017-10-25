@@ -39,7 +39,7 @@ public class ConfigUI extends JPanel implements UIConfigurable {
         sqlRadio.setMnemonic('D');
         sqlRadio.setToolTipText("generate code by DB");
         JPanel generate = new JPanel(new BorderLayout());
-        generate.setBorder(IdeBorderFactory.createTitledBorder("Generation Type", true));
+        generate.setBorder(IdeBorderFactory.createTitledBorder("Default generation type", true));
         thisPanel.add(thisPanel = new JPanel(new BorderLayout()), BorderLayout.NORTH);
         thisPanel.add(generate, BorderLayout.NORTH);
         ButtonGroup group = new ButtonGroup();
