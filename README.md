@@ -2,7 +2,7 @@
 
 This plugin helps you to generate specific template code by create table statement or database .
 
-[![release](https://img.shields.io/badge/IDEA-v0.8-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hehaiyangwork/CodeGen/blob/master/LICENSE)
+[![release](https://img.shields.io/badge/IDEA-v0.8-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hykes/CodeGen/blob/master/LICENSE)
 
 ![CodeGen](https://raw.githubusercontent.com/hehaiyangwork/CodeGen/master/codegen.gif)
 
@@ -90,22 +90,22 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 ## TODO
 
-* [TODO](https://github.com/hehaiyangwork/CodeGen/projects/1)
+* [TODO](https://github.com/hykes/CodeGen/projects/1)
 
 ## Guide
 
-* [Guide_cn](https://github.com/hehaiyangwork/CodeGen/blob/master/Guide_cn.md)
+* [Guide_cn](https://github.com/hykes/CodeGen/blob/master/Guide_cn.md)
 
 ## Change Logs
 
-* [CHANGELOG](https://github.com/hehaiyangwork/CodeGen/blob/master/CHANGELOG.md)
+* [CHANGELOG](https://github.com/hykes/CodeGen/blob/master/CHANGELOG.md)
 
 ## Contributions
 
-* [hehaiyangwork](https://github.com/hehaiyangwork)
+* [hehaiyangwork](https://github.com/hykes)
 * [IceMimosa](https://github.com/IceMimosa)
 
 ## License
-Copyright © 2017 [MIT License](https://github.com/hehaiyangwork/CodeGen/blob/master/LICENSE)
+Copyright © 2017 [MIT License](https://github.com/hykes/CodeGen/blob/master/LICENSE)
 
 

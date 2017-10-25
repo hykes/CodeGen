@@ -5,7 +5,7 @@
   <vendor email="hehaiyangwork@qq.com">hehaiyang</vendor>
 
   <description><![CDATA[
-      <p><a href="https://github.com/hehaiyangwork/CodeGen">GitHub</a> | <a href="https://github.com/hehaiyangwork/CodeGen/issues">Issues</a> | <a href="https://plugins.jetbrains.com/plugin/9574-codegen">JetBrains</a> </p>
+      <p><a href="https://github.com/hykes/CodeGen">GitHub</a> | <a href="https://github.com/hykes/CodeGen/issues">Issues</a> | <a href="https://plugins.jetbrains.com/plugin/9574-codegen">JetBrains</a> </p>
       <br>
       <p>keywords: generate code | code generator | code template | java code | kotlin code</p>
       <p>This plugin helps you to generate specific template code by create table statement or database .</p>
@@ -44,7 +44,7 @@
         <li>fix edit template group</li>
         <li>fix spring templates {{$.package}} is null</li>
       </ul>
-      <a href="https://github.com/hehaiyangwork/CodeGen/blob/master/CHANGELOG.md">Read More ...</a>
+      <a href="https://github.com/hykes/CodeGen/blob/master/CHANGELOG.md">Read More ...</a>
     ]]>
   </change-notes>
 
