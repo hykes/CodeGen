@@ -20,6 +20,10 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      <p>v0.9 2017-12-15</p>
+      <ul>
+        <li>the last version support IDEA Community.</li>
+      </ul>
       <p>v0.8.4 2017-07-31</p>
       <ul>
         <li>Fix sqlType NumberFormatException</li>
@@ -33,17 +37,6 @@
         <li>Fix field type npe error</li>
         <li>Remove guava api</li>
       </ul>
-      <p>v0.8.2 2017-07-14</p>
-      <ul>
-        <li>Add default ignore fields</li>
-        <li>Add database connection test</li>
-        <li>Modify table parser</li>
-      </ul>
-      <p>v0.8.1 2017-07-10</p>
-      <ul>
-        <li>fix edit template group</li>
-        <li>fix spring templates {{$.package}} is null</li>
-      </ul>
       <a href="https://github.com/hykes/CodeGen/blob/master/CHANGELOG.md">Read More ...</a>
     ]]>
   </change-notes>
@@ -56,6 +49,8 @@
   <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
   -->
+  <depends>com.intellij.modules.ultimate</depends>
+  <depends>com.intellij.database</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
@@ -84,5 +79,4 @@
     </action>
   </actions>
 
-  <!--<depends optddional="true">com.intellij.database</depends>-->
 </idea-plugin>

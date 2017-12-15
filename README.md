@@ -2,9 +2,9 @@
 
 This plugin helps you to generate specific template code by create table statement or database .
 
-[![release](https://img.shields.io/badge/IDEA-v0.8-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hykes/CodeGen/blob/master/LICENSE)
+[![release](https://img.shields.io/badge/IDEA-v0.8-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hykes/CodeGen/blob/develop/LICENSE)
 
-![CodeGen](https://raw.githubusercontent.com/hykes/CodeGen/master/codegen.gif)
+![CodeGen](https://raw.githubusercontent.com/hykes/CodeGen/develop/doc/codegen.gif)
 
 ## Install
 
@@ -80,10 +80,11 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 * Clone the project, and open with IDEA (Community).
 * Modify module type in `.idea/CodeGen.iml` from `JAVA_MODULE` to `PLUGIN_MODULE`.
 * Change the project's module compile output path to `/XXX/XXX/CodeGen/out` in `Project Structure -> Modules -> CodeGen -> paths`. You can also modify the Plugin Deployment `plugin.xml path`.
-* ~~Install lombok plugin. In **Preferences -> Build -> Annotation Processors**.~~ (lombok has been removed.)
-	* ~~**Enable annotation processing**~~.
-	* ~~Modify **Production sources directory** to **out**~~
-	* ~~Modify **Test sources directory** to **out**~~
+* Add dependencies to project
+  ```
+  Idea.App/Contents/plugins/DatabaseTools/lib/database-impl.jar
+  Idea.App/Contents/plugins/DatabaseTools/lib/database-openapi.jar
+  ```
 * Run CodeGen and enjoy it.
 
 > Welcome to contribute
@@ -94,11 +95,11 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 ## Guide
 
-* [Guide_cn](https://github.com/hykes/CodeGen/blob/master/Guide_cn.md)
+* [Guide_cn](https://github.com/hykes/CodeGen/blob/develop/doc/Guide_cn.md)
 
 ## Change Logs
 
-* [CHANGELOG](https://github.com/hykes/CodeGen/blob/master/CHANGELOG.md)
+* [CHANGELOG](https://github.com/hykes/CodeGen/blob/develop/doc/CHANGELOG.md)
 
 ## Contributions
 
