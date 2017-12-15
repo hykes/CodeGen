@@ -1,7 +1,7 @@
 <idea-plugin>
-  <id>me.hehaiyang.codegen</id>
+  <id>com.github.hykes.codegen</id>
   <name>CodeGen</name>
-  <version>0.8.4</version>
+  <version>1.0</version>
   <vendor email="hehaiyangwork@qq.com">hehaiyang</vendor>
 
   <description><![CDATA[
@@ -49,7 +49,7 @@
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="162"/>
+  <idea-version since-build="171"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
@@ -59,25 +59,25 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-    <applicationConfigurable groupId="tools" id="codeGen.configs" displayName="CodeGen" instance="me.hehaiyang.codegen.config.configurable.ConfigsSettingConfigurable">
+    <applicationConfigurable groupId="tools" id="codeGen.configs" displayName="CodeGen" instance="com.github.hykes.codegen.config.configurable.ConfigsSettingConfigurable">
       <configurable id="codeGen.variables" displayName="Variables"
-                    instance="me.hehaiyang.codegen.config.configurable.VariablesSettingConfigurable"/>
+                    instance="com.github.hykes.codegen.config.configurable.VariablesSettingConfigurable"/>
       <configurable id="codeGen.templates" displayName="Templates"
-                    instance="me.hehaiyang.codegen.config.configurable.TemplatesSettingConfigurable"/>
+                    instance="com.github.hykes.codegen.config.configurable.TemplatesSettingConfigurable"/>
       <configurable id="codeGen.databases" displayName="Databases"
-                    instance="me.hehaiyang.codegen.config.configurable.DatabasesSettingConfigurable"/>
+                    instance="com.github.hykes.codegen.config.configurable.DatabasesSettingConfigurable"/>
       <!--<configurable id="codeGen.wiki" displayName="Wiki"-->
                     <!--instance="me.hehaiyang.codegen.setting.configurable.WikiSettingConfigurable"/>-->
     </applicationConfigurable>
 
-    <applicationService serviceInterface="me.hehaiyang.codegen.config.SettingManager"
-                        serviceImplementation="me.hehaiyang.codegen.config.SettingManager"/>
+    <applicationService serviceInterface="com.github.hykes.codegen.config.SettingManager"
+                        serviceImplementation="com.github.hykes.codegen.config.SettingManager"/>
 
   </extensions>
 
   <actions>
     <!-- Add your actions here -->
-    <action id="codeGen.baseAction" class="me.hehaiyang.codegen.CodeGenAction" text="CodeGen">
+    <action id="codeGen.baseAction" class="com.github.hykes.codegen.CodeGenAction" text="CodeGen">
       <add-to-group group-id="ToolsBasicGroup" anchor="first"/>
       <add-to-group group-id="EditorPopupMenu.GoTo" anchor="last"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift control G"/>
