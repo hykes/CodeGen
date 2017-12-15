@@ -1,6 +1,13 @@
 package com.github.hykes.codegen.windows;
 
+import com.github.hykes.codegen.config.SettingManager;
+import com.github.hykes.codegen.config.ui.variable.AddDialog;
+import com.github.hykes.codegen.constants.DefaultParams;
+import com.github.hykes.codegen.file.FileProviderFactory;
 import com.github.hykes.codegen.model.*;
+import com.github.hykes.codegen.utils.BuilderUtil;
+import com.github.hykes.codegen.utils.PsiUtil;
+import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
@@ -8,14 +15,6 @@ import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.JBUI;
-import com.github.hykes.codegen.config.SettingManager;
-import com.github.hykes.codegen.config.ui.variable.AddDialog;
-import com.github.hykes.codegen.constants.DefaultParams;
-import com.github.hykes.codegen.file.FileProviderFactory;
-import me.hehaiyang.codegen.model.*;
-import com.github.hykes.codegen.utils.BuilderUtil;
-import com.github.hykes.codegen.utils.PsiUtil;
-import com.github.hykes.codegen.utils.StringUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
