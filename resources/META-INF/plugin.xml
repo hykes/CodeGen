@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>0.8.4</version>
+  <version>0.9</version>
   <vendor email="hehaiyangwork@qq.com">hehaiyang</vendor>
 
   <description><![CDATA[
@@ -20,6 +20,10 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      <p>v0.9 2017-12-15</p>
+      <ul>
+        <li>the last version support IDEA Community.</li>
+      </ul>
       <p>v0.8.4 2017-07-31</p>
       <ul>
         <li>Fix sqlType NumberFormatException</li>
@@ -32,17 +36,6 @@
         <li>Modify generation ui</li>
         <li>Fix field type npe error</li>
         <li>Remove guava api</li>
-      </ul>
-      <p>v0.8.2 2017-07-14</p>
-      <ul>
-        <li>Add default ignore fields</li>
-        <li>Add database connection test</li>
-        <li>Modify table parser</li>
-      </ul>
-      <p>v0.8.1 2017-07-10</p>
-      <ul>
-        <li>fix edit template group</li>
-        <li>fix spring templates {{$.package}} is null</li>
       </ul>
       <a href="https://github.com/hykes/CodeGen/blob/master/CHANGELOG.md">Read More ...</a>
     ]]>
