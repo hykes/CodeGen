@@ -4,7 +4,7 @@ This plugin helps you to generate specific template code by create table stateme
 
 [![release](https://img.shields.io/badge/IDEA-v0.8-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hykes/CodeGen/blob/master/LICENSE)
 
-![CodeGen](https://raw.githubusercontent.com/hehaiyangwork/CodeGen/master/codegen.gif)
+![CodeGen](https://raw.githubusercontent.com/hykes/CodeGen/master/codegen.gif)
 
 ## Install
 
@@ -102,7 +102,7 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 ## Contributions
 
-* [hehaiyangwork](https://github.com/hykes)
+* [hykes](https://github.com/hykes)
 * [IceMimosa](https://github.com/IceMimosa)
 
 ## License
