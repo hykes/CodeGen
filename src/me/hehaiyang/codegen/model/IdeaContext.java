@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * Desc:
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 17/3/21
  */
 public class IdeaContext implements Serializable {

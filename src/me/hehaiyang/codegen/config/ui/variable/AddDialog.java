@@ -4,7 +4,7 @@ import javax.swing.*;
 
 /**
  * Desc:
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/5/21
  */
 public class AddDialog extends JDialog {

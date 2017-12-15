@@ -11,7 +11,7 @@ import java.awt.*;
 
 /**
  * Desc: 通用配置设置面板
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/5/19
  */
 public class ConfigUI extends JPanel implements UIConfigurable {

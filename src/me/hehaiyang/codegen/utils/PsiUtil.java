@@ -25,7 +25,7 @@ import java.util.Objects;
 
 /**
  * Desc:
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/4/6
  */
 public class PsiUtil {

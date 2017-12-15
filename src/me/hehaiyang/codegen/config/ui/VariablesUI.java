@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  * Desc: 自定义变量设置面板
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/5/12
  */
 public class VariablesUI extends JPanel implements UIConfigurable {

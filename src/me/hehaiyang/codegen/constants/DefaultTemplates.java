@@ -13,7 +13,7 @@ import java.util.UUID;
 
 /**
  * Desc: 内置模版
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/6/29
  */
 public class DefaultTemplates {

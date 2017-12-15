@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Desc:
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/6/6
  */
 public class CodeGroup implements Serializable {

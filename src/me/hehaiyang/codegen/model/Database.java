@@ -9,7 +9,7 @@ import static me.hehaiyang.codegen.utils.StringUtils.trimObject;
 
 /**
  * Desc: 数据库信息
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/5/31
  */
 public class Database implements Serializable {

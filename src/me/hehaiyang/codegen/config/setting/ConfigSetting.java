@@ -2,7 +2,7 @@ package me.hehaiyang.codegen.config.setting;
 
 /**
  * Desc:
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/5/10
  */
 public class ConfigSetting {

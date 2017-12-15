@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 /**
  * Desc:
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/5/12
  */
 public class ColumnEditorFrame extends JFrame {

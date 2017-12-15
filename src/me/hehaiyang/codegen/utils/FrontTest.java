@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * Desc:
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/7/12
  */
 public class FrontTest {

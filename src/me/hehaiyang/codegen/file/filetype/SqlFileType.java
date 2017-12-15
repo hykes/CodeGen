@@ -10,7 +10,7 @@ import javax.swing.*;
 
 /**
  * Desc:
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/3/21
  */
 public class SqlFileType extends LanguageFileType {

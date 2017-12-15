@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * Desc: 内置参数
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/4/16
  */
 public class DefaultParams {

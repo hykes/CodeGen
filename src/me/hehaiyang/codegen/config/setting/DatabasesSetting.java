@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * Desc:
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/5/10
  */
 public class DatabasesSetting {

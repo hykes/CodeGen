@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Desc:
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/4/23
  */
 public class DBWindow extends BaseWindow {

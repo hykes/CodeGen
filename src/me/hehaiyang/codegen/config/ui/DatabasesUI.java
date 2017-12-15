@@ -39,7 +39,7 @@ import static me.hehaiyang.codegen.utils.StringUtils.nullOr;
 
 /**
  * Desc: 数据库配置面板
- * Mail: hehaiyang@terminus.io
+ * Mail: hehaiyangwork@qq.com
  * Date: 2017/5/12
  */
 public class DatabasesUI extends JPanel implements UIConfigurable {
