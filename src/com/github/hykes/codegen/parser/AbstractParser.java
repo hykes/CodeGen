@@ -3,7 +3,6 @@ package com.github.hykes.codegen.parser;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.utils.StringUtils;
 
-import java.sql.*;
 import java.util.List;
 
 /**
@@ -13,15 +12,10 @@ import java.util.List;
  * Created by IceMimosa
  * Date: 2017/7/23
  */
-public abstract class AbstractParserAware implements Parser {
+public abstract class AbstractParser implements Parser {
 
     @Override
     public Table parseSQL(String sql) {
-        return null;
-    }
-
-    @Override
-    public Connection getConnection(String url, String username, String password) {
         return null;
     }
 

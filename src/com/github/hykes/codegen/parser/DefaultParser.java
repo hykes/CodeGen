@@ -1,8 +1,8 @@
-package com.github.hykes.codegen.parser.impl;
+package com.github.hykes.codegen.parser;
 
 import com.github.hykes.codegen.model.Field;
 import com.github.hykes.codegen.model.Table;
-import com.github.hykes.codegen.parser.AbstractParserAware;
+import com.github.hykes.codegen.parser.AbstractParser;
 import com.github.hykes.codegen.utils.StringUtils;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
@@ -21,7 +21,7 @@ import java.util.List;
  * Created by IceMimosa
  * Date: 2017/6/20
  */
-public class DefaultParser extends AbstractParserAware {
+public class DefaultParser extends AbstractParser {
 
     @Override
     public Table parseSQL(String sql) {

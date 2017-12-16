@@ -56,8 +56,6 @@
                     instance="com.github.hykes.codegen.config.configurable.VariablesSettingConfigurable"/>
       <configurable id="codeGen.templates" displayName="Templates"
                     instance="com.github.hykes.codegen.config.configurable.TemplatesSettingConfigurable"/>
-      <configurable id="codeGen.databases" displayName="Databases"
-                    instance="com.github.hykes.codegen.config.configurable.DatabasesSettingConfigurable"/>
       <!--<configurable id="codeGen.wiki" displayName="Wiki"-->
                     <!--instance="me.hehaiyang.codegen.setting.configurable.WikiSettingConfigurable"/>-->
     </applicationConfigurable>

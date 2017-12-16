@@ -2,8 +2,8 @@ package com.github.hykes.codegen.frame;
 
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.model.Table;
+import com.github.hykes.codegen.parser.DefaultParser;
 import com.github.hykes.codegen.parser.Parser;
-import com.github.hykes.codegen.parser.impl.DefaultParser;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.ScrollPaneFactory;
 

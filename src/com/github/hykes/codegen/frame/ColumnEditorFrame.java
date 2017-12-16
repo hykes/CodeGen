@@ -44,7 +44,6 @@ public class ColumnEditorFrame extends JFrame {
     public ColumnEditorFrame(IdeaContext ideaContext, DbTable dbTable) {
         Table table = new Table();
         table.setTableName(dbTable.getName());
-//        table.setModelName(dbTable.getComment());
 
         List<Field> fields = Lists.newArrayList();
 
@@ -54,6 +53,8 @@ public class ColumnEditorFrame extends JFrame {
             Field field = new Field();
             field.setColumn(dasColumn.getName());
             field.setField(dasColumn.getName());
+            field.setColumnType(dasColumn.getDataType().typeName);
+            field.setColumnSize(String.valueOf(dasColumn.getDataType().size));
             field.setComment(dasColumn.getComment());
             fields.add(field);
         }

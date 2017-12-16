@@ -1,14 +1,13 @@
 package com.github.hykes.codegen.config;
 
+import com.github.hykes.codegen.config.setting.ConfigSetting;
+import com.github.hykes.codegen.config.setting.TemplatesSetting;
+import com.github.hykes.codegen.config.setting.VariablesSetting;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import com.github.hykes.codegen.config.setting.ConfigSetting;
-import com.github.hykes.codegen.config.setting.DatabasesSetting;
-import com.github.hykes.codegen.config.setting.TemplatesSetting;
-import com.github.hykes.codegen.config.setting.VariablesSetting;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -29,13 +28,10 @@ public class SettingManager implements PersistentStateComponent<SettingManager> 
 
     private TemplatesSetting templatesSetting;
 
-    private DatabasesSetting databasesSetting;
-
     public SettingManager() {
         this.configSetting = new ConfigSetting();
         this.variablesSetting = new VariablesSetting();
         this.templatesSetting = new TemplatesSetting();
-        this.databasesSetting = new DatabasesSetting();
     }
 
     @Override
@@ -73,11 +69,4 @@ public class SettingManager implements PersistentStateComponent<SettingManager> 
         this.templatesSetting = templatesSetting;
     }
 
-    public DatabasesSetting getDatabasesSetting() {
-        return databasesSetting;
-    }
-
-    public void setDatabasesSetting(DatabasesSetting databasesSetting) {
-        this.databasesSetting = databasesSetting;
-    }
 }
