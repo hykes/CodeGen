@@ -1,21 +1,20 @@
 package com.github.hykes.codegen;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.github.hykes.codegen.config.SettingManager;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.utils.PsiUtil;
-import com.github.hykes.codegen.windows.DBWindow;
-import com.github.hykes.codegen.windows.SQLWindow;
+import com.github.hykes.codegen.frame.SQLGeneratorFrame;
+import com.intellij.icons.AllIcons;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
 
 import javax.swing.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class CodeGenAction extends AnAction {
+public class SQLGeneratorAction extends AnAction {
 
-    public CodeGenAction() {
+    public SQLGeneratorAction() {
         super(AllIcons.Icon_small);
     }
 
@@ -33,14 +32,9 @@ public class CodeGenAction extends AnAction {
 
         ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
 
-        JFrame startFrame;
-        if(settingManager.getConfigSetting().isDbRadio()){
-            startFrame = new DBWindow(ideaContext);
-            startFrame.setSize(350, 180);
-        }else{
-            startFrame = new SQLWindow(ideaContext);
-            startFrame.setSize(500, 350);
-        }
+        JFrame startFrame = new SQLGeneratorFrame(ideaContext);
+        startFrame.setSize(500, 350);
+
 //        startFrame.setTitle(bundle.getString("aaa"));
 
         startFrame.setResizable(false);

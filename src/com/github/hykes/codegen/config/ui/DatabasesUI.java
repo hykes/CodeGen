@@ -2,9 +2,11 @@ package com.github.hykes.codegen.config.ui;
 
 import com.github.hykes.codegen.config.SettingManager;
 import com.github.hykes.codegen.config.UIConfigurable;
+import com.github.hykes.codegen.config.setting.DatabasesSetting;
 import com.github.hykes.codegen.config.ui.variable.AddDialog;
 import com.github.hykes.codegen.model.Database;
 import com.github.hykes.codegen.parser.Parser;
+import com.github.hykes.codegen.parser.impl.MssqlParser;
 import com.github.hykes.codegen.parser.impl.MysqlParser;
 import com.github.hykes.codegen.parser.impl.OracleParser;
 import com.github.hykes.codegen.utils.StringUtils;
@@ -17,8 +19,6 @@ import com.intellij.ui.*;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.JBUI;
-import com.github.hykes.codegen.config.setting.DatabasesSetting;
-import com.github.hykes.codegen.parser.impl.MssqlParser;
 import org.jdesktop.swingx.HorizontalLayout;
 
 import javax.swing.*;
@@ -94,7 +94,10 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         settingManager.getDatabasesSetting().setDatabases(new ArrayList<>(getNoPersistentDatabaseMap().values()));
     }
 
-    // 获取当前窗口的数据源, 还未持久化的
+    /**
+     * 获取当前窗口的数据源, 还未持久化的
+     * @return
+     */
     private Map<String, Database> getNoPersistentDatabaseMap() {
         Map<String, Database> databases = new HashMap<>();
         DefaultTableModel tableModel = (DefaultTableModel) databasesTable.getModel();
@@ -114,8 +117,10 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
     private void init() {
         setLayout(new BorderLayout());
 
-        databasesTable.getTableHeader().setReorderingAllowed(false);   //不可整列移动
-        databasesTable.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+        // 不可整列移动
+        databasesTable.getTableHeader().setReorderingAllowed(false);
+        // 不可拉动表格
+        databasesTable.getTableHeader().setResizingAllowed(false);
 
         final JPanel mainPanel = new JPanel(new GridLayout(1, 1));
         mainPanel.setPreferredSize(JBUI.size(300, 400));
@@ -142,7 +147,9 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
                                 Messages.showInfoMessage(thisPanel, "连接失败！", "Error");
                             } finally {
                                 try {
-                                    if (connection != null) connection.close();
+                                    if (connection != null) {
+                                        connection.close();
+                                    }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -332,7 +339,7 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         Label dsLable = new Label("Data Source");
         dsLable.setBounds(15, 10, 100, 14);
         dsLable.setFont(new Font("Default", 1, 14));
-        dsLable.setForeground(new JBColor(new Color(93, 108, 123), new Color(93, 108, 123))); // #5D6C7B
+        dsLable.setForeground(new JBColor(new Color(93, 108, 123), new Color(93, 108, 123)));
         datasource.add(dsLable);
 
         // data source list
@@ -361,7 +368,8 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
     private JPanel getMysqlForm(Window dialog, DefaultTableModel tableModel, int selectedRow, Database dbParam) {
         JPanel form = new JPanel(null);
         form.setPreferredSize(new Dimension(540, 520));
-        boolean add = tableModel == null; // 是否是新增
+        // 是否是新增
+        boolean add = tableModel == null;
 
         // name
         setLable(form, "Name:", 15, 10, 70, 25);
@@ -411,7 +419,9 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
                 message.setForeground(JBColor.RED);
             } finally {
                 try {
-                    if (connection != null) connection.close();
+                    if (connection != null) {
+                        connection.close();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -504,7 +514,8 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
         JPanel form = new JPanel(null);
         form.setPreferredSize(new Dimension(540, 520));
 
-        boolean add = tableModel == null; // 是否是新增
+        // 是否是新增
+        boolean add = tableModel == null;
 
         // name
         setLable(form, "Name:", 15, 10, 70, 25);
@@ -562,7 +573,9 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
                 message.setForeground(JBColor.RED);
             } finally {
                 try {
-                    if (connection != null) connection.close();
+                    if (connection != null) {
+                        connection.close();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -660,7 +673,8 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
     private JPanel getSQLServerForm(Window dialog, DefaultTableModel tableModel, int selectedRow, Database dbParam) {
         JPanel form = new JPanel(null);
         form.setPreferredSize(new Dimension(540, 520));
-        boolean add = tableModel == null; // 是否是新增
+        // 是否是新增
+        boolean add = tableModel == null;
 
         // name
         setLable(form, "Name:", 15, 10, 70, 25);
@@ -710,7 +724,9 @@ public class DatabasesUI extends JPanel implements UIConfigurable {
                 message.setForeground(JBColor.RED);
             } finally {
                 try {
-                    if (connection != null) connection.close();
+                    if (connection != null) {
+                        connection.close();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

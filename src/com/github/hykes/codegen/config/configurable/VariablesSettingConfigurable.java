@@ -18,6 +18,7 @@ public class VariablesSettingConfigurable implements SearchableConfigurable {
 
     private VariablesUI variablesUI;
 
+    @Override
     @NotNull
     public String getId() {
         return "codeGen.variables";
@@ -29,16 +30,19 @@ public class VariablesSettingConfigurable implements SearchableConfigurable {
         return null;
     }
 
+    @Override
     @Nls
     public String getDisplayName() {
         return this.getId();
     }
 
+    @Override
     @Nullable
     public String getHelpTopic() {
         return this.getId();
     }
 
+    @Override
     @Nullable
     public JComponent createComponent() {
         if(variablesUI == null) {
@@ -47,16 +51,19 @@ public class VariablesSettingConfigurable implements SearchableConfigurable {
         return variablesUI;
     }
 
+    @Override
     public boolean isModified() {
         return variablesUI != null && variablesUI.isModified();
     }
 
+    @Override
     public void apply() throws ConfigurationException {
         if(variablesUI != null){
             variablesUI.apply();
         }
     }
 
+    @Override
     public void reset() {
         if(variablesUI != null){
             variablesUI.reset();

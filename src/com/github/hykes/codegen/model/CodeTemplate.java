@@ -117,17 +117,33 @@ public class CodeTemplate implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         CodeTemplate that = (CodeTemplate) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (display != null ? !display.equals(that.display) : that.display != null) return false;
-        if (extension != null ? !extension.equals(that.extension) : that.extension != null) return false;
-        if (filename != null ? !filename.equals(that.filename) : that.filename != null) return false;
-        if (template != null ? !template.equals(that.template) : that.template != null) return false;
-        if (subPath != null ? !subPath.equals(that.subPath) : that.subPath != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) {
+            return false;
+        }
+        if (display != null ? !display.equals(that.display) : that.display != null) {
+            return false;
+        }
+        if (extension != null ? !extension.equals(that.extension) : that.extension != null) {
+            return false;
+        }
+        if (filename != null ? !filename.equals(that.filename) : that.filename != null) {
+            return false;
+        }
+        if (template != null ? !template.equals(that.template) : that.template != null) {
+            return false;
+        }
+        if (subPath != null ? !subPath.equals(that.subPath) : that.subPath != null) {
+            return false;
+        }
         return isResources != null ? isResources.equals(that.isResources) : that.isResources == null;
     }
 

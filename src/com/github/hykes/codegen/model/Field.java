@@ -1,6 +1,5 @@
 package com.github.hykes.codegen.model;
 
-
 import com.github.hykes.codegen.parser.ParserUtils;
 import com.github.hykes.codegen.utils.BuilderUtil;
 
@@ -95,7 +94,7 @@ public class Field implements Serializable{
         this.sqlType = sqlType;
 
         FieldType fieldType = ParserUtils.getFieldType(columnType);
-        if (fieldType.getJavaType().equals("UNKNOWN")) {
+        if ("UNKNOWN".equals(fieldType.getJavaType())) {
             fieldType = ParserUtils.getFieldType(sqlType);
         }
         this.fieldType = fieldType.getJavaType();

@@ -30,7 +30,8 @@ public class ParserUtils {
         sqlTypes.put("INT", build("Integer", "Int"));
         sqlTypes.put("INTEGER", build("Integer", "Int"));
         sqlTypes.put("REAL", build("Float"));
-        sqlTypes.put("FLOAT", build("Double")); // 也用Double吧
+        // 也用Double吧
+        sqlTypes.put("FLOAT", build("Double"));
         sqlTypes.put("DOUBLE", build("Double"));
         sqlTypes.put("BIGINT", build("Long"));
         sqlTypes.put("STRING", build("String"));
@@ -41,10 +42,14 @@ public class ParserUtils {
         sqlTypes.put("MEDIUMTEXT", build("String"));
         sqlTypes.put("LONGTEXT", build("String"));
         sqlTypes.put("SET", build("String"));
-        sqlTypes.put("DATE", build("java.util.Date")); // java.sql.Date ?
-        sqlTypes.put("DATETIME", build("java.util.Date")); // java.sql.Timestamp ?
-        sqlTypes.put("TIMESTAMP", build("java.util.Date")); // java.sql.Timestamp ?
-        sqlTypes.put("TIME", build("java.util.Date")); // java.sql.Time ?
+        // java.sql.Date ?
+        sqlTypes.put("DATE", build("java.util.Date"));
+        // java.sql.Timestamp ?
+        sqlTypes.put("DATETIME", build("java.util.Date"));
+        // java.sql.Timestamp ?
+        sqlTypes.put("TIMESTAMP", build("java.util.Date"));
+        // java.sql.Time ?
+        sqlTypes.put("TIME", build("java.util.Date"));
         sqlTypes.put("DECIMAL", build("java.math.BigDecimal"));
         sqlTypes.put("BINARY", build("Byte[]", "ByteArray"));
         sqlTypes.put("VARBINARY", build("Byte[]", "ByteArray"));
@@ -99,7 +104,9 @@ public class ParserUtils {
      * @return 对应字段的java类型
      */
     public static FieldType getFieldType(String typeName) {
-        if (StringUtils.isBlank(typeName)) sqlTypes.get("UNKNOWN");
+        if (StringUtils.isBlank(typeName)) {
+            sqlTypes.get("UNKNOWN");
+        }
         FieldType fieldType = sqlTypes.get(typeName.trim().toUpperCase());
         if (fieldType == null) {
             return sqlTypes.get("UNKNOWN");
@@ -115,7 +122,9 @@ public class ParserUtils {
      */
     public static FieldType getFieldType(Integer sqlType) {
         FieldType fieldType = sqlTypes.get("UNKNOWN");
-        if (sqlType == null) return fieldType;
+        if (sqlType == null) {
+            return fieldType;
+        }
 
         // https://docs.oracle.com/javase/1.5.0/docs/guide/jdbc/getstart/mapping.html
         if (sqlType == Types.INTEGER) {

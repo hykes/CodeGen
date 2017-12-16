@@ -38,11 +38,13 @@ public class SettingManager implements PersistentStateComponent<SettingManager> 
         this.databasesSetting = new DatabasesSetting();
     }
 
+    @Override
     @Nullable
     public SettingManager getState() {
         return this;
     }
 
+    @Override
     public void loadState(SettingManager formatSetting) {
         XmlSerializerUtil.copyBean(formatSetting, this);
     }

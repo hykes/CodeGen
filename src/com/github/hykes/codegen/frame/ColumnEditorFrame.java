@@ -1,4 +1,4 @@
-package com.github.hykes.codegen.windows;
+package com.github.hykes.codegen.frame;
 
 import com.github.hykes.codegen.config.SettingManager;
 import com.github.hykes.codegen.config.ui.variable.AddDialog;
@@ -8,12 +8,17 @@ import com.github.hykes.codegen.model.*;
 import com.github.hykes.codegen.utils.BuilderUtil;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.github.hykes.codegen.utils.StringUtils;
+import com.google.common.collect.Lists;
+import com.intellij.database.model.DasColumn;
+import com.intellij.database.psi.DbTable;
+import com.intellij.database.util.DasUtil;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
+import com.intellij.util.containers.JBIterable;
 import com.intellij.util.ui.JBUI;
 
 import javax.swing.*;
@@ -25,9 +30,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Desc:
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/5/12
+ * 字段自定义编辑器
+ *
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/5/12
  */
 public class ColumnEditorFrame extends JFrame {
 
@@ -35,13 +41,36 @@ public class ColumnEditorFrame extends JFrame {
 
     private final JBTable fieldTable = new JBTable();
 
-    private JFrame thisFrame;
+    public ColumnEditorFrame(IdeaContext ideaContext, DbTable dbTable) {
+        Table table = new Table();
+        table.setTableName(dbTable.getName());
+//        table.setModelName(dbTable.getComment());
 
-    public ColumnEditorFrame(IdeaContext ideaContext, Table table) {
-        thisFrame = this;
+        List<Field> fields = Lists.newArrayList();
 
+        JBIterable<? extends DasColumn> columnsIter = DasUtil.getColumns(dbTable);
+        List<? extends DasColumn> dasColumns = columnsIter.toList();
+        for (DasColumn dasColumn : dasColumns) {
+            Field field = new Field();
+            field.setColumn(dasColumn.getName());
+            field.setField(dasColumn.getName());
+            field.setComment(dasColumn.getComment());
+            fields.add(field);
+        }
+        table.setFields(fields);
         init(ideaContext, table);
         setFields(table.getFields());
+
+        // esc
+        this.getRootPane().registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+    }
+
+    public ColumnEditorFrame(IdeaContext ideaContext, Table table) {
+        init(ideaContext, table);
+        setFields(table.getFields());
+
+        // esc
+        this.getRootPane().registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     private void init(IdeaContext ideaContext, Table table){
@@ -62,8 +91,10 @@ public class ColumnEditorFrame extends JFrame {
         mainPanel.setPreferredSize(JBUI.size(300, 400));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
-        fieldTable.getTableHeader().setReorderingAllowed(false);   //不可整列移动
-        fieldTable.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+        //不可整列移动
+        fieldTable.getTableHeader().setReorderingAllowed(false);
+        //不可拉动表格
+        fieldTable.getTableHeader().setResizingAllowed(false);
         JPanel panel = ToolbarDecorator.createDecorator(fieldTable)
             .setAddAction( it -> addAction())
             .setRemoveAction( it -> removeAction())
@@ -86,8 +117,8 @@ public class ColumnEditorFrame extends JFrame {
         });
         groupPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        JButton genButton = new JButton("Generate");
-        genButton.addActionListener( it ->{
+        JButton genBtn = new JButton("Generate");
+        genBtn.addActionListener( it ->{
             List<String> list = new ArrayList<>();
             getAllJCheckBoxValue(groupPanel, list);
 
@@ -100,16 +131,14 @@ public class ColumnEditorFrame extends JFrame {
                 dispose();
             }
         });
-        groupPanel.add(genButton);
+        groupPanel.add(genBtn);
 
         add(groupPanel, BorderLayout.SOUTH);
 
         fieldTable.getEmptyText().setText("No Fields");
-        // esc
-        thisFrame.getRootPane().registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
-    public static List<String> getAllJCheckBoxValue(Container ct, List<String> list){
+    private List<String> getAllJCheckBoxValue(Container ct, List<String> list){
         if(list==null){
             list = new ArrayList<>();
         }
@@ -120,7 +149,7 @@ public class ColumnEditorFrame extends JFrame {
                 list.add(c.getName());
             }
             else if(c instanceof Container){
-                getAllJCheckBoxValue((Container)c,list);
+                this.getAllJCheckBoxValue((Container)c,list);
             }
         }
         return list;
@@ -358,7 +387,7 @@ public class ColumnEditorFrame extends JFrame {
                 String packagePath = StringUtils.substringAfter(path,"src/main/java");
 
                 if(StringUtils.isNotEmpty(packagePath)){
-                    if(packagePath.substring(0,1).equals("/")){
+                    if("/".equals(packagePath.substring(0,1))){
                         packagePath = packagePath.substring(1);
                     }
                     packagePath = packagePath.replace("/", ".");
@@ -386,7 +415,11 @@ public class ColumnEditorFrame extends JFrame {
     }
 
     public class ComparatorUtil implements Comparator<CodeGroup> {
-        //倒序排列即从大到小，若需要从小到大修改返回值1 和 -1
+
+        /**
+         * 倒序排列即从大到小，若需要从小到大修改返回值1 和 -1
+         */
+        @Override
         public int compare(CodeGroup o1, CodeGroup o2) {
             double tempResult1 = o1.getLevel();
             double tempResult2 = o2.getLevel();

@@ -13,7 +13,7 @@ import java.util.List;
  * Created by IceMimosa
  * Date: 2017/7/23
  */
-public abstract class ParserAware implements Parser {
+public abstract class AbstractParserAware implements Parser {
 
     @Override
     public Table parseSQL(String sql) {
@@ -29,7 +29,9 @@ public abstract class ParserAware implements Parser {
      * 去除一些特殊的引号字符
      */
     protected String removeQuotes(String input) {
-        if (StringUtils.isBlank(input)) return "";
+        if (StringUtils.isBlank(input)) {
+            return "";
+        }
 
         StringBuilder sb = new StringBuilder();
         for (char ch : input.toCharArray()) {

@@ -1,9 +1,11 @@
 package com.github.hykes.codegen.parser.impl;
 
 import com.github.hykes.codegen.model.Field;
-import oracle.jdbc.OracleConnection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,21 +24,6 @@ public class OracleParser extends DefaultParser {
      */
     public static final String SERVICE = "SERVICE";
     public static final String SID = "SID";
-
-    @Override
-    public Connection getConnection(String url, String username, String password) {
-        try {
-            Class.forName(DRIVER);
-            DriverManager.setLoginTimeout(10);
-            OracleConnection connection = (OracleConnection) DriverManager.getConnection(url, username, password);
-            // 设置remark为true
-            connection.setRemarksReporting(true);
-            return connection;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     @Override
     public List<String> getTables(Connection connection) {
@@ -71,7 +58,8 @@ public class OracleParser extends DefaultParser {
 
             while (resultSet.next()) {
                 String schema = resultSet.getString("TABLE_SCHEM");
-                if (!"SYS".equals(schema) && // 过滤掉部分系统相关的
+                // 过滤掉部分系统相关的
+                if (!"SYS".equals(schema) &&
                        !"SYSTEM".equals(schema) &&
                        !"XDB".equals(schema) &&
                        !"ORDDATA".equals(schema) &&

@@ -5,9 +5,9 @@ import com.intellij.openapi.project.Project;
 import java.io.Serializable;
 
 /**
- * Desc:
- * Mail: hehaiyangwork@qq.com
- * Date: 17/3/21
+ *
+ * @author : hehaiyangwork@qq.com
+ * @date : 17/3/21
  */
 public class IdeaContext implements Serializable {
 

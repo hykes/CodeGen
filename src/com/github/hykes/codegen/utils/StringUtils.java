@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-public abstract class StringUtils {
+public class StringUtils {
 
     /**
      * The empty String {@code ""}.

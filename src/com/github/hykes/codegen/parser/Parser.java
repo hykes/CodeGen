@@ -25,7 +25,9 @@ import java.util.Objects;
  */
 public interface Parser {
 
-    // 数据库类型
+    /**
+     * 数据库类型
+     */
     String MYSQL = "Mysql";
     String ORACLE = "Oracle";
     String SQLSERVER = "SQL Server";

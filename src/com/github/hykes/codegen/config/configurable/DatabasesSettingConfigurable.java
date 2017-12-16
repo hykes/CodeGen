@@ -18,6 +18,7 @@ public class DatabasesSettingConfigurable implements SearchableConfigurable {
 
     private DatabasesUI databasesUI;
 
+    @Override
     @NotNull
     public String getId() {
         return "codeGen.databases";
@@ -29,16 +30,19 @@ public class DatabasesSettingConfigurable implements SearchableConfigurable {
         return null;
     }
 
+    @Override
     @Nls
     public String getDisplayName() {
         return this.getId();
     }
 
+    @Override
     @Nullable
     public String getHelpTopic() {
         return this.getId();
     }
 
+    @Override
     @Nullable
     public JComponent createComponent() {
         if(databasesUI == null) {
@@ -47,16 +51,19 @@ public class DatabasesSettingConfigurable implements SearchableConfigurable {
         return databasesUI;
     }
 
+    @Override
     public boolean isModified() {
         return databasesUI != null && databasesUI.isModified();
     }
 
+    @Override
     public void apply() throws ConfigurationException {
         if(databasesUI != null){
             databasesUI.apply();
         }
     }
 
+    @Override
     public void reset() {
         if(databasesUI != null){
             databasesUI.reset();

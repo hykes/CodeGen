@@ -1,6 +1,5 @@
 package com.github.hykes.codegen.model;
 
-
 import javax.swing.table.DefaultTableModel;
 import java.io.Serializable;
 import java.util.List;
@@ -8,9 +7,10 @@ import java.util.List;
 import static com.github.hykes.codegen.utils.StringUtils.trimObject;
 
 /**
- * Desc: 数据库信息
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/5/31
+ * 数据库信息
+ *
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/5/31
  */
 public class Database implements Serializable {
 
@@ -18,33 +18,55 @@ public class Database implements Serializable {
 
     /**
      * 数据库类型
-     *
-     * @see MYSQL
-     * @see ORACLE
-     * @see SQLSERVER
      */
     private String type;
-    // 名称
+
+    /**
+     * 名称
+     */
     private String name;
-    // 主机名
+
+    /**
+     * 主机名
+     */
     private String host;
-    // 端口
+
+    /**
+     * 端口
+     */
     private String port;
-    // 数据库名称
+
+    /**
+     * 数据库名称
+     */
     private String database;
-    // 数据库驱动
+
+    /**
+     * 数据库驱动
+     */
     private String driver;
-    // 连接url
+
+    /**
+     * 连接url
+     */
     private String url;
-    // 连接类型(Oracle) @see OracleParser
+
+    /**
+     * 连接类型(Oracle) @see OracleParser
+     */
     private String serviceType;
-    // 用户名
+
+    /**
+     * 用户名
+     */
     private String username;
-    // 密码
+
+    /**
+     * 密码
+     */
     private String password;
 
-    public Database() {
-    }
+    public Database() {}
 
     public Database(String type, String name, String host, String port, String database, String username, String password, String driver, String url, String serviceType) {
         this.type = type;

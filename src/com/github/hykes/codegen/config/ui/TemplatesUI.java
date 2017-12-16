@@ -123,7 +123,9 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
         templateTree.addTreeSelectionListener( it -> {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
-            if (node == null) return;
+            if (node == null) {
+                return;
+            }
             Object object = node.getUserObject();
             if(object instanceof CodeTemplate) {
                 CodeTemplate template = (CodeTemplate) object;
@@ -188,7 +190,9 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             return;
         }
         Object object = selectedNode.getUserObject();
-        if(object instanceof CodeTemplate) return;
+        if(object instanceof CodeTemplate) {
+            return;
+        }
         if(object instanceof String) {
             // 新增模版组
             JDialog dialog = new AddDialog();

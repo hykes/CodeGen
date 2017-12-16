@@ -18,6 +18,7 @@ public class ConfigsSettingConfigurable implements SearchableConfigurable {
 
     private ConfigUI configUI;
 
+    @Override
     @NotNull
     public String getId() {
         return "codeGen.config";
@@ -29,16 +30,19 @@ public class ConfigsSettingConfigurable implements SearchableConfigurable {
         return null;
     }
 
+    @Override
     @Nls
     public String getDisplayName() {
         return this.getId();
     }
 
+    @Override
     @Nullable
     public String getHelpTopic() {
         return this.getId();
     }
 
+    @Override
     @Nullable
     public JComponent createComponent() {
         if(configUI == null) {
@@ -47,16 +51,19 @@ public class ConfigsSettingConfigurable implements SearchableConfigurable {
         return configUI;
     }
 
+    @Override
     public boolean isModified() {
         return configUI != null && configUI.isModified();
     }
 
+    @Override
     public void apply() throws ConfigurationException {
         if(configUI != null){
             configUI.apply();
         }
     }
 
+    @Override
     public void reset() {
         if(configUI != null){
             configUI.reset();

@@ -1,18 +1,22 @@
-package com.github.hykes.codegen.windows;
+package com.github.hykes.codegen.frame;
 
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.ui.ScrollPaneFactory;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.parser.Parser;
 import com.github.hykes.codegen.parser.impl.DefaultParser;
+import com.intellij.openapi.ui.MessageType;
+import com.intellij.ui.ScrollPaneFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
-public class SQLWindow extends BaseWindow{
-
-    private final String type = "SQL";
+/**
+ * Desc:
+ * Mail: hehaiyangwork@qq.com
+ * Date: 2017/06/26
+ */
+public class SQLGeneratorFrame extends JFrame{
 
     private JTextArea codeJTextPane;
 
@@ -23,17 +27,16 @@ public class SQLWindow extends BaseWindow{
 
     private JFrame thisFrame;
 
-    public SQLWindow(IdeaContext ideaContext) {
-        super();
-        setTitle("CodeGen-Create by SQL");
+    public SQLGeneratorFrame(IdeaContext ideaContext) {
+        setTitle("CodeGen-SQL");
         setLayout(new BorderLayout());
         thisFrame = this;
         this.init(ideaContext);
+
+        this.getRootPane().registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     private void init(IdeaContext ideaContext) {
-
-        add(generationTypePanel(type), BorderLayout.NORTH);
 
         codeJTextPane = new JTextArea();
         codeJTextPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -70,36 +73,12 @@ public class SQLWindow extends BaseWindow{
                 frame.setVisible(true);
                 frame.setResizable(false);
 
-                dispose();
+                this.dispose();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
         cancel.addActionListener(e -> dispose());
-
-        sqlRadio.addActionListener(e -> {
-            if(!type.equals("SQL")){
-                JFrame startFrame = new SQLWindow(ideaContext);
-                startFrame.setSize(500, 350);
-                startFrame.setResizable(false);
-                startFrame.setAlwaysOnTop(true);
-                startFrame.setLocationRelativeTo(null);
-                startFrame.setVisible(true);
-                dispose();
-            }
-        });
-        dbRadio.addActionListener(e -> {
-            if(!type.equals("DB")){
-                JFrame startFrame = new DBWindow(ideaContext);
-                startFrame.setSize(350, 180);
-                startFrame.setResizable(false);
-                startFrame.setAlwaysOnTop(true);
-                startFrame.setLocationRelativeTo(null);
-                startFrame.setVisible(true);
-                dispose();
-            }
-        });
-
    }
 
     private void setTips(boolean operator, String tips) {

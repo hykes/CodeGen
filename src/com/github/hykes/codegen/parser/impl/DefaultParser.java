@@ -2,7 +2,7 @@ package com.github.hykes.codegen.parser.impl;
 
 import com.github.hykes.codegen.model.Field;
 import com.github.hykes.codegen.model.Table;
-import com.github.hykes.codegen.parser.ParserAware;
+import com.github.hykes.codegen.parser.AbstractParserAware;
 import com.github.hykes.codegen.utils.StringUtils;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
@@ -21,7 +21,7 @@ import java.util.List;
  * Created by IceMimosa
  * Date: 2017/6/20
  */
-public class DefaultParser extends ParserAware {
+public class DefaultParser extends AbstractParserAware {
 
     @Override
     public Table parseSQL(String sql) {
@@ -43,11 +43,13 @@ public class DefaultParser extends ParserAware {
                 Field field = new Field();
                 // 字段名称
                 String columnName = removeQuotes(it.getColumnName());
-                field.setColumn(columnName); // 同时设置了 FieldName
+                // 同时设置了 FieldName
+                field.setColumn(columnName);
 
                 // 字段类型
                 ColDataType colDataType = it.getColDataType();
-                field.setColumnType(colDataType.getDataType()); // 同时设置了字段类型
+                // 同时设置了字段类型
+                field.setColumnType(colDataType.getDataType());
                 field.setColumnSize(firstOrNull(colDataType.getArgumentsStringList()));
 
                 // comment注释
@@ -71,7 +73,7 @@ public class DefaultParser extends ParserAware {
         }
         for (int size = specs.size(), i = 0; i < size; i++) {
             String spec = specs.get(i);
-            if (spec.toUpperCase().equals("COMMENT")) {
+            if ("COMMENT".equals(spec.toUpperCase())) {
                 // 下一个为comment内容, 查看是否越界
                 if (i + 1 >= size) {
                     return null;

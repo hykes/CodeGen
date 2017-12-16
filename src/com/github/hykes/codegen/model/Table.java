@@ -6,10 +6,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Desc: 表对象
- * Mail: chk19940609@gmail.com
- * Created by IceMimosa
- * Date: 2017/7/11
+ * 表对象
+ *
+ * @author: chk19940609@gmail.com
+ * @date: 2017/7/11
  */
 public class Table implements Serializable {
 
@@ -30,6 +30,7 @@ public class Table implements Serializable {
      */
     private List<Field> fields;
 
+    public Table() {}
 
     public Table(List<Field> fields) {
         this.fields = fields;

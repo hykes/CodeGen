@@ -8,13 +8,14 @@ import com.github.jknack.handlebars.Template;
 import java.io.IOException;
 
 /**
- * Desc:
- * Mail: hehaiyangwork@qq.com
- * Date: 16/4/21
+ * 模版引擎
+ *
+ * @author: hehaiyangwork@qq.com
+ * @Date: 2016/04/21
  */
 public class HandlebarsFactory {
 
-    private final static Handlebars handlebars = new Handlebars();
+    private final static Handlebars HANDLEBARS = new Handlebars();
 
     public static Handlebars getInstance() {
 
@@ -22,7 +23,8 @@ public class HandlebarsFactory {
          * 首尾拼接字符
          * {{Join 'ABC' '#' '%'}}  => #ABC%
          */
-        handlebars.registerHelper("Join", new Helper<String>() {
+        HANDLEBARS.registerHelper("Join", new Helper<String>() {
+            @Override
             public CharSequence apply(String context, Options options) throws IOException {
                 if (options.params == null || options.params.length != 2) {
                     return options.fn(context);
@@ -38,7 +40,8 @@ public class HandlebarsFactory {
          * 首字母小写
          * {{LowerCase 'ABC'}} => aBC
          */
-        handlebars.registerHelper("LowerCase", new Helper<String>() {
+        HANDLEBARS.registerHelper("LowerCase", new Helper<String>() {
+            @Override
             public CharSequence apply(String value, Options options) throws IOException {
                 return value.replaceFirst(value.substring(0, 1), value.substring(0, 1).toLowerCase());
             }
@@ -48,7 +51,8 @@ public class HandlebarsFactory {
          * 首字母大写
          * {{LowerCase 'abc'}} => Abc
          */
-        handlebars.registerHelper("UpperCase", new Helper<String>() {
+        HANDLEBARS.registerHelper("UpperCase", new Helper<String>() {
+            @Override
             public CharSequence apply(String value, Options options) throws IOException {
                 return value.replaceFirst(value.substring(0, 1), value.substring(0, 1).toUpperCase());
             }
@@ -58,7 +62,8 @@ public class HandlebarsFactory {
          * 驼峰转拼接字符
          * {{Split 'ABcD' '_'}} => A_bc_d
          */
-        handlebars.registerHelper("Split", new Helper<String>() {
+        HANDLEBARS.registerHelper("Split", new Helper<String>() {
+            @Override
             public CharSequence apply(String value, Options options) throws IOException {
                 if (value == null || "".equals(value.trim())) {
                     return "";
@@ -83,7 +88,7 @@ public class HandlebarsFactory {
             }
         });
 
-        return handlebars;
+        return HANDLEBARS;
     }
 
     public static void main(String[] args) throws Exception{

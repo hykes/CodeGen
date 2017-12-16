@@ -20,21 +20,25 @@ public class KotlinFileType extends LanguageFileType {
         super(JavaLanguage.INSTANCE);
     }
 
+    @Override
     @NotNull
     public String getName() {
         return "KOTLIN";
     }
 
+    @Override
     @NotNull
     public String getDescription() {
         return "Kotlin files";
     }
 
+    @Override
     @NotNull
     public String getDefaultExtension() {
         return "kt";
     }
 
+    @Override
     public Icon getIcon() {
         return AllIcons.FileTypes.Any_type;
     }

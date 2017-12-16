@@ -11,15 +11,21 @@ import com.github.hykes.codegen.utils.StringUtils;
 
 import java.util.Objects;
 
-public abstract class FileProvider {
+/**
+ * 文件生成器抽象类
+ *
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/04/07
+ */
+public abstract class AbstractFileProvider {
 
-    public final static Handlebars handlebars = HandlebarsFactory.getInstance();
+    public final static Handlebars HANDLEBARS = HandlebarsFactory.getInstance();
 
     public Project project;
 
     public PsiDirectory psiDirectory;
 
-    public FileProvider(Project project, PsiDirectory psiDirectory) {
+    public AbstractFileProvider(Project project, PsiDirectory psiDirectory) {
         this.project = project;
         this.psiDirectory = psiDirectory;
     }
@@ -30,10 +36,10 @@ public abstract class FileProvider {
         if(StringUtils.isEmpty(subPath)){
             return psiDirectory;
         }else{
-            if(subPath.substring(0,1).equals("/")){
+            if("/".equals(subPath.substring(0,1))){
                 subPath = subPath.substring(1);
             }
-            String subPathAttr[] = subPath.split("/");
+            String[] subPathAttr = subPath.split("/");
             if(Objects.nonNull(isResources) && isResources){
                 psiDirectory = findResourcesDirectory(psiDirectory);
             }
@@ -41,8 +47,14 @@ public abstract class FileProvider {
         }
     }
 
-    // 创建子目录
-    private PsiDirectory createSubDirectory(PsiDirectory psiDirectory, String temp[], int level){
+    /**
+     * 创建子目录
+     * @param psiDirectory
+     * @param temp
+     * @param level
+     * @return
+     */
+    private PsiDirectory createSubDirectory(PsiDirectory psiDirectory, String[] temp, int level){
         PsiDirectory subdirectory = psiDirectory.findSubdirectory(temp[level]);
         if(subdirectory == null){
             subdirectory = psiDirectory.createSubdirectory(temp[level]);
@@ -53,7 +65,11 @@ public abstract class FileProvider {
         return subdirectory;
     }
 
-    // 根据选择的package目录，找到resources目录
+    /**
+     * 根据选择的package目录，找到resources目录
+     * @param psiDirectory
+     * @return
+     */
     private PsiDirectory findResourcesDirectory(PsiDirectory psiDirectory){
 
         PsiDirectory parentDirectory = psiDirectory.getParentDirectory();

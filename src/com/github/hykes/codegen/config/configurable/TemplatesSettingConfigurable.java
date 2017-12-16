@@ -18,6 +18,7 @@ public class TemplatesSettingConfigurable implements SearchableConfigurable {
 
     private TemplatesUI templatesUI;
 
+    @Override
     @NotNull
     public String getId() {
         return "codeGen.template";
@@ -29,16 +30,19 @@ public class TemplatesSettingConfigurable implements SearchableConfigurable {
         return null;
     }
 
+    @Override
     @Nls
     public String getDisplayName() {
         return this.getId();
     }
 
+    @Override
     @Nullable
     public String getHelpTopic() {
         return this.getId();
     }
 
+    @Override
     @Nullable
     public JComponent createComponent() {
         if(templatesUI == null) {
@@ -47,16 +51,19 @@ public class TemplatesSettingConfigurable implements SearchableConfigurable {
         return templatesUI;
     }
 
+    @Override
     public boolean isModified() {
         return templatesUI != null && templatesUI.isModified();
     }
 
+    @Override
     public void apply() throws ConfigurationException {
         if(templatesUI != null){
             templatesUI.apply();
         }
     }
 
+    @Override
     public void reset() {
         if(templatesUI != null){
             templatesUI.reset();

@@ -7,11 +7,17 @@ import com.github.hykes.codegen.file.impl.XmlProviderImpl;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 
+/**
+ *
+ *
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/3/17
+ */
 public class FileProviderFactory {
 
-    private static Project project;
+    final private Project project;
 
-    private static PsiDirectory psiDirectory ;
+    final private PsiDirectory psiDirectory;
 
     public FileProviderFactory(Project project, PsiDirectory psiDirectory) {
         this.project = project;
@@ -22,7 +28,7 @@ public class FileProviderFactory {
         return new FileProviderFactory(project,psiDirectory);
     }
 
-    public static FileProvider getInstance(String type) {
+    public AbstractFileProvider getInstance(String type) {
 
         if("java".equals(type)) {
             return new JavaProviderImpl(project, psiDirectory);
@@ -32,7 +38,8 @@ public class FileProviderFactory {
             return new XmlProviderImpl(project, psiDirectory);
         } else if("kt".equals(type)) {
             return new KotlinProviderImpl(project, psiDirectory);
-        } else
+        } else {
             return new JavaProviderImpl(project, psiDirectory);
+        }
     }
 }

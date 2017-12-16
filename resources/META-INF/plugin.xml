@@ -2,7 +2,7 @@
   <id>com.github.hykes.codegen</id>
   <name>CodeGen</name>
   <version>1.0</version>
-  <vendor email="hehaiyangwork@qq.com">hehaiyang</vendor>
+  <vendor email="hehaiyangwork@qq.com" url="https://github.com/hykes">hehaiyang</vendor>
 
   <description><![CDATA[
       <p><a href="https://github.com/hykes/CodeGen">GitHub</a> | <a href="https://github.com/hykes/CodeGen/issues">Issues</a> | <a href="https://plugins.jetbrains.com/plugin/9574-codegen">JetBrains</a> </p>
@@ -49,9 +49,6 @@
   <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
   -->
-  <depends>com.intellij.modules.ultimate</depends>
-  <depends>com.intellij.database</depends>
-
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
     <applicationConfigurable groupId="tools" id="codeGen.configs" displayName="CodeGen" instance="com.github.hykes.codegen.config.configurable.ConfigsSettingConfigurable">
@@ -70,13 +67,28 @@
 
   </extensions>
 
+  <application-components>
+    <!-- Add your application components here -->
+  </application-components>
+
+  <project-components>
+    <!-- Add your project components here -->
+  </project-components>
+
   <actions>
     <!-- Add your actions here -->
-    <action id="codeGen.baseAction" class="com.github.hykes.codegen.CodeGenAction" text="CodeGen">
+    <action id="CodeGen.SQLGenerator" class="com.github.hykes.codegen.SQLGeneratorAction" text="CodeGen-SQL">
       <add-to-group group-id="ToolsBasicGroup" anchor="first"/>
       <add-to-group group-id="EditorPopupMenu.GoTo" anchor="last"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift control G"/>
     </action>
+
+    <action id="CodeGen.DBGenerator" class="com.github.hykes.codegen.DBGeneratorAction" text="CodeGen-DB">
+      <add-to-group group-id="DatabaseViewPopupMenu" anchor="last"/>
+    </action>
   </actions>
+
+  <depends optional="true">com.intellij.database</depends>
+  <depends optional="true">com.intellij.modules.ultimate</depends>
 
 </idea-plugin>
