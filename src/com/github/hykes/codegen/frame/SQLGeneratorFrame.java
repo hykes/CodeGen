@@ -4,6 +4,7 @@ import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.parser.DefaultParser;
 import com.github.hykes.codegen.parser.Parser;
+import com.google.common.collect.Lists;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.ScrollPaneFactory;
 
@@ -66,12 +67,13 @@ public class SQLGeneratorFrame extends JFrame{
                     setTips(true, "Error ! please check text format.");
                     return;
                 }
-                ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, table);
-                frame.setSize(800, 400);
+                ColumnEditorFrame frame = new ColumnEditorFrame();
+                frame.newColumnEditorBySql(ideaContext, Lists.newArrayList(table));
+                frame.setSize(900, 500);
                 frame.setAlwaysOnTop(false);
                 frame.setLocationRelativeTo(thisFrame);
                 frame.setVisible(true);
-                frame.setResizable(false);
+                frame.setResizable(true);
 
                 this.dispose();
             } catch (Exception ex) {

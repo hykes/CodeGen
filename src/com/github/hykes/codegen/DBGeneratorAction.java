@@ -1,16 +1,16 @@
 package com.github.hykes.codegen;
 
+import com.github.hykes.codegen.frame.ColumnEditorFrame;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.utils.PsiUtil;
-import com.github.hykes.codegen.frame.ColumnEditorFrame;
 import com.intellij.database.psi.DbTable;
 import com.intellij.database.view.DatabaseView;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 直连数据库生成代码
@@ -58,8 +58,9 @@ public class DBGeneratorAction extends AnAction {
         IdeaContext ideaContext = new IdeaContext();
         ideaContext.setProject(PsiUtil.getProject(e));
 
-        ColumnEditorFrame frame = new ColumnEditorFrame(ideaContext, tables.get(0));
-        frame.setSize(800, 400);
+        ColumnEditorFrame frame = new ColumnEditorFrame();
+        frame.newColumnEditorByDb(ideaContext, tables);
+        frame.setSize(900, 500);
         frame.setAlwaysOnTop(false);
         frame.setVisible(true);
         frame.setResizable(false);

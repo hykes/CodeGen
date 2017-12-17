@@ -4,8 +4,10 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
 import com.github.jknack.handlebars.Template;
+import com.google.common.collect.Maps;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * 模版引擎
@@ -92,8 +94,12 @@ public class HandlebarsFactory {
     }
 
     public static void main(String[] args) throws Exception{
-        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{Split (Join (LowerCase 'SubUserRole') '$' '%') '_'}}");
-        String outputName = fileNameTemp.apply(null);
+//        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{Split (Join (LowerCase 'SubUserRole') '$' '%') '_'}}");
+//        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{Join (LowerCase '{{name}}SubUserRole') '$' '%'}}");
+        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{LowerCase '{{{name}}}' }}");
+        Map<String, String> map = Maps.newHashMap();
+        map.put("name", "hykes");
+        String outputName = fileNameTemp.apply(map);
         System.out.println(outputName);
     }
 }

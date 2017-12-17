@@ -16,7 +16,6 @@ import java.awt.*;
  */
 public class ConfigUI extends JPanel implements UIConfigurable {
 
-
     JPanel thisPanel;
     final JRadioButton sqlRadio = new JRadioButton("Use SQL", true);
     final JRadioButton dbRadio = new JRadioButton("Use DB");
