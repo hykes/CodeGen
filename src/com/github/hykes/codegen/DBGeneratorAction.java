@@ -13,9 +13,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
+ * 直连数据库生成代码
  *
- * @author : hehaiyangwork@qq.com
- * @date: 2017/5/12
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/12/16
  */
 public class DBGeneratorAction extends AnAction {
 

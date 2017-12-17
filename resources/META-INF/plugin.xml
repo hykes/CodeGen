@@ -49,6 +49,9 @@
   <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
   -->
+  <depends>com.intellij.database</depends>
+  <depends>com.intellij.modules.ultimate</depends>
+
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
     <applicationConfigurable groupId="tools" id="codeGen.configs" displayName="CodeGen" instance="com.github.hykes.codegen.config.configurable.ConfigsSettingConfigurable">
@@ -56,8 +59,6 @@
                     instance="com.github.hykes.codegen.config.configurable.VariablesSettingConfigurable"/>
       <configurable id="codeGen.templates" displayName="Templates"
                     instance="com.github.hykes.codegen.config.configurable.TemplatesSettingConfigurable"/>
-      <!--<configurable id="codeGen.wiki" displayName="Wiki"-->
-                    <!--instance="me.hehaiyang.codegen.setting.configurable.WikiSettingConfigurable"/>-->
     </applicationConfigurable>
 
     <applicationService serviceInterface="com.github.hykes.codegen.config.SettingManager"
@@ -85,8 +86,5 @@
       <add-to-group group-id="DatabaseViewPopupMenu" anchor="last"/>
     </action>
   </actions>
-
-  <depends optional="true">com.intellij.database</depends>
-  <depends optional="true">com.intellij.modules.ultimate</depends>
 
 </idea-plugin>

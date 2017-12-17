@@ -48,7 +48,7 @@ public class SQLGeneratorFrame extends JFrame{
 
         final JPanel infoPanel = new JPanel(new BorderLayout());
         infoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        tipsLabel = new JLabel("Input text .",
+        tipsLabel = new JLabel("Input sql .",
                 MessageType.INFO.getDefaultIcon(), SwingConstants.LEFT);
         infoPanel.add(tipsLabel, BorderLayout.WEST);
 

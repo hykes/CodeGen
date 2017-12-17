@@ -12,6 +12,12 @@ import javax.swing.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * 解析sql生成代码
+ *
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/03/21
+ */
 public class SQLGeneratorAction extends AnAction {
 
     public SQLGeneratorAction() {

@@ -52,7 +52,6 @@ public class ColumnEditorFrame extends JFrame {
         for (DasColumn dasColumn : dasColumns) {
             Field field = new Field();
             field.setColumn(dasColumn.getName());
-            field.setField(dasColumn.getName());
             field.setColumnType(dasColumn.getDataType().typeName);
             field.setColumnSize(String.valueOf(dasColumn.getDataType().size));
             field.setComment(dasColumn.getComment());
@@ -119,6 +118,7 @@ public class ColumnEditorFrame extends JFrame {
         groupPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         JButton genBtn = new JButton("Generate");
+
         genBtn.addActionListener( it ->{
             List<String> list = new ArrayList<>();
             getAllJCheckBoxValue(groupPanel, list);
@@ -357,7 +357,6 @@ public class ColumnEditorFrame extends JFrame {
     }
 
     public void gen(IdeaContext ideaContext, List<String> groups, CodeContext context){
-
         Map<String, String> params = new HashMap<>();
         params.putAll(DefaultParams.getInHouseVariables());
         params.putAll(settingManager.getVariablesSetting().getParams());

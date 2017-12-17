@@ -11,9 +11,10 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Desc:
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/3/17
+ * 插件配置管理
+ *
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/3/17
  */
 @State(name = "CodeGen", storages = { @Storage(value = "$APP_CONFIG$/format.xml") })
 public class SettingManager implements PersistentStateComponent<SettingManager> {
