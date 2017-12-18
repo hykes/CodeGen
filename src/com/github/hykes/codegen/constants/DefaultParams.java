@@ -27,12 +27,4 @@ public class DefaultParams {
         return params;
     }
 
-    public static Map<String, String> getPreDefinedVariables() {
-        Map<String, String> params = new HashMap<>();
-        params.put("author", "[ your name ]");
-        params.put("email", "[ your email ]");
-        params.put("mobile", "[ your mobile ]");
-        return params;
-    }
-
 }

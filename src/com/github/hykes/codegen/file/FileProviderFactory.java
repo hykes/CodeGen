@@ -25,7 +25,7 @@ public class FileProviderFactory {
     }
 
     public static FileProviderFactory create(Project project, PsiDirectory psiDirectory){
-        return new FileProviderFactory(project,psiDirectory);
+        return new FileProviderFactory(project, psiDirectory);
     }
 
     public AbstractFileProvider getInstance(String type) {

@@ -1,4 +1,4 @@
-package com.github.hykes.codegen.handlebars;
+package com.github.hykes.codegen.file;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;
@@ -95,10 +95,9 @@ public class HandlebarsFactory {
 
     public static void main(String[] args) throws Exception{
 //        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{Split (Join (LowerCase 'SubUserRole') '$' '%') '_'}}");
-//        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{Join (LowerCase '{{name}}SubUserRole') '$' '%'}}");
-        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{LowerCase '{{{name}}}' }}");
+        Template fileNameTemp = HandlebarsFactory.getInstance().compileInline("{{LowerCase (Join name '' 'SubUserRole')}}");
         Map<String, String> map = Maps.newHashMap();
-        map.put("name", "hykes");
+        map.put("name", "Hykes");
         String outputName = fileNameTemp.apply(map);
         System.out.println(outputName);
     }

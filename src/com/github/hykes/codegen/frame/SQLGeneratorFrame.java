@@ -4,18 +4,18 @@ import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.parser.DefaultParser;
 import com.github.hykes.codegen.parser.Parser;
-import com.google.common.collect.Lists;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.ScrollPaneFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 /**
- * Desc:
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/06/26
+ * sql解析面板
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/06/26
  */
 public class SQLGeneratorFrame extends JFrame{
 
@@ -61,14 +61,14 @@ public class SQLGeneratorFrame extends JFrame{
                 String text = codeJTextPane.getText().trim();
 
                 Parser parser = new DefaultParser();
-                Table table = parser.parseSQL(text);
+                List<Table> tables = parser.parseSQLs(text);
 
-                if (table == null || table.getFields() == null || table.getFields().isEmpty()) {
-                    setTips(true, "Error ! please check text format.");
-                    return;
-                }
+//                if (table == null || table.getFields() == null || table.getFields().isEmpty()) {
+//                    setTips(true, "Error ! please check text format.");
+//                    return;
+//                }
                 ColumnEditorFrame frame = new ColumnEditorFrame();
-                frame.newColumnEditorBySql(ideaContext, Lists.newArrayList(table));
+                frame.newColumnEditorBySql(ideaContext, tables);
                 frame.setSize(900, 500);
                 frame.setAlwaysOnTop(false);
                 frame.setLocationRelativeTo(thisFrame);

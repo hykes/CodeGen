@@ -19,6 +19,11 @@ public abstract class AbstractParser implements Parser {
         return null;
     }
 
+    @Override
+    public List<Table> parseSQLs(String sqls) {
+        return null;
+    }
+
     /**
      * 去除一些特殊的引号字符
      */

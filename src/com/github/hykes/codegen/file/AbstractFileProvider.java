@@ -1,6 +1,5 @@
 package com.github.hykes.codegen.file;
 
-import com.github.hykes.codegen.handlebars.HandlebarsFactory;
 import com.github.hykes.codegen.model.CodeContext;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.jknack.handlebars.Handlebars;

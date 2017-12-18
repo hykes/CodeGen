@@ -3,6 +3,8 @@ package com.github.hykes.codegen.parser;
 import com.github.hykes.codegen.model.Field;
 import com.github.hykes.codegen.model.Table;
 
+import java.util.List;
+
 /**
  * Desc: 统一解析入口, 目前提供对sql语句的解析
  * <p>
@@ -22,9 +24,10 @@ public interface Parser {
     Table parseSQL(String sql);
 
     /**
-     * 获取对应parser实例
+     * 将输入的sql语句解析成多个 Table 对象
+     * @param sqls
+     * @return
      */
-    static Parser fromType(String type) {
-        return new DefaultParser();
-    }
+    List<Table> parseSQLs(String sqls);
+
 }

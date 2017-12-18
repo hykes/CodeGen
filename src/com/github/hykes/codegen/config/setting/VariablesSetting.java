@@ -1,6 +1,7 @@
 package com.github.hykes.codegen.config.setting;
 
 import com.github.hykes.codegen.constants.DefaultParams;
+import com.google.common.collect.Maps;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,10 @@ public class VariablesSetting {
     private Map<String, String> params = new HashMap<>();
 
     public VariablesSetting() {
-        params.putAll(DefaultParams.getPreDefinedVariables());
+        Map<String, String> params = Maps.newHashMap();
+        params.put("author", "[ your name ]");
+        params.put("email", "[ your email ]");
+        params.putAll(params);
     }
 
     public Map<String, String> getParams() {
