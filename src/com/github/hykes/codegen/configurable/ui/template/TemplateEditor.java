@@ -1,4 +1,4 @@
-package com.github.hykes.codegen.config.ui.template;
+package com.github.hykes.codegen.configurable.ui.template;
 
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.intellij.openapi.editor.Document;
@@ -15,9 +15,10 @@ import java.awt.*;
 import java.util.Objects;
 
 /**
- * Desc: 模版配置
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/3/17
+ * 模版编辑面板
+ *
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/3/17
  */
 public class TemplateEditor extends JPanel {
 

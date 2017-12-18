@@ -9,6 +9,11 @@ import java.util.Map;
 
 import static com.github.hykes.codegen.model.FieldType.build;
 
+/**
+ * 解析工具
+ * @author: chk19940609@gmail.com
+ * @date: 2017/06/21
+ */
 public class ParserUtils {
 
     /**
@@ -85,8 +90,10 @@ public class ParserUtils {
 
         // sql server https://docs.microsoft.com/en-us/sql/connect/jdbc/using-basic-data-types
         // 与上重复的忽略
-        sqlTypes.put("DATETIME2", build("java.util.Date")); // java.sql.Timestamp ?
-        sqlTypes.put("SMALLDATETIME", build("java.util.Date")); // java.sql.Timestamp ?
+        // java.sql.Timestamp ?
+        sqlTypes.put("DATETIME2", build("java.util.Date"));
+        // java.sql.Timestamp ?
+        sqlTypes.put("SMALLDATETIME", build("java.util.Date"));
         sqlTypes.put("IMAGE", build("Byte[]", "ByteArray"));
         sqlTypes.put("MONEY", build("java.math.BigDecimal"));
         sqlTypes.put("SMALLMONEY", build("java.math.BigDecimal"));
@@ -162,11 +169,14 @@ public class ParserUtils {
         } else if (sqlType == Types.DOUBLE) {
             fieldType = sqlTypes.get("DOUBLE");
         } else if (sqlType == Types.DATE) {
-            fieldType = sqlTypes.get("DATE"); // java.sql.Date ?
+            // java.sql.Date ?
+            fieldType = sqlTypes.get("DATE");
         } else if (sqlType == Types.TIME) {
-            fieldType = sqlTypes.get("TIME"); // java.sql.Time ?
+            // java.sql.Time ?
+            fieldType = sqlTypes.get("TIME");
         } else if (sqlType == Types.TIMESTAMP) {
-            fieldType = sqlTypes.get("TIMESTAMP"); // java.sql.Timestamp ?
+            // java.sql.Timestamp ?
+            fieldType = sqlTypes.get("TIMESTAMP");
         } else if (sqlType == Types.BINARY
                 || sqlType == Types.VARBINARY) {
             fieldType = sqlTypes.get("BINARY");

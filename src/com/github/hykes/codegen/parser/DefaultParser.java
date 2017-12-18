@@ -6,7 +6,6 @@ import com.github.hykes.codegen.utils.StringUtils;
 import com.google.common.collect.Lists;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.Statements;
 import net.sf.jsqlparser.statement.create.table.ColDataType;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 
@@ -22,47 +21,6 @@ import java.util.List;
  * @date: 2017/6/20
  */
 public class DefaultParser extends AbstractParser {
-
-    @Override
-    public Table parseSQL(String sql) {
-        List<Field> fields = new ArrayList<>();
-        Table table = new Table(fields);
-
-        if (StringUtils.isBlank(sql)) {
-            return table;
-        }
-        // 解析sql语句
-        try {
-            Statement statement = CCJSqlParserUtil.parse(sql);
-            if (!(statement instanceof CreateTable)) {
-                throw new RuntimeException("Only support create table statement !!!");
-            }
-            CreateTable createTable = (CreateTable) statement;
-            table.setTableName(removeQuotes(createTable.getTable().getName()));
-            createTable.getColumnDefinitions().forEach(it -> {
-                Field field = new Field();
-                // 字段名称
-                String columnName = removeQuotes(it.getColumnName());
-                // 同时设置了 FieldName
-                field.setColumn(columnName);
-
-                // 字段类型
-                ColDataType colDataType = it.getColDataType();
-                // 同时设置了字段类型
-                field.setColumnType(colDataType.getDataType());
-                field.setColumnSize(firstOrNull(colDataType.getArgumentsStringList()));
-
-                // comment注释
-                field.setComment(getColumnComment(it.getColumnSpecStrings()));
-
-                fields.add(field);
-            });
-        } catch (Exception e) {
-            // 需要异常统一下
-            e.printStackTrace();
-        }
-        return table;
-    }
 
     @Override
     public List<Table> parseSQLs(String sqls) {

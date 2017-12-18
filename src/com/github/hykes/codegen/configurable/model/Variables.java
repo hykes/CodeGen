@@ -1,21 +1,23 @@
-package com.github.hykes.codegen.config.setting;
+package com.github.hykes.codegen.configurable.model;
 
-import com.github.hykes.codegen.constants.DefaultParams;
 import com.google.common.collect.Maps;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Desc:
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/5/10
+ * 自定义参数 model
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/05/10
  */
-public class VariablesSetting {
+public class Variables implements Serializable {
+
+    private static final long serialVersionUID = -2336608097560710669L;
 
     private Map<String, String> params = new HashMap<>();
 
-    public VariablesSetting() {
+    public Variables() {
         Map<String, String> params = Maps.newHashMap();
         params.put("author", "[ your name ]");
         params.put("email", "[ your email ]");

@@ -1,15 +1,15 @@
-package com.github.hykes.codegen.config.ui;
+package com.github.hykes.codegen.configurable.ui;
 
-import com.github.hykes.codegen.config.SettingManager;
-import com.github.hykes.codegen.config.UIConfigurable;
-import com.github.hykes.codegen.config.ui.variable.AddDialog;
+import com.github.hykes.codegen.configurable.SettingManager;
+import com.github.hykes.codegen.configurable.UIConfigurable;
+import com.github.hykes.codegen.configurable.ui.variable.AddDialog;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.JBUI;
-import com.github.hykes.codegen.config.setting.VariablesSetting;
+import com.github.hykes.codegen.configurable.model.Variables;
 import com.github.hykes.codegen.utils.StringUtils;
 
 import javax.swing.*;
@@ -21,9 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Desc: 自定义变量设置面板
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/5/12
+ * 自定义变量设置面板
+ *
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/5/12
  */
 public class VariablesUI extends JPanel implements UIConfigurable {
 
@@ -33,17 +34,17 @@ public class VariablesUI extends JPanel implements UIConfigurable {
 
     public VariablesUI() {
         init();
-        setVariables(settingManager.getVariablesSetting());
+        setVariables(settingManager.getVariables());
     }
 
     @Override
     public boolean isModified() {
-        VariablesSetting variablesSetting = settingManager.getVariablesSetting();
+        Variables variables = settingManager.getVariables();
         DefaultTableModel tableModel = (DefaultTableModel) variablesTable.getModel();
-        if(variablesSetting.getParams().size() != tableModel.getRowCount()){
+        if(variables.getParams().size() != tableModel.getRowCount()){
             return true;
         }
-        Map<String, String> params = variablesSetting.getParams();
+        Map<String, String> params = variables.getParams();
         for(int i = 0; i< tableModel.getRowCount(); i++){
             String key = tableModel.getValueAt(i, 0).toString();
             String value = tableModel.getValueAt(i, 1).toString();
@@ -63,19 +64,21 @@ public class VariablesUI extends JPanel implements UIConfigurable {
         for(int i = 0;i< tableModel.getRowCount(); i++){
             params.put(tableModel.getValueAt(i, 0).toString().trim(), tableModel.getValueAt(i, 1).toString().trim());
         }
-        settingManager.getVariablesSetting().setParams(params);
+        settingManager.getVariables().setParams(params);
     }
 
     @Override
     public void reset() {
-        setVariables(settingManager.getVariablesSetting());
+        setVariables(settingManager.getVariables());
     }
 
     private void init(){
         setLayout(new BorderLayout());
 
-        variablesTable.getTableHeader().setReorderingAllowed(false);   //不可整列移动
-        variablesTable.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+        //不可整列移动
+        variablesTable.getTableHeader().setReorderingAllowed(false);
+        //不可拉动表格
+        variablesTable.getTableHeader().setResizingAllowed(false);
 
         final JPanel mainPanel = new JPanel(new GridLayout(2, 1));
         mainPanel.setPreferredSize(JBUI.size(300, 400));
@@ -117,7 +120,7 @@ public class VariablesUI extends JPanel implements UIConfigurable {
         variablesTable.getEmptyText().setText("No Variables");
     }
 
-    private void setVariables(VariablesSetting variables){
+    private void setVariables(Variables variables){
         // 列名
         String[] columnNames = {"Key","Value"};
         // 默认数据

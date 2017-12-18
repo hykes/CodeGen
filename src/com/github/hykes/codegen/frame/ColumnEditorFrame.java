@@ -1,6 +1,6 @@
 package com.github.hykes.codegen.frame;
 
-import com.github.hykes.codegen.config.SettingManager;
+import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.constants.DefaultParams;
 import com.github.hykes.codegen.file.FileProviderFactory;
 import com.github.hykes.codegen.model.*;
@@ -93,7 +93,7 @@ public class ColumnEditorFrame extends JFrame {
         final JPanel groupPanel = new JPanel();
         groupPanel.setLayout(new BoxLayout(groupPanel, BoxLayout.X_AXIS));
 
-        List<CodeGroup> groups = settingManager.getTemplatesSetting().getGroups();
+        List<CodeGroup> groups = settingManager.getTemplates().getGroups();
         groups.forEach( it -> {
             JCheckBox groupBox = new JCheckBox(it.getName());
             groupBox.setName(it.getId());
@@ -148,10 +148,10 @@ public class ColumnEditorFrame extends JFrame {
     public void generator(IdeaContext ideaContext, List<String> groups, List<CodeContext> contexts){
         Map<String, String> params = new HashMap<>();
         params.putAll(DefaultParams.getInHouseVariables());
-        params.putAll(settingManager.getVariablesSetting().getParams());
+        params.putAll(settingManager.getVariables().getParams());
         params.put("Project", ideaContext.getProject().getName());
 
-        List<CodeGroup> groupList = settingManager.getTemplatesSetting().getGroups();
+        List<CodeGroup> groupList = settingManager.getTemplates().getGroups();
         groupList = groupList.stream().filter(it -> groups.contains(it.getId())).sorted(new ComparatorUtil()).collect(Collectors.toList());
 
         int packageNum = 0;

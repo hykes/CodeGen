@@ -1,4 +1,4 @@
-package com.github.hykes.codegen.config.ui;
+package com.github.hykes.codegen.configurable.ui;
 
 import com.github.hykes.codegen.constants.DefaultTemplates;
 import com.github.hykes.codegen.model.CodeTemplate;
@@ -9,11 +9,11 @@ import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
-import com.github.hykes.codegen.config.SettingManager;
-import com.github.hykes.codegen.config.UIConfigurable;
-import com.github.hykes.codegen.config.setting.TemplatesSetting;
-import com.github.hykes.codegen.config.ui.template.TemplateEditor;
-import com.github.hykes.codegen.config.ui.variable.AddDialog;
+import com.github.hykes.codegen.configurable.SettingManager;
+import com.github.hykes.codegen.configurable.UIConfigurable;
+import com.github.hykes.codegen.configurable.model.Templates;
+import com.github.hykes.codegen.configurable.ui.template.TemplateEditor;
+import com.github.hykes.codegen.configurable.ui.variable.AddDialog;
 import com.github.hykes.codegen.model.CodeGroup;
 
 import javax.swing.*;
@@ -23,9 +23,10 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Desc:
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/5/10
+ * 模版配置面板
+ *
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/5/10
  */
 public class TemplatesUI extends JBPanel implements UIConfigurable {
 
@@ -37,15 +38,15 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
     public TemplatesUI() {
         init();
-        setTemplates(settingManager.getTemplatesSetting());
+        setTemplates(settingManager.getTemplates());
     }
 
     @Override
     public boolean isModified(){
 
-        TemplatesSetting templatesSetting = settingManager.getTemplatesSetting();
-        List<CodeGroup> groups = templatesSetting.getGroups();
-        Map<String, List<CodeTemplate>> templateMap = templatesSetting.getTemplatesMap();
+        Templates templates = settingManager.getTemplates();
+        List<CodeGroup> groups = templates.getGroups();
+        Map<String, List<CodeTemplate>> templateMap = templates.getTemplatesMap();
 
         DefaultMutableTreeNode rootNode=(DefaultMutableTreeNode)templateTree.getModel().getRoot();
         if(rootNode.getChildCount() != groups.size()){
@@ -101,13 +102,13 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             groups.add(group);
         }
 
-        settingManager.getTemplatesSetting().setGroups(groups);
+        settingManager.getTemplates().setGroups(groups);
         reset();
     }
 
     @Override
     public void reset() {
-        setTemplates(settingManager.getTemplatesSetting());
+        setTemplates(settingManager.getTemplates());
     }
 
     private void init(){
@@ -149,7 +150,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                     public void actionPerformed(AnActionEvent e) {
                         int isResult = Messages.showYesNoDialog("是否使用内置模版覆盖当前模版组", "请选择", AllIcons.Actions.Refresh);
                         if(isResult == 0){
-                            settingManager.getTemplatesSetting().setGroups(DefaultTemplates.getDefaults());
+                            settingManager.getTemplates().setGroups(DefaultTemplates.getDefaults());
                             reset();
                         }
                     }
@@ -269,10 +270,12 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         }
     }
 
+    /**
+     * 直接通过model来添加新节点，则无需通过调用JTree的updateUI方法
+     * model.insertNodeInto(newNode, selectedNode, selectedNode.getChildCount());
+     * 直接通过节点添加新节点，则需要调用tree的updateUI方法
+     */
     private void addNode(DefaultMutableTreeNode pNode, MutableTreeNode newNode){
-        //直接通过model来添加新节点，则无需通过调用JTree的updateUI方法
-        //model.insertNodeInto(newNode, selectedNode, selectedNode.getChildCount());
-        //直接通过节点添加新节点，则需要调用tree的updateUI方法
         pNode.add(newNode);
         //--------下面代码实现显示新节点（自动展开父节点）-------
         DefaultTreeModel model = (DefaultTreeModel) templateTree.getModel();
@@ -346,11 +349,11 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         }
     }
 
-    private void setTemplates(TemplatesSetting templatesSetting){
+    private void setTemplates(Templates templates){
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Terminus.io");
 
-        List<CodeGroup> groups = templatesSetting.getGroups();
+        List<CodeGroup> groups = templates.getGroups();
         groups.forEach( it -> {
             DefaultMutableTreeNode group = new DefaultMutableTreeNode(it);
             it.getTemplates().forEach( template -> {

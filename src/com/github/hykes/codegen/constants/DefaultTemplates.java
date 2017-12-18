@@ -2,7 +2,7 @@ package com.github.hykes.codegen.constants;
 
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.model.CodeGroup;
-import com.github.hykes.codegen.config.SettingManager;
+import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.utils.StringUtils;
 
 import java.io.IOException;
@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Desc: 内置模版
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/6/29
+ * 内置模版
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/6/29
  */
 public class DefaultTemplates {
 

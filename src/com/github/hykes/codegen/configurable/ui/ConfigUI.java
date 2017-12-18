@@ -1,8 +1,8 @@
-package com.github.hykes.codegen.config.ui;
+package com.github.hykes.codegen.configurable.ui;
 
-import com.github.hykes.codegen.config.SettingManager;
-import com.github.hykes.codegen.config.UIConfigurable;
-import com.github.hykes.codegen.config.setting.ConfigSetting;
+import com.github.hykes.codegen.configurable.SettingManager;
+import com.github.hykes.codegen.configurable.UIConfigurable;
+import com.github.hykes.codegen.configurable.model.Configs;
 import com.intellij.ui.IdeBorderFactory;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,9 +10,10 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Desc: 通用配置设置面板
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/5/19
+ * 通用配置设置面板
+ *
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/05/19
  */
 public class ConfigUI extends JPanel implements UIConfigurable {
 
@@ -26,7 +27,7 @@ public class ConfigUI extends JPanel implements UIConfigurable {
     public ConfigUI() {
         this.thisPanel = this;
         init();
-        setConfig(settingManager.getConfigSetting());
+        setConfig(settingManager.getConfigs());
     }
 
     private void init() {
@@ -59,7 +60,7 @@ public class ConfigUI extends JPanel implements UIConfigurable {
         ignorePane.add(ignoreFields, BorderLayout.CENTER);
     }
 
-    public void setConfig(@NotNull ConfigSetting configuration) {
+    public void setConfig(@NotNull Configs configuration) {
         sqlRadio.setSelected(configuration.isSqlRadio());
         dbRadio.setSelected(configuration.isDbRadio());
         ignoreFields.setText(configuration.getIgnoreFields());
@@ -67,14 +68,14 @@ public class ConfigUI extends JPanel implements UIConfigurable {
 
     @Override
     public boolean isModified() {
-        ConfigSetting configSetting = settingManager.getConfigSetting();
-        if(configSetting.isDbRadio() && !dbRadio.isSelected()){
+        Configs configs = settingManager.getConfigs();
+        if(configs.isDbRadio() && !dbRadio.isSelected()){
             return true;
         }
-        if(configSetting.isSqlRadio() && !sqlRadio.isSelected()){
+        if(configs.isSqlRadio() && !sqlRadio.isSelected()){
             return true;
         }
-        if (!configSetting.getIgnoreFields().equals(ignoreFields.getText())) {
+        if (!configs.getIgnoreFields().equals(ignoreFields.getText())) {
             return true;
         }
         return false;
@@ -82,14 +83,14 @@ public class ConfigUI extends JPanel implements UIConfigurable {
 
     @Override
     public void apply() {
-        settingManager.getConfigSetting().setDbRadio(dbRadio.isSelected());
-        settingManager.getConfigSetting().setSqlRadio(sqlRadio.isSelected());
-        settingManager.getConfigSetting().setIgnoreFields(ignoreFields.getText());
+        settingManager.getConfigs().setDbRadio(dbRadio.isSelected());
+        settingManager.getConfigs().setSqlRadio(sqlRadio.isSelected());
+        settingManager.getConfigs().setIgnoreFields(ignoreFields.getText());
     }
 
     @Override
     public void reset() {
-        setConfig(settingManager.getConfigSetting());
+        setConfig(settingManager.getConfigs());
     }
 
     public static void main(String[] args) {

@@ -1,7 +1,7 @@
 package com.github.hykes.codegen.frame;
 
-import com.github.hykes.codegen.config.SettingManager;
-import com.github.hykes.codegen.config.ui.variable.AddDialog;
+import com.github.hykes.codegen.configurable.SettingManager;
+import com.github.hykes.codegen.configurable.ui.variable.AddDialog;
 import com.github.hykes.codegen.model.Field;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.utils.StringUtils;
@@ -292,7 +292,7 @@ public class ColumnEditorPanel extends JPanel {
 
     public List<Field> getFields(){
         List<Field> fields = new ArrayList<>();
-        List<String> ignoreList = StringUtils.splitToList(settingManager.getConfigSetting().getIgnoreFields(), ",", true);
+        List<String> ignoreList = StringUtils.splitToList(settingManager.getConfigs().getIgnoreFields(), ",", true);
         DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
         for(int i = 0;i< tableModel.getRowCount(); i++){
             Field field = new Field();

@@ -1,24 +1,27 @@
-package com.github.hykes.codegen.config.setting;
+package com.github.hykes.codegen.configurable.model;
 
 import com.github.hykes.codegen.constants.DefaultTemplates;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.model.CodeGroup;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Desc:
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/5/10
+ * 自定义模版 model
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/05/10
  */
-public class TemplatesSetting {
+public class Templates implements Serializable {
+
+    private static final long serialVersionUID = 8790162098133834684L;
 
     private List<CodeGroup> groups = new ArrayList<>();
 
-    public TemplatesSetting() {
+    public Templates() {
         groups.addAll(DefaultTemplates.getDefaults());
     }
 

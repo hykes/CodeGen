@@ -1,6 +1,6 @@
 package com.github.hykes.codegen;
 
-import com.github.hykes.codegen.config.SettingManager;
+import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.github.hykes.codegen.frame.SQLGeneratorFrame;

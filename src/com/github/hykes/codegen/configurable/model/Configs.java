@@ -1,17 +1,20 @@
-package com.github.hykes.codegen.config.setting;
+package com.github.hykes.codegen.configurable.model;
+
+import java.io.Serializable;
 
 /**
- * Desc:
- * Mail: hehaiyangwork@qq.com
- * Date: 2017/5/10
+ * 自定义配置 model
+ * @author: hehaiyangwork@qq.com
+ * @date: 2017/05/10
  */
-public class ConfigSetting {
+public class Configs implements Serializable {
+
+  private static final long serialVersionUID = 8108800492342778182L;
 
   private boolean sqlRadio = false;
   private boolean dbRadio = true;
 
   private String ignoreFields = "id,created_at,updated_at";
-
 
   public boolean isSqlRadio() {
     return sqlRadio;

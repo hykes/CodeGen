@@ -1,8 +1,9 @@
-package com.github.hykes.codegen.config.configurable;
+package com.github.hykes.codegen.configurable.instance;
 
-import com.github.hykes.codegen.config.ui.ConfigUI;
+import com.github.hykes.codegen.configurable.ui.ConfigUI;
+import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.options.UnnamedConfigurable;
+import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import javax.swing.*;
  * @author: hehaiyangwork@qq.com
  * @date: 2017/03/17
  */
-public class ConfigsSettingConfigurable implements UnnamedConfigurable {
+public class ConfigsConfigurable implements Configurable {
 
     private ConfigUI configUI;
 
@@ -50,4 +51,9 @@ public class ConfigsSettingConfigurable implements UnnamedConfigurable {
         this.configUI = null;
     }
 
+    @Nls
+    @Override
+    public String getDisplayName() {
+        return "CodeGen";
+    }
 }

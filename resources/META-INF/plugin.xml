@@ -54,15 +54,13 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-    <applicationConfigurable groupId="tools" id="codeGen.configs" displayName="CodeGen" instance="com.github.hykes.codegen.config.configurable.ConfigsSettingConfigurable">
-      <configurable id="codeGen.variables" displayName="Variables"
-                    instance="com.github.hykes.codegen.config.configurable.VariablesSettingConfigurable"/>
-      <configurable id="codeGen.templates" displayName="Templates"
-                    instance="com.github.hykes.codegen.config.configurable.TemplatesSettingConfigurable"/>
+    <applicationConfigurable groupId="tools" id="CodeGen.Configs" instance="com.github.hykes.codegen.configurable.instance.ConfigsConfigurable">
+      <configurable id="CodeGen.Variables" instance="com.github.hykes.codegen.configurable.instance.VariablesConfigurable"/>
+      <configurable id="CodeGen.Templates" instance="com.github.hykes.codegen.configurable.instance.TemplatesConfigurable"/>
     </applicationConfigurable>
 
-    <applicationService serviceInterface="com.github.hykes.codegen.config.SettingManager"
-                        serviceImplementation="com.github.hykes.codegen.config.SettingManager"/>
+    <applicationService serviceInterface="com.github.hykes.codegen.configurable.SettingManager"
+                        serviceImplementation="com.github.hykes.codegen.configurable.SettingManager"/>
 
   </extensions>
 
