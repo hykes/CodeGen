@@ -2,17 +2,26 @@
 
 This plugin helps you to generate specific template code by create table statement or database .
 
-[![release](https://img.shields.io/badge/IDEA-v0.8-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hykes/CodeGen/blob/develop/LICENSE)
+[![release](https://img.shields.io/badge/IDEA-v0.8-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hykes/CodeGen/blob/master/LICENSE)
 
-![CodeGen](https://raw.githubusercontent.com/hykes/CodeGen/develop/doc/codegen.gif)
+![CodeGen](https://raw.githubusercontent.com/hykes/CodeGen/master/doc/codegen.gif)
 
-## Install
+### Installation
+- Using IDE built-in plugin system on Windows:
+  - <kbd>File</kbd> > <kbd>Settings</kbd> > <kbd>Plugins</kbd> > <kbd>Browse repositories...</kbd> > <kbd>Search for "CodeGen"</kbd> > <kbd>Install Plugin</kbd>
+- Using IDE built-in plugin system on MacOs:
+  - <kbd>Preferences</kbd> > <kbd>Settings</kbd> > <kbd>Plugins</kbd> > <kbd>Browse repositories...</kbd> > <kbd>Search for "CodeGen"</kbd> > <kbd>Install Plugin</kbd>
+- Manually:
+  - Download the [latest release](https://github.com/hykes/CodeGen/releases) and install it manually using <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Install plugin from disk...</kbd>
+  
+Restart IDE.
 
-Preferences -> Plugins -> Browse repositories -> [search] CodeGen
-
-## Usage
-
-`shift + command + g` OR `Tools -> CodeGen`
+### Usage
+- Connecting to Your Database:
+  - <kbd>View</kbd> > <kbd>Tool Windows</kbd> > <kbd>Database</kbd>
+- CodeGen
+  - <kbd>Tools</kbd> > <kbd>CodeGen-SQL</kbd> or `shift + command + g`
+  - <kbd>Select Table</kbd> > <kbd>Right click popup menu</kbd> > <kbd>CodeGen-DB</kbd>
 
 ## Options
 
@@ -89,17 +98,9 @@ http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
 
 > Welcome to contribute
 
-## TODO
-
-* [TODO](https://github.com/hykes/CodeGen/projects/1)
-
 ## Guide
 
-* [Guide_cn](https://github.com/hykes/CodeGen/blob/develop/doc/Guide_cn.md)
-
-## Change Logs
-
-* [CHANGELOG](https://github.com/hykes/CodeGen/blob/develop/doc/CHANGELOG.md)
+* [Guide_cn](https://github.com/hykes/CodeGen/blob/master/doc/Guide_cn.md)
 
 ## Contributions
 

@@ -3,7 +3,7 @@ package com.github.hykes.codegen;
 import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.utils.PsiUtil;
-import com.github.hykes.codegen.frame.SQLGeneratorFrame;
+import com.github.hykes.codegen.gui.SQLGeneratorFrame;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

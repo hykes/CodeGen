@@ -1,6 +1,6 @@
 package com.github.hykes.codegen;
 
-import com.github.hykes.codegen.frame.ColumnEditorFrame;
+import com.github.hykes.codegen.gui.ColumnEditorFrame;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.intellij.database.psi.DbTable;
@@ -60,7 +60,8 @@ public class DBGeneratorAction extends AnAction {
 
         ColumnEditorFrame frame = new ColumnEditorFrame();
         frame.newColumnEditorByDb(ideaContext, tables);
-        frame.setSize(900, 500);
+        frame.setSize(800, 500);
+        frame.setLocationRelativeTo(null);
         frame.setAlwaysOnTop(false);
         frame.setVisible(true);
         frame.setResizable(false);

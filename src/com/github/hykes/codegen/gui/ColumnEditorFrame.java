@@ -1,4 +1,4 @@
-package com.github.hykes.codegen.frame;
+package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.constants.DefaultParams;
@@ -15,7 +15,6 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.ui.table.JBTable;
 import com.intellij.util.containers.JBIterable;
 
 import javax.swing.*;
@@ -35,7 +34,7 @@ public class ColumnEditorFrame extends JFrame {
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
-    private final List<ColumnEditorPanel> panels = Lists.newArrayList();
+    private final List<ColumnsPanel> panels = Lists.newArrayList();
 
     public ColumnEditorFrame newColumnEditorByDb(IdeaContext ideaContext, List<DbTable> dbTables) {
 
@@ -84,10 +83,9 @@ public class ColumnEditorFrame extends JFrame {
         jScrollPane.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
 
         for (Table table: tables) {
-            JBTable fieldTable = new JBTable();
-            ColumnEditorPanel panel = new ColumnEditorPanel(fieldTable, table);
-            tablesPanel.add(panel);
-            panels.add(panel);
+            ColumnsPanel columnsPanel = new ColumnsPanel(table);
+            tablesPanel.add(columnsPanel.$$$getRootComponent$$$());
+            panels.add(columnsPanel);
         }
 
         final JPanel groupPanel = new JPanel();
@@ -110,9 +108,9 @@ public class ColumnEditorFrame extends JFrame {
             if(!list.isEmpty()) {
                 List<CodeContext> contexts = Lists.newArrayList();
 
-                for (ColumnEditorPanel panel: panels) {
-                    String modelName = panel.getModelText().getText().trim();
-                    String tableName = panel.getTableText().getText().trim();
+                for (ColumnsPanel panel: panels) {
+                    String modelName = panel.getModelTextField().getText().trim();
+                    String tableName = panel.getTableTextField().getText().trim();
                     // 组装数据
                     CodeContext context = new CodeContext(modelName, tableName, panel.getFields());
                     contexts.add(context);

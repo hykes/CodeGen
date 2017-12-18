@@ -1,4 +1,4 @@
-package com.github.hykes.codegen.frame;
+package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.configurable.ui.variable.AddDialog;
@@ -8,117 +8,76 @@ import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
-import com.intellij.util.ui.JBUI;
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
- * 字段编辑面板
- *
  * @author: hehaiyang@terminus.io
- * @date: 2017/12/17
+ * @date: 2017/12/18
  */
-public class ColumnEditorPanel extends JPanel {
-
-    private final SettingManager settingManager = SettingManager.getInstance();
-
-    private Table table;
+public class ColumnsPanel {
+    private JPanel rootPanel;
+    private JPanel mainPanel;
+    private JTextField modelTextField;
+    private JTextField tableTextField;
+    private JPanel topPanel;
+    private JPanel modelPanel;
+    private JPanel tablePanel;
+    private JLabel modelLab;
+    private JLabel tableLab;
 
     private JBTable fieldTable = new JBTable();
 
-    private JTextField modelText;
+    private final SettingManager settingManager = SettingManager.getInstance();
 
-    private JTextField tableText;
-
-    public Table getTable() {
-        return table;
+    public JTextField getModelTextField() {
+        return modelTextField;
     }
 
-    public void setTable(Table table) {
-        this.table = table;
+    public JTextField getTableTextField() {
+        return tableTextField;
     }
 
-    public JBTable getFieldTable() {
-        return fieldTable;
-    }
-
-    public void setFieldTable(JBTable fieldTable) {
-        this.fieldTable = fieldTable;
-    }
-
-    public JTextField getModelText() {
-        return modelText;
-    }
-
-    public void setModelText(JTextField modelText) {
-        this.modelText = modelText;
-    }
-
-    public JTextField getTableText() {
-        return tableText;
-    }
-
-    public void setTableText(JTextField tableText) {
-        this.tableText = tableText;
-    }
-
-    /**
-     * Creates a new <code>JPanel</code> with a double buffer
-     * and a flow layout.
-     */
-    public ColumnEditorPanel(JBTable jbTable, Table table) {
-        setBorder(IdeBorderFactory.createTitledBorder(table.getTableName(), false));
-        setLayout(new BorderLayout());
-
-        this.fieldTable = jbTable;
-        this.table = table;
-
-        final JPanel topPanel = new JPanel(new GridLayout(1, 4));
-        topPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
-        topPanel.add(new JLabel("model"));
-        modelText = new JTextField(StringUtils.nullOr(table.getModelName(), ""));
-        topPanel.add(modelText);
-        topPanel.add(new JLabel("table"));
-        tableText = new JTextField(StringUtils.nullOr(table.getTableName(), ""));
-        topPanel.add(tableText);
-
-        final JPanel mainPanel = new JPanel(new GridLayout(1, 1));
-        mainPanel.setPreferredSize(JBUI.size(300, 400));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+    public ColumnsPanel(Table table) {
+        $$$setupUI$$$();
+        rootPanel.setBorder(IdeBorderFactory.createTitledBorder(table.getTableName(), false));
 
         //不可整列移动
         fieldTable.getTableHeader().setReorderingAllowed(false);
         //不可拉动表格
         fieldTable.getTableHeader().setResizingAllowed(false);
+        fieldTable.getEmptyText().setText("No Fields");
         JPanel panel = ToolbarDecorator.createDecorator(fieldTable)
-                .setAddAction( it -> addAction())
-                .setRemoveAction( it -> removeAction())
-                .setEditAction( it -> editAction()).createPanel();
+                .setAddAction(it -> addAction())
+                .setRemoveAction(it -> removeAction())
+                .setEditAction(it -> editAction())
+                .createPanel();
         final JPanel localPanel = new JPanel(new BorderLayout());
         localPanel.setBorder(IdeBorderFactory.createTitledBorder("Field Table", false));
         localPanel.add(panel, BorderLayout.CENTER);
+
         mainPanel.add(localPanel);
 
-        add(topPanel, BorderLayout.NORTH);
-        add(mainPanel, BorderLayout.CENTER);
-
-        setFields(table.getFields());
-        fieldTable.getEmptyText().setText("No Fields");
+        modelTextField.setText(table.getModelName());
+        tableTextField.setText(table.getTableName());
+        initFields(table.getFields());
     }
 
     /**
      * 添加
      */
-    private void addAction(){
+    private void addAction() {
         JDialog dialog = new AddDialog();
         dialog.setLayout(new BorderLayout());
 
-        JPanel form = new JPanel(new GridLayout(7,2));
+        JPanel form = new JPanel(new GridLayout(7, 2));
         form.add(new Label("Field"));
         JTextField field = new JTextField();
         form.add(field);
@@ -149,7 +108,7 @@ public class ColumnEditorPanel extends JPanel {
         dialog.add(form, BorderLayout.CENTER);
 
         JButton add = new JButton("ADD");
-        add.addActionListener( it ->{
+        add.addActionListener(it -> {
             String fieldText = field.getText().trim();
             String fieldTypeText = fieldType.getText().trim();
             String columnText = column.getText();
@@ -159,7 +118,7 @@ public class ColumnEditorPanel extends JPanel {
             String commentText = comment.getText().trim();
 
             DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
-            String []rowValues = {fieldText, fieldTypeText, columnText, columnTypeText, sqlTypeText, columnSizeText, commentText};
+            String[] rowValues = {fieldText, fieldTypeText, columnText, columnTypeText, sqlTypeText, columnSizeText, commentText};
             tableModel.addRow(rowValues);
             dialog.setVisible(false);
         });
@@ -167,7 +126,7 @@ public class ColumnEditorPanel extends JPanel {
 
         dialog.setSize(300, 260);
         dialog.setAlwaysOnTop(true);
-        dialog.setLocationRelativeTo(this);
+        dialog.setLocationRelativeTo(this.$$$getRootComponent$$$());
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setResizable(false);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -177,23 +136,23 @@ public class ColumnEditorPanel extends JPanel {
     /**
      * 删除
      */
-    private void removeAction(){
+    private void removeAction() {
         int selectedRow = fieldTable.getSelectedRow();
-        if(selectedRow != -1){
+        if (selectedRow != -1) {
             DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
             tableModel.removeRow(selectedRow);
         }
-        if(fieldTable.getRowCount() > 0){
-            fieldTable.setRowSelectionInterval(0,0);
+        if (fieldTable.getRowCount() > 0) {
+            fieldTable.setRowSelectionInterval(0, 0);
         }
     }
 
     /**
      * 编辑
      */
-    private void editAction(){
+    private void editAction() {
         int selectedRow = fieldTable.getSelectedRow();
-        if(selectedRow != -1){
+        if (selectedRow != -1) {
             DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
             String oldFieldText = (String) tableModel.getValueAt(selectedRow, 0);
             String oldFieldTypeText = (String) tableModel.getValueAt(selectedRow, 1);
@@ -206,7 +165,7 @@ public class ColumnEditorPanel extends JPanel {
             JDialog dialog = new AddDialog();
             dialog.setLayout(new BorderLayout());
 
-            JPanel form = new JPanel(new GridLayout(7,2));
+            JPanel form = new JPanel(new GridLayout(7, 2));
 
             form.add(new Label("Field"));
             JTextField field = new JTextField(oldFieldText);
@@ -238,7 +197,7 @@ public class ColumnEditorPanel extends JPanel {
             dialog.add(form, BorderLayout.CENTER);
 
             JButton add = new JButton("Confirm");
-            add.addActionListener( it ->{
+            add.addActionListener(it -> {
                 String fieldText = field.getText().trim();
                 String fieldTypeText = fieldType.getText().trim();
                 String columnText = column.getText();
@@ -258,7 +217,7 @@ public class ColumnEditorPanel extends JPanel {
 
             dialog.setSize(300, 260);
             dialog.setAlwaysOnTop(true);
-            dialog.setLocationRelativeTo(this);
+            dialog.setLocationRelativeTo(this.$$$getRootComponent$$$());
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
             dialog.setResizable(false);
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -267,9 +226,9 @@ public class ColumnEditorPanel extends JPanel {
         }
     }
 
-    private void setFields(List<Field> fields){
+    private void initFields(List<Field> fields) {
         // 列名
-        String[] columnNames = {"Field_Name", "Field_Type", "Column_Name","Column_Type", "Sql_Type", "Column_Size", "Comment"};
+        String[] columnNames = {"Field_Name", "Field_Type", "Column_Name", "Column_Type", "Sql_Type", "Column_Size", "Comment"};
         // 默认数据
         Object[][] tableVales = new String[fields.size()][7];
         for (int row = 0; row < fields.size(); row++) {
@@ -281,7 +240,7 @@ public class ColumnEditorPanel extends JPanel {
             tableVales[row][5] = fields.get(row).getColumnSize();
             tableVales[row][6] = fields.get(row).getComment();
         }
-        DefaultTableModel tableModel = new DefaultTableModel(tableVales,columnNames){
+        DefaultTableModel tableModel = new DefaultTableModel(tableVales, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -290,11 +249,11 @@ public class ColumnEditorPanel extends JPanel {
         fieldTable.setModel(tableModel);
     }
 
-    public List<Field> getFields(){
+    public List<Field> getFields() {
         List<Field> fields = new ArrayList<>();
         List<String> ignoreList = StringUtils.splitToList(settingManager.getConfigs().getIgnoreFields(), ",", true);
         DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
-        for(int i = 0;i< tableModel.getRowCount(); i++){
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
             Field field = new Field();
             // field
             field.setField(tableModel.getValueAt(i, 0).toString());
@@ -306,10 +265,10 @@ public class ColumnEditorPanel extends JPanel {
                 field.setSqlType(sqlType.toString());
             }
             field.setColumnType(tableModel.getValueAt(i, 3).toString());
-            if(Objects.nonNull(tableModel.getValueAt(i, 5))){
+            if (Objects.nonNull(tableModel.getValueAt(i, 5))) {
                 field.setColumnSize(tableModel.getValueAt(i, 5).toString());
             }
-            if(Objects.nonNull(tableModel.getValueAt(i, 6))){
+            if (Objects.nonNull(tableModel.getValueAt(i, 6))) {
                 field.setComment(tableModel.getValueAt(i, 6).toString());
             }
             // 过滤
@@ -318,5 +277,66 @@ public class ColumnEditorPanel extends JPanel {
             }
         }
         return fields;
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("TestForm");
+        Table table = new Table();
+        table.setTableName("ss");
+        frame.setContentPane(new ColumnsPanel(table).rootPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        rootPanel = new JPanel();
+        rootPanel.setLayout(new BorderLayout());
+        topPanel = new JPanel();
+        topPanel.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+
+        mainPanel = new JPanel(new GridLayout(1, 1));
+//        mainPanel.setPreferredSize(JBUI.size(400, 300));
+//        mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+
+    }
+
+    /**
+     * Method generated by IntelliJ IDEA GUI Designer
+     * >>> IMPORTANT!! <<<
+     * DO NOT edit this method OR call it in your code!
+     *
+     * @noinspection ALL
+     */
+    private void $$$setupUI$$$() {
+        createUIComponents();
+        rootPanel.setLayout(new BorderLayout(0, 0));
+        rootPanel.add(mainPanel, BorderLayout.CENTER);
+        topPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        rootPanel.add(topPanel, BorderLayout.NORTH);
+        modelPanel = new JPanel();
+        modelPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        topPanel.add(modelPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        modelLab = new JLabel();
+        modelLab.setText("Model");
+        modelPanel.add(modelLab, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        modelTextField = new JTextField();
+        modelPanel.add(modelTextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        tablePanel = new JPanel();
+        tablePanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        topPanel.add(tablePanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        tableLab = new JLabel();
+        tableLab.setText("Table ");
+        tablePanel.add(tableLab, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        tableTextField = new JTextField();
+        tablePanel.add(tableTextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    public JComponent $$$getRootComponent$$$() {
+        return rootPanel;
     }
 }

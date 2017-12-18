@@ -1,4 +1,4 @@
-package com.github.hykes.codegen.frame;
+package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.model.Table;
