@@ -8,7 +8,11 @@ import com.intellij.database.view.DatabaseView;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.project.DumbAware;
+import com.intellij.openapi.project.DumbService;
+import com.intellij.openapi.project.Project;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +22,7 @@ import java.util.List;
  * @author: hehaiyangwork@qq.com
  * @date: 2017/12/16
  */
-public class DBGeneratorAction extends AnAction {
+public class DBGeneratorAction extends AnAction implements DumbAware {
 
     public DBGeneratorAction() {
         super(AllIcons.Icon_small);
@@ -31,12 +35,14 @@ public class DBGeneratorAction extends AnAction {
             e.getPresentation().setEnabledAndVisible(false);
             return;
         }
-        Object[] elements = view.getTreeBuilder().getSelectedElements().toArray();
-        boolean hasTable = false;
 
+        Object[] elements = view.getTreeBuilder().getSelectedElements().toArray();
+
+        boolean hasTable = false;
         for (Object table : elements) {
             if (table instanceof DbTable) {
                 hasTable = true;
+                break;
             }
         }
         e.getPresentation().setEnabledAndVisible(hasTable);
@@ -44,6 +50,13 @@ public class DBGeneratorAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
+        Project project = PsiUtil.getProject(e);
+        DumbService dumbService = DumbService.getInstance(project);
+        if (dumbService.isDumb()) {
+            dumbService.showDumbModeNotification("CodeGen plugin is not available during indexing !");
+            return;
+        }
+
         DatabaseView view = DatabaseView.DATABASE_VIEW_KEY.getData(e.getDataContext());
 
         Object[] elements = view.getTreeBuilder().getSelectedElements().toArray();
@@ -55,12 +68,10 @@ public class DBGeneratorAction extends AnAction {
             }
         }
 
-        IdeaContext ideaContext = new IdeaContext();
-        ideaContext.setProject(PsiUtil.getProject(e));
-
         ColumnEditorFrame frame = new ColumnEditorFrame();
-        frame.newColumnEditorByDb(ideaContext, tables);
+        frame.newColumnEditorByDb(new IdeaContext(project), tables);
         frame.setSize(800, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setAlwaysOnTop(false);
         frame.setVisible(true);

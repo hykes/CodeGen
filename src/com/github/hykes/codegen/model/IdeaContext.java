@@ -16,6 +16,10 @@ public class IdeaContext implements Serializable {
     public IdeaContext() {
     }
 
+    public IdeaContext(Project project) {
+        this.project = project;
+    }
+
     private Project project;
 
     public Project getProject() {

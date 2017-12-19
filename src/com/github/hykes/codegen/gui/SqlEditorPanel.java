@@ -4,6 +4,7 @@ import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.parser.DefaultParser;
 import com.github.hykes.codegen.parser.Parser;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -21,6 +22,9 @@ import java.util.List;
  * @date: 2017/12/19
  */
 public class SqlEditorPanel {
+
+    private static final Logger LOGGER = Logger.getInstance(SqlEditorPanel.class);
+
     private JPanel rootPanel;
     private JLabel tipLab;
     private JButton buttonCancel;
@@ -31,6 +35,7 @@ public class SqlEditorPanel {
 
     public SqlEditorPanel(IdeaContext ideaContext) {
         $$$setupUI$$$();
+
         buttonOk.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -40,21 +45,14 @@ public class SqlEditorPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String text = sqlTextArea.getText().trim();
+                    String sqls = sqlTextArea.getText().trim();
 
                     Parser parser = new DefaultParser();
-                    List<Table> tables = parser.parseSQLs(text);
+                    List<Table> tables = parser.parseSQLs(sqls);
 
                     if (tables.isEmpty()) {
-                        setTips(true, "Error ! please check text format.");
+                        setTips(true, "Error, please check sql format !");
                         return;
-                    }
-
-                    for (Table table : tables) {
-                        if (table.getFields() == null || table.getFields().isEmpty()) {
-                            setTips(true, "Error ! please check text format.");
-                            return;
-                        }
                     }
 
                     ColumnEditorFrame frame = new ColumnEditorFrame();
@@ -66,7 +64,7 @@ public class SqlEditorPanel {
                     frame.setResizable(true);
 
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    LOGGER.error(ex.getMessage());
                 }
             }
         });
@@ -78,11 +76,14 @@ public class SqlEditorPanel {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                $$$getRootComponent$$$().getRootPane().getParent().setEnabled(false);
+                $$$getRootComponent$$$().getRootPane().getParent().setVisible(false);
             }
         });
 
         this.rootPanel.registerKeyboardAction(e -> {
+            $$$getRootComponent$$$().getRootPane().getParent().setEnabled(false);
+            $$$getRootComponent$$$().getRootPane().getParent().setVisible(false);
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
     }
@@ -126,7 +127,7 @@ public class SqlEditorPanel {
         actionPanel = new JPanel();
         actionPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(actionPanel, BorderLayout.SOUTH);
-        tipLab.setText("Label");
+        tipLab.setText("Input sql .");
         actionPanel.add(tipLab, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonOk = new JButton();
         buttonOk.setText("OK");

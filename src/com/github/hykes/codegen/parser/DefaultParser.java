@@ -67,7 +67,10 @@ public class DefaultParser extends AbstractParser {
 
                     fields.add(field);
                 });
-                result.add(table);
+
+                if (table.getFields() != null && !table.getFields().isEmpty()) {
+                    result.add(table);
+                }
             }
         } catch (Exception e) {
             // 需要异常统一下

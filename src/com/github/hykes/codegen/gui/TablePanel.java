@@ -32,6 +32,7 @@ public class TablePanel {
     private JPanel tablePanel;
     private JLabel modelLab;
     private JLabel tableLab;
+    private JPanel columnsPanel;
 
     private JBTable fieldTable = new JBTable();
 
@@ -59,11 +60,10 @@ public class TablePanel {
                 .setRemoveAction(it -> removeAction())
                 .setEditAction(it -> editAction())
                 .createPanel();
-        final JPanel localPanel = new JPanel(new BorderLayout());
-        localPanel.setBorder(IdeBorderFactory.createTitledBorder("Field Table", false));
-        localPanel.add(panel, BorderLayout.CENTER);
+        columnsPanel.setBorder(IdeBorderFactory.createTitledBorder("Field Table", false));
+        columnsPanel.add(panel, BorderLayout.CENTER);
 
-        mainPanel.add(localPanel);
+        mainPanel.add(columnsPanel);
 
         modelTextField.setText(table.getModelName());
         tableTextField.setText(table.getTableName());
@@ -297,9 +297,6 @@ public class TablePanel {
         topPanel.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
 
         mainPanel = new JPanel(new GridLayout(1, 1));
-//        mainPanel.setPreferredSize(JBUI.size(400, 300));
-//        mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-
     }
 
     /**
@@ -312,7 +309,11 @@ public class TablePanel {
     private void $$$setupUI$$$() {
         createUIComponents();
         rootPanel.setLayout(new BorderLayout(0, 0));
+        mainPanel.setLayout(new BorderLayout(0, 0));
         rootPanel.add(mainPanel, BorderLayout.CENTER);
+        columnsPanel = new JPanel();
+        columnsPanel.setLayout(new BorderLayout(0, 0));
+        mainPanel.add(columnsPanel, BorderLayout.CENTER);
         topPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(topPanel, BorderLayout.NORTH);
         modelPanel = new JPanel();
