@@ -22,7 +22,7 @@ import java.util.Objects;
  * @author: hehaiyang@terminus.io
  * @date: 2017/12/18
  */
-public class ColumnsPanel {
+public class TablePanel {
     private JPanel rootPanel;
     private JPanel mainPanel;
     private JTextField modelTextField;
@@ -45,7 +45,7 @@ public class ColumnsPanel {
         return tableTextField;
     }
 
-    public ColumnsPanel(Table table) {
+    public TablePanel(Table table) {
         $$$setupUI$$$();
         rootPanel.setBorder(IdeBorderFactory.createTitledBorder(table.getTableName(), false));
 
@@ -283,7 +283,7 @@ public class ColumnsPanel {
         JFrame frame = new JFrame("TestForm");
         Table table = new Table();
         table.setTableName("ss");
-        frame.setContentPane(new ColumnsPanel(table).rootPanel);
+        frame.setContentPane(new TablePanel(table).rootPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

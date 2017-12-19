@@ -1,9 +1,9 @@
 package com.github.hykes.codegen;
 
 import com.github.hykes.codegen.configurable.SettingManager;
+import com.github.hykes.codegen.gui.SqlEditorPanel;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.utils.PsiUtil;
-import com.github.hykes.codegen.gui.SQLGeneratorFrame;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -38,15 +38,16 @@ public class SQLGeneratorAction extends AnAction {
 
         ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
 
-        JFrame startFrame = new SQLGeneratorFrame(ideaContext);
-        startFrame.setSize(500, 350);
+        JFrame frame = new JFrame();
+        frame.setContentPane(new SqlEditorPanel(ideaContext).$$$getRootComponent$$$());
+        frame.setSize(500, 350);
 
 //        startFrame.setTitle(bundle.getString("aaa"));
 
-        startFrame.setResizable(false);
-        startFrame.setAlwaysOnTop(true);
-        startFrame.setLocationRelativeTo(null);
-        startFrame.setVisible(true);
+        frame.setResizable(false);
+        frame.setAlwaysOnTop(true);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
 }

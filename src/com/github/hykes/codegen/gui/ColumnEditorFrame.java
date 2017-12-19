@@ -34,7 +34,7 @@ public class ColumnEditorFrame extends JFrame {
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
-    private final List<ColumnsPanel> panels = Lists.newArrayList();
+    private final List<TablePanel> panels = Lists.newArrayList();
 
     public ColumnEditorFrame newColumnEditorByDb(IdeaContext ideaContext, List<DbTable> dbTables) {
 
@@ -83,9 +83,9 @@ public class ColumnEditorFrame extends JFrame {
         jScrollPane.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
 
         for (Table table: tables) {
-            ColumnsPanel columnsPanel = new ColumnsPanel(table);
-            tablesPanel.add(columnsPanel.$$$getRootComponent$$$());
-            panels.add(columnsPanel);
+            TablePanel tablePanel = new TablePanel(table);
+            tablesPanel.add(tablePanel.$$$getRootComponent$$$());
+            panels.add(tablePanel);
         }
 
         final JPanel groupPanel = new JPanel();
@@ -108,7 +108,7 @@ public class ColumnEditorFrame extends JFrame {
             if(!list.isEmpty()) {
                 List<CodeContext> contexts = Lists.newArrayList();
 
-                for (ColumnsPanel panel: panels) {
+                for (TablePanel panel: panels) {
                     String modelName = panel.getModelTextField().getText().trim();
                     String tableName = panel.getTableTextField().getText().trim();
                     // 组装数据
