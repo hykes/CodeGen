@@ -65,6 +65,8 @@ public class SqlEditorPanel {
 
                 } catch (Exception ex) {
                     LOGGER.error(ex.getMessage());
+                } finally {
+                    disable();
                 }
             }
         });
@@ -76,16 +78,17 @@ public class SqlEditorPanel {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                $$$getRootComponent$$$().getRootPane().getParent().setEnabled(false);
-                $$$getRootComponent$$$().getRootPane().getParent().setVisible(false);
+                disable();
             }
         });
 
-        this.rootPanel.registerKeyboardAction(e -> {
-            $$$getRootComponent$$$().getRootPane().getParent().setEnabled(false);
-            $$$getRootComponent$$$().getRootPane().getParent().setVisible(false);
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+        this.rootPanel.registerKeyboardAction(e -> disable() , KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
+    }
+
+    private void disable() {
+        $$$getRootComponent$$$().getRootPane().getParent().setEnabled(false);
+        $$$getRootComponent$$$().getRootPane().getParent().setVisible(false);
     }
 
     private void setTips(boolean operator, String tips) {

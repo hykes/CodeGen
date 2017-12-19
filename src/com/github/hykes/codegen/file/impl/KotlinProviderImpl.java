@@ -9,6 +9,10 @@ import com.github.jknack.handlebars.Template;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.github.hykes.codegen.file.filetype.KotlinFileType;
+import org.apache.velocity.VelocityContext;
+
+import java.io.StringWriter;
+import java.util.Map;
 
 public class KotlinProviderImpl extends AbstractFileProvider {
 
@@ -18,14 +22,16 @@ public class KotlinProviderImpl extends AbstractFileProvider {
 
     @Override
     public void create(CodeTemplate template, CodeContext context) throws Exception{
-        Template input = HANDLEBARS.compileInline(template.getTemplate());
-        String data = input.apply(BuilderUtil.transBean2Map(context));
+        Map<String, Object> map = BuilderUtil.transBean2Map(context);
 
-        Template fileNameTemp = HANDLEBARS.compileInline(template.getFilename());
-        String outputName = fileNameTemp.apply(BuilderUtil.transBean2Map(context));
+        Template input = HANDLEBARS.compileInline(template.getTemplate());
+        String data = input.apply(map);
+
+        StringWriter fileNameWriter = new StringWriter();
+        velocityEngine.evaluate(new VelocityContext(map), fileNameWriter, "", template.getFilename());
 
         PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getResources());
-        PsiUtil.createFile(project, directory, outputName + KotlinFileType.DOT_DEFAULT_EXTENSION, data, KotlinFileType.INSTANCE);
+        PsiUtil.createFile(project, directory, fileNameWriter.toString() + KotlinFileType.DOT_DEFAULT_EXTENSION, data, KotlinFileType.INSTANCE);
     }
 
 }

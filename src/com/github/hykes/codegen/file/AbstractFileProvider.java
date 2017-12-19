@@ -7,6 +7,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.github.hykes.codegen.utils.StringUtils;
+import org.apache.velocity.app.VelocityEngine;
+import org.jetbrains.java.generate.velocity.VelocityFactory;
 
 import java.util.Objects;
 
@@ -18,7 +20,9 @@ import java.util.Objects;
  */
 public abstract class AbstractFileProvider {
 
-    public final static Handlebars HANDLEBARS = HandlebarsFactory.getInstance();
+    protected final static Handlebars HANDLEBARS = HandlebarsFactory.getInstance();
+
+    protected final static VelocityEngine velocityEngine = VelocityFactory.getVelocityEngine();
 
     public Project project;
 

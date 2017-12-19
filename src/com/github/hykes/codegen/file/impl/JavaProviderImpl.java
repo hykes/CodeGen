@@ -9,6 +9,10 @@ import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.github.hykes.codegen.utils.BuilderUtil;
+import org.apache.velocity.VelocityContext;
+
+import java.io.StringWriter;
+import java.util.Map;
 
 public class JavaProviderImpl extends AbstractFileProvider {
 
@@ -18,14 +22,17 @@ public class JavaProviderImpl extends AbstractFileProvider {
 
     @Override
     public void create(CodeTemplate template, CodeContext context) throws Exception{
-        Template input = HANDLEBARS.compileInline(template.getTemplate());
-        String data = input.apply(BuilderUtil.transBean2Map(context));
 
-        Template fileNameTemp = HANDLEBARS.compileInline(template.getFilename());
-        String outputName = fileNameTemp.apply(BuilderUtil.transBean2Map(context));
+        Map<String, Object> map = BuilderUtil.transBean2Map(context);
+
+        Template input = HANDLEBARS.compileInline(template.getTemplate());
+        String data = input.apply(map);
+
+        StringWriter fileNameWriter = new StringWriter();
+        velocityEngine.evaluate(new VelocityContext(map), fileNameWriter, "", template.getFilename());
 
         PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getResources());
-        PsiUtil.createFile(project, directory, outputName + JavaFileType.DOT_DEFAULT_EXTENSION, data, JavaFileType.INSTANCE);
+        PsiUtil.createFile(project, directory, fileNameWriter.toString() + JavaFileType.DOT_DEFAULT_EXTENSION, data, JavaFileType.INSTANCE);
     }
 
 }
