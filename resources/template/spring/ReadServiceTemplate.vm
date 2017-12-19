@@ -1,0 +1,38 @@
+
+import io.terminus.common.model.Paging;
+import io.terminus.common.model.Response;
+
+import java.util.Map;
+import java.util.List;
+
+/**
+ *
+ * @author: ${email}
+ * @date: ${Now}
+ * Created by CodeGen .
+ */
+public interface ${model}ReadService {
+
+    /**
+     * 查询
+     * @param id
+     * @return ${model}
+     */
+    Response<${model}> findById(Long id);
+
+    /**
+     * 分页
+     * @param pageNo
+     * @param pageSize
+     * @param criteria
+     * @return Paging<${model}>
+     */
+    Response<Paging<${model}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria);
+
+   /**
+    * 列表
+    * @param criteria
+    * @return List<${model}>
+    */
+    Response<List<${model}>> list(Map<String, Object> criteria);
+}

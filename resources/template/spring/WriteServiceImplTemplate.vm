@@ -1,8 +1,3 @@
-package {{#if $.Package2}}{{$.Package2}}.{{/if}}service;
-
-import {{#if $.Package1}}{{$.Package1}}.{{/if}}model.{{model}};
-import {{#if $.Package2}}{{$.Package2}}.{{/if}}dao.{{model}}Dao;
-import {{#if $.Package1}}{{$.Package1}}.{{/if}}service.{{model}}WriteService;
 
 import io.terminus.common.model.Response;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
@@ -15,23 +10,23 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author: {{$.email}}
- * @date: {{$.Now}}
+ * @author: ${email}
+ * @date: ${Now}
  * Created by CodeGen .
  */
 @Slf4j
 @Service
 @RpcProvider
-public class {{model}}WriteServiceImpl implements {{model}}WriteService {
+public class ${model}WriteServiceImpl implements ${model}WriteService {
 
     @Autowired
-    private {{model}}Dao {{LowerCase model}}Dao;
+    private ${model}Dao ${model}Dao;
 
     @Override
-    public Response<Long> create({{model}} {{LowerCase model}}) {
+    public Response<Long> create(${model} ${model}) {
         try{
-            {{LowerCase model}}Dao.create({{LowerCase model}});
-            return Response.ok({{LowerCase model}}.getId());
+            ${model}Dao.create(${model});
+            return Response.ok(${model}.getId());
         }catch (Exception e){
             log.error("failed to create {{Split (LowerCase model) ' '}}, cause:{}", Throwables.getStackTraceAsString(e));
             return Response.fail("{{Split (LowerCase model) '.'}}.create.fail");
@@ -39,9 +34,9 @@ public class {{model}}WriteServiceImpl implements {{model}}WriteService {
     }
 
     @Override
-    public Response<Boolean> update({{model}} {{LowerCase model}}) {
+    public Response<Boolean> update(${model} ${model}) {
         try{
-            return Response.ok({{LowerCase model}}Dao.update({{LowerCase model}}));
+            return Response.ok(${model}Dao.update(${model}));
         }catch (Exception e){
             log.error("failed to update {{Split (LowerCase model) ' '}}, cause:{}", Throwables.getStackTraceAsString(e));
             return Response.fail("{{Split (LowerCase model) '.'}}.update.fail");
@@ -51,7 +46,7 @@ public class {{model}}WriteServiceImpl implements {{model}}WriteService {
    @Override
     public Response<Boolean> delete(Long id) {
         try{
-            return Response.ok({{LowerCase model}}Dao.delete(id));
+            return Response.ok(${model}Dao.delete(id));
         }catch (Exception e){
             log.error("failed to delete {{Split (LowerCase model) ' '}} by id:{}, cause:{}", id,  Throwables.getStackTraceAsString(e));
             return Response.fail("{{Split (LowerCase model) '.'}}.delete.fail");

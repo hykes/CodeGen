@@ -27,7 +27,7 @@ In-house Variables:
 In-house Helpers:
 
 * 首尾拼接
-{{Join 'ABC' '#' '%'}}  => #ABC%
+{{Append 'ABC' '#' '%'}}  => #ABC%
 
 * 首字母小写
 {{LowerCase 'ABC'}} => aBC
@@ -39,4 +39,4 @@ In-house Helpers:
 {{Split 'ABcD' '_'}} => A_bc_d
 
 * 组合用法
-{{Split (Join (LowerCase 'AbcDefGhi') '$' '%') '_'}} => $abc_def_ghi%
+{{Split (Append (LowerCase 'AbcDefGhi') '$' '%') '_'}} => $abc_def_ghi%

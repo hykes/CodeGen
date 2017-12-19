@@ -1,4 +1,4 @@
-package com.github.hykes.codegen.file.filetype;
+package com.github.hykes.codegen.provider.filetype;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.lang.java.JavaLanguage;
@@ -8,34 +8,39 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class KotlinFileType extends LanguageFileType {
+/**
+ * Desc:
+ * Mail: hehaiyangwork@qq.com
+ * Date: 2017/3/21
+ */
+public class SqlFileType extends LanguageFileType {
 
     @NonNls
-    public static final String DEFAULT_EXTENSION = "kt";
+    public static final String DEFAULT_EXTENSION = "sql";
     @NonNls
-    public static final String DOT_DEFAULT_EXTENSION = ".kt";
-    public static final KotlinFileType INSTANCE = new KotlinFileType();
+    public static final String DOT_DEFAULT_EXTENSION = ".sql";
+    public static final SqlFileType INSTANCE = new SqlFileType();
 
-    private KotlinFileType() {
+    private SqlFileType() {
         super(JavaLanguage.INSTANCE);
     }
 
     @Override
     @NotNull
     public String getName() {
-        return "KOTLIN";
+        return "SQL";
     }
 
     @Override
     @NotNull
     public String getDescription() {
-        return "Kotlin files";
+        return "Sql source files";
     }
 
     @Override
     @NotNull
     public String getDefaultExtension() {
-        return "kt";
+        return "sql";
     }
 
     @Override

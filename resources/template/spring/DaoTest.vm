@@ -1,0 +1,73 @@
+
+import io.terminus.common.model.Paging;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+
+/**
+ *
+ * @author: ${email}
+ * @date: ${Now}
+ * Created by CodeGen .
+ */
+public class ${model}DaoTest extends BaseDaoTest {
+    private ${model} ${model};
+
+    @Autowired
+    private ${model}Dao ${model}Dao;
+
+    @Before
+    public void setUp() {
+##        {{#each fields}}//{{LowerCase model}}.set{{field}}();
+##        {{/each}}{{LowerCase model}}Dao.create({{LowerCase model}});
+    }
+
+    @Test
+    public void testCreate() {
+        ${model} actual = ${model}Dao.findById(${model}.getId());
+        Assert.assertNotNull(actual.getId());
+    }
+
+    @Test
+    public void testDelete() {
+        ${model}Dao.delete(${model}.getId());
+        ${model} actual = ${model}Dao.findById(${model}.getId());
+        Assert.assertNull(actual);
+    }
+
+
+    @Test
+    public void testFindById() {
+        ${model} actual = ${model}Dao.findById(${model}.getId());
+        Assert.assertNotNull(actual);
+    }
+
+    @Test
+    public void testUpdate() {
+        ${model} actual1 = ${model}Dao.findById(${model}.getId());
+        Assert.assertNotNull(actual1);
+##        {{#each fields}}//actual1.set{{field}}();
+##        {{/each}}{{LowerCase model}}Dao.update(actual1);
+##        {{model}} actual2 = {{LowerCase model}}Dao.findById({{LowerCase model}}.getId());
+##        {{#each fields}}//Assert.assertEquals(actual2.get{{field}}(), null);
+##        {{/each}}
+    }
+
+    @Test
+    public void testList() {
+        Map<String, Object> params = new HashMap<>();
+        List<${model}> actual = ${model}Dao.list(params);
+        Assert.assertNotNull(actual.get(0));
+    }
+
+    @Test
+    public void testPaging() {
+        Paging<${model}> paging = ${model}Dao.paging(0, 20, ${model});
+        Assert.assertTrue(!paging.getData().isEmpty());
+    }
+}

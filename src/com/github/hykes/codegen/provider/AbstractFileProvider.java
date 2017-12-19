@@ -1,32 +1,25 @@
-package com.github.hykes.codegen.file;
+package com.github.hykes.codegen.provider;
 
 import com.github.hykes.codegen.model.CodeContext;
 import com.github.hykes.codegen.model.CodeTemplate;
-import com.github.jknack.handlebars.Handlebars;
+import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
-import com.github.hykes.codegen.utils.StringUtils;
-import org.apache.velocity.app.VelocityEngine;
-import org.jetbrains.java.generate.velocity.VelocityFactory;
 
 import java.util.Objects;
 
 /**
- * 文件生成器抽象类
+ * 文件提供者抽象类
  *
  * @author: hehaiyangwork@qq.com
  * @date: 2017/04/07
  */
 public abstract class AbstractFileProvider {
 
-    protected final static Handlebars HANDLEBARS = HandlebarsFactory.getInstance();
+    protected Project project;
 
-    protected final static VelocityEngine velocityEngine = VelocityFactory.getVelocityEngine();
-
-    public Project project;
-
-    public PsiDirectory psiDirectory;
+    protected PsiDirectory psiDirectory;
 
     public AbstractFileProvider(Project project, PsiDirectory psiDirectory) {
         this.project = project;

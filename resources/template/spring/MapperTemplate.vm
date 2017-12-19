@@ -2,21 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
  ~
- ~ @author: {{$.email}}
- ~ @date: {{$.Now}}
+ ~ @author: ${email}
+ ~ @date: ${Now}
  ~ Created by CodeGen .
 -->
 
-<mapper namespace="{{model}}">
-    <resultMap id="{{model}}Map" type="{{model}}">
-        <id property="id" column="id"/>{{#each fields}}
-        <result property="{{field}}" column="{{column}}"/>{{/each}}
+<mapper namespace="${model}">
+    <resultMap id="${model}Map" type="${model}">
+        <id property="id" column="id"/>
+        #foreach($item in $fields)
+            <result property="${item.field}" column="${item.column}"/>
+        #end
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
     <sql id="tb">
-        {{table}}
+        ${table}
     </sql>
 
     <sql id="cols_all">
@@ -26,23 +28,30 @@
 
     <sql id="cols_exclude_id">
         {{#each fields}}`{{column}}`, {{/each}}
+        #foreach($item in $fields)
+            `${item.column}`,
+        #end
         created_at, updated_at
     </sql>
 
     <sql id="vals">
-        {{#each fields}}{{Join field '#{' '}'}}, {{/each}}
+        #foreach($item in $fields)
+            #{${item.column}},
+        #end
         now(), now()
     </sql>
 
     <sql id="criteria">
         <where>
-            {{#each fields}}<if test="{{field}} != null">AND `{{column}}` = {{Join field '#{' '}'}}</if>
-            {{/each}}<if test="createdAt != null">AND <![CDATA[created_at >= #{createdAt}]]> </if>
+            #foreach($item in $fields)
+                <if test="${item.field} != null">AND `${item.column}` = #{${item.field}}</if>
+            #end
+            <if test="createdAt != null">AND <![CDATA[created_at >= #{createdAt}]]> </if>
             <if test="updatedAt != null">AND <![CDATA[updated_at < #{updatedAt}]]> </if>
         </where>
     </sql>
 
-    <insert id="create" parameterType="{{model}}" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="${model}" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
         <include refid="tb"/>
         (<include refid="cols_exclude_id"/>)
@@ -50,7 +59,21 @@
         (<include refid="vals"/>)
     </insert>
 
-    <select id="findById" parameterType="long" resultMap="{{model}}Map">
+
+    <insert id="creates" parameterType="${model}" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="table_name"/>
+        (<include refid="columns_exclude_id"/>)
+        VALUES
+        <foreach collection="list" item="i" index="index" separator="," >
+            (#foreach($item in $fields)
+                #{i.${item.field}},
+             #end
+            now(), now())
+        </foreach>
+    </insert>
+
+    <select id="findById" parameterType="long" resultMap="${model}Map">
         SELECT
         <include refid="cols_all"/>
         FROM
@@ -58,7 +81,7 @@
         WHERE id = #{id} LIMIT 1
     </select>
 
-    <select id="findByIds" parameterType="list" resultMap="{{model}}Map">
+    <select id="findByIds" parameterType="list" resultMap="${model}Map">
         SELECT
         <include refid="cols_all"/>
         FROM
@@ -69,12 +92,14 @@
         </foreach>
     </select>
 
-    <update id="update" parameterType="{{model}}">
+    <update id="update" parameterType="${model}">
         UPDATE
         <include refid="tb"/>
         <set>
-            {{#each fields}}<if test="{{field}} != null">`{{column}}` = {{Join field '#{' '}'}},</if>
-            {{/each}}updated_at = now()
+            #foreach($item in $fields)
+                <if test="${item.field} != null">`${item.column}` = #{i.${item.field}},</if>
+            #end
+            updated_at = now()
         </set>
         WHERE id = #{id}
     </update>
@@ -90,7 +115,7 @@
         <include refid="criteria"/>
     </select>
 
-    <select id="paging" parameterType="map" resultMap="{{model}}Map">
+    <select id="paging" parameterType="map" resultMap="${model}Map">
         SELECT <include refid="cols_all"/>
         FROM <include refid="tb"/>
         <include refid="criteria"/>
@@ -98,7 +123,7 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="list" parameterType="map" resultMap="{{model}}Map">
+    <select id="list" parameterType="map" resultMap="${model}Map">
         SELECT <include refid="cols_all"/>
         FROM <include refid="tb"/>
         <include refid="criteria"/>

@@ -1,4 +1,4 @@
-package com.github.hykes.codegen.utils;
+package com.github.hykes.codegen.test;
 
 import java.util.HashMap;
 import java.util.Map;

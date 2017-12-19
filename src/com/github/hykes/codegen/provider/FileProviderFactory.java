@@ -1,15 +1,14 @@
-package com.github.hykes.codegen.file;
+package com.github.hykes.codegen.provider;
 
-import com.github.hykes.codegen.file.impl.JavaProviderImpl;
-import com.github.hykes.codegen.file.impl.KotlinProviderImpl;
-import com.github.hykes.codegen.file.impl.SqlProviderImpl;
-import com.github.hykes.codegen.file.impl.XmlProviderImpl;
+import com.github.hykes.codegen.provider.filetype.KotlinFileType;
+import com.github.hykes.codegen.provider.filetype.SqlFileType;
+import com.intellij.ide.highlighter.JavaFileType;
+import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 
 /**
- *
- *
+ * 文件提供者工厂
  * @author: hehaiyangwork@qq.com
  * @date: 2017/3/17
  */
@@ -29,17 +28,16 @@ public class FileProviderFactory {
     }
 
     public AbstractFileProvider getInstance(String type) {
-
         if("java".equals(type)) {
-            return new JavaProviderImpl(project, psiDirectory);
+            return new DefaultProviderImpl(project, psiDirectory, JavaFileType.INSTANCE);
         } else if("sql".equals(type)) {
-            return new SqlProviderImpl(project, psiDirectory);
+            return new DefaultProviderImpl(project, psiDirectory, SqlFileType.INSTANCE);
         } else if("xml".equals(type)) {
-            return new XmlProviderImpl(project, psiDirectory);
+            return new DefaultProviderImpl(project, psiDirectory, XmlFileType.INSTANCE);
         } else if("kt".equals(type)) {
-            return new KotlinProviderImpl(project, psiDirectory);
+            return new DefaultProviderImpl(project, psiDirectory, KotlinFileType.INSTANCE);
         } else {
-            return new JavaProviderImpl(project, psiDirectory);
+            return new DefaultProviderImpl(project, psiDirectory, JavaFileType.INSTANCE);
         }
     }
 }

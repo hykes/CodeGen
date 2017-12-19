@@ -2,7 +2,7 @@ package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.constants.DefaultParams;
-import com.github.hykes.codegen.file.FileProviderFactory;
+import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.model.*;
 import com.github.hykes.codegen.utils.BuilderUtil;
 import com.github.hykes.codegen.utils.PsiUtil;

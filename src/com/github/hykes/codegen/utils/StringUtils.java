@@ -59,7 +59,7 @@ public class StringUtils {
      * @since 3.0 Changed signature from isNotEmpty(String) to isNotEmpty(CharSequence)
      */
     public static boolean isNotEmpty(CharSequence cs) {
-        return !org.apache.commons.lang3.StringUtils.isEmpty(cs);
+        return !StringUtils.isEmpty(cs);
     }
 
     /**
@@ -973,6 +973,9 @@ public class StringUtils {
     }
 
     public static String stream2String(InputStream is)  throws IOException {
+        if (is == null) {
+            return "";
+        }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int i = -1;
         while((i=is.read())!=-1){

@@ -82,7 +82,8 @@ Preferences -> Tools -> CodeGen
 
 ## Idea sdk docs
 
-http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started.html
+http://www.jetbrains.org/intellij/sdk/docs/welcome.html
+https://www.jetbrains.com/help/idea/meet-intellij-idea.html
 
 > How to setup
 

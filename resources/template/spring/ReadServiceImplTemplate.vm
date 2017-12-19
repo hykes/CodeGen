@@ -1,8 +1,4 @@
-package {{#if $.Package2}}{{$.Package2}}.{{/if}}service;
 
-import {{#if $.Package1}}{{$.Package1}}.{{/if}}model.{{model}};
-import {{#if $.Package2}}{{$.Package2}}.{{/if}}dao.{{model}}Dao;
-import {{#if $.Package1}}{{$.Package1}}.{{/if}}service.{{model}}ReadService;
 
 import io.terminus.common.model.PageInfo;
 import io.terminus.common.model.Paging;
@@ -20,22 +16,22 @@ import java.util.List;
 
 /**
  *
- * @author: {{$.email}}
- * @date: {{$.Now}}
+ * @author: ${email}
+ * @date: ${Now}
  * Created by CodeGen .
  */
 @Slf4j
 @Service
 @RpcProvider
-public class {{model}}ReadServiceImpl implements {{model}}ReadService {
+public class ${model}ReadServiceImpl implements ${model}ReadService {
 
     @Autowired
-    private {{model}}Dao {{LowerCase model}}Dao;
+    private ${model}Dao ${model}Dao;
 
     @Override
-    public Response<{{model}}> findById(Long id) {
+    public Response<${model}> findById(Long id) {
         try{
-            return Response.ok({{LowerCase model}}Dao.findById(id));
+            return Response.ok(${model}Dao.findById(id));
         }catch (Exception e){
             log.error("failed to find {{Split (LowerCase model) ' '}} by id:{}, cause:{}", id, Throwables.getStackTraceAsString(e));
             return Response.fail("{{Split (LowerCase model) '.'}}.find.fail");
@@ -43,10 +39,10 @@ public class {{model}}ReadServiceImpl implements {{model}}ReadService {
     }
 
     @Override
-    public Response<Paging<{{model}}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria) {
+    public Response<Paging<${model}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria) {
         try{
             PageInfo pageInfo = new PageInfo(pageNo, pageSize);
-            return Response.ok({{LowerCase model}}Dao.paging(pageInfo.getOffset(), pageInfo.getLimit(), criteria));
+            return Response.ok(${model}Dao.paging(pageInfo.getOffset(), pageInfo.getLimit(), criteria));
         }catch (Exception e){
             log.error("failed to paging {{Split (LowerCase model) ' '}} by pageNo:{} pageSize:{}, cause:{}", pageNo, pageSize, Throwables.getStackTraceAsString(e));
             return Response.fail("{{Split (LowerCase model) '.'}}.paging.fail");
@@ -54,9 +50,9 @@ public class {{model}}ReadServiceImpl implements {{model}}ReadService {
     }
 
     @Override
-    public Response<List<{{model}}>> list(Map<String, Object> criteria) {
+    public Response<List<${model}>> list(Map<String, Object> criteria) {
         try{
-            return Response.ok({{LowerCase model}}Dao.list(criteria));
+            return Response.ok(${model}Dao.list(criteria));
         }catch (Exception e){
             log.error("failed to list {{Split (LowerCase model) ' '}}, cause:{}", Throwables.getStackTraceAsString(e));
             return Response.fail("{{Split (LowerCase model) '.'}}.list.fail");
