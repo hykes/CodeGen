@@ -8,7 +8,7 @@ import java.sql.Types;
 
 /**
  * Desc: 字段
- * Mail: hehaiyangwork@qq.com
+ * Mail: hehaiyangwork@gmail.com
  * Date: 16/4/21
  */
 public class Field implements Serializable{

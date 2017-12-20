@@ -20,36 +20,36 @@ import org.springframework.stereotype.Service;
 public class ${model}WriteServiceImpl implements ${model}WriteService {
 
     @Autowired
-    private ${model}Dao ${model}Dao;
+    private ${model}Dao #LowerCase(${model})Dao;
 
     @Override
-    public Response<Long> create(${model} ${model}) {
+    public Response<Long> create(${model} #LowerCase(${model})) {
         try{
-            ${model}Dao.create(${model});
-            return Response.ok(${model}.getId());
+            #LowerCase(${model})Dao.create(#LowerCase(${model}));
+            return Response.ok(#LowerCase(${model}).getId());
         }catch (Exception e){
-            log.error("failed to create {{Split (LowerCase model) ' '}}, cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("{{Split (LowerCase model) '.'}}.create.fail");
+            log.error("failed to create {{Split #LowerCase(${model}) ' '}}, cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("{{Split #LowerCase(${model}) '.'}}.create.fail");
         }
     }
 
     @Override
-    public Response<Boolean> update(${model} ${model}) {
+    public Response<Boolean> update(${model} #LowerCase(${model})) {
         try{
-            return Response.ok(${model}Dao.update(${model}));
+            return Response.ok(#LowerCase(${model})Dao.update(#LowerCase(${model})));
         }catch (Exception e){
-            log.error("failed to update {{Split (LowerCase model) ' '}}, cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("{{Split (LowerCase model) '.'}}.update.fail");
+            log.error("failed to update {{Split #LowerCase(${model}) ' '}}, cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("{{Split #LowerCase(${model}) '.'}}.update.fail");
         }
     }
 
    @Override
     public Response<Boolean> delete(Long id) {
         try{
-            return Response.ok(${model}Dao.delete(id));
+            return Response.ok(#LowerCase(${model})Dao.delete(id));
         }catch (Exception e){
-            log.error("failed to delete {{Split (LowerCase model) ' '}} by id:{}, cause:{}", id,  Throwables.getStackTraceAsString(e));
-            return Response.fail("{{Split (LowerCase model) '.'}}.delete.fail");
+            log.error("failed to delete {{Split #LowerCase(${model}) ' '}} by id:{}, cause:{}", id,  Throwables.getStackTraceAsString(e));
+            return Response.fail("{{Split #LowerCase(${model}) '.'}}.delete.fail");
         }
     }
 

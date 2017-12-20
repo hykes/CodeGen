@@ -2,9 +2,8 @@ package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.constants.DefaultParams;
-import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.model.*;
-import com.github.hykes.codegen.utils.BuilderUtil;
+import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.google.common.collect.Lists;
@@ -27,7 +26,7 @@ import java.util.stream.Collectors;
 /**
  * 字段自定义编辑器
  *
- * @author: hehaiyangwork@qq.com
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/5/12
  */
 public class ColumnEditorFrame extends JFrame {
@@ -180,7 +179,6 @@ public class ColumnEditorFrame extends JFrame {
                 }
 
                 for (CodeContext context: contexts) {
-                    params.put("serialVersionUID", BuilderUtil.computeDefaultSUID(context.getModel(), context.getFields()) + "");
                     context.set$(params);
                     if(psiDirectory != null) {
                         FileProviderFactory fileFactory = FileProviderFactory.create(ideaContext.getProject(), psiDirectory);

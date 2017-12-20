@@ -11,7 +11,7 @@ import javax.swing.*;
 /**
  * 可选项配置
  *
- * @author: hehaiyangwork@qq.com
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/03/17
  */
 public class ConfigsConfigurable implements Configurable {
@@ -24,7 +24,7 @@ public class ConfigsConfigurable implements Configurable {
         if(configUI == null) {
             configUI = new ConfigUI();
         }
-        return configUI;
+        return configUI.$$$getRootComponent$$$();
     }
 
     @Override

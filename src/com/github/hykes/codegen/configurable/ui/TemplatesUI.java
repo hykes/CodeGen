@@ -1,6 +1,13 @@
 package com.github.hykes.codegen.configurable.ui;
 
+import com.github.hykes.codegen.configurable.SettingManager;
+import com.github.hykes.codegen.configurable.UIConfigurable;
+import com.github.hykes.codegen.configurable.model.Templates;
+import com.github.hykes.codegen.configurable.ui.dialog.TemplateEditDialog;
+import com.github.hykes.codegen.configurable.ui.dialog.TemplateGroupEditDialog;
+import com.github.hykes.codegen.configurable.ui.editor.TemplateEditorUI;
 import com.github.hykes.codegen.constants.DefaultTemplates;
+import com.github.hykes.codegen.model.CodeGroup;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -9,12 +16,6 @@ import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
-import com.github.hykes.codegen.configurable.SettingManager;
-import com.github.hykes.codegen.configurable.UIConfigurable;
-import com.github.hykes.codegen.configurable.model.Templates;
-import com.github.hykes.codegen.configurable.ui.template.TemplateEditor;
-import com.github.hykes.codegen.configurable.ui.variable.AddDialog;
-import com.github.hykes.codegen.model.CodeGroup;
 
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -25,14 +26,14 @@ import java.util.List;
 /**
  * 模版配置面板
  *
- * @author: hehaiyangwork@qq.com
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/5/10
  */
 public class TemplatesUI extends JBPanel implements UIConfigurable {
 
     private Tree templateTree;
     private ToolbarDecorator toolbarDecorator;
-    private TemplateEditor templateEditor;
+    private TemplateEditorUI templateEditor;
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
@@ -179,8 +180,8 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         templatesPanel.setPreferredSize(new Dimension(160,100));
         add(templatesPanel, BorderLayout.WEST);
 
-        templateEditor = new TemplateEditor();
-        add(templateEditor, BorderLayout.CENTER);
+        templateEditor = new TemplateEditorUI();
+        add(templateEditor.$$$getRootComponent$$$(), BorderLayout.CENTER);
     }
 
     private void addAction(){
@@ -196,35 +197,18 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         }
         if(object instanceof String) {
             // 新增模版组
-            JDialog dialog = new AddDialog();
+            TemplateGroupEditDialog dialog = new TemplateGroupEditDialog();
             dialog.setTitle("Create New Group");
-            dialog.setLayout(new BorderLayout());
-
-            JPanel form = new JPanel(new GridLayout(2,2));
-            form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            form.add(new Label("Group Name"));
-            JTextField nameField = new JTextField();
-            form.add(nameField);
-
-            form.add(new Label("Group Level"));
-            JTextField levelField = new JTextField();
-            form.add(levelField);
-
-            dialog.add(form, BorderLayout.CENTER);
-
-            JButton add = new JButton("ADD");
-            add.addActionListener( it ->{
-                String name = nameField.getText().trim();
-                String level = levelField.getText().trim();
+            dialog.getButtonOK().addActionListener( it ->{
+                String name = dialog.getNameTextField().getText().trim();
+                String level = dialog.getLevelTextField().getText().trim();
 
                 CodeGroup group = new CodeGroup(UUID.randomUUID().toString(), name, Integer.valueOf(level), new ArrayList<>());
                 addNode(selectedNode, new DefaultMutableTreeNode(group));
-
                 dialog.setVisible(false);
             });
-            dialog.add(add, BorderLayout.SOUTH);
 
-            dialog.setSize(300, 120);
+            dialog.setSize(300, 150);
             dialog.setAlwaysOnTop(true);
             dialog.setLocationRelativeTo(this);
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
@@ -234,33 +218,17 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         }
         if(object instanceof CodeGroup){
             // 新增模版
-            JDialog dialog = new AddDialog();
+            TemplateEditDialog dialog = new TemplateEditDialog();
             dialog.setTitle("Create New Template");
-            dialog.setLayout(new BorderLayout());
-
-            JPanel form = new JPanel(new GridLayout(2,2));
-            form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            form.add(new Label("display"));
-            JTextField displayJTextField = new JTextField();
-            form.add(displayJTextField);
-            form.add(new Label("extension"));
-            JTextField extensionJTextField = new JTextField();
-            form.add(extensionJTextField);
-
-            dialog.add(form, BorderLayout.CENTER);
-
-            JButton add = new JButton("ADD");
-            add.addActionListener( it ->{
-                String display = displayJTextField.getText();
-                String extension = extensionJTextField.getText();
+            dialog.getButtonOK().addActionListener( it ->{
+                String display = dialog.getDisplayTextField().getText();
+                String extension = dialog.getExtensionTextField().getText();
 
                 addNode(selectedNode, new DefaultMutableTreeNode(new CodeTemplate(UUID.randomUUID().toString(), display, extension, "Unnamed", "", null, false)));
-
                 dialog.setVisible(false);
             });
-            dialog.add(add, BorderLayout.SOUTH);
 
-            dialog.setSize(300, 120);
+            dialog.setSize(300, 150);
             dialog.setAlwaysOnTop(true);
             dialog.setLocationRelativeTo(this);
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
@@ -307,38 +275,21 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
             CodeGroup group = (CodeGroup) object;
 
-            // 新增模版组
-            JDialog dialog = new AddDialog();
+            // 编辑模版组
+            TemplateGroupEditDialog dialog = new TemplateGroupEditDialog();
             dialog.setTitle("Edit Group");
-            dialog.setLayout(new BorderLayout());
 
-            JPanel form = new JPanel(new GridLayout(2,2));
-            form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            form.add(new Label("Group Name"));
-            JTextField nameField = new JTextField(group.getName());
-            form.add(nameField);
-
-            form.add(new Label("Group Level"));
-            JTextField levelField = new JTextField(String.valueOf(group.getLevel()));
-            form.add(levelField);
-
-            dialog.add(form, BorderLayout.CENTER);
-
-            JButton add = new JButton("Confirm");
-            add.addActionListener( it ->{
-                String name = nameField.getText().trim();
-                String level = levelField.getText().trim();
+            dialog.getButtonOK().addActionListener( it ->{
+                String name = dialog.getNameTextField().getText().trim();
+                String level = dialog.getLevelTextField().getText().trim();
 
                 group.setName(name);
                 group.setLevel(Integer.valueOf(level));
-
                 selectedNode.setUserObject(group);
-
                 dialog.setVisible(false);
             });
-            dialog.add(add, BorderLayout.SOUTH);
 
-            dialog.setSize(300, 120);
+            dialog.setSize(300, 150);
             dialog.setAlwaysOnTop(true);
             dialog.setLocationRelativeTo(this);
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);

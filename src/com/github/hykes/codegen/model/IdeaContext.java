@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author : hehaiyangwork@qq.com
+ * @author : hehaiyangwork@gmail.com
  * @date : 17/3/21
  */
 public class IdeaContext implements Serializable {

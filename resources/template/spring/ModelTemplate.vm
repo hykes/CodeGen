@@ -19,13 +19,14 @@ public class ${model} implements Serializable {
      * 自增主键
      */
     private Long id;
-
     #foreach($item in $fields)
+
     /**
      * $item.comment
      */
     private $item.fieldType $item.field;
     #end
+
     /**
      * 创建时间
      */

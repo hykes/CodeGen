@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * 自定义参数 model
- * @author: hehaiyangwork@qq.com
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/05/10
  */
 public class Variables implements Serializable {

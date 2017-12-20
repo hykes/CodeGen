@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * @author: hehaiyang@terminus.io
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/12/19
  */
 public class BundleTest {

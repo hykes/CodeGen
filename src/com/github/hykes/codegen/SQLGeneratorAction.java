@@ -15,7 +15,7 @@ import javax.swing.*;
 /**
  * 解析sql生成代码
  *
- * @author: hehaiyangwork@qq.com
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/03/21
  */
 public class SQLGeneratorAction extends AnAction implements DumbAware {
@@ -35,8 +35,9 @@ public class SQLGeneratorAction extends AnAction implements DumbAware {
         }
 
         JFrame frame = new JFrame();
+        frame.setTitle("CodeGen-SQL");
         frame.setContentPane(new SqlEditorPanel(new IdeaContext(project)).$$$getRootComponent$$$());
-        frame.setSize(500, 350);
+        frame.setSize(600, 400);
         frame.setResizable(false);
         frame.setAlwaysOnTop(true);
         frame.setLocationRelativeTo(null);

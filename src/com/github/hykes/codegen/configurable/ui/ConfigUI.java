@@ -4,102 +4,102 @@ import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.configurable.UIConfigurable;
 import com.github.hykes.codegen.configurable.model.Configs;
 import com.intellij.ui.IdeBorderFactory;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * 通用配置设置面板
- *
- * @author: hehaiyangwork@qq.com
- * @date: 2017/05/19
+ * @author: hehaiyang@terminus.io
+ * @date: 2017/12/20
  */
-public class ConfigUI extends JPanel implements UIConfigurable {
+public class ConfigUI implements UIConfigurable {
+    private JPanel rootPanel;
+    private JPanel ignorePanel;
+    private JLabel ignoreLab;
+    private JTextField ignoreTextField;
 
-    JPanel thisPanel;
-    final JRadioButton sqlRadio = new JRadioButton("Use SQL", true);
-    final JRadioButton dbRadio = new JRadioButton("Use DB");
-    final JTextField ignoreFields = new JTextField();
-
-    private final SettingManager settingManager = SettingManager.getInstance();
+    private final static SettingManager settingManager = SettingManager.getInstance();
 
     public ConfigUI() {
-        this.thisPanel = this;
-        init();
-        setConfig(settingManager.getConfigs());
+        $$$setupUI$$$();
+        ignoreTextField.setText(settingManager.getConfigs().getIgnoreFields());
     }
 
-    private void init() {
-        setLayout(new BorderLayout());
-
-        // 设置生成类型, SQL or DB
-        sqlRadio.setMnemonic('S');
-        sqlRadio.setToolTipText("generate code by SQL");
-        sqlRadio.setMnemonic('D');
-        sqlRadio.setToolTipText("generate code by DB");
-        JPanel generate = new JPanel(new BorderLayout());
-        generate.setBorder(IdeBorderFactory.createTitledBorder("Default generation type", true));
-        thisPanel.add(thisPanel = new JPanel(new BorderLayout()), BorderLayout.NORTH);
-        thisPanel.add(generate, BorderLayout.NORTH);
-        ButtonGroup group = new ButtonGroup();
-        group.add(sqlRadio);
-        group.add(dbRadio);
-        generate.add(sqlRadio, BorderLayout.NORTH);
-        generate.add(generate = new JPanel(new BorderLayout()), BorderLayout.SOUTH);
-        generate.add(dbRadio, BorderLayout.NORTH);
-
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
         // 设置需要忽略的字段
-        JPanel ignorePane = new JPanel(new BorderLayout());
-        ignorePane.setBorder(IdeBorderFactory.createTitledBorder("The fields you want to ignore", true));
-        this.add(ignorePane, BorderLayout.CENTER);
-        JLabel fieldLabel = new JLabel("Fields:");
-        fieldLabel.setPreferredSize(new Dimension(50, 25));
-        ignorePane.add(fieldLabel, BorderLayout.WEST);
-        ignoreFields.setPreferredSize(new Dimension(300, 25));
-        ignorePane.add(ignoreFields, BorderLayout.CENTER);
+        ignorePanel = new JPanel(new BorderLayout());
+        ignorePanel.setBorder(IdeBorderFactory.createTitledBorder("The fields you want to ignore", true));
+
     }
 
-    public void setConfig(@NotNull Configs configuration) {
-        sqlRadio.setSelected(configuration.isSqlRadio());
-        dbRadio.setSelected(configuration.isDbRadio());
-        ignoreFields.setText(configuration.getIgnoreFields());
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Test");
+        frame.setContentPane(new ConfigUI().rootPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
+    /**
+     * 是否已修改
+     *
+     * @return
+     */
     @Override
     public boolean isModified() {
         Configs configs = settingManager.getConfigs();
-        if(configs.isDbRadio() && !dbRadio.isSelected()){
-            return true;
-        }
-        if(configs.isSqlRadio() && !sqlRadio.isSelected()){
-            return true;
-        }
-        if (!configs.getIgnoreFields().equals(ignoreFields.getText())) {
+        if (!configs.getIgnoreFields().equals(ignoreTextField.getText())) {
             return true;
         }
         return false;
     }
 
+    /**
+     * 应用
+     */
     @Override
     public void apply() {
-        settingManager.getConfigs().setDbRadio(dbRadio.isSelected());
-        settingManager.getConfigs().setSqlRadio(sqlRadio.isSelected());
-        settingManager.getConfigs().setIgnoreFields(ignoreFields.getText());
+        settingManager.getConfigs().setIgnoreFields(ignoreTextField.getText());
     }
 
+    /**
+     * 重置
+     */
     @Override
     public void reset() {
-        setConfig(settingManager.getConfigs());
+        ignoreTextField.setText(settingManager.getConfigs().getIgnoreFields());
     }
 
-    public static void main(String[] args) {
-        JFrame test = new JFrame();
-        test.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        final JPanel comp = new JPanel(new BorderLayout());
-        comp.add(new ConfigUI(), BorderLayout.CENTER);
-        test.getContentPane().add(comp);
-        test.setSize(450, 450);
-        test.setVisible(true);
+    /**
+     * Method generated by IntelliJ IDEA GUI Designer
+     * >>> IMPORTANT!! <<<
+     * DO NOT edit this method OR call it in your code!
+     *
+     * @noinspection ALL
+     */
+    private void $$$setupUI$$$() {
+        createUIComponents();
+        rootPanel = new JPanel();
+        rootPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        ignorePanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        rootPanel.add(ignorePanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        ignoreLab = new JLabel();
+        ignoreLab.setText("IgnoreField");
+        ignorePanel.add(ignoreLab, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        ignoreTextField = new JTextField();
+        ignorePanel.add(ignoreTextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        rootPanel.add(spacer1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    public JComponent $$$getRootComponent$$$() {
+        return rootPanel;
     }
 }

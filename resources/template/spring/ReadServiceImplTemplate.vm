@@ -26,15 +26,15 @@ import java.util.List;
 public class ${model}ReadServiceImpl implements ${model}ReadService {
 
     @Autowired
-    private ${model}Dao ${model}Dao;
+    private ${model}Dao #LowerCase(${model})Dao;
 
     @Override
     public Response<${model}> findById(Long id) {
         try{
-            return Response.ok(${model}Dao.findById(id));
+            return Response.ok(#LowerCase(${model})Dao.findById(id));
         }catch (Exception e){
-            log.error("failed to find {{Split (LowerCase model) ' '}} by id:{}, cause:{}", id, Throwables.getStackTraceAsString(e));
-            return Response.fail("{{Split (LowerCase model) '.'}}.find.fail");
+            log.error("failed to find {{Split #LowerCase(${model}) ' '}} by id:{}, cause:{}", id, Throwables.getStackTraceAsString(e));
+            return Response.fail("{{Split #LowerCase(${model}) '.'}}.find.fail");
         }
     }
 
@@ -42,20 +42,20 @@ public class ${model}ReadServiceImpl implements ${model}ReadService {
     public Response<Paging<${model}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria) {
         try{
             PageInfo pageInfo = new PageInfo(pageNo, pageSize);
-            return Response.ok(${model}Dao.paging(pageInfo.getOffset(), pageInfo.getLimit(), criteria));
+            return Response.ok(#LowerCase(${model})Dao.paging(pageInfo.getOffset(), pageInfo.getLimit(), criteria));
         }catch (Exception e){
-            log.error("failed to paging {{Split (LowerCase model) ' '}} by pageNo:{} pageSize:{}, cause:{}", pageNo, pageSize, Throwables.getStackTraceAsString(e));
-            return Response.fail("{{Split (LowerCase model) '.'}}.paging.fail");
+            log.error("failed to paging {{Split #LowerCase(${model}) ' '}} by pageNo:{} pageSize:{}, cause:{}", pageNo, pageSize, Throwables.getStackTraceAsString(e));
+            return Response.fail("{{Split #LowerCase(${model}) '.'}}.paging.fail");
         }
     }
 
     @Override
     public Response<List<${model}>> list(Map<String, Object> criteria) {
         try{
-            return Response.ok(${model}Dao.list(criteria));
+            return Response.ok(#LowerCase(${model})Dao.list(criteria));
         }catch (Exception e){
-            log.error("failed to list {{Split (LowerCase model) ' '}}, cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("{{Split (LowerCase model) '.'}}.list.fail");
+            log.error("failed to list {{Split #LowerCase(${model}) ' '}}, cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("{{Split #LowerCase(${model}) '.'}}.list.fail");
         }
     }
 

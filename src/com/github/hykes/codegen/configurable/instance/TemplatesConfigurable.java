@@ -11,7 +11,7 @@ import javax.swing.*;
 /**
  * 模版配置
  *
- * @author: hehaiyangwork@qq.com
+ * @author: hehaiyangwork@gmail.com
  * @date : 2017/30/17
  */
 public class TemplatesConfigurable implements Configurable {

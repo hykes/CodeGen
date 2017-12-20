@@ -11,17 +11,17 @@ public interface ${model}WriteService {
 
     /**
      * 创建
-     * @param ${model}
+     * @param #LowerCase(${model})
      * @return Boolean
      */
-    Response<Long> create(${model} ${model});
+    Response<Long> create(${model} #LowerCase(${model}));
 
     /**
      * 更新
-     * @param {{LowerCase model}}
+     * @param #LowerCase(${model})
      * @return Boolean
      */
-    Response<Boolean> update(${model} ${model});
+    Response<Boolean> update(${model} #LowerCase(${model}));
 
     /**
      * 删除

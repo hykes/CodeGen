@@ -13,7 +13,7 @@ import java.util.*;
 
 /**
  * Desc:
- * Mail: hehaiyangwork@qq.com
+ * Mail: hehaiyangwork@gmail.com
  * Date: 16/4/21
  */
 public class BuilderUtil {

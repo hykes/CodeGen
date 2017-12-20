@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * Desc:
- * Mail: hehaiyangwork@qq.com
+ * Mail: hehaiyangwork@gmail.com
  * Date: 17/3/21
  */
 public class CodeContext implements Serializable {

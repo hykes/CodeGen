@@ -4,9 +4,11 @@ import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.parser.DefaultParser;
 import com.github.hykes.codegen.parser.Parser;
+import com.github.hykes.codegen.utils.NotifyUtil;
+import com.google.common.base.Strings;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.MessageType;
-import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 
@@ -18,7 +20,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 /**
- * @author: hehaiyang@terminus.io
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/12/19
  */
 public class SqlEditorPanel {
@@ -26,12 +28,12 @@ public class SqlEditorPanel {
     private static final Logger LOGGER = Logger.getInstance(SqlEditorPanel.class);
 
     private JPanel rootPanel;
-    private JLabel tipLab;
     private JButton buttonCancel;
     private JButton buttonOk;
     private JTextArea sqlTextArea;
     private JPanel sqlPanel;
     private JPanel actionPanel;
+    private JScrollPane sqlScrollPane;
 
     public SqlEditorPanel(IdeaContext ideaContext) {
         $$$setupUI$$$();
@@ -47,11 +49,15 @@ public class SqlEditorPanel {
                 try {
                     String sqls = sqlTextArea.getText().trim();
 
+                    if (Strings.isNullOrEmpty(sqls)) {
+                        return;
+                    }
+
                     Parser parser = new DefaultParser();
                     List<Table> tables = parser.parseSQLs(sqls);
 
                     if (tables.isEmpty()) {
-                        setTips(true, "Error, please check sql format !");
+                        NotifyUtil.notice("CodeGen-SQL", "please check sql format !", MessageType.ERROR);
                         return;
                     }
 
@@ -63,10 +69,9 @@ public class SqlEditorPanel {
                     frame.setVisible(true);
                     frame.setResizable(true);
 
+                    disable();
                 } catch (Exception ex) {
                     LOGGER.error(ex.getMessage());
-                } finally {
-                    disable();
                 }
             }
         });
@@ -83,7 +88,6 @@ public class SqlEditorPanel {
         });
 
         this.rootPanel.registerKeyboardAction(e -> disable(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
-
     }
 
     private void disable() {
@@ -91,27 +95,17 @@ public class SqlEditorPanel {
         $$$getRootComponent$$$().getRootPane().getParent().setVisible(false);
     }
 
-    private void setTips(boolean operator, String tips) {
-        tipLab.setText(tips);
-        tipLab.setVisible(operator);
-    }
-
     private void createUIComponents() {
         // TODO: place custom component creation code here
         rootPanel = new JPanel();
-
-        sqlTextArea = new JTextArea();
-        sqlTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-        rootPanel.add(ScrollPaneFactory.createScrollPane(sqlTextArea), BorderLayout.CENTER);
-
-        tipLab = new JLabel("Input sql .",
-                MessageType.INFO.getDefaultIcon(), SwingConstants.LEFT);
+        sqlPanel = new JPanel();
+        sqlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        sqlScrollPane = new JBScrollPane();
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("TestForm");
-        frame.setContentPane(new SqlEditorPanel(null).rootPanel);
+        JFrame frame = new JFrame("CodeGen-SQL");
+        frame.setContentPane(new SqlEditorPanel(null).$$$getRootComponent$$$());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -128,20 +122,19 @@ public class SqlEditorPanel {
         createUIComponents();
         rootPanel.setLayout(new BorderLayout(0, 0));
         actionPanel = new JPanel();
-        actionPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        actionPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(actionPanel, BorderLayout.SOUTH);
-        tipLab.setText("Input sql .");
-        actionPanel.add(tipLab, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonOk = new JButton();
         buttonOk.setText("OK");
-        actionPanel.add(buttonOk, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        actionPanel.add(buttonOk, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
         buttonCancel.setText("Cancel");
-        actionPanel.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        sqlPanel = new JPanel();
+        actionPanel.add(buttonCancel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sqlPanel.setLayout(new BorderLayout(0, 0));
         rootPanel.add(sqlPanel, BorderLayout.CENTER);
-        sqlPanel.add(sqlTextArea, BorderLayout.CENTER);
+        sqlPanel.add(sqlScrollPane, BorderLayout.CENTER);
+        sqlTextArea = new JTextArea();
+        sqlScrollPane.setViewportView(sqlTextArea);
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.configurable.SettingManager;
-import com.github.hykes.codegen.configurable.ui.variable.AddDialog;
+import com.github.hykes.codegen.configurable.ui.dialog.ColumnEditDialog;
 import com.github.hykes.codegen.model.Field;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.utils.StringUtils;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author: hehaiyang@terminus.io
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/12/18
  */
 public class TablePanel {
@@ -54,13 +54,13 @@ public class TablePanel {
         fieldTable.getTableHeader().setReorderingAllowed(false);
         //不可拉动表格
         fieldTable.getTableHeader().setResizingAllowed(false);
-        fieldTable.getEmptyText().setText("No Fields");
+        fieldTable.getEmptyText().setText("No Columns");
         JPanel panel = ToolbarDecorator.createDecorator(fieldTable)
                 .setAddAction(it -> addAction())
                 .setRemoveAction(it -> removeAction())
                 .setEditAction(it -> editAction())
                 .createPanel();
-        columnsPanel.setBorder(IdeBorderFactory.createTitledBorder("Field Table", false));
+        columnsPanel.setBorder(IdeBorderFactory.createTitledBorder("Columns", false));
         columnsPanel.add(panel, BorderLayout.CENTER);
 
         mainPanel.add(columnsPanel);
@@ -74,57 +74,24 @@ public class TablePanel {
      * 添加
      */
     private void addAction() {
-        JDialog dialog = new AddDialog();
-        dialog.setLayout(new BorderLayout());
+        ColumnEditDialog dialog = new ColumnEditDialog();
+        dialog.setTitle("Add a Column");
 
-        JPanel form = new JPanel(new GridLayout(7, 2));
-        form.add(new Label("Field"));
-        JTextField field = new JTextField();
-        form.add(field);
-        form.add(new Label("FieldType"));
-        JTextField fieldType = new JTextField();
-        form.add(fieldType);
-
-        form.add(new Label("Column"));
-        JTextField column = new JTextField();
-        form.add(column);
-
-        form.add(new Label("ColumnType"));
-        JTextField columnType = new JTextField();
-        form.add(columnType);
-
-        form.add(new Label("SqlType"));
-        JTextField sqlType = new JTextField();
-        form.add(sqlType);
-
-        form.add(new Label("ColumnSize"));
-        JTextField columnSize = new JTextField();
-        form.add(columnSize);
-
-        form.add(new Label("Comment"));
-        JTextField comment = new JTextField();
-        form.add(comment);
-
-        dialog.add(form, BorderLayout.CENTER);
-
-        JButton add = new JButton("ADD");
-        add.addActionListener(it -> {
-            String fieldText = field.getText().trim();
-            String fieldTypeText = fieldType.getText().trim();
-            String columnText = column.getText();
-            String columnTypeText = columnType.getText().trim();
-            String sqlTypeText = sqlType.getText().trim();
-            String columnSizeText = columnSize.getText().trim();
-            String commentText = comment.getText().trim();
+        dialog.getButtonOK().addActionListener(it -> {
+            String fieldText = dialog.getFieldTextField().getText().trim();
+            String fieldTypeText = dialog.getFieldTypeTextField().getText().trim();
+            String columnText = dialog.getColumnTextField().getText();
+            String columnTypeText = dialog.getColumnTypeTextField().getText().trim();
+            String columnSizeText = dialog.getColumnSizeTextField().getText().trim();
+            String commentText = dialog.getCommentTextField().getText().trim();
 
             DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
-            String[] rowValues = {fieldText, fieldTypeText, columnText, columnTypeText, sqlTypeText, columnSizeText, commentText};
+            String[] rowValues = {fieldText, fieldTypeText, columnText, columnTypeText, "0", columnSizeText, commentText};
             tableModel.addRow(rowValues);
             dialog.setVisible(false);
         });
-        dialog.add(add, BorderLayout.SOUTH);
 
-        dialog.setSize(300, 260);
+        dialog.setSize(500, 260);
         dialog.setAlwaysOnTop(true);
         dialog.setLocationRelativeTo(this.$$$getRootComponent$$$());
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
@@ -162,48 +129,23 @@ public class TablePanel {
             String oldColumnSizeText = (String) tableModel.getValueAt(selectedRow, 5);
             String oldCommentText = (String) tableModel.getValueAt(selectedRow, 6);
 
-            JDialog dialog = new AddDialog();
-            dialog.setLayout(new BorderLayout());
+            ColumnEditDialog dialog = new ColumnEditDialog();
+            dialog.setTitle("Edit a Column");
 
-            JPanel form = new JPanel(new GridLayout(7, 2));
+            dialog.getFieldTextField().setText(oldFieldText);
+            dialog.getFieldTypeTextField().setText(oldFieldTypeText);
+            dialog.getColumnTextField().setText(oldColumnText);
+            dialog.getColumnTypeTextField().setText(oldColumnTypeText);
+            dialog.getColumnSizeTextField().setText(oldColumnSizeText);
+            dialog.getCommentTextField().setText(oldCommentText);
 
-            form.add(new Label("Field"));
-            JTextField field = new JTextField(oldFieldText);
-            form.add(field);
-            form.add(new Label("FieldType"));
-            JTextField fieldType = new JTextField(oldFieldTypeText);
-            form.add(fieldType);
-
-            form.add(new Label("Column"));
-            JTextField column = new JTextField(oldColumnText);
-            form.add(column);
-
-            form.add(new Label("ColumnType"));
-            JTextField columnType = new JTextField(oldColumnTypeText);
-            form.add(columnType);
-
-            form.add(new Label("SqlType"));
-            JTextField sqlType = new JTextField(oldSqlTypeText);
-            form.add(sqlType);
-
-            form.add(new Label("ColumnSize"));
-            JTextField columnSize = new JTextField(oldColumnSizeText);
-            form.add(columnSize);
-
-            form.add(new Label("Comment"));
-            JTextField comment = new JTextField(oldCommentText);
-            form.add(comment);
-
-            dialog.add(form, BorderLayout.CENTER);
-
-            JButton add = new JButton("Confirm");
-            add.addActionListener(it -> {
-                String fieldText = field.getText().trim();
-                String fieldTypeText = fieldType.getText().trim();
-                String columnText = column.getText();
-                String columnTypeText = columnType.getText().trim();
-                String columnSizeText = columnSize.getText().trim();
-                String commentText = comment.getText().trim();
+            dialog.getButtonOK().addActionListener(it -> {
+                String fieldText = dialog.getFieldTextField().getText().trim();
+                String fieldTypeText = dialog.getFieldTypeTextField().getText().trim();
+                String columnText = dialog.getColumnTextField().getText();
+                String columnTypeText = dialog.getColumnTypeTextField().getText().trim();
+                String columnSizeText = dialog.getColumnSizeTextField().getText().trim();
+                String commentText = dialog.getCommentTextField().getText().trim();
 
                 tableModel.setValueAt(fieldText, selectedRow, 0);
                 tableModel.setValueAt(fieldTypeText, selectedRow, 1);
@@ -213,9 +155,8 @@ public class TablePanel {
                 tableModel.setValueAt(commentText, selectedRow, 5);
                 dialog.setVisible(false);
             });
-            dialog.add(add, BorderLayout.SOUTH);
 
-            dialog.setSize(300, 260);
+            dialog.setSize(500, 260);
             dialog.setAlwaysOnTop(true);
             dialog.setLocationRelativeTo(this.$$$getRootComponent$$$());
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);

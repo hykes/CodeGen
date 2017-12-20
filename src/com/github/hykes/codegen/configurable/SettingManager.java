@@ -3,20 +3,17 @@ package com.github.hykes.codegen.configurable;
 import com.github.hykes.codegen.configurable.model.Configs;
 import com.github.hykes.codegen.configurable.model.Templates;
 import com.github.hykes.codegen.configurable.model.Variables;
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.*;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * 插件配置管理
  *
- * @author: hehaiyangwork@qq.com
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/3/17
  */
-@State(name = "CodeGen", storages = { @Storage(value = "$APP_CONFIG$/format.xml") })
+@State(name = "CodeGen", storages = { @Storage(value = "codegen.xml") })
 public class SettingManager implements PersistentStateComponent<SettingManager> {
 
     public static SettingManager getInstance() {

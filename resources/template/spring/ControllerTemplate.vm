@@ -28,10 +28,10 @@ import java.util.List;
 public class ${model}s {
 
     @RpcConsumer
-    private ${model}WriteService ${model}WriteService;
+    private ${model}WriteService #LowerCase(${model})WriteService;
 
     @RpcConsumer
-    private ${model}ReadService ${model}ReadService;
+    private ${model}ReadService #LowerCase(${model})ReadService;
 
     /**
      * 查询
@@ -40,7 +40,7 @@ public class ${model}s {
      */
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ${model} find${model}(@PathVariable Long id) {
-        Response<${model}> response =  ${model}ReadService.findById(id);
+        Response<${model}> response =  #LowerCase(${model})ReadService.findById(id);
         if (!response.isSuccess()) {
             throw new JsonResponseException(500, response.getError());
         }
@@ -59,7 +59,7 @@ public class ${model}s {
 
         Map<String, Object> criteria = Maps.newHashMap();
 
-        Response<Paging<${model}>> result =  ${model}ReadService.paging(pageNo, pageSize, criteria);
+        Response<Paging<${model}>> result = #LowerCase(${model})ReadService.paging(pageNo, pageSize, criteria);
         if(!result.isSuccess()){
             throw new JsonResponseException(result.getError());
         }
@@ -68,12 +68,12 @@ public class ${model}s {
 
     /**
      * 创建
-     * @param {{LowerCase model}}
+     * @param #LowerCase(${model})
      * @return
      */
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Long create${model}(@RequestBody ${model} ${model}) {
-        Response<Long> response = ${model}WriteService.create(${model});
+    public Long create${model}(@RequestBody ${model} #LowerCase(${model})) {
+        Response<Long> response = #LowerCase(${model})WriteService.create(#LowerCase(${model}));
         if (!response.isSuccess()) {
             throw new JsonResponseException(500, response.getError());
         }
@@ -82,12 +82,12 @@ public class ${model}s {
 
     /**
      * 更新
-     * @param ${model}
+     * @param #LowerCase(${model})
      * @return
      */
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean update${model}(@RequestBody ${model} ${model}) {
-        Response<Boolean> response = ${model}WriteService.update(${model});
+    public Boolean update${model}(@RequestBody ${model} #LowerCase(${model})) {
+        Response<Boolean> response = #LowerCase(${model})WriteService.update(#LowerCase(${model}));
         if (!response.isSuccess()) {
             throw new JsonResponseException(500, response.getError());
         }
@@ -101,7 +101,7 @@ public class ${model}s {
     */
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean delete${model}(@PathVariable Long id) {
-        Response<Boolean> response = ${model}WriteService.delete(id);
+        Response<Boolean> response = #LowerCase(${model})WriteService.delete(id);
         if (!response.isSuccess()) {
             throw new JsonResponseException(500, response.getError());
         }
@@ -113,9 +113,9 @@ public class ${model}s {
     * @return
     */
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<${model}> list{{model}}() {
+    public List<${model}> list${model}() {
        Map<String, Object> criteria = Maps.newHashMap();
-       Response<List<${model}>> result =  ${model}ReadService.list(criteria);
+       Response<List<${model}>> result = #LowerCase(${model})ReadService.list(criteria);
        if(!result.isSuccess()){
            throw new JsonResponseException(result.getError());
        }

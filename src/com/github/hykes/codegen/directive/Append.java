@@ -13,7 +13,7 @@ import java.io.Writer;
 /**
  * 拼接元素
  * ${Append '#' 'ABC' '%'}  => #ABC%
- * @author: hehaiyang@terminus.io
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/12/19
  */
 public class Append extends Directive {

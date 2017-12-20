@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Desc: 模版数据
- * Mail: hehaiyangwork@qq.com
+ * Mail: hehaiyangwork@gmail.com
  * Date: 2017/4/7
  */
 public class CodeTemplate implements Serializable {

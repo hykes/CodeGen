@@ -1,12 +1,13 @@
 package com.github.hykes.codegen.utils;
 
+import com.google.common.base.Throwables;
 import com.intellij.ide.util.TreeClassChooser;
 import com.intellij.ide.util.TreeClassChooserFactory;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
@@ -14,7 +15,6 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.BuildNumber;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
@@ -25,10 +25,12 @@ import java.util.Objects;
 
 /**
  * Desc:
- * Mail: hehaiyangwork@qq.com
+ * Mail: hehaiyangwork@gmail.com
  * Date: 2017/4/6
  */
 public class PsiUtil {
+
+    private static final Logger LOGGER = Logger.getInstance(PsiUtil.class);
 
     public static Project getProject(AnActionEvent anActionEvent) {
         return anActionEvent.getData(PlatformDataKeys.PROJECT);
@@ -105,9 +107,13 @@ public class PsiUtil {
 
     public static void createFile(Project project, @NotNull PsiDirectory psiDirectory, String fileName, String context, LanguageFileType fileType) {
         PsiFile psiFile = PsiFileFactory.getInstance(project).createFileFromText(fileName, fileType, context);
-
         WriteCommandAction.runWriteCommandAction(project, () -> {
-            psiDirectory.add(psiFile);
+            try {
+                psiDirectory.add(psiFile);
+//                JavaCodeStyleManager.getInstance(project).shortenClassReferences();
+            } catch (Exception e) {
+                LOGGER.error(Throwables.getStackTraceAsString(e));
+            }
         });
     }
 

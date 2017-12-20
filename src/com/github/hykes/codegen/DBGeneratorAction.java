@@ -12,14 +12,13 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 直连数据库生成代码
  *
- * @author: hehaiyangwork@qq.com
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/12/16
  */
 public class DBGeneratorAction extends AnAction implements DumbAware {
@@ -58,7 +57,6 @@ public class DBGeneratorAction extends AnAction implements DumbAware {
         }
 
         DatabaseView view = DatabaseView.DATABASE_VIEW_KEY.getData(e.getDataContext());
-
         Object[] elements = view.getTreeBuilder().getSelectedElements().toArray();
 
         List<DbTable> tables = new ArrayList<>();

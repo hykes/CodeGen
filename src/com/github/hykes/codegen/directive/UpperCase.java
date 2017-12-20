@@ -13,7 +13,7 @@ import java.io.Writer;
 /**
  *  首字母大写
  * ${LowerCase 'abc'} => Abc
- * @author: hehaiyang@terminus.io
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/12/19
  */
 public class UpperCase extends Directive {

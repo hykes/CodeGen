@@ -28,14 +28,24 @@ public class DefaultProviderImpl extends AbstractFileProvider {
     public DefaultProviderImpl(Project project, PsiDirectory psiDirectory, LanguageFileType languageFileType) {
         super(project, psiDirectory);
         this.languageFileType = languageFileType;
-        velocityEngine.setProperty("userdirective", "com.github.hykes.codegen.directive.Append");
+        /**
+         * IDEA 的 URLClassLoader 无法获取当前插件的 path
+         * @see org.apache.velocity.util.ClassUtils
+         */
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
+        velocityEngine.loadDirective("com.github.hykes.codegen.directive.LowerCase");
+        velocityEngine.loadDirective("com.github.hykes.codegen.directive.UpperCase");
+        velocityEngine.loadDirective("com.github.hykes.codegen.directive.Append");
+        velocityEngine.loadDirective("com.github.hykes.codegen.directive.Split");
+        Thread.currentThread().setContextClassLoader(classLoader);
     }
 
     @Override
     public void create(CodeTemplate template, CodeContext context) throws Exception{
 
         VelocityContext velocityContext = new VelocityContext(BuilderUtil.transBean2Map(context));
-
+        velocityContext.put("serialVersionUID", BuilderUtil.computeDefaultSUID(context.getModel(), context.getFields()));
         StringWriter templateWriter = new StringWriter();
         velocityEngine.evaluate(velocityContext, templateWriter, "", template.getTemplate());
 
@@ -43,7 +53,7 @@ public class DefaultProviderImpl extends AbstractFileProvider {
         velocityEngine.evaluate(velocityContext, fileNameWriter, "", template.getFilename());
 
         PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getResources());
-        PsiUtil.createFile(project, directory, fileNameWriter.toString() + this.languageFileType.getDefaultExtension(), templateWriter.toString(), this.languageFileType);
+        PsiUtil.createFile(project, directory, fileNameWriter.toString() + "." + this.languageFileType.getDefaultExtension(), templateWriter.toString(), this.languageFileType);
     }
 
 }

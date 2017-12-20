@@ -2,12 +2,9 @@ package com.github.hykes.codegen.test;
 
 import com.github.hykes.codegen.gui.SqlEditorPanel;
 import com.google.common.collect.Maps;
-import com.intellij.codeInsight.template.impl.Variable;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Computable;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.codeStyle.CodeStyleManager;
-import com.intellij.refactoring.util.VariableData;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.java.generate.velocity.VelocityFactory;
@@ -16,7 +13,7 @@ import java.io.StringWriter;
 import java.util.Map;
 
 /**
- * @author: hehaiyang@terminus.io
+ * @author: hehaiyangwork@gmail.com
  * @date: 2017/12/19
  */
 public class VelocityTest {
@@ -25,16 +22,16 @@ public class VelocityTest {
 
     public static void main(String[] args) {
         VelocityEngine velocityEngine = VelocityFactory.getVelocityEngine();
-
+        velocityEngine.loadDirective("com.github.hykes.codegen.directive.LowerCase");
         String template = "/**\n" +
                 " * \n" +
-                " * @author: hehaiyang@terminus.io\n" +
+                " * @author: hehaiyangwork@gmail.com\n" +
                 " * @date: ${DATE}\n" +
                 " */\n" +
-                "public class $NAME {\n" +
+                "public class #LowerCase(${NAME}) {\n" +
                 "}";
         Map<String, Object> map = Maps.newHashMap();
-        map.put("NAME", "hykes");
+        map.put("NAME", "Hykes");
 
         StringWriter writer = new StringWriter();
         velocityEngine.evaluate(new VelocityContext(map), writer, "", template);
