@@ -17,6 +17,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import com.intellij.psi.codeStyle.CodeStyleManager;
+import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
@@ -107,6 +109,7 @@ public class PsiUtil {
 
     public static void createFile(Project project, @NotNull PsiDirectory psiDirectory, String fileName, String context, LanguageFileType fileType) {
         PsiFile psiFile = PsiFileFactory.getInstance(project).createFileFromText(fileName, fileType, context);
+        CodeStyleManager.getInstance(project).reformat(psiFile);
         WriteCommandAction.runWriteCommandAction(project, () -> {
             try {
                 psiDirectory.add(psiFile);

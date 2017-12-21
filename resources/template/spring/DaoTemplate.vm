@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author ${email}
+ * @author ${!email}
  * @date ${Now}
  * Created by CodeGen .
  */

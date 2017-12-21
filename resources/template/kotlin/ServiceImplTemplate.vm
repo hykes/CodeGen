@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service
 
 
 /**
- * ${modelName}服务接口实现
- * @author ${email}
+ *
+ * @author ${!email}
  * @date ${Now}
  * Created by CodeGen .
  */

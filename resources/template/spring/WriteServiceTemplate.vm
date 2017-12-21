@@ -3,7 +3,7 @@ import io.terminus.common.model.Response;
 
 /**
  *
- * @author ${email}
+ * @author ${!email}
  * @date ${Now}
  * Created by CodeGen .
  */

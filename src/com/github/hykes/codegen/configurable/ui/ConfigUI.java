@@ -21,11 +21,11 @@ public class ConfigUI implements UIConfigurable {
     private JLabel ignoreLab;
     private JTextField ignoreTextField;
 
-    private final static SettingManager settingManager = SettingManager.getInstance();
+    private final static SettingManager SETTING_MANAGER = SettingManager.getInstance();
 
     public ConfigUI() {
         $$$setupUI$$$();
-        ignoreTextField.setText(settingManager.getConfigs().getIgnoreFields());
+        ignoreTextField.setText(SETTING_MANAGER.getConfigs().getIgnoreFields());
     }
 
     private void createUIComponents() {
@@ -51,7 +51,7 @@ public class ConfigUI implements UIConfigurable {
      */
     @Override
     public boolean isModified() {
-        Configs configs = settingManager.getConfigs();
+        Configs configs = SETTING_MANAGER.getConfigs();
         return !configs.getIgnoreFields().equals(ignoreTextField.getText());
     }
 
@@ -60,7 +60,7 @@ public class ConfigUI implements UIConfigurable {
      */
     @Override
     public void apply() {
-        settingManager.getConfigs().setIgnoreFields(ignoreTextField.getText());
+        SETTING_MANAGER.getConfigs().setIgnoreFields(ignoreTextField.getText());
     }
 
     /**
@@ -68,7 +68,7 @@ public class ConfigUI implements UIConfigurable {
      */
     @Override
     public void reset() {
-        ignoreTextField.setText(settingManager.getConfigs().getIgnoreFields());
+        ignoreTextField.setText(SETTING_MANAGER.getConfigs().getIgnoreFields());
     }
 
     /**

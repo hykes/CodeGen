@@ -4,6 +4,9 @@ import com.github.hykes.codegen.model.CodeContext;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.BuilderUtil;
 import com.github.hykes.codegen.utils.PsiUtil;
+import com.google.common.base.Throwables;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
@@ -12,6 +15,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.java.generate.velocity.VelocityFactory;
 
 import java.io.StringWriter;
+import java.util.Map;
 
 /**
  * 默认文件提供者
@@ -21,7 +25,9 @@ import java.io.StringWriter;
  */
 public class DefaultProviderImpl extends AbstractFileProvider {
 
-    protected final static VelocityEngine velocityEngine = VelocityFactory.getVelocityEngine();
+    protected final static VelocityEngine VELOCITY_ENGINE = VelocityFactory.getVelocityEngine();
+
+    private static final Logger LOGGER = Logger.getInstance(DefaultProviderImpl.class);
 
     protected LanguageFileType languageFileType;
 
@@ -34,26 +40,38 @@ public class DefaultProviderImpl extends AbstractFileProvider {
          */
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-        velocityEngine.loadDirective("com.github.hykes.codegen.directive.LowerCase");
-        velocityEngine.loadDirective("com.github.hykes.codegen.directive.UpperCase");
-        velocityEngine.loadDirective("com.github.hykes.codegen.directive.Append");
-        velocityEngine.loadDirective("com.github.hykes.codegen.directive.Split");
+        VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.LowerCase");
+        VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.UpperCase");
+        VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.Append");
+        VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.Split");
         Thread.currentThread().setContextClassLoader(classLoader);
     }
 
     @Override
-    public void create(CodeTemplate template, CodeContext context) throws Exception{
+    public void create(CodeTemplate template, CodeContext context, Map<String, Object> extraMap) throws Exception{
 
         VelocityContext velocityContext = new VelocityContext(BuilderUtil.transBean2Map(context));
         velocityContext.put("serialVersionUID", BuilderUtil.computeDefaultSUID(context.getModel(), context.getFields()));
+        if (extraMap != null && extraMap.size() > 0) {
+            for (Map.Entry<String, Object> entry: extraMap.entrySet()) {
+                velocityContext.put(entry.getKey(), entry.getValue());
+            }
+        }
+
         StringWriter templateWriter = new StringWriter();
-        velocityEngine.evaluate(velocityContext, templateWriter, "", template.getTemplate());
+        VELOCITY_ENGINE.evaluate(velocityContext, templateWriter, "", template.getTemplate());
 
         StringWriter fileNameWriter = new StringWriter();
-        velocityEngine.evaluate(velocityContext, fileNameWriter, "", template.getFilename());
+        VELOCITY_ENGINE.evaluate(velocityContext, fileNameWriter, "", template.getFilename());
 
-        PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getResources());
-        PsiUtil.createFile(project, directory, fileNameWriter.toString() + "." + this.languageFileType.getDefaultExtension(), templateWriter.toString(), this.languageFileType);
+        WriteCommandAction.runWriteCommandAction(this.project, () -> {
+            try {
+                PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getResources());
+                PsiUtil.createFile(project, directory, fileNameWriter.toString() + "." + this.languageFileType.getDefaultExtension(), templateWriter.toString(), this.languageFileType);
+            } catch (Exception e) {
+                LOGGER.error(Throwables.getStackTraceAsString(e));
+            }
+        });
     }
 
 }

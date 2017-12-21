@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author ${email}
+ * @author ${!email}
  * @date ${Now}
  * Created by CodeGen .
  */

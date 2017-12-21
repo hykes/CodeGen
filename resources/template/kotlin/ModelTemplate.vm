@@ -6,7 +6,7 @@ import javax.persistence.Table
 
 /**
  *
- * @author ${email}
+ * @author ${!email}
  * @date ${Now}
  * Created by CodeGen .
  */
@@ -17,8 +17,8 @@ class ${model} : BaseModel(), Serializable {
     companion object {
         val find = object : Find<Long, ${model}>() {}
     }
-
     #foreach($item in $fields)
+
     /**
      * ${item.comment}
      */

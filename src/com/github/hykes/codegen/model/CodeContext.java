@@ -2,7 +2,6 @@ package com.github.hykes.codegen.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Desc:
@@ -12,8 +11,6 @@ import java.util.Map;
 public class CodeContext implements Serializable {
 
     private static final long serialVersionUID = 6235968905610310027L;
-
-    public CodeContext() {}
 
     public CodeContext(String model, String table, List<Field> fields) {
         this.model = model;
@@ -26,16 +23,6 @@ public class CodeContext implements Serializable {
     private String table;
 
     private List<Field> fields;
-
-    private Map<String, String> $;
-
-    public Map<String, String> get$() {
-        return $;
-    }
-
-    public void set$(Map<String, String> $) {
-        this.$ = $;
-    }
 
     public String getModel() {
         return model;

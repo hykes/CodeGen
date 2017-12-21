@@ -6,12 +6,6 @@ This plugin helps you to generate specific template code by create table stateme
 
 ![CodeGen](https://raw.githubusercontent.com/hykes/CodeGen/master/doc/codegen.gif)
 
-Powered by :
-
-[Velocity](http://velocity.apache.org) [user-guide](http://velocity.apache.org/engine/2.0/user-guide.html)
-[IDEA datebase tools](http://velocity.apache.org)
-
-
 ### Installation
 - Using IDE built-in plugin system on Windows:
   - <kbd>File</kbd> > <kbd>Settings</kbd> > <kbd>Plugins</kbd> > <kbd>Browse repositories...</kbd> > <kbd>Search for "CodeGen"</kbd> > <kbd>Install Plugin</kbd>
@@ -29,62 +23,10 @@ Restart IDE.
   - <kbd>Tools</kbd> > <kbd>CodeGen-SQL</kbd> or `shift + command + g`
   - <kbd>Select Table</kbd> > <kbd>Right click popup menu</kbd> > <kbd>CodeGen-DB</kbd>
 
-## Options
+## Powered by
 
-Preferences -> Tools -> CodeGen
-    
-1. Generation type(SQL/DB)
-2. In-house variables and (handlebars) helpers
-3. Predefined variables
-4. Custom template groups
-5. Data sources manager
-
-### In-house Variables
-
-```
-{{$.Year}} current year
-
-{{$.Month}} current month
-
-{{$.Day}} current day of the month
-
-{{$.Hour}} current hour
-
-{{$.Minute}} current minute
-
-{{$.Second}} current second
-
-{{$.Date}} current system date
-
-{{$.Now}} current system time
-
-{{$.serialVersionUID}} current model serialVersionUID
-
-{{$.Project}} the name of the current project
-
-{{$.Module1} the name of the current selected module
-
-{{$.Package1} the name of the current selected package
-```
-
-### In-house Helpers
-
-```
-- 首尾拼接字符
-{{Join 'ABC' '#' '%'}}  => #ABC%
-
-- 首字母小写
-{{LowerCase 'ABC'}} => aBC
-
-- 首字母大写
-{{UpperCase 'abc'}} => Abc
-
-- 驼峰分割
-{{Split 'ABcD' '_'}} => A_bc_d
-
-* 组合用法
-{{Split (Join (LowerCase 'AbcDefGhi') '$' '%') '_'}} => $abc_def_ghi%
-```
+- Velocity
+- IDEA database
 
 ## Idea sdk docs
 

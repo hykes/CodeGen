@@ -6,12 +6,12 @@ import com.github.hykes.codegen.model.*;
 import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.github.hykes.codegen.utils.StringUtils;
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.intellij.database.model.DasColumn;
 import com.intellij.database.psi.DbTable;
 import com.intellij.database.util.DasUtil;
-import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
@@ -126,7 +126,6 @@ public class ColumnEditorFrame extends JFrame {
 
         add(jScrollPane, BorderLayout.CENTER);
         add(groupPanel, BorderLayout.SOUTH);
-
     }
 
     private List<String> getAllJCheckBoxValue(Container ct, List<String> list){
@@ -147,7 +146,7 @@ public class ColumnEditorFrame extends JFrame {
     }
 
     public void generator(IdeaContext ideaContext, List<String> groups, List<CodeContext> contexts){
-        Map<String, String> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.putAll(DefaultParams.getInHouseVariables());
         params.putAll(settingManager.getVariables().getParams());
         params.put("Project", ideaContext.getProject().getName());
@@ -172,7 +171,7 @@ public class ColumnEditorFrame extends JFrame {
 
                 String packagePath = StringUtils.substringAfter(path,"src/main/java");
 
-                if(StringUtils.isNotEmpty(packagePath)){
+                if(!Strings.isNullOrEmpty(packagePath)){
                     if("/".equals(packagePath.substring(0,1))){
                         packagePath = packagePath.substring(1);
                     }
@@ -181,25 +180,15 @@ public class ColumnEditorFrame extends JFrame {
                 }else{
                     params.put("Package"+ packageNum, "");
                 }
-
-                for (CodeContext context: contexts) {
-                    context.set$(params);
-                    if(psiDirectory != null) {
-                        try {
+                try {
+                    for (CodeContext context: contexts) {
+                        for (CodeTemplate codeTemplate : g.getTemplates()) {
                             FileProviderFactory fileFactory = FileProviderFactory.create(ideaContext.getProject(), psiDirectory);
-                            WriteCommandAction.runWriteCommandAction(ideaContext.getProject(), () -> {
-                                try {
-                                    for (CodeTemplate codeTemplate : g.getTemplates()) {
-                                        fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context);
-                                    }
-                                } catch (Exception e) {
-                                    LOGGER.error(Throwables.getStackTraceAsString(e));
-                                }
-                            });
-                        } catch (Exception e){
-                            LOGGER.error(Throwables.getStackTraceAsString(e));
+                            fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context, params);
                         }
                     }
+                } catch (Exception e){
+                    LOGGER.error(Throwables.getStackTraceAsString(e));
                 }
             }
         }

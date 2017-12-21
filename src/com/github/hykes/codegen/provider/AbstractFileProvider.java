@@ -8,6 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 
 import java.util.Objects;
+import java.util.Map;
 
 /**
  * 文件提供者抽象类
@@ -26,7 +27,7 @@ public abstract class AbstractFileProvider {
         this.psiDirectory = psiDirectory;
     }
 
-    public abstract void create(CodeTemplate template, CodeContext context) throws Exception;
+    public abstract void create(CodeTemplate template, CodeContext context, Map<String, Object> extraMap) throws Exception;
 
     public PsiDirectory subDirectory(PsiDirectory psiDirectory, String subPath, Boolean isResources){
         if(StringUtils.isEmpty(subPath)){
