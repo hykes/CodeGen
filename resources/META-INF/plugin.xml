@@ -1,5 +1,5 @@
 <idea-plugin>
-  <id>com.github.hykes.codegen</id>
+  <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
   <version>1.0</version>
   <vendor email="hehaiyangwork@gmail.com" url="https://github.com/hykes">hehaiyang</vendor>
@@ -11,7 +11,7 @@
       <p>This plugin helps you to generate specific template code by create table statement or database .</p>
       <ul>
         <li>Velocity template language</li>
-        <li>DIDEA database</li>
+        <li>IDEA database</li>
         <li>Predefined variables</li>
         <li>Custom template groups</li>
       </ul>
