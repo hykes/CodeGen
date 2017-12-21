@@ -13,8 +13,8 @@ import java.io.StringWriter;
 import java.util.Map;
 
 /**
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/12/19
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/12/19
  */
 public class VelocityTest {
 
@@ -25,8 +25,8 @@ public class VelocityTest {
         velocityEngine.loadDirective("com.github.hykes.codegen.directive.LowerCase");
         String template = "/**\n" +
                 " * \n" +
-                " * @author: hehaiyangwork@gmail.com\n" +
-                " * @date: ${DATE}\n" +
+                " * @author hehaiyangwork@gmail.com\n" +
+                " * @date ${DATE}\n" +
                 " */\n" +
                 "public class #LowerCase(${NAME}) {\n" +
                 "}";

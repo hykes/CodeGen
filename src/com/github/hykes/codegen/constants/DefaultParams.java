@@ -7,8 +7,8 @@ import java.util.Map;
 
 /**
  * 内置参数
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/4/16
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/4/16
  */
 public class DefaultParams {
 

@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * Desc: 默认Parser的抽象空实现
  *
- * @author: chk19940609@gmail.com
+ * @author chk19940609@gmail.com
  * Created by IceMimosa
- * @date: 2017/7/23
+ * @date 2017/7/23
  */
 public abstract class AbstractParser implements Parser {
 

@@ -12,8 +12,8 @@ import java.util.Objects;
 /**
  * 文件提供者抽象类
  *
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/04/07
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/04/07
  */
 public abstract class AbstractFileProvider {
 

@@ -16,8 +16,8 @@ import java.io.StringWriter;
 /**
  * 默认文件提供者
  *
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/04/07
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/04/07
  */
 public class DefaultProviderImpl extends AbstractFileProvider {
 
@@ -28,9 +28,9 @@ public class DefaultProviderImpl extends AbstractFileProvider {
     public DefaultProviderImpl(Project project, PsiDirectory psiDirectory, LanguageFileType languageFileType) {
         super(project, psiDirectory);
         this.languageFileType = languageFileType;
-        /**
-         * IDEA 的 URLClassLoader 无法获取当前插件的 path
-         * @see org.apache.velocity.util.ClassUtils
+        /*
+          IDEA 的 URLClassLoader 无法获取当前插件的 path
+          @see org.apache.velocity.util.ClassUtils
          */
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());

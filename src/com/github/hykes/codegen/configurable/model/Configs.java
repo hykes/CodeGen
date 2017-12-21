@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 /**
  * 自定义配置 model
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/05/10
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/05/10
  */
 public class Configs implements Serializable {
 

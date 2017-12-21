@@ -22,8 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author: hehaiyang@terminus.io
- * @date: 2017/12/20
+ * @author hehaiyang@terminus.io
+ * @date 2017/12/20
  */
 public class VariableUI implements UIConfigurable {
 

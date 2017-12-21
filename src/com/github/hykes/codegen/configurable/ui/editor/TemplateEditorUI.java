@@ -17,8 +17,8 @@ import java.awt.*;
 import java.util.Objects;
 
 /**
- * @author: hehaiyang@terminus.io
- * @date: 2017/12/20
+ * @author hehaiyang@terminus.io
+ * @date 2017/12/20
  */
 public class TemplateEditorUI {
     private JPanel rootPanel;
@@ -37,6 +37,8 @@ public class TemplateEditorUI {
     private JLabel isTestLab;
 
     private final JTextField id = new JTextField();
+
+    private final EditorFactory factory = EditorFactory.getInstance();
 
     private Editor editor;
 
@@ -76,7 +78,7 @@ public class TemplateEditorUI {
     private Editor createEditor(String template, String extension) {
         template = StringUtils.isEmpty(template) ? "" : template;
         extension = StringUtils.isEmpty(extension) ? "vm" : extension;
-        EditorFactory factory = EditorFactory.getInstance();
+
         Document velocityTemplate = factory.createDocument(template);
         Editor editor = factory.createEditor(velocityTemplate, null, FileTypeManager.getInstance()
                 .getFileTypeByExtension(extension), false);

@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
 /**
  * 插件配置管理
  *
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/3/17
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/3/17
  */
 @State(name = "CodeGen", storages = { @Storage(value = "codegen.xml") })
 public class SettingManager implements PersistentStateComponent<SettingManager> {

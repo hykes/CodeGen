@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * 表对象
  *
- * @author: chk19940609@gmail.com
- * @date: 2017/7/11
+ * @author chk19940609@gmail.com
+ * @date 2017/7/11
  */
 public class Table implements Serializable {
 

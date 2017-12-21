@@ -12,8 +12,8 @@ import java.util.Map;
 
 /**
  * 自定义模版 model
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/05/10
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/05/10
  */
 public class Templates implements Serializable {
 

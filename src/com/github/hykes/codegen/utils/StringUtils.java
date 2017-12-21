@@ -879,7 +879,7 @@ public class StringUtils {
             return null;
         }
         StringTokenizer st = new StringTokenizer(str, delimiters);
-        List<String> tokens = new ArrayList<String>();
+        List<String> tokens = new ArrayList<>();
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
             if (trimTokens) {
@@ -927,7 +927,7 @@ public class StringUtils {
         if (delimiter == null) {
             return new String[] {str};
         }
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         if ("".equals(delimiter)) {
             for (int i = 0; i < str.length(); i++) {
                 result.add(deleteAny(str.substring(i, i + 1), charsToDelete));
@@ -964,7 +964,7 @@ public class StringUtils {
      * @return a Set of String entries in the list
      */
     public static Set<String> commaDelimitedListToSet(String str) {
-        Set<String> set = new TreeSet<String>();
+        Set<String> set = new TreeSet<>();
         String[] tokens = commaDelimitedListToStringArray(str);
         for (String token : tokens) {
             set.add(token);

@@ -12,8 +12,8 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * @author: hehaiyang@terminus.io
- * @date: 2017/12/20
+ * @author hehaiyang@terminus.io
+ * @date 2017/12/20
  */
 public class ConfigUI implements UIConfigurable {
     private JPanel rootPanel;
@@ -52,10 +52,7 @@ public class ConfigUI implements UIConfigurable {
     @Override
     public boolean isModified() {
         Configs configs = settingManager.getConfigs();
-        if (!configs.getIgnoreFields().equals(ignoreTextField.getText())) {
-            return true;
-        }
-        return false;
+        return !configs.getIgnoreFields().equals(ignoreTextField.getText());
     }
 
     /**

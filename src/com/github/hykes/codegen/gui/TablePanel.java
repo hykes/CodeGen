@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/12/18
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/12/18
  */
 public class TablePanel {
     private JPanel rootPanel;

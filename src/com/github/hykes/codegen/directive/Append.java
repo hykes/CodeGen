@@ -13,8 +13,8 @@ import java.io.Writer;
 /**
  * 拼接元素
  * ${Append '#' 'ABC' '%'}  => #ABC%
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/12/19
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/12/19
  */
 public class Append extends Directive {
     @Override

@@ -26,8 +26,8 @@ import java.util.List;
 /**
  * 模版配置面板
  *
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/5/10
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/5/10
  */
 public class TemplatesUI extends JBPanel implements UIConfigurable {
 
@@ -224,7 +224,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 String display = dialog.getDisplayTextField().getText();
                 String extension = dialog.getExtensionTextField().getText();
 
-                addNode(selectedNode, new DefaultMutableTreeNode(new CodeTemplate(UUID.randomUUID().toString(), display, extension, "Unnamed", "", null, false)));
+                addNode(selectedNode, new DefaultMutableTreeNode(new CodeTemplate(UUID.randomUUID().toString(), display, extension, display, "", null, false)));
                 dialog.setVisible(false);
             });
 

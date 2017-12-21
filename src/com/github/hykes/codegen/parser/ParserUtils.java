@@ -11,8 +11,8 @@ import static com.github.hykes.codegen.model.FieldType.build;
 
 /**
  * 解析工具
- * @author: chk19940609@gmail.com
- * @date: 2017/06/21
+ * @author chk19940609@gmail.com
+ * @date 2017/06/21
  */
 public class ParserUtils {
 

@@ -11,8 +11,8 @@ import com.intellij.openapi.ui.MessageType;
 import javax.swing.*;
 
 /**
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/12/20
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/12/20
  */
 public class NotifyUtil {
 

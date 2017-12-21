@@ -7,9 +7,9 @@ import java.util.List;
 /**
  * Desc: 统一解析入口, 目前提供对sql语句的解析
  * <p>
- * @author: chk19940609@gmail.com
+ * @author chk19940609@gmail.com
  * Created by IceMimosa
- * @date: 2017/6/20
+ * @date 2017/6/20
  */
 public interface Parser {
 

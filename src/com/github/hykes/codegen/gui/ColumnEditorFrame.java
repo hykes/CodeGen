@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 /**
  * 字段自定义编辑器
  *
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/5/12
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/5/12
  */
 public class ColumnEditorFrame extends JFrame {
 

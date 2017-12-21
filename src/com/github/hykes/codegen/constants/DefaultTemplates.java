@@ -13,8 +13,8 @@ import java.util.UUID;
 
 /**
  * 内置模版
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/6/29
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/6/29
  */
 public class DefaultTemplates {
 

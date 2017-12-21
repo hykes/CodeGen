@@ -13,8 +13,8 @@ import java.io.Writer;
 /**
  * 首字母小写
  * ${LowerCase 'ABC'} => aBC
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/12/19
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/12/19
  */
 public class LowerCase extends Directive {
     @Override

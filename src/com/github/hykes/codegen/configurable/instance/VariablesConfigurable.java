@@ -11,8 +11,8 @@ import javax.swing.*;
 /**
  * 变量配置
  *
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/03/17
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/03/17
  */
 public class VariablesConfigurable implements Configurable {
 

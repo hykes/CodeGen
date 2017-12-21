@@ -153,8 +153,7 @@ public class BuilderUtil {
 
             // fields
             // fields.sort(Comparator.comparing(Field::getField));
-            for (int i = 0; i < fields.size(); i++) {
-                Field field = fields.get(i);
+            for (Field field : fields) {
                 int mods = Modifier.PRIVATE &
                         (Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED |
                                 Modifier.STATIC | Modifier.FINAL | Modifier.VOLATILE |

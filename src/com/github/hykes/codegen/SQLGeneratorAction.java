@@ -15,8 +15,8 @@ import javax.swing.*;
 /**
  * 解析sql生成代码
  *
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/03/21
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/03/21
  */
 public class SQLGeneratorAction extends AnAction implements DumbAware {
 

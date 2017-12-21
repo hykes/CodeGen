@@ -13,8 +13,8 @@ import java.io.Writer;
 /**
  * 驼峰转拼接字符
  * ${Split 'ABcD' '_'} => A_bc_d
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/12/19
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/12/19
  */
 public class Split extends Directive {
     @Override

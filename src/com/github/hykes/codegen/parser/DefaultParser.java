@@ -17,8 +17,8 @@ import java.util.List;
  *
  *  不提供DB连接解析 !!!
  *
- * @author: chk19940609@gmail.com
- * @date: 2017/6/20
+ * @author chk19940609@gmail.com
+ * @date 2017/6/20
  */
 public class DefaultParser extends AbstractParser {
 

@@ -20,8 +20,8 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 /**
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/12/19
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/12/19
  */
 public class SqlEditorPanel {
 

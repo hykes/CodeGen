@@ -18,8 +18,8 @@ import java.util.List;
 /**
  * 直连数据库生成代码
  *
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/12/16
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/12/16
  */
 public class DBGeneratorAction extends AnAction implements DumbAware {
 

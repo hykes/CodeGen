@@ -9,8 +9,8 @@ import com.intellij.psi.PsiDirectory;
 
 /**
  * 文件提供者工厂
- * @author: hehaiyangwork@gmail.com
- * @date: 2017/3/17
+ * @author hehaiyangwork@gmail.com
+ * @date 2017/3/17
  */
 public class FileProviderFactory {
 
