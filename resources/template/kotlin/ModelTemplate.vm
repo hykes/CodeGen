@@ -6,8 +6,8 @@ import javax.persistence.Table
 
 /**
  *
- * @author: ${email}
- * @date: ${Now}
+ * @author ${email}
+ * @date ${Now}
  * Created by CodeGen .
  */
 @Entity

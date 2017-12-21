@@ -3,8 +3,8 @@ import io.terminus.common.model.Response;
 
 /**
  *
- * @author: ${email}
- * @date: ${Now}
+ * @author ${email}
+ * @date ${Now}
  * Created by CodeGen .
  */
 public interface ${model}WriteService {

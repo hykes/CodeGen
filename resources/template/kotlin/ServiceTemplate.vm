@@ -3,8 +3,8 @@ import io.terminus.paas.common.model.Paging
 
 /**
  * ${modelName}服务接口
- * @author: ${email}
- * @date: ${Now}
+ * @author ${email}
+ * @date ${Now}
  * Created by CodeGen .
  */
 interface ${model}Service {

@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  *
- * @author: ${email}
- * @date: ${Now}
+ * @author ${email}
+ * @date ${Now}
  * Created by CodeGen .
  */
 public class ${model}DaoTest extends BaseDaoTest {

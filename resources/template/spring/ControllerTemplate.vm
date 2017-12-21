@@ -18,8 +18,8 @@ import java.util.List;
 
 /**
  *
- * @author: ${email}
- * @date: ${Now}
+ * @author ${email}
+ * @date ${Now}
  * Created by CodeGen .
  */
 @Slf4j

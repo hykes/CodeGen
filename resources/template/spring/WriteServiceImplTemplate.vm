@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author: ${email}
- * @date: ${Now}
+ * @author ${email}
+ * @date ${Now}
  * Created by CodeGen .
  */
 @Slf4j
