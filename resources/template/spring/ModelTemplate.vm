@@ -22,9 +22,9 @@ public class ${model} implements Serializable {
     #foreach($item in $fields)
 
     /**
-     * $item.comment
+     * ${item.comment}
      */
-    private $item.fieldType $item.field;
+    private ${item.fieldType} ${item.field};
     #end
 
     /**

@@ -1,0 +1,27 @@
+
+import io.terminus.paas.common.model.BaseModel
+import java.io.Serializable
+import javax.persistence.Entity
+import javax.persistence.Table
+
+/**
+ *
+ * @author: ${email}
+ * @date: ${Now}
+ * Created by CodeGen .
+ */
+@Entity
+@Table(name = "${table}")
+class ${model} : BaseModel(), Serializable {
+
+    companion object {
+        val find = object : Find<Long, ${model}>() {}
+    }
+
+    #foreach($item in $fields)
+    /**
+     * ${item.comment}
+     */
+    var ${item.field}: ${item.kotlinType}? = null
+    #end
+}
