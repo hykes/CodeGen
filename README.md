@@ -6,6 +6,12 @@ This plugin helps you to generate specific template code by create table stateme
 
 ![CodeGen](https://raw.githubusercontent.com/hykes/CodeGen/master/doc/codegen.gif)
 
+Powered by :
+
+[Velocity](http://velocity.apache.org) [user-guide](http://velocity.apache.org/engine/2.0/user-guide.html)
+[IDEA datebase tools](http://velocity.apache.org)
+
+
 ### Installation
 - Using IDE built-in plugin system on Windows:
   - <kbd>File</kbd> > <kbd>Settings</kbd> > <kbd>Plugins</kbd> > <kbd>Browse repositories...</kbd> > <kbd>Search for "CodeGen"</kbd> > <kbd>Install Plugin</kbd>

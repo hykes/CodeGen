@@ -6,11 +6,13 @@ import com.github.hykes.codegen.model.*;
 import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.github.hykes.codegen.utils.StringUtils;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.intellij.database.model.DasColumn;
 import com.intellij.database.psi.DbTable;
 import com.intellij.database.util.DasUtil;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.ui.ScrollPaneFactory;
@@ -30,6 +32,8 @@ import java.util.stream.Collectors;
  * @date 2017/5/12
  */
 public class ColumnEditorFrame extends JFrame {
+
+    private static final Logger LOGGER = Logger.getInstance(ColumnEditorFrame.class);
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
@@ -181,16 +185,20 @@ public class ColumnEditorFrame extends JFrame {
                 for (CodeContext context: contexts) {
                     context.set$(params);
                     if(psiDirectory != null) {
-                        FileProviderFactory fileFactory = FileProviderFactory.create(ideaContext.getProject(), psiDirectory);
-                        WriteCommandAction.runWriteCommandAction(ideaContext.getProject(), () -> {
-                            try {
-                                for (CodeTemplate codeTemplate : g.getTemplates()) {
-                                    fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context);
+                        try {
+                            FileProviderFactory fileFactory = FileProviderFactory.create(ideaContext.getProject(), psiDirectory);
+                            WriteCommandAction.runWriteCommandAction(ideaContext.getProject(), () -> {
+                                try {
+                                    for (CodeTemplate codeTemplate : g.getTemplates()) {
+                                        fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context);
+                                    }
+                                } catch (Exception e) {
+                                    LOGGER.error(Throwables.getStackTraceAsString(e));
                                 }
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
-                        });
+                            });
+                        } catch (Exception e){
+                            LOGGER.error(Throwables.getStackTraceAsString(e));
+                        }
                     }
                 }
             }

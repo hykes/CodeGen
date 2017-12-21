@@ -12,6 +12,7 @@ public interface ${model}WriteService {
     /**
      * 创建
      * @param #LowerCase(${model})
+
      * @return Boolean
      */
     Response<Long> create(${model} #LowerCase(${model}));
@@ -19,6 +20,7 @@ public interface ${model}WriteService {
     /**
      * 更新
      * @param #LowerCase(${model})
+
      * @return Boolean
      */
     Response<Boolean> update(${model} #LowerCase(${model}));

@@ -55,8 +55,7 @@ public class SqlEditorPanel {
 
                     Parser parser = new DefaultParser();
                     List<Table> tables = parser.parseSQLs(sqls);
-
-                    if (tables.isEmpty()) {
+                    if (tables == null || tables.isEmpty()) {
                         NotifyUtil.notice("CodeGen-SQL", "please check sql format !", MessageType.ERROR);
                         return;
                     }

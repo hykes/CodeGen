@@ -40,7 +40,7 @@ public class ${model}s {
      */
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ${model} find${model}(@PathVariable Long id) {
-        Response<${model}> response =  #LowerCase(${model})ReadService.findById(id);
+        Response<${model}> response = #LowerCase(${model})ReadService.findById(id);
         if (!response.isSuccess()) {
             throw new JsonResponseException(500, response.getError());
         }

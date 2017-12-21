@@ -3,7 +3,9 @@ package com.github.hykes.codegen.parser;
 import com.github.hykes.codegen.model.Field;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.utils.StringUtils;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
+import com.intellij.openapi.diagnostic.Logger;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColDataType;
@@ -22,10 +24,12 @@ import java.util.List;
  */
 public class DefaultParser extends AbstractParser {
 
+    private static final Logger LOGGER = Logger.getInstance(DefaultParser.class);
+
     @Override
     public List<Table> parseSQLs(String sqls) {
         if (StringUtils.isBlank(sqls)) {
-            return Lists.newArrayList();
+            return null;
         }
 
         List<Table> result = Lists.newArrayList();
@@ -72,11 +76,11 @@ public class DefaultParser extends AbstractParser {
                     result.add(table);
                 }
             }
+            return result;
         } catch (Exception e) {
-            // 需要异常统一下
-            e.printStackTrace();
+            LOGGER.error(Throwables.getStackTraceAsString(e));
         }
-        return result;
+        return null;
     }
 
     /**

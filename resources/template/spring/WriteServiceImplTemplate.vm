@@ -28,8 +28,8 @@ public class ${model}WriteServiceImpl implements ${model}WriteService {
             #LowerCase(${model})Dao.create(#LowerCase(${model}));
             return Response.ok(#LowerCase(${model}).getId());
         }catch (Exception e){
-            log.error("failed to create #Split(#LowerCase(${model}) ' '), cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("#Split(#LowerCase(${model}) '.').create.fail");
+            log.error("failed to create #Split("#LowerCase(${model})" ' '), cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("#Split("#LowerCase(${model})" '.').create.fail");
         }
     }
 
@@ -38,8 +38,8 @@ public class ${model}WriteServiceImpl implements ${model}WriteService {
         try{
             return Response.ok(#LowerCase(${model})Dao.update(#LowerCase(${model})));
         }catch (Exception e){
-            log.error("failed to update #Split(#LowerCase(${model}) ' '), cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("#Split(#LowerCase(${model}) '.').update.fail");
+            log.error("failed to update #Split("#LowerCase(${model})" ' '), cause:{}", Throwables.getStackTraceAsString(e));
+            return Response.fail("#Split("#LowerCase(${model})" '.').update.fail");
         }
     }
 
@@ -48,8 +48,8 @@ public class ${model}WriteServiceImpl implements ${model}WriteService {
         try{
             return Response.ok(#LowerCase(${model})Dao.delete(id));
         }catch (Exception e){
-            log.error("failed to delete #Split(#LowerCase(${model}) ' ') by id:{}, cause:{}", id,  Throwables.getStackTraceAsString(e));
-            return Response.fail("#Split(#LowerCase(${model}) '.').delete.fail");
+            log.error("failed to delete #Split("#LowerCase(${model})" ' ') by id:{}, cause:{}", id,  Throwables.getStackTraceAsString(e));
+            return Response.fail("#Split("#LowerCase(${model})" '.').delete.fail");
         }
     }
 

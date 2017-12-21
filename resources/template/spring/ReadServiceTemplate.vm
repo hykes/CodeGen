@@ -17,6 +17,7 @@ public interface ${model}ReadService {
      * 查询
      * @param id
      * @return #LowerCase(${model})
+
      */
     Response<${model}> findById(Long id);
 

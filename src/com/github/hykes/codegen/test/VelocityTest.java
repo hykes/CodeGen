@@ -23,20 +23,16 @@ public class VelocityTest {
     public static void main(String[] args) {
         VelocityEngine velocityEngine = VelocityFactory.getVelocityEngine();
         velocityEngine.loadDirective("com.github.hykes.codegen.directive.LowerCase");
-        String template = "/**\n" +
-                " * \n" +
-                " * @author hehaiyangwork@gmail.com\n" +
-                " * @date ${DATE}\n" +
-                " */\n" +
-                "public class #LowerCase(${NAME}) {\n" +
-                "}";
+        velocityEngine.loadDirective("com.github.hykes.codegen.directive.Split");
+        String template = "#Split(\"#LowerCase(${NAME})\" '.')";
+//        String template = "#LowerCase(${NAME})";
         Map<String, Object> map = Maps.newHashMap();
-        map.put("NAME", "Hykes");
+        map.put("NAME", "HykesIsStrong");
 
         StringWriter writer = new StringWriter();
         velocityEngine.evaluate(new VelocityContext(map), writer, "", template);
 
-        System.out.print(writer.toString());
+        System.out.println(writer.toString());
     }
 
     private static void reformatJavaDoc(PsiElement theElement) {
