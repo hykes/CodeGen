@@ -2,12 +2,17 @@ package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.constants.DefaultParams;
-import com.github.hykes.codegen.model.*;
+import com.github.hykes.codegen.model.CodeContext;
+import com.github.hykes.codegen.model.CodeGroup;
+import com.github.hykes.codegen.model.CodeTemplate;
+import com.github.hykes.codegen.model.Field;
+import com.github.hykes.codegen.model.IdeaContext;
+import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.database.model.DasColumn;
-import com.intellij.database.psi.DbTable;
+import com.intellij.database.model.basic.BasicTable;
 import com.intellij.database.util.DasUtil;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiDirectory;
@@ -17,8 +22,12 @@ import com.intellij.util.containers.JBIterable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -35,10 +44,10 @@ public class ColumnEditorFrame extends JFrame {
 
     private final List<TablePanel> panels = new ArrayList<>();
 
-    public ColumnEditorFrame newColumnEditorByDb(IdeaContext ideaContext, List<DbTable> dbTables) {
+    public ColumnEditorFrame newColumnEditorByDb(IdeaContext ideaContext, List<BasicTable> dbTables) {
 
         List<Table> tables = new ArrayList<>();
-        for (DbTable dbTable: dbTables) {
+        for (BasicTable dbTable: dbTables) {
             Table table = new Table();
             table.setTableName(dbTable.getName());
 
@@ -83,7 +92,7 @@ public class ColumnEditorFrame extends JFrame {
 
         for (Table table: tables) {
             TablePanel tablePanel = new TablePanel(table);
-            tablesPanel.add(tablePanel.$$$getRootComponent$$$());
+            tablesPanel.add(tablePanel.getRootComponent());
             panels.add(tablePanel);
         }
 
