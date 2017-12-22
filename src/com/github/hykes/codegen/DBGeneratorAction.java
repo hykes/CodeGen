@@ -3,7 +3,8 @@ package com.github.hykes.codegen;
 import com.github.hykes.codegen.gui.ColumnEditorFrame;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.utils.PsiUtil;
-import com.intellij.database.model.basic.BasicTable;
+import com.intellij.database.psi.DbElement;
+import com.intellij.database.psi.DbTable;
 import com.intellij.database.view.DatabaseView;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -35,11 +36,11 @@ public class DBGeneratorAction extends AnAction implements DumbAware {
             return;
         }
 
-        List<Object> elements = view.getSelectedElements().toList();
+        List<DbElement> elements = DatabaseView.getSelectedElements(e.getDataContext(), it -> true).toList();
 
         boolean hasTable = false;
         for (Object table : elements) {
-            if (table instanceof BasicTable) {
+            if (table instanceof DbTable) {
                 hasTable = true;
                 break;
             }
@@ -56,13 +57,12 @@ public class DBGeneratorAction extends AnAction implements DumbAware {
             return;
         }
 
-        DatabaseView view = DatabaseView.DATABASE_VIEW_KEY.getData(e.getDataContext());
-        List<Object> elements = view.getSelectedElements().toList();
+        List<DbElement> elements = DatabaseView.getSelectedElements(e.getDataContext(), it -> true).toList();
 
-        List<BasicTable> tables = new ArrayList<>();
-        for (Object table : elements) {
-            if (table instanceof BasicTable) {
-                tables.add((BasicTable) table);
+        List<DbTable> tables = new ArrayList<>();
+        for (DbElement table : elements) {
+            if (table instanceof DbTable) {
+                tables.add((DbTable) table);
             }
         }
 
