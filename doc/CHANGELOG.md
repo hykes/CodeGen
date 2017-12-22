@@ -1,5 +1,9 @@
 # Change Logs
-- v1.0 2017-12-21</p>
+- v1.1 2017-12-22
+    - Fix compatibility error
+    - Add ImportPackage directive
+
+- v1.0 2017-12-21
     - Only support IDEA ULTIMATE
 
 - v0.9 2017-12-15

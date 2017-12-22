@@ -32,7 +32,7 @@
     </sql>
 
     <sql id="values_exclude_id">
-        #foreach($item in $fields)#{${item.column}}, #end
+        #foreach($item in $fields)#{${item.field}}, #end
         now(), now()
     </sql>
 

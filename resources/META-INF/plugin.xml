@@ -1,13 +1,14 @@
 <idea-plugin>
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>1.0</version>
+  <version>1.1</version>
   <vendor email="hehaiyangwork@gmail.com" url="https://github.com/hykes">hehaiyang</vendor>
 
   <description><![CDATA[
       <p><a href="https://github.com/hykes/CodeGen">GitHub</a> | <a href="https://github.com/hykes/CodeGen/issues">Issues</a> | <a href="https://plugins.jetbrains.com/plugin/9574-codegen">JetBrains</a> </p>
       <br>
       <p>This plugin helps you to generate specific template code by create table statement or database .</p>
+      <p>Support IDEA Ultimate(171+)</p>
       <ul>
         <li>Velocity template language</li>
         <li>IDEA database</li>
@@ -17,9 +18,10 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      <p>v1.0 2017-12-21</p>
+      <p>v1.1 2017-12-22</p>
       <ul>
-        <li>Only support IDEA ULTIMATE .</li>
+        <li>Fix compatibility error</li>
+        <li>Add ImportPackage directive</li>
       </ul>
       <a href="https://github.com/hykes/CodeGen/blob/master/CHANGELOG.md">Read More ...</a>
     ]]>
