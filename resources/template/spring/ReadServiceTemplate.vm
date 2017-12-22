@@ -5,9 +5,11 @@ import io.terminus.common.model.Response;
 import java.util.Map;
 import java.util.List;
 
+#ImportPackage(${model})
+
 /**
  *
- * @author ${!email}
+ * @author $!{email}
  * @date ${Now}
  * Created by CodeGen .
  */

@@ -1,9 +1,11 @@
 
 import io.terminus.paas.common.model.Paging
 
+#ImportPackage(${model})
+
 /**
  *
- * @author ${!email}
+ * @author $!{email}
  * @date ${Now}
  * Created by CodeGen .
  */

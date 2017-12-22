@@ -3,10 +3,12 @@ import io.terminus.paas.common.model.Paging
 import io.terminus.paas.common.model.pagingList
 import org.springframework.stereotype.Service
 
+#ImportPackage(${model})
+#ImportPackage("${model}Service")
 
 /**
  *
- * @author ${!email}
+ * @author $!{email}
  * @date ${Now}
  * Created by CodeGen .
  */

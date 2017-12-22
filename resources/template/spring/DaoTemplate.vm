@@ -3,9 +3,11 @@ import io.terminus.common.mysql.dao.MyBatisDao;
 
 import org.springframework.stereotype.Repository;
 
+#ImportPackage(${model})
+
 /**
  *
- * @author ${!email}
+ * @author $!{email}
  * @date ${Now}
  * Created by CodeGen .
  */

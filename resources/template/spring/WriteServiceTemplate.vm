@@ -1,9 +1,11 @@
 
 import io.terminus.common.model.Response;
 
+#ImportPackage(${model})
+
 /**
  *
- * @author ${!email}
+ * @author $!{email}
  * @date ${Now}
  * Created by CodeGen .
  */

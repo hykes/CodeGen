@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  *
- * @author ${!email}
+ * @author $!{email}
  * @date ${Now}
  * Created by CodeGen .
  */
