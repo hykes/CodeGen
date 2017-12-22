@@ -47,7 +47,7 @@ public class TablePanel {
     }
 
     public TablePanel(Table table) {
-        $$$setupUI$$$();
+        setupUI();
         rootPanel.setBorder(IdeBorderFactory.createTitledBorder(table.getTableName(), false));
 
         //不可整列移动
@@ -93,7 +93,7 @@ public class TablePanel {
 
         dialog.setSize(500, 260);
         dialog.setAlwaysOnTop(true);
-        dialog.setLocationRelativeTo(this.$$$getRootComponent$$$());
+        dialog.setLocationRelativeTo(this.getRootComponent());
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setResizable(false);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -158,7 +158,7 @@ public class TablePanel {
 
             dialog.setSize(500, 260);
             dialog.setAlwaysOnTop(true);
-            dialog.setLocationRelativeTo(this.$$$getRootComponent$$$());
+            dialog.setLocationRelativeTo(this.getRootComponent());
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
             dialog.setResizable(false);
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -247,7 +247,7 @@ public class TablePanel {
      *
      * @noinspection ALL
      */
-    private void $$$setupUI$$$() {
+    private void setupUI() {
         createUIComponents();
         rootPanel.setLayout(new BorderLayout(0, 0));
         mainPanel.setLayout(new BorderLayout(0, 0));
@@ -278,7 +278,7 @@ public class TablePanel {
     /**
      * @noinspection ALL
      */
-    public JComponent $$$getRootComponent$$$() {
+    public JComponent getRootComponent() {
         return rootPanel;
     }
 }
