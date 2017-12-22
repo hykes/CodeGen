@@ -14,6 +14,7 @@ import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -36,10 +37,11 @@ public class DBGeneratorAction extends AnAction implements DumbAware {
             return;
         }
 
-        List<DbElement> elements = DatabaseView.getSelectedElements(e.getDataContext(), it -> true).toList();
+        Iterator<DbElement> iterator =  DatabaseView.getSelectedElements(e.getDataContext(), it -> true).iterator();
 
         boolean hasTable = false;
-        for (Object table : elements) {
+        while(iterator.hasNext()){
+            DbElement table = iterator.next();
             if (table instanceof DbTable) {
                 hasTable = true;
                 break;
@@ -57,10 +59,11 @@ public class DBGeneratorAction extends AnAction implements DumbAware {
             return;
         }
 
-        List<DbElement> elements = DatabaseView.getSelectedElements(e.getDataContext(), it -> true).toList();
+        Iterator<DbElement> iterator =  DatabaseView.getSelectedElements(e.getDataContext(), it -> true).iterator();
 
         List<DbTable> tables = new ArrayList<>();
-        for (DbElement table : elements) {
+        while(iterator.hasNext()){
+            DbElement table = iterator.next();
             if (table instanceof DbTable) {
                 tables.add((DbTable) table);
             }

@@ -1,5 +1,8 @@
 package com.github.hykes.codegen.utils;
 
+import com.intellij.openapi.application.ApplicationInfo;
+import com.intellij.openapi.util.BuildNumber;
+
 import java.io.*;
 import java.util.*;
 
@@ -1006,6 +1009,8 @@ public class StringUtils {
     public static String getStackTraceAsString(Throwable throwable) {
         StringWriter stringWriter = new StringWriter();
         throwable.printStackTrace(new PrintWriter(stringWriter));
+        BuildNumber number = ApplicationInfo.getInstance().getBuild();
+        stringWriter.append("\n").append("BuildNumber:").append(number.asString());
         return stringWriter.toString();
     }
 
