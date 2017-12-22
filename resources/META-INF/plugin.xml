@@ -7,7 +7,6 @@
   <description><![CDATA[
       <p><a href="https://github.com/hykes/CodeGen">GitHub</a> | <a href="https://github.com/hykes/CodeGen/issues">Issues</a> | <a href="https://plugins.jetbrains.com/plugin/9574-codegen">JetBrains</a> </p>
       <br>
-      <p>keywords: generate code | code generator | code template | java code | kotlin code</p>
       <p>This plugin helps you to generate specific template code by create table statement or database .</p>
       <ul>
         <li>Velocity template language</li>
@@ -15,13 +14,12 @@
         <li>Predefined variables</li>
         <li>Custom template groups</li>
       </ul>
-      <p>Please feel free to contact me and ask any questions or suggest some features .</p>
     ]]></description>
 
   <change-notes><![CDATA[
       <p>v1.0 2017-12-21</p>
       <ul>
-        <li>Only support IDEA ULTIMATE(171+)</li>
+        <li>Only support IDEA ULTIMATE .</li>
       </ul>
       <a href="https://github.com/hykes/CodeGen/blob/master/CHANGELOG.md">Read More ...</a>
     ]]>

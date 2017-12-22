@@ -1,6 +1,10 @@
 # Change Logs
-- v0.9 2017-12-15</p>
+- v1.0 2017-12-21</p>
+    - Only support IDEA ULTIMATE
+
+- v0.9 2017-12-15
     - the last version support IDEA Community.
+
 - v0.8.4 2017-07-31
     - Fix sqlType NumberFormatException
 
