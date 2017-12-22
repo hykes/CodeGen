@@ -5,15 +5,12 @@ import com.github.hykes.codegen.constants.DefaultParams;
 import com.github.hykes.codegen.model.*;
 import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.PsiUtil;
-import com.github.hykes.codegen.utils.StringUtils;
-import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.intellij.database.model.DasColumn;
 import com.intellij.database.psi.DbTable;
 import com.intellij.database.util.DasUtil;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.util.containers.JBIterable;
@@ -35,7 +32,7 @@ public class ColumnEditorFrame extends JFrame {
 
     private static final Logger LOGGER = Logger.getInstance(ColumnEditorFrame.class);
 
-    private final SettingManager settingManager = SettingManager.getInstance();
+    private final SettingManager SETTING_MANAGER = SettingManager.getInstance();
 
     private final List<TablePanel> panels = Lists.newArrayList();
 
@@ -94,7 +91,7 @@ public class ColumnEditorFrame extends JFrame {
         final JPanel groupPanel = new JPanel();
         groupPanel.setLayout(new BoxLayout(groupPanel, BoxLayout.X_AXIS));
 
-        List<CodeGroup> groups = settingManager.getTemplates().getGroups();
+        List<CodeGroup> groups = SETTING_MANAGER.getTemplates().getGroups();
         groups.forEach( it -> {
             JCheckBox groupBox = new JCheckBox(it.getName());
             groupBox.setName(it.getId());
@@ -148,42 +145,19 @@ public class ColumnEditorFrame extends JFrame {
     public void generator(IdeaContext ideaContext, List<String> groups, List<CodeContext> contexts){
         Map<String, Object> params = new HashMap<>();
         params.putAll(DefaultParams.getInHouseVariables());
-        params.putAll(settingManager.getVariables().getParams());
+        params.putAll(SETTING_MANAGER.getVariables().getParams());
         params.put("Project", ideaContext.getProject().getName());
 
-        List<CodeGroup> groupList = settingManager.getTemplates().getGroups();
+        List<CodeGroup> groupList = SETTING_MANAGER.getTemplates().getGroups();
         groupList = groupList.stream().filter(it -> groups.contains(it.getId())).sorted(new ComparatorUtil()).collect(Collectors.toList());
 
-        int packageNum = 0;
-        for(CodeGroup g: groupList){
-            packageNum ++;
-
-            PsiDirectory psiDirectory = PsiUtil.createDirectory(ideaContext.getProject(), "Select Package For " + g.getName(), "");
-
+        for(CodeGroup group: groupList){
+            PsiDirectory psiDirectory = PsiUtil.createDirectory(ideaContext.getProject(), "Select Package For " + group.getName(), "");
             if(Objects.nonNull(psiDirectory)){
-
-                VirtualFile virtualFile = psiDirectory.getVirtualFile();
-                String path = virtualFile.getPresentableUrl();
-
-                String modulePath = StringUtils.substringAfter(path, ideaContext.getProject().getName()+"/");
-                modulePath = StringUtils.substringBefore(modulePath, "/src/main/java");
-                params.put("Module"+ packageNum, modulePath);
-
-                String packagePath = StringUtils.substringAfter(path,"src/main/java");
-
-                if(!Strings.isNullOrEmpty(packagePath)){
-                    if("/".equals(packagePath.substring(0,1))){
-                        packagePath = packagePath.substring(1);
-                    }
-                    packagePath = packagePath.replace("/", ".");
-                    params.put("Package"+ packageNum, packagePath);
-                }else{
-                    params.put("Package"+ packageNum, "");
-                }
                 try {
                     for (CodeContext context: contexts) {
-                        for (CodeTemplate codeTemplate : g.getTemplates()) {
-                            FileProviderFactory fileFactory = FileProviderFactory.create(ideaContext.getProject(), psiDirectory);
+                        for (CodeTemplate codeTemplate : group.getTemplates()) {
+                            FileProviderFactory fileFactory = new FileProviderFactory(ideaContext.getProject(), psiDirectory);
                             fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context, params);
                         }
                     }

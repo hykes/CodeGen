@@ -3,9 +3,16 @@ package com.github.hykes.codegen.provider;
 import com.github.hykes.codegen.model.CodeContext;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.StringUtils;
+import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.PsiJavaFile;
+import com.intellij.psi.codeStyle.CodeStyleManager;
+import com.intellij.psi.codeStyle.JavaCodeStyleManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Map;
@@ -29,7 +36,7 @@ public abstract class AbstractFileProvider {
 
     public abstract void create(CodeTemplate template, CodeContext context, Map<String, Object> extraMap) throws Exception;
 
-    public PsiDirectory subDirectory(PsiDirectory psiDirectory, String subPath, Boolean isResources){
+    protected PsiDirectory subDirectory(PsiDirectory psiDirectory, String subPath, Boolean isResources){
         if(StringUtils.isEmpty(subPath)){
             return psiDirectory;
         }else{
@@ -85,6 +92,19 @@ public abstract class AbstractFileProvider {
             resourcesDirectory = parentDirectory.createSubdirectory("resources");
         }
         return resourcesDirectory;
+    }
+
+    protected PsiFile createFile(Project project, @NotNull PsiDirectory psiDirectory, String fileName, String context, LanguageFileType fileType) {
+        PsiFile psiFile = PsiFileFactory.getInstance(project).createFileFromText(fileName, fileType, context);
+        // reformat class
+        CodeStyleManager.getInstance(project).reformat(psiFile);
+        if (psiFile instanceof PsiJavaFile) {
+            JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(project);
+            styleManager.optimizeImports(psiFile);
+            styleManager.shortenClassReferences(psiFile);
+        }
+        psiDirectory.add(psiFile);
+        return psiFile;
     }
 
 }

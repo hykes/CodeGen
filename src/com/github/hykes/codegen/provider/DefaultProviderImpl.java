@@ -3,13 +3,15 @@ package com.github.hykes.codegen.provider;
 import com.github.hykes.codegen.model.CodeContext;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.BuilderUtil;
-import com.github.hykes.codegen.utils.PsiUtil;
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiPackage;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.java.generate.velocity.VelocityFactory;
@@ -44,6 +46,7 @@ public class DefaultProviderImpl extends AbstractFileProvider {
         VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.UpperCase");
         VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.Append");
         VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.Split");
+        VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.ImportPackage");
         Thread.currentThread().setContextClassLoader(classLoader);
     }
 
@@ -58,16 +61,20 @@ public class DefaultProviderImpl extends AbstractFileProvider {
             }
         }
 
-        StringWriter templateWriter = new StringWriter();
-        VELOCITY_ENGINE.evaluate(velocityContext, templateWriter, "", template.getTemplate());
-
         StringWriter fileNameWriter = new StringWriter();
         VELOCITY_ENGINE.evaluate(velocityContext, fileNameWriter, "", template.getFilename());
+
+        StringWriter templateWriter = new StringWriter();
+        VELOCITY_ENGINE.evaluate(velocityContext, templateWriter, "", template.getTemplate());
 
         WriteCommandAction.runWriteCommandAction(this.project, () -> {
             try {
                 PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getResources());
-                PsiUtil.createFile(project, directory, fileNameWriter.toString() + "." + this.languageFileType.getDefaultExtension(), templateWriter.toString(), this.languageFileType);
+                PsiPackage psiPackage = JavaDirectoryService.getInstance().getPackage(directory);
+                if (!Strings.isNullOrEmpty(psiPackage.getQualifiedName())) {
+                    extraMap.put(fileNameWriter.toString(), new StringBuilder(psiPackage.getQualifiedName()).append(".").append(fileNameWriter.toString()));
+                }
+                createFile(project, directory, new StringBuilder(fileNameWriter.toString()).append(".").append(this.languageFileType.getDefaultExtension()).toString(), templateWriter.toString(), this.languageFileType);
             } catch (Exception e) {
                 LOGGER.error(Throwables.getStackTraceAsString(e));
             }
