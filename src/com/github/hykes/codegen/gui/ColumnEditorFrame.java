@@ -12,7 +12,7 @@ import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.database.model.DasColumn;
-import com.intellij.database.model.basic.BasicTable;
+import com.intellij.database.psi.DbTable;
 import com.intellij.database.util.DasUtil;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiDirectory;
@@ -44,10 +44,10 @@ public class ColumnEditorFrame extends JFrame {
 
     private final List<TablePanel> panels = new ArrayList<>();
 
-    public ColumnEditorFrame newColumnEditorByDb(IdeaContext ideaContext, List<BasicTable> dbTables) {
+    public ColumnEditorFrame newColumnEditorByDb(IdeaContext ideaContext, List<DbTable> dbTables) {
 
         List<Table> tables = new ArrayList<>();
-        for (BasicTable dbTable: dbTables) {
+        for (DbTable dbTable: dbTables) {
             Table table = new Table();
             table.setTableName(dbTable.getName());
 
@@ -92,7 +92,7 @@ public class ColumnEditorFrame extends JFrame {
 
         for (Table table: tables) {
             TablePanel tablePanel = new TablePanel(table);
-            tablesPanel.add(tablePanel.getRootComponent());
+            tablesPanel.add(tablePanel.$$$getRootComponent$$$());
             panels.add(tablePanel);
         }
 
