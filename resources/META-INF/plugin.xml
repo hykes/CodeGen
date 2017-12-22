@@ -65,7 +65,7 @@
     </action>
 
     <action id="CodeGen.DBGenerator" class="com.github.hykes.codegen.DBGeneratorAction" text="CodeGen-DB">
-      <add-to-group group-id="DatabaseViewPopupMenu" anchor="last"/>
+      <add-to-group group-id="DatabaseViewPopupMenu" anchor="after" relative-to-action="CopyReference"/>
     </action>
   </actions>
 
