@@ -1,7 +1,6 @@
 package com.github.hykes.codegen.test;
 
 import com.github.hykes.codegen.gui.SqlEditorPanel;
-import com.google.common.collect.Maps;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.codeStyle.CodeStyleManager;
@@ -10,6 +9,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.java.generate.velocity.VelocityFactory;
 
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,7 +26,7 @@ public class VelocityTest {
         velocityEngine.loadDirective("com.github.hykes.codegen.directive.Split");
         String template = "#Split(\"#LowerCase(${NAME})\" '.')";
 //        String template = "#LowerCase(${NAME})";
-        Map<String, Object> map = Maps.newHashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("NAME", "HykesIsStrong");
 
         StringWriter writer = new StringWriter();

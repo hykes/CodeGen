@@ -3,8 +3,7 @@ package com.github.hykes.codegen.provider;
 import com.github.hykes.codegen.model.CodeContext;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.BuilderUtil;
-import com.google.common.base.Strings;
-import com.google.common.base.Throwables;
+import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.LanguageFileType;
@@ -71,12 +70,12 @@ public class DefaultProviderImpl extends AbstractFileProvider {
             try {
                 PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getResources());
                 PsiPackage psiPackage = JavaDirectoryService.getInstance().getPackage(directory);
-                if (!Strings.isNullOrEmpty(psiPackage.getQualifiedName())) {
+                if (!StringUtils.isEmpty(psiPackage.getQualifiedName())) {
                     extraMap.put(fileNameWriter.toString(), new StringBuilder(psiPackage.getQualifiedName()).append(".").append(fileNameWriter.toString()));
                 }
                 createFile(project, directory, new StringBuilder(fileNameWriter.toString()).append(".").append(this.languageFileType.getDefaultExtension()).toString(), templateWriter.toString(), this.languageFileType);
             } catch (Exception e) {
-                LOGGER.error(Throwables.getStackTraceAsString(e));
+                LOGGER.error(StringUtils.getStackTraceAsString(e));
             }
         });
     }

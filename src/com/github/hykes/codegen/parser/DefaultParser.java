@@ -3,8 +3,6 @@ package com.github.hykes.codegen.parser;
 import com.github.hykes.codegen.model.Field;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.utils.StringUtils;
-import com.google.common.base.Throwables;
-import com.google.common.collect.Lists;
 import com.intellij.openapi.diagnostic.Logger;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
@@ -32,14 +30,14 @@ public class DefaultParser extends AbstractParser {
             return null;
         }
 
-        List<Table> result = Lists.newArrayList();
+        List<Table> result = new ArrayList<>();
         // 解析sql语句
         try {
             List<Statement> statements = CCJSqlParserUtil.parseStatements(sqls).getStatements();
             if (statements == null || statements.isEmpty()) {
                 throw new RuntimeException("Nothing in parse !!!");
             }
-            List<CreateTable> createTables = Lists.newArrayList();
+            List<CreateTable> createTables = new ArrayList<>();
             for (Statement statement: statements) {
                 if (statement instanceof CreateTable) {
                     createTables.add((CreateTable) statement);
@@ -78,7 +76,7 @@ public class DefaultParser extends AbstractParser {
             }
             return result;
         } catch (Exception e) {
-            LOGGER.error(Throwables.getStackTraceAsString(e));
+            LOGGER.error(StringUtils.getStackTraceAsString(e));
         }
         return null;
     }

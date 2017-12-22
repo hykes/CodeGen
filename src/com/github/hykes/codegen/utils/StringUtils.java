@@ -1,8 +1,6 @@
 package com.github.hykes.codegen.utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 public class StringUtils {
@@ -1004,4 +1002,11 @@ public class StringUtils {
         }
         return value.toString().trim();
     }
+
+    public static String getStackTraceAsString(Throwable throwable) {
+        StringWriter stringWriter = new StringWriter();
+        throwable.printStackTrace(new PrintWriter(stringWriter));
+        return stringWriter.toString();
+    }
+
 }

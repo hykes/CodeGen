@@ -5,8 +5,7 @@ import com.github.hykes.codegen.constants.DefaultParams;
 import com.github.hykes.codegen.model.*;
 import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.PsiUtil;
-import com.google.common.base.Throwables;
-import com.google.common.collect.Lists;
+import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.database.model.DasColumn;
 import com.intellij.database.psi.DbTable;
 import com.intellij.database.util.DasUtil;
@@ -34,16 +33,16 @@ public class ColumnEditorFrame extends JFrame {
 
     private final SettingManager SETTING_MANAGER = SettingManager.getInstance();
 
-    private final List<TablePanel> panels = Lists.newArrayList();
+    private final List<TablePanel> panels = new ArrayList<>();
 
     public ColumnEditorFrame newColumnEditorByDb(IdeaContext ideaContext, List<DbTable> dbTables) {
 
-        List<Table> tables = Lists.newArrayList();
+        List<Table> tables = new ArrayList<>();
         for (DbTable dbTable: dbTables) {
             Table table = new Table();
             table.setTableName(dbTable.getName());
 
-            List<Field> fields = Lists.newArrayList();
+            List<Field> fields = new ArrayList<>();
 
             JBIterable<? extends DasColumn> columnsIter = DasUtil.getColumns(dbTable);
             List<? extends DasColumn> dasColumns = columnsIter.toList();
@@ -106,7 +105,7 @@ public class ColumnEditorFrame extends JFrame {
             this.getAllJCheckBoxValue(groupPanel, list);
 
             if(!list.isEmpty()) {
-                List<CodeContext> contexts = Lists.newArrayList();
+                List<CodeContext> contexts = new ArrayList<>();
 
                 for (TablePanel panel: panels) {
                     String modelName = panel.getModelTextField().getText().trim();
@@ -162,7 +161,7 @@ public class ColumnEditorFrame extends JFrame {
                         }
                     }
                 } catch (Exception e){
-                    LOGGER.error(Throwables.getStackTraceAsString(e));
+                    LOGGER.error(StringUtils.getStackTraceAsString(e));
                 }
             }
         }

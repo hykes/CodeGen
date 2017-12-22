@@ -1,7 +1,5 @@
 package com.github.hykes.codegen.configurable.model;
 
-import com.google.common.collect.Maps;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,10 +16,8 @@ public class Variables implements Serializable {
     private Map<String, String> params = new HashMap<>();
 
     public Variables() {
-        Map<String, String> params = Maps.newHashMap();
         params.put("author", "[ your name ]");
         params.put("email", "[ your email ]");
-        params.putAll(params);
     }
 
     public Map<String, String> getParams() {

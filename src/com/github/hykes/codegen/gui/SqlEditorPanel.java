@@ -5,7 +5,7 @@ import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.parser.DefaultParser;
 import com.github.hykes.codegen.parser.Parser;
 import com.github.hykes.codegen.utils.NotifyUtil;
-import com.google.common.base.Strings;
+import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.components.JBScrollPane;
@@ -49,7 +49,7 @@ public class SqlEditorPanel {
                 try {
                     String sqls = sqlTextArea.getText().trim();
 
-                    if (Strings.isNullOrEmpty(sqls)) {
+                    if (StringUtils.isEmpty(sqls)) {
                         return;
                     }
 
