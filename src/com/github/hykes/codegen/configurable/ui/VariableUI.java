@@ -64,7 +64,7 @@ public class VariableUI implements UIConfigurable {
 
         String inHouseVariables;
         try {
-            InputStream template = getClass().getResourceAsStream("/others/In-house-variables.md");
+            InputStream template = getClass().getResourceAsStream("/variables.md");
             inHouseVariables = StringUtils.stream2String(template);
         } catch (IOException ioe) {
             inHouseVariables = "IOException";
