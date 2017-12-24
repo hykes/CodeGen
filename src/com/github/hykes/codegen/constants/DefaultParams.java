@@ -1,5 +1,7 @@
 package com.github.hykes.codegen.constants;
 
+import org.apache.commons.lang.time.DateFormatUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -13,18 +15,16 @@ import java.util.Map;
 public class DefaultParams {
 
     public static Map<String, String> getInHouseVariables() {
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> context = new HashMap<>();
         Calendar calendar = Calendar.getInstance();
-        params.put("Year", String.valueOf(calendar.get(Calendar.YEAR)));
-        params.put("Month", String.valueOf(calendar.get(Calendar.MONTH) + 1));
-        params.put("Date", String.valueOf(calendar.get(Calendar.DATE)));
-        params.put("Day", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-        params.put("Hour", String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
-        params.put("Minute", String.valueOf(calendar.get(Calendar.MINUTE)));
-        params.put("Second", String.valueOf(calendar.get(Calendar.SECOND)));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        params.put("Now", formatter.format(calendar.getTime()));
-        return params;
+        context.put("YEAR", String.valueOf(calendar.get(Calendar.YEAR)));
+        context.put("MONTH", String.valueOf(calendar.get(Calendar.MONTH) + 1));
+        context.put("DAY", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
+        context.put("DATE", DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd"));
+        context.put("TIME", DateFormatUtils.format(calendar.getTime(), "HH:mm:ss"));
+        context.put("NOW", DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd HH:mm:ss"));
+        context.put("USER", System.getProperty("user.name"));
+        return context;
     }
 
 }

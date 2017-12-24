@@ -4,6 +4,7 @@ import com.github.hykes.codegen.model.CodeContext;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.BuilderUtil;
 import com.github.hykes.codegen.utils.StringUtils;
+import com.github.hykes.codegen.utils.VelocityUtil;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.LanguageFileType;
@@ -12,10 +13,7 @@ import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiPackage;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.jetbrains.java.generate.velocity.VelocityFactory;
 
-import java.io.StringWriter;
 import java.util.Map;
 
 /**
@@ -26,8 +24,6 @@ import java.util.Map;
  */
 public class DefaultProviderImpl extends AbstractFileProvider {
 
-    protected final static VelocityEngine VELOCITY_ENGINE = VelocityFactory.getVelocityEngine();
-
     private static final Logger LOGGER = Logger.getInstance(DefaultProviderImpl.class);
 
     protected LanguageFileType languageFileType;
@@ -35,18 +31,6 @@ public class DefaultProviderImpl extends AbstractFileProvider {
     public DefaultProviderImpl(Project project, PsiDirectory psiDirectory, LanguageFileType languageFileType) {
         super(project, psiDirectory);
         this.languageFileType = languageFileType;
-        /*
-          IDEA 的 URLClassLoader 无法获取当前插件的 path
-          @see org.apache.velocity.util.ClassUtils
-         */
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-        VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.LowerCase");
-        VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.UpperCase");
-        VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.Append");
-        VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.Split");
-        VELOCITY_ENGINE.loadDirective("com.github.hykes.codegen.directive.ImportPackage");
-        Thread.currentThread().setContextClassLoader(classLoader);
     }
 
     @Override
@@ -60,20 +44,17 @@ public class DefaultProviderImpl extends AbstractFileProvider {
             }
         }
 
-        StringWriter fileNameWriter = new StringWriter();
-        VELOCITY_ENGINE.evaluate(velocityContext, fileNameWriter, "", template.getFilename());
-
-        StringWriter templateWriter = new StringWriter();
-        VELOCITY_ENGINE.evaluate(velocityContext, templateWriter, "", template.getTemplate());
+        String fileName = VelocityUtil.evaluate(velocityContext, template.getFilename());
+        String temp = VelocityUtil.evaluate(velocityContext, template.getTemplate());
 
         WriteCommandAction.runWriteCommandAction(this.project, () -> {
             try {
                 PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getResources());
                 PsiPackage psiPackage = JavaDirectoryService.getInstance().getPackage(directory);
                 if (!StringUtils.isEmpty(psiPackage.getQualifiedName())) {
-                    extraMap.put(fileNameWriter.toString(), new StringBuilder(psiPackage.getQualifiedName()).append(".").append(fileNameWriter.toString()));
+                    extraMap.put(fileName, new StringBuilder(psiPackage.getQualifiedName()).append(".").append(fileName));
                 }
-                createFile(project, directory, new StringBuilder(fileNameWriter.toString()).append(".").append(this.languageFileType.getDefaultExtension()).toString(), templateWriter.toString(), this.languageFileType);
+                createFile(project, directory, new StringBuilder(fileName).append(".").append(this.languageFileType.getDefaultExtension()).toString(), temp, this.languageFileType);
             } catch (Exception e) {
                 LOGGER.error(StringUtils.getStackTraceAsString(e));
             }

@@ -1,20 +1,18 @@
 Predefined Variables:
 
-${Year} current year
+${YEAR} current year
 
-${Month} current month
+${MONTH} current month
 
-${Day} current day of the month
+${DAY} current day of the month
 
-${Hour} current hour
+${DATE} current system date yyyy-MM-dd
 
-${Minute} current minute
+${TIME} current system time HH:mm:ss
 
-${Second} current second
+${NOW} current system time yyyy-MM-dd HH:mm:ss
 
-${Date} current system date
-
-${Now} current system time
+${USER} current system user name
 
 ${serialVersionUID} current file serialVersionUID
 
