@@ -6,7 +6,7 @@ import io.terminus.common.model.Response;
 /**
  *
  * @author $!{email}
- * @date ${Now}
+ * @date ${NOW}
  * Created by CodeGen .
  */
 public interface ${model}WriteService {

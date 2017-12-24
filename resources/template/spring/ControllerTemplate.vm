@@ -23,7 +23,7 @@ import java.util.List;
 /**
  *
  * @author $!{email}
- * @date ${Now}
+ * @date ${NOW}
  * Created by CodeGen .
  */
 @Slf4j

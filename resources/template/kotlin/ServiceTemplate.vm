@@ -6,7 +6,7 @@ import io.terminus.paas.common.model.Paging
 /**
  *
  * @author $!{email}
- * @date ${Now}
+ * @date ${NOW}
  * Created by CodeGen .
  */
 interface ${model}Service {

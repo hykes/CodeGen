@@ -12,7 +12,7 @@ import java.util.List;
 /**
  *
  * @author $!{email}
- * @date ${Now}
+ * @date ${NOW}
  * Created by CodeGen .
  */
 public class ${model}DaoTest extends BaseDaoTest {
