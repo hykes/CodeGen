@@ -279,6 +279,8 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             TemplateGroupEditDialog dialog = new TemplateGroupEditDialog();
             dialog.setTitle("Edit Group");
 
+            dialog.getNameTextField().setText(group.getName());
+            dialog.getLevelTextField().setText(String.valueOf(group.getLevel() != null ? group.getLevel() : 0));
             dialog.getButtonOK().addActionListener( it ->{
                 String name = dialog.getNameTextField().getText().trim();
                 String level = dialog.getLevelTextField().getText().trim();

@@ -10,6 +10,7 @@ import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.util.ui.JBUI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -60,6 +61,7 @@ public class TablePanel {
                 .setRemoveAction(it -> removeAction())
                 .setEditAction(it -> editAction())
                 .createPanel();
+        panel.setPreferredSize(JBUI.size(300, 200));
         columnsPanel.setBorder(IdeBorderFactory.createTitledBorder("Columns", false));
         columnsPanel.add(panel, BorderLayout.CENTER);
 
