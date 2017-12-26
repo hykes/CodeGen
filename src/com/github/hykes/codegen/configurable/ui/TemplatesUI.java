@@ -9,8 +9,10 @@ import com.github.hykes.codegen.configurable.ui.editor.TemplateEditorUI;
 import com.github.hykes.codegen.constants.DefaultTemplates;
 import com.github.hykes.codegen.model.CodeGroup;
 import com.github.hykes.codegen.model.CodeTemplate;
+import com.github.hykes.codegen.provider.DefaultProviderImpl;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
@@ -30,6 +32,8 @@ import java.util.List;
  * @date 2017/5/10
  */
 public class TemplatesUI extends JBPanel implements UIConfigurable {
+
+    private static final Logger LOGGER = Logger.getInstance(DefaultProviderImpl.class);
 
     private Tree templateTree;
     private ToolbarDecorator toolbarDecorator;
@@ -132,13 +136,13 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             if(object instanceof CodeTemplate) {
                 CodeTemplate template = (CodeTemplate) object;
                 templateEditor.refresh(template);
-                System.out.println("你点击了：" + template.getDisplay());
+                LOGGER.info(String.format("click: %s", template.getDisplay()));
             }else if(object instanceof CodeGroup) {
                 CodeGroup group = (CodeGroup) object;
-                System.out.println("你点击了：" + group.getName());
+                LOGGER.info(String.format("click: %s",  group.getName()));
             } else if(object instanceof String) {
                 String text = (String)object;
-                System.out.println("你点击了：" + text);
+                LOGGER.info(String.format("click: %s", text));
             }
         });
 
@@ -304,7 +308,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
     private void setTemplates(Templates templates){
 
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Terminus.io");
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 
         List<CodeGroup> groups = templates.getGroups();
         groups.forEach( it -> {
