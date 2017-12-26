@@ -37,10 +37,10 @@ public class DBGeneratorAction extends AnAction implements DumbAware {
             return;
         }
 
-        Iterator<DbElement> iterator =  DatabaseView.getSelectedElements(e.getDataContext(), it -> true).iterator();
+        Iterator<DbElement> iterator = DatabaseView.getSelectedElements(e.getDataContext(), DbElement.class).iterator();
 
         boolean hasTable = false;
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             DbElement table = iterator.next();
             if (table instanceof DbTable) {
                 hasTable = true;
@@ -59,10 +59,10 @@ public class DBGeneratorAction extends AnAction implements DumbAware {
             return;
         }
 
-        Iterator<DbElement> iterator =  DatabaseView.getSelectedElements(e.getDataContext(), it -> true).iterator();
+        Iterator<DbElement> iterator = DatabaseView.getSelectedElements(e.getDataContext(), DbElement.class).iterator();
 
         List<DbTable> tables = new ArrayList<>();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             DbElement table = iterator.next();
             if (table instanceof DbTable) {
                 tables.add((DbTable) table);
