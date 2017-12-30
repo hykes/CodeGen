@@ -25,7 +25,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.*;
 import java.awt.*;
-import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -181,10 +181,8 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                                             groupMap.get(template.getGroup()).getTemplates().add(template);
                                         }
                                     }
-                                    List<CodeGroup> groupSetting = new ArrayList<>();
-                                    groupSetting.addAll(groupMap.values());
-                                    groupSetting.addAll(settingManager.getTemplates().getGroups());
-                                    settingManager.getTemplates().setGroups(groupSetting);
+                                    settingManager.getTemplates().getGroups().addAll(groupMap.values());
+                                    setTemplates(settingManager.getTemplates());
                                 }
                             } else {
                                 NotifyUtil.notice("请选择模版压缩文件", MessageType.WARNING);
@@ -218,7 +216,18 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                                         for (CodeTemplate template : group.getTemplates()) {
                                             ExportTemplate exportTemplate = new ExportTemplate();
                                             exportTemplate.setName(group.getName()+template.getDisplay()+".vm");
-                                            exportTemplate.setInputStream(new ByteArrayInputStream(template.getTemplate().getBytes(Charset.defaultCharset())));
+                                            ByteArrayOutputStream o = new ByteArrayOutputStream();
+                                            o.write("#*\n".getBytes());
+                                            o.write(("display: "+ template.getDisplay() +";\n").getBytes());
+                                            o.write(("extension: "+ template.getExtension() +";\n").getBytes());
+                                            o.write(("filename: "+ template.getFilename() +";\n").getBytes());
+                                            o.write(("subPath: "+ template.getSubPath() +";\n").getBytes());
+                                            o.write(("group: "+ group.getName() +";\n").getBytes());
+                                            o.write(("level: "+ group.getLevel() +";\n").getBytes());
+                                            o.write(("isResources: "+ template.getResources().toString() +";\n").getBytes());
+                                            o.write("*#\n".getBytes());
+                                            o.write(template.getTemplate().getBytes(Charset.defaultCharset()));
+                                            exportTemplate.setBytes(o.toByteArray());
                                             files.add(exportTemplate);
                                         }
                                     }

@@ -1,6 +1,5 @@
 package com.github.hykes.codegen.model;
 
-import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 /**
@@ -14,14 +13,14 @@ public class ExportTemplate implements Serializable {
     public ExportTemplate() {
     }
 
-    public ExportTemplate(String name, ByteArrayInputStream inputStream) {
+    public ExportTemplate(String name, byte[] bytes) {
         this.name = name;
-        this.inputStream = inputStream;
+        this.bytes = bytes;
     }
 
     private String name;
 
-    private ByteArrayInputStream inputStream;
+    private byte[] bytes;
 
     public String getName() {
         return name;
@@ -31,11 +30,11 @@ public class ExportTemplate implements Serializable {
         this.name = name;
     }
 
-    public ByteArrayInputStream getInputStream() {
-        return inputStream;
+    public byte[] getBytes() {
+        return bytes;
     }
 
-    public void setInputStream(ByteArrayInputStream inputStream) {
-        this.inputStream = inputStream;
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
     }
 }

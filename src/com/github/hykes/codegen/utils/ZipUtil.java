@@ -24,18 +24,11 @@ public class ZipUtil {
 
     public static void export(List<ExportTemplate> files, String targetPath) {
         try {
-            byte[] buffer = new byte[4096];
             ZipOutputStream out = new ZipOutputStream(new FileOutputStream(targetPath));
-
             for(ExportTemplate file: files) {
-                ByteArrayInputStream fis = file.getInputStream();
                 out.putNextEntry(new ZipEntry(file.getName()));
-                int len;
-                while((len = fis.read(buffer))>0) {
-                    out.write(buffer,0,len);
-                }
+                out.write(file.getBytes());
                 out.closeEntry();
-                fis.close();
             }
             out.close();
         } catch (Exception e) {
@@ -56,7 +49,7 @@ public class ZipUtil {
                 String line;
                 StringBuilder sb = new StringBuilder();
                 while ((line = br.readLine()) != null) {
-                    sb.append(line);
+                    sb.append(line).append("\n");
                 }
                 br.close();
 
@@ -76,7 +69,7 @@ public class ZipUtil {
                 codeTemplate.setExtension(infoMap.containsKey("extension") ? infoMap.get("extension") : null);
                 codeTemplate.setFilename(infoMap.containsKey("filename") ? infoMap.get("filename") : null);
                 codeTemplate.setSubPath(infoMap.containsKey("subPath") ? infoMap.get("subPath") : null);
-                codeTemplate.setResources(infoMap.containsKey("isResource") ? Boolean.valueOf(infoMap.get("isResource")) : null);
+                codeTemplate.setResources(infoMap.containsKey("isResources") ? Boolean.valueOf(infoMap.get("isResources")) : null);
                 String result = matcher.replaceAll("").replace("#**#", "");
                 codeTemplate.setTemplate(result);
                 templates.add(codeTemplate);
@@ -84,7 +77,7 @@ public class ZipUtil {
                 if (infoMap.containsKey("group")) {
                     CodeGroup codeGroup = new CodeGroup();
                     codeGroup.setId(UUID.randomUUID().toString());
-                    codeGroup.setLevel(1);
+                    codeGroup.setLevel(Integer.valueOf(infoMap.get("level")));
                     codeGroup.setName(infoMap.get("group"));
                     codeGroup.setTemplates(new ArrayList<>());
                     groups.add(codeGroup);
@@ -112,8 +105,8 @@ public class ZipUtil {
     public static void main(String[] args) throws Exception {
         String targetPath = "Demo.zip";
         List<ExportTemplate> files = new ArrayList<>();
-        files.add(new ExportTemplate("item.log", new ByteArrayInputStream("sss".getBytes())));
-        files.add(new ExportTemplate("bids.log", new ByteArrayInputStream("ssssss".getBytes())));
+        files.add(new ExportTemplate("item.log", "sss".getBytes()));
+        files.add(new ExportTemplate("bids.log", "sss".getBytes()));
         export(files, targetPath);
         System.out.println("生成Demo.zip成功");
     }
