@@ -6,22 +6,28 @@ import com.github.hykes.codegen.configurable.model.Templates;
 import com.github.hykes.codegen.configurable.ui.dialog.TemplateEditDialog;
 import com.github.hykes.codegen.configurable.ui.dialog.TemplateGroupEditDialog;
 import com.github.hykes.codegen.configurable.ui.editor.TemplateEditorUI;
-import com.github.hykes.codegen.constants.DefaultTemplates;
 import com.github.hykes.codegen.model.CodeGroup;
 import com.github.hykes.codegen.model.CodeTemplate;
+import com.github.hykes.codegen.model.ExportTemplate;
 import com.github.hykes.codegen.provider.DefaultProviderImpl;
+import com.github.hykes.codegen.utils.NotifyUtil;
+import com.github.hykes.codegen.utils.ZipUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.*;
 import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.List;
 
@@ -150,21 +156,91 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             .setAddAction( it -> addAction())
             .setRemoveAction( it -> removeAction())
             .setEditAction(it -> editorAction())
-                .addExtraAction(new AnActionButton("Connect", AllIcons.Actions.Reset) {
-                    @Override
-                    public void actionPerformed(AnActionEvent e) {
-                        int isResult = Messages.showYesNoDialog("是否使用内置模版覆盖当前模版组", "请选择", AllIcons.Actions.Refresh);
-                        if(isResult == 0){
-                            settingManager.getTemplates().setGroups(DefaultTemplates.getDefaults());
-                            reset();
+            .addExtraAction(new AnActionButton("Import", AllIcons.Actions.Upload) {
+                @Override
+                public void actionPerformed(AnActionEvent e) {
+                    try {
+                        JFileChooser jfc = new JFileChooser();
+                        jfc.setAcceptAllFileFilterUsed(false);
+                        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                        fileFilter(jfc);
+                        int result = jfc.showDialog(new JLabel(), "确定");
+                        if (result == JFileChooser.APPROVE_OPTION) { // 确认打开
+                            File file = jfc.getSelectedFile();
+                            if (file.exists()) {
+                                if (!file.isDirectory()) {
+                                    List<CodeTemplate> templates = new ArrayList<>();
+                                    List<CodeGroup> groups = new ArrayList<>();
+                                    ZipUtil.readZipFile(file.getAbsolutePath(), templates, groups);
+                                    Map<String, CodeGroup> groupMap = new HashMap<>();
+                                    for (CodeGroup group: groups) {
+                                        groupMap.put(group.getName(), group);
+                                    }
+                                    for (CodeTemplate template: templates) {
+                                        if (groupMap.containsKey(template.getGroup())) {
+                                            groupMap.get(template.getGroup()).getTemplates().add(template);
+                                        }
+                                    }
+                                    List<CodeGroup> groupSetting = new ArrayList<>();
+                                    groupSetting.addAll(groupMap.values());
+                                    groupSetting.addAll(settingManager.getTemplates().getGroups());
+                                    settingManager.getTemplates().setGroups(groupSetting);
+                                }
+                            } else {
+                                NotifyUtil.notice("请选择模版压缩文件", MessageType.WARNING);
+                            }
+                        } else if (result == JFileChooser.ERROR_OPTION) {
+                            NotifyUtil.notice("选择模版压缩文件出错", MessageType.WARNING);
                         }
+                    } catch (Exception var){
+                        LOGGER.error(var.getMessage());
                     }
+                }
 
-                    @Override
-                    public boolean isEnabled() {
-                        return super.isEnabled();
+                @Override
+                public boolean isEnabled() {
+                    return super.isEnabled();
+                }
+            })
+            .addExtraAction(new AnActionButton("Export", AllIcons.Actions.Download) {
+                @Override
+                public void actionPerformed(AnActionEvent e) {
+                    try {
+                        JFileChooser jfc = new JFileChooser();
+                        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                        int result = jfc.showDialog(new JLabel(), "确定");
+                        if (result == JFileChooser.APPROVE_OPTION) { // 确认打开
+                            File file = jfc.getSelectedFile();
+                            if (file.exists()) {
+                                if (file.isDirectory()) {
+                                    List<ExportTemplate> files = new ArrayList<>();
+                                    for (CodeGroup group : settingManager.getTemplates().getGroups()) {
+                                        for (CodeTemplate template : group.getTemplates()) {
+                                            ExportTemplate exportTemplate = new ExportTemplate();
+                                            exportTemplate.setName(group.getName()+template.getDisplay()+".vm");
+                                            exportTemplate.setInputStream(new ByteArrayInputStream(template.getTemplate().getBytes(Charset.defaultCharset())));
+                                            files.add(exportTemplate);
+                                        }
+                                    }
+                                    ZipUtil.export(files, file.getAbsolutePath() + "/CodeGen-Templates.zip");
+                                    NotifyUtil.notice("Export CodeGen templates", file.getAbsolutePath() + "/CodeGen-Templates.zip", MessageType.INFO);
+                                }
+                            } else {
+                                NotifyUtil.notice("请选择模版文件夹", MessageType.WARNING);
+                            }
+                        } else if (result == JFileChooser.ERROR_OPTION) {
+                            NotifyUtil.notice("选择文件夹出错", MessageType.WARNING);
+                        }
+                    } catch (Exception var){
+                        LOGGER.error(var.getMessage());
                     }
-                })
+                }
+
+                @Override
+                public boolean isEnabled() {
+                    return super.isEnabled();
+                }
+            })
             .setEditActionUpdater( it -> {
                 // 只能允许CodeGroup在树中编辑
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
@@ -187,6 +263,31 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         templateEditor = new TemplateEditorUI();
         add(templateEditor.$$$getRootComponent$$$(), BorderLayout.CENTER);
     }
+
+    /**
+     * 多类型时使用
+     */
+    private void fileFilter(JFileChooser jfc) {
+        String[][] fileNames = { { ".zip", "模版压缩文件(*.zip)" } };
+        // 循环添加需要显示的文件
+        for (String[] fileName : fileNames) {
+            jfc.addChoosableFileFilter(new FileFilter() {
+                public boolean accept(File file) {
+                    if (file.getName().endsWith(fileName[0])
+                            || file.isDirectory()) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                public String getDescription() {
+                    return fileName[1];
+                }
+
+            });
+        }
+    }
+
 
     private void addAction(){
         //获取选中节点

@@ -72,4 +72,5 @@ public class CodeGroup implements Serializable {
     public void setTemplates(List<CodeTemplate> templates) {
         this.templates = templates;
     }
+
 }

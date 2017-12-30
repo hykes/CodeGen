@@ -59,6 +59,8 @@ public class CodeTemplate implements Serializable {
      */
     private Boolean isResources;
 
+    private String group;
+
     public String getId() {
         return id;
     }
@@ -113,6 +115,14 @@ public class CodeTemplate implements Serializable {
 
     public void setResources(Boolean resources) {
         isResources = resources;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     @Override

@@ -47,16 +47,14 @@
     </sql>
 
     <insert id="create" parameterType="${model}" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO
-        <include refid="table_name"/>
+        INSERT INTO <include refid="table_name"/>
         (<include refid="columns_exclude_id"/>)
         VALUES
         (<include refid="values_exclude_id"/>)
     </insert>
 
     <insert id="creates" parameterType="${model}" useGeneratedKeys="true">
-        INSERT INTO
-        <include refid="table_name"/>
+        INSERT INTO <include refid="table_name"/>
         (<include refid="columns_exclude_id"/>)
         VALUES
         <foreach collection="list" item="i" index="index" separator="," >
@@ -66,18 +64,14 @@
     </insert>
 
     <select id="findById" parameterType="long" resultMap="${model}Map">
-        SELECT
-        <include refid="columns_all"/>
-        FROM
-        <include refid="table_name"/>
+        SELECT <include refid="columns_all"/>
+        FROM <include refid="table_name"/>
         WHERE id = #{id} LIMIT 1
     </select>
 
     <select id="findByIds" parameterType="list" resultMap="${model}Map">
-        SELECT
-        <include refid="columns_all"/>
-        FROM
-        <include refid="table_name"/>
+        SELECT <include refid="columns_all"/>
+        FROM <include refid="table_name"/>
         WHERE id IN
         <foreach item="id" collection="list" open="(" separator="," close=")">
             #{id}
@@ -85,8 +79,7 @@
     </select>
 
     <update id="update" parameterType="${model}">
-        UPDATE
-        <include refid="table_name"/>
+        UPDATE <include refid="table_name"/>
         <set>
         #foreach($item in $fields)
             <if test="${item.field} != null">`${item.column}` = #{${item.field}},</if>

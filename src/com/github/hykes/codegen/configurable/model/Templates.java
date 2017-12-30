@@ -1,8 +1,7 @@
 package com.github.hykes.codegen.configurable.model;
 
-import com.github.hykes.codegen.constants.DefaultTemplates;
-import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.model.CodeGroup;
+import com.github.hykes.codegen.model.CodeTemplate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,9 +20,7 @@ public class Templates implements Serializable {
 
     private List<CodeGroup> groups = new ArrayList<>();
 
-    public Templates() {
-        groups.addAll(DefaultTemplates.getDefaults());
-    }
+    public Templates() {}
 
     public Map<String, List<CodeTemplate>> getTemplatesMap(){
         Map<String, List<CodeTemplate>> result = new HashMap<>();
@@ -37,5 +34,9 @@ public class Templates implements Serializable {
 
     public void setGroups(List<CodeGroup> groups) {
         this.groups = groups;
+    }
+
+    public void addGroups(List<CodeGroup> groups) {
+        this.groups.addAll(groups);
     }
 }
