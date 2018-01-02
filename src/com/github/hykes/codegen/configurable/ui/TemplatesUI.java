@@ -10,14 +10,13 @@ import com.github.hykes.codegen.model.CodeGroup;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.model.ExportTemplate;
 import com.github.hykes.codegen.provider.DefaultProviderImpl;
-import com.github.hykes.codegen.utils.NotifyUtil;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.github.hykes.codegen.utils.ZipUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
@@ -164,12 +163,10 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 public void actionPerformed(AnActionEvent e) {
                     try {
                         VirtualFile virtualFile = PsiUtil.chooseFile(null, "ZIP Chooser", "Select Import ZIP", true, true, null);
-                        if (virtualFile == null) {
-                            NotifyUtil.notice("选择模版文件为空!", MessageType.ERROR);
-                            return ;
-                        }
-                        if (!virtualFile.getExtension().equals("zip") && !virtualFile.getExtension().equals("ZIP")) {
-                            NotifyUtil.notice("选择模版文件错误!", MessageType.ERROR);
+                        if (virtualFile == null ||
+                                (!"zip".equals(virtualFile.getExtension())
+                                        && !"ZIP".equals(virtualFile.getExtension()))) {
+                            Messages.showInfoMessage("请选择模版压缩文件(.zip)", "ERROR");
                             return ;
                         }
                         List<CodeTemplate> templates = new ArrayList<>();
@@ -184,7 +181,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                         }
                         settingManager.getTemplates().getGroups().addAll(groupMap.values());
                         setTemplates(settingManager.getTemplates());
-                        NotifyUtil.notice("Import templates success", MessageType.INFO);
+                        Messages.showInfoMessage("Import templates success", "INFO");
                     } catch (Exception var){
                         LOGGER.error(StringUtils.getStackTraceAsString(var));
                     }
@@ -200,12 +197,8 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 public void actionPerformed(AnActionEvent e) {
                     try {
                         VirtualFile virtualFile = PsiUtil.chooseFolder(null, "Directory Chooser", "Select Export Directory", true, true, null);
-                        if (virtualFile == null) {
-                            NotifyUtil.notice("选择目录为空!", MessageType.ERROR);
-                            return ;
-                        }
-                        if (!virtualFile.isDirectory()) {
-                            NotifyUtil.notice("导出模版失败，请选择文件夹!", MessageType.ERROR);
+                        if (virtualFile == null || !virtualFile.isDirectory()) {
+                            Messages.showInfoMessage("请选择导出目录", "ERROR");
                             return ;
                         }
                         List<ExportTemplate> files = new ArrayList<>();
@@ -229,7 +222,8 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                             }
                         }
                         ZipUtil.export(files, virtualFile.getCanonicalPath() + "/CodeGen-Templates.zip");
-                        NotifyUtil.notice("Export CodeGen templates success", virtualFile.getCanonicalPath() + "/CodeGen-Templates.zip", MessageType.INFO);
+                        Messages.showInfoMessage("Export CodeGen templates success", "INFO");
+//                        NotifyUtil.notice("Export CodeGen templates success", virtualFile.getCanonicalPath() + "/CodeGen-Templates.zip", MessageType.INFO);
                     } catch (Exception var){
                         LOGGER.error(var.getMessage());
                     }
