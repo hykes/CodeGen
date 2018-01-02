@@ -167,7 +167,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                         if (virtualFile == null) {
                             NotifyUtil.notice("选择模版文件为空!", MessageType.ERROR);
                             return ;
-                        };
+                        }
                         if (!virtualFile.getExtension().equals("zip") && !virtualFile.getExtension().equals("ZIP")) {
                             NotifyUtil.notice("选择模版文件错误!", MessageType.ERROR);
                             return ;
@@ -200,6 +200,10 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 public void actionPerformed(AnActionEvent e) {
                     try {
                         VirtualFile virtualFile = PsiUtil.chooseFolder(null, "Directory Chooser", "Select Export Directory", true, true, null);
+                        if (virtualFile == null) {
+                            NotifyUtil.notice("选择目录为空!", MessageType.ERROR);
+                            return ;
+                        }
                         if (!virtualFile.isDirectory()) {
                             NotifyUtil.notice("导出模版失败，请选择文件夹!", MessageType.ERROR);
                             return ;
