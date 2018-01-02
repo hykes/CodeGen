@@ -11,11 +11,14 @@ import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.model.ExportTemplate;
 import com.github.hykes.codegen.provider.DefaultProviderImpl;
 import com.github.hykes.codegen.utils.NotifyUtil;
+import com.github.hykes.codegen.utils.PsiUtil;
+import com.github.hykes.codegen.utils.StringUtils;
 import com.github.hykes.codegen.utils.ZipUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
@@ -160,38 +163,30 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 @Override
                 public void actionPerformed(AnActionEvent e) {
                     try {
-                        JFileChooser jfc = new JFileChooser();
-                        jfc.setAcceptAllFileFilterUsed(false);
-                        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                        fileFilter(jfc);
-                        int result = jfc.showDialog(new JLabel(), "确定");
-                        if (result == JFileChooser.APPROVE_OPTION) { // 确认打开
-                            File file = jfc.getSelectedFile();
-                            if (file.exists()) {
-                                if (!file.isDirectory()) {
-                                    List<CodeTemplate> templates = new ArrayList<>();
-                                    List<CodeGroup> groups = new ArrayList<>();
-                                    ZipUtil.readZipFile(file.getAbsolutePath(), templates, groups);
-                                    Map<String, CodeGroup> groupMap = new HashMap<>();
-                                    for (CodeGroup group: groups) {
-                                        groupMap.put(group.getName(), group);
-                                    }
-                                    for (CodeTemplate template: templates) {
-                                        if (groupMap.containsKey(template.getGroup())) {
-                                            groupMap.get(template.getGroup()).getTemplates().add(template);
-                                        }
-                                    }
-                                    settingManager.getTemplates().getGroups().addAll(groupMap.values());
-                                    setTemplates(settingManager.getTemplates());
-                                }
-                            } else {
-                                NotifyUtil.notice("请选择模版压缩文件", MessageType.WARNING);
-                            }
-                        } else if (result == JFileChooser.ERROR_OPTION) {
-                            NotifyUtil.notice("选择模版压缩文件出错", MessageType.WARNING);
+                        VirtualFile virtualFile = PsiUtil.chooseFile(null, "ZIP Chooser", "Select Import ZIP", true, true, null);
+                        if (virtualFile == null) {
+                            NotifyUtil.notice("选择模版文件为空!", MessageType.ERROR);
+                            return ;
+                        };
+                        if (!virtualFile.getExtension().equals("zip") && !virtualFile.getExtension().equals("ZIP")) {
+                            NotifyUtil.notice("选择模版文件错误!", MessageType.ERROR);
+                            return ;
                         }
+                        List<CodeTemplate> templates = new ArrayList<>();
+                        List<CodeGroup> groups = new ArrayList<>();
+                        ZipUtil.readZipFile(virtualFile.getCanonicalPath(), templates, groups);
+                        Map<String, CodeGroup> groupMap = new HashMap<>();
+                        groups.forEach(it -> groupMap.put(it.getName(), it));
+                        for (CodeTemplate template: templates) {
+                            if (groupMap.containsKey(template.getGroup())) {
+                                groupMap.get(template.getGroup()).getTemplates().add(template);
+                            }
+                        }
+                        settingManager.getTemplates().getGroups().addAll(groupMap.values());
+                        setTemplates(settingManager.getTemplates());
+                        NotifyUtil.notice("Import templates success", MessageType.INFO);
                     } catch (Exception var){
-                        LOGGER.error(var.getMessage());
+                        LOGGER.error(StringUtils.getStackTraceAsString(var));
                     }
                 }
 
@@ -204,42 +199,33 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 @Override
                 public void actionPerformed(AnActionEvent e) {
                     try {
-                        JFileChooser jfc = new JFileChooser();
-                        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                        int result = jfc.showDialog(new JLabel(), "确定");
-                        if (result == JFileChooser.APPROVE_OPTION) { // 确认打开
-                            File file = jfc.getSelectedFile();
-                            if (file.exists()) {
-                                if (file.isDirectory()) {
-                                    List<ExportTemplate> files = new ArrayList<>();
-                                    for (CodeGroup group : settingManager.getTemplates().getGroups()) {
-                                        for (CodeTemplate template : group.getTemplates()) {
-                                            ExportTemplate exportTemplate = new ExportTemplate();
-                                            exportTemplate.setName(group.getName()+template.getDisplay()+".vm");
-                                            ByteArrayOutputStream o = new ByteArrayOutputStream();
-                                            o.write("#*\n".getBytes());
-                                            o.write(("display: "+ template.getDisplay() +";\n").getBytes());
-                                            o.write(("extension: "+ template.getExtension() +";\n").getBytes());
-                                            o.write(("filename: "+ template.getFilename() +";\n").getBytes());
-                                            o.write(("subPath: "+ template.getSubPath() +";\n").getBytes());
-                                            o.write(("group: "+ group.getName() +";\n").getBytes());
-                                            o.write(("level: "+ group.getLevel() +";\n").getBytes());
-                                            o.write(("isResources: "+ template.getResources().toString() +";\n").getBytes());
-                                            o.write("*#\n".getBytes());
-                                            o.write(template.getTemplate().getBytes(Charset.defaultCharset()));
-                                            exportTemplate.setBytes(o.toByteArray());
-                                            files.add(exportTemplate);
-                                        }
-                                    }
-                                    ZipUtil.export(files, file.getAbsolutePath() + "/CodeGen-Templates.zip");
-                                    NotifyUtil.notice("Export CodeGen templates", file.getAbsolutePath() + "/CodeGen-Templates.zip", MessageType.INFO);
-                                }
-                            } else {
-                                NotifyUtil.notice("请选择模版文件夹", MessageType.WARNING);
-                            }
-                        } else if (result == JFileChooser.ERROR_OPTION) {
-                            NotifyUtil.notice("选择文件夹出错", MessageType.WARNING);
+                        VirtualFile virtualFile = PsiUtil.chooseFolder(null, "Directory Chooser", "Select Export Directory", true, true, null);
+                        if (!virtualFile.isDirectory()) {
+                            NotifyUtil.notice("导出模版失败，请选择文件夹!", MessageType.ERROR);
+                            return ;
                         }
+                        List<ExportTemplate> files = new ArrayList<>();
+                        for (CodeGroup group : settingManager.getTemplates().getGroups()) {
+                            for (CodeTemplate template : group.getTemplates()) {
+                                ExportTemplate exportTemplate = new ExportTemplate();
+                                exportTemplate.setName(group.getName()+template.getDisplay()+".vm");
+                                ByteArrayOutputStream o = new ByteArrayOutputStream();
+                                o.write("#*\n".getBytes());
+                                o.write(("display: "+ template.getDisplay() +";\n").getBytes());
+                                o.write(("extension: "+ template.getExtension() +";\n").getBytes());
+                                o.write(("filename: "+ template.getFilename() +";\n").getBytes());
+                                o.write(("subPath: "+ template.getSubPath() +";\n").getBytes());
+                                o.write(("group: "+ group.getName() +";\n").getBytes());
+                                o.write(("level: "+ group.getLevel() +";\n").getBytes());
+                                o.write(("isResources: "+ template.getResources().toString() +";\n").getBytes());
+                                o.write("*#\n".getBytes());
+                                o.write(template.getTemplate().getBytes(Charset.defaultCharset()));
+                                exportTemplate.setBytes(o.toByteArray());
+                                files.add(exportTemplate);
+                            }
+                        }
+                        ZipUtil.export(files, virtualFile.getCanonicalPath() + "/CodeGen-Templates.zip");
+                        NotifyUtil.notice("Export CodeGen templates success", virtualFile.getCanonicalPath() + "/CodeGen-Templates.zip", MessageType.INFO);
                     } catch (Exception var){
                         LOGGER.error(var.getMessage());
                     }

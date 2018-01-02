@@ -19,6 +19,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -86,8 +87,6 @@ public class PsiUtil {
         descriptor.setDescription(description);
         descriptor.setHideIgnored(true);
         descriptor.setRoots(project.getBaseDir());
-        // todo: setForcedToUseIdeaFileChooser 方法应该存在版本兼容问题，待处理
-//        BuildNumber number = ApplicationInfo.getInstance().getBuild();
         descriptor.setForcedToUseIdeaFileChooser(true);
         VirtualFile file = FileChooser.chooseFile(descriptor, project, project.getBaseDir());
         if(Objects.isNull(file)){
@@ -102,6 +101,24 @@ public class PsiUtil {
             Messages.showInfoMessage("请选择正确的 package 路径。", "Error");
             return createDirectory(project, title, description);
         }
+    }
+
+    public static VirtualFile chooseFolder(@Nullable Project project, String title, String description, boolean showFileSystemRoots, boolean hideIgnored, @Nullable VirtualFile toSelect){
+        final FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
+        descriptor.setTitle(title);
+        descriptor.setDescription(description);
+        descriptor.setShowFileSystemRoots(showFileSystemRoots);
+        descriptor.setHideIgnored(hideIgnored);
+        return FileChooser.chooseFile(descriptor, project, toSelect);
+    }
+
+    public static VirtualFile chooseFile(@Nullable Project project, String title, String description, boolean showFileSystemRoots, boolean hideIgnored, @Nullable VirtualFile toSelect){
+        final FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFileDescriptor();
+        descriptor.setTitle(title);
+        descriptor.setDescription(description);
+        descriptor.setShowFileSystemRoots(showFileSystemRoots);
+        descriptor.setHideIgnored(hideIgnored);
+        return FileChooser.chooseFile(descriptor, project, toSelect);
     }
 
 }

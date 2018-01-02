@@ -1,6 +1,7 @@
 package com.github.hykes.codegen.test;
 
 import com.github.hykes.codegen.configurable.SettingManager;
+import com.intellij.ide.IdeBundle;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -13,7 +14,7 @@ public class BundleTest {
 
     public static void main(String[] args) {
         SettingManager settingManager = SettingManager.getInstance();
-
+        IdeBundle.message("prompt.select.source.directory");
 //        Locale locale = new Locale("zh", "CN");
         Locale locale = new Locale("en", "US");
 //        Locale locale = Locale.getDefault();
