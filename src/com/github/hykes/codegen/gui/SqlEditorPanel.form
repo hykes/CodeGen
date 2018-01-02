@@ -40,12 +40,7 @@
             <constraints border-constraint="Center"/>
             <properties/>
             <border type="none"/>
-            <children>
-              <component id="9ac6b" class="javax.swing.JTextArea" binding="sqlTextArea">
-                <constraints/>
-                <properties/>
-              </component>
-            </children>
+            <children/>
           </scrollpane>
         </children>
       </grid>

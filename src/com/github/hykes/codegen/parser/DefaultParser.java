@@ -75,8 +75,7 @@ public class DefaultParser extends AbstractParser {
                 }
             }
             return result;
-        } catch (Exception e) {
-            LOGGER.error(StringUtils.getStackTraceAsString(e));
+        } catch (Exception ignore) {
         }
         return null;
     }
