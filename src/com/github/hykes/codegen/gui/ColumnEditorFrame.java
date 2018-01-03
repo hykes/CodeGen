@@ -1,5 +1,6 @@
 package com.github.hykes.codegen.gui;
 
+import com.github.hykes.codegen.PathDialog;
 import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.constants.DefaultParams;
 import com.github.hykes.codegen.model.CodeContext;
@@ -104,13 +105,27 @@ public class ColumnEditorFrame extends JFrame {
         groups.forEach( it -> {
             JCheckBox groupBox = new JCheckBox(it.getName());
             groupBox.setName(it.getId());
+            groupBox.addActionListener( box -> {
+//                PathDialog dialog = new PathDialog();
+//                dialog.pack();
+//                dialog.setVisible(true);
+                SelectPathDialog dialog = new SelectPathDialog(ideaContext.getProject());
+                dialog.show();
+                if (dialog.isOK()) {
+                    String basePackage = dialog.getBasePackage();
+                    String outputPath = dialog.getOutputPath();
+                    System.out.println(outputPath);
+                    System.out.println(basePackage);
+                }
+            });
+
             groupPanel.add(groupBox);
         });
         groupPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         JButton genBtn = new JButton("Generate");
 
-        genBtn.addActionListener( it ->{
+        genBtn.addActionListener( it -> {
             List<String> list = new ArrayList<>();
             this.getAllJCheckBoxValue(groupPanel, list);
 
