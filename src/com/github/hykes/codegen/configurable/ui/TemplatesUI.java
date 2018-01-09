@@ -10,9 +10,7 @@ import com.github.hykes.codegen.model.CodeGroup;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.model.ExportTemplate;
 import com.github.hykes.codegen.provider.DefaultProviderImpl;
-import com.github.hykes.codegen.utils.PsiUtil;
-import com.github.hykes.codegen.utils.StringUtils;
-import com.github.hykes.codegen.utils.ZipUtil;
+import com.github.hykes.codegen.utils.*;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
@@ -22,6 +20,10 @@ import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -144,7 +146,6 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             if(object instanceof CodeTemplate) {
                 CodeTemplate template = (CodeTemplate) object;
                 templateEditor.refresh(template);
-                LOGGER.info(String.format("click: %s", template.getDisplay()));
             }else if(object instanceof CodeGroup) {
                 CodeGroup group = (CodeGroup) object;
                 LOGGER.info(String.format("click: %s",  group.getName()));
@@ -234,6 +235,34 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                     return super.isEnabled();
                 }
             })
+            .addExtraAction(new AnActionButton("Validate", AllIcons.Actions.StartDebugger) {
+                @Override
+                public void actionPerformed(AnActionEvent e) {
+                    if (templateEditor != null) {
+                        String template = templateEditor.getCodeTemplate().getTemplate();
+                        if (template != null) {
+                            try {
+                                VelocityUtil.evaluate(new VelocityContext(), template);
+                                Messages.showInfoMessage("validate success", "INFO");
+                            } catch (ResourceNotFoundException re){
+                                Messages.showInfoMessage("couldn't find the template", "ERROR");
+                                LOGGER.error(StringUtils.getStackTraceAsString(re));
+                            } catch (ParseErrorException pe){
+                                Messages.showInfoMessage("syntax error: problem parsing the template", "ERROR");
+                                LOGGER.error(StringUtils.getStackTraceAsString(pe));
+                            } catch (MethodInvocationException me){
+                                Messages.showInfoMessage("something invoked in the template", "ERROR");
+                                LOGGER.error(StringUtils.getStackTraceAsString(me));
+                            } catch (Exception ex){
+                                Messages.showInfoMessage("validate fail", "ERROR");
+                                LOGGER.error(StringUtils.getStackTraceAsString(ex));
+                            }
+                        }
+                    } else {
+                        LOGGER.warn("not found template .");
+                    }
+
+                }})
             .setEditActionUpdater( it -> {
                 // 只能允许CodeGroup在树中编辑
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
@@ -256,31 +285,6 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         templateEditor = new TemplateEditorUI();
         add(templateEditor.$$$getRootComponent$$$(), BorderLayout.CENTER);
     }
-
-    /**
-     * 多类型时使用
-     */
-    private void fileFilter(JFileChooser jfc) {
-        String[][] fileNames = { { ".zip", "模版压缩文件(*.zip)" } };
-        // 循环添加需要显示的文件
-        for (String[] fileName : fileNames) {
-            jfc.addChoosableFileFilter(new FileFilter() {
-                public boolean accept(File file) {
-                    if (file.getName().endsWith(fileName[0])
-                            || file.isDirectory()) {
-                        return true;
-                    }
-                    return false;
-                }
-
-                public String getDescription() {
-                    return fileName[1];
-                }
-
-            });
-        }
-    }
-
 
     private void addAction(){
         //获取选中节点
