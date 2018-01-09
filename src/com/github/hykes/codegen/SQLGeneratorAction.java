@@ -1,6 +1,7 @@
 package com.github.hykes.codegen;
 
 import com.github.hykes.codegen.gui.SqlEditorPanel;
+import com.github.hykes.codegen.messages.CodeGenBundle;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.intellij.icons.AllIcons;
@@ -30,7 +31,7 @@ public class SQLGeneratorAction extends AnAction implements DumbAware {
         Project project = PsiUtil.getProject(anActionEvent);
         DumbService dumbService = DumbService.getInstance(project);
         if (dumbService.isDumb()) {
-            dumbService.showDumbModeNotification("CodeGen plugin is not available during indexing !");
+            dumbService.showDumbModeNotification(CodeGenBundle.message("codegen.plugin.is.not.available.during.indexing"));
             return;
         }
 
