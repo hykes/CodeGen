@@ -243,7 +243,9 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                         String template = templateEditor.getCodeTemplate().getTemplate();
                         if (template != null) {
                             try {
-                                VelocityUtil.evaluate(new VelocityContext(), template);
+                                VelocityContext velocityContext = new VelocityContext();
+                                velocityContext.put("model", "Test");
+                                VelocityUtil.evaluate(velocityContext, template);
                                 Messages.showInfoMessage("validate success", "INFO");
                             } catch (ResourceNotFoundException re){
                                 Messages.showInfoMessage("couldn't find the template", "ERROR");
