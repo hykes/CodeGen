@@ -99,7 +99,8 @@ public class ColumnEditorFrame extends JFrame {
         final JPanel groupPanel = new JPanel();
         groupPanel.setLayout(new BoxLayout(groupPanel, BoxLayout.X_AXIS));
 
-        List<CodeGroup> groups = SETTING_MANAGER.getTemplates().getGroups();
+        // TODO: 此处需要选择root
+        List<CodeGroup> groups = SETTING_MANAGER.getTemplates().getRoots().get(0).getGroups();
         groups.forEach( it -> {
             JCheckBox groupBox = new JCheckBox(it.getName());
             groupBox.setName(it.getId());
@@ -156,7 +157,8 @@ public class ColumnEditorFrame extends JFrame {
         params.putAll(SETTING_MANAGER.getVariables().getParams());
         params.put("Project", ideaContext.getProject().getName());
 
-        List<CodeGroup> groupList = SETTING_MANAGER.getTemplates().getGroups();
+        // TODO: 此处需要选择root
+        List<CodeGroup> groupList = SETTING_MANAGER.getTemplates().getRoots().get(0).getGroups();
         groupList = groupList.stream().filter(it -> groups.contains(it.getId())).sorted(new ComparatorUtil()).collect(Collectors.toList());
 
         for(CodeGroup group: groupList){

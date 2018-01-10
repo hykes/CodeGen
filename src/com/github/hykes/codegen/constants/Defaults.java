@@ -1,6 +1,7 @@
 package com.github.hykes.codegen.constants;
 
 import com.github.hykes.codegen.model.CodeGroup;
+import com.github.hykes.codegen.model.CodeRoot;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.diagnostic.Logger;
@@ -31,9 +32,13 @@ public class Defaults {
         return context;
     }
 
-    public static List<CodeGroup> getDefaultTemplates(){
-        List<CodeGroup> groups = new ArrayList<>();
 
+    /**
+     * 获取默认的模板
+     */
+    public static List<CodeRoot> getDefaultTemplates(){
+        // 设置默认分组和模板
+        List<CodeGroup> groups = new ArrayList<>();
         try {
             List<CodeTemplate> templates1 = new ArrayList<>();
             templates1.add(new CodeTemplate(UUID.randomUUID().toString(), "Model", "java", "${model}", FileUtil.loadTextAndClose(Defaults.class.getResourceAsStream("/templates/ModelTemplate.vm")), "model", false));
@@ -52,7 +57,10 @@ public class Defaults {
         } catch (Exception e){
             LOGGER.error(StringUtils.getStackTraceAsString(e));
         }
-        return groups;
+        // 设置默认根, 名称为root
+        List<CodeRoot> roots = new ArrayList<>();
+        roots.add(new CodeRoot(UUID.randomUUID().toString(), "Root", groups));
+        return roots;
     }
 
 }

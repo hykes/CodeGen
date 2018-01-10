@@ -3,10 +3,10 @@ package com.github.hykes.codegen.configurable.ui;
 import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.configurable.UIConfigurable;
 import com.github.hykes.codegen.configurable.model.Templates;
-import com.github.hykes.codegen.configurable.ui.dialog.TemplateEditDialog;
 import com.github.hykes.codegen.configurable.ui.dialog.TemplateGroupEditDialog;
 import com.github.hykes.codegen.configurable.ui.editor.TemplateEditorUI;
 import com.github.hykes.codegen.model.CodeGroup;
+import com.github.hykes.codegen.model.CodeRoot;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.model.ExportTemplate;
 import com.github.hykes.codegen.provider.DefaultProviderImpl;
@@ -15,9 +15,13 @@ import com.github.hykes.codegen.utils.StringUtils;
 import com.github.hykes.codegen.utils.VelocityUtil;
 import com.github.hykes.codegen.utils.ZipUtil;
 import com.intellij.icons.AllIcons;
+import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
@@ -29,12 +33,21 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 模版配置面板
@@ -59,66 +72,87 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
     @Override
     public boolean isModified(){
-
         Templates templates = settingManager.getTemplates();
-        List<CodeGroup> groups = templates.getGroups();
+        DefaultMutableTreeNode topNode = (DefaultMutableTreeNode) templateTree.getModel().getRoot();
+        // 获取映射map
+        Map<String, List<CodeGroup>> groupsMap = templates.getGroupsMap();
         Map<String, List<CodeTemplate>> templateMap = templates.getTemplatesMap();
 
-        DefaultMutableTreeNode rootNode=(DefaultMutableTreeNode)templateTree.getModel().getRoot();
-        if(rootNode.getChildCount() != groups.size()){
+        // root的判断, 数量判断, name?
+        List<CodeRoot> roots = templates.getRoots();
+        if(topNode.getChildCount() != roots.size()){
             return true;
         }
-
-        Enumeration enumeration = rootNode.children();
-        while(enumeration.hasMoreElements()){
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
-            CodeGroup group = (CodeGroup) node.getUserObject();
-            if(node.getChildCount() != templateMap.get(group.getId()).size()){
+        Enumeration rootEnum = topNode.children();
+        while (rootEnum.hasMoreElements()) {
+            // 组的判断, 数量判断
+            DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) rootEnum.nextElement();
+            CodeRoot root = (CodeRoot) rootNode.getUserObject();
+            if (rootNode.getChildCount() != groupsMap.get(root.getId()).size()) {
                 return true;
             }
-            if(templateEditor != null){
-                Enumeration childEnum = node.children();
-                while(childEnum.hasMoreElements()){
-                    DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) childEnum.nextElement();
-                    CodeTemplate template = (CodeTemplate) childNode.getUserObject();
-                    CodeTemplate tmp = templateEditor.getCodeTemplate();
-                    if(template.getId().equals(tmp.getId()) && !template.equals(tmp)){
-                       return true;
+            Enumeration enumeration = rootNode.children();
+            while(enumeration.hasMoreElements()){
+                // 模板判断, 数量判断
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
+                CodeGroup group = (CodeGroup) node.getUserObject();
+                if(node.getChildCount() != templateMap.get(group.getId()).size()){
+                    return true;
+                }
+                if(templateEditor != null){
+                    Enumeration childEnum = node.children();
+                    while(childEnum.hasMoreElements()){
+                        // 模板内容判断
+                        DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) childEnum.nextElement();
+                        CodeTemplate template = (CodeTemplate) childNode.getUserObject();
+                        CodeTemplate tmp = templateEditor.getCodeTemplate();
+                        if(template.getId().equals(tmp.getId()) && !template.equals(tmp)){
+                            return true;
+                        }
                     }
                 }
             }
         }
-
         return false;
     }
 
     @Override
     public void apply() {
-        List<CodeGroup> groups = new ArrayList<>();
+        List<CodeRoot> roots = new ArrayList<>();
         DefaultTreeModel treeModel = (DefaultTreeModel) templateTree.getModel();
-        DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) treeModel.getRoot();
-        Enumeration enumeration = rootNode.children();
-        while(enumeration.hasMoreElements()){
-            List<CodeTemplate> templates = new ArrayList<>();
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
-            Enumeration childEnum = node.children();
-            while(childEnum.hasMoreElements()){
-                DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) childEnum.nextElement();
-                CodeTemplate template = (CodeTemplate) childNode.getUserObject();
-                if(templateEditor != null){
-                    CodeTemplate tmp = templateEditor.getCodeTemplate();
-                    if(template.getId().equals(tmp.getId())){
-                        template = tmp;
+        DefaultMutableTreeNode topNode = (DefaultMutableTreeNode) treeModel.getRoot();
+        Enumeration rootEnum = topNode.children();
+        // 获取所有root
+        while (rootEnum.hasMoreElements()) {
+            List<CodeGroup> groups = new ArrayList<>();
+            DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) rootEnum.nextElement();
+            Enumeration enumeration = rootNode.children();
+            // 获取所有组
+            while(enumeration.hasMoreElements()){
+                List<CodeTemplate> templates = new ArrayList<>();
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
+                Enumeration childEnum = node.children();
+                // 获取所有模板
+                while(childEnum.hasMoreElements()){
+                    DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) childEnum.nextElement();
+                    CodeTemplate template = (CodeTemplate) childNode.getUserObject();
+                    if(templateEditor != null){
+                        CodeTemplate tmp = templateEditor.getCodeTemplate();
+                        if(template.getId().equals(tmp.getId())){
+                            template = tmp;
+                        }
                     }
+                    templates.add(template);
                 }
-                templates.add(template);
+                CodeGroup group = (CodeGroup) node.getUserObject();
+                group.setTemplates(templates);
+                groups.add(group);
             }
-            CodeGroup group = (CodeGroup) node.getUserObject();
-            group.setTemplates(templates);
-            groups.add(group);
+            CodeRoot root = (CodeRoot) rootNode.getUserObject();
+            root.setGroups(groups);
+            roots.add(root);
         }
-
-        settingManager.getTemplates().setGroups(groups);
+        settingManager.getTemplates().setRoots(roots);
         reset();
     }
 
@@ -157,7 +191,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         });
 
         toolbarDecorator = ToolbarDecorator.createDecorator(templateTree)
-            .setAddAction( it -> addAction())
+            .setAddAction(this::addAction)
             .setRemoveAction( it -> removeAction())
             .setEditAction(it -> editorAction())
             .addExtraAction(new AnActionButton("Import", AllIcons.Actions.Upload) {
@@ -171,17 +205,26 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                             Messages.showInfoMessage("请选择模版压缩文件(.zip)", "ERROR");
                             return ;
                         }
-                        List<CodeTemplate> templates = new ArrayList<>();
+                        List<CodeRoot> roots = new ArrayList<>();
                         List<CodeGroup> groups = new ArrayList<>();
-                        ZipUtil.readZipFile(virtualFile.getCanonicalPath(), templates, groups);
+                        List<CodeTemplate> templates = new ArrayList<>();
+                        ZipUtil.readZipFile(virtualFile.getCanonicalPath(), templates, groups, roots);
+
+                        Map<String, CodeRoot> rootMap = new HashMap<>();
+                        roots.forEach(it -> rootMap.put(it.getName(), it));
                         Map<String, CodeGroup> groupMap = new HashMap<>();
                         groups.forEach(it -> groupMap.put(it.getName(), it));
+                        for (CodeGroup group: groups) {
+                            if (rootMap.containsKey(group.getRoot())) {
+                                rootMap.get(group.getRoot()).getGroups().add(group);
+                            }
+                        }
                         for (CodeTemplate template: templates) {
                             if (groupMap.containsKey(template.getGroup())) {
                                 groupMap.get(template.getGroup()).getTemplates().add(template);
                             }
                         }
-                        settingManager.getTemplates().getGroups().addAll(groupMap.values());
+                        settingManager.getTemplates().getRoots().addAll(rootMap.values());
                         setTemplates(settingManager.getTemplates());
                         Messages.showInfoMessage("Import templates success", "INFO");
                     } catch (Exception var){
@@ -204,23 +247,26 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                             return ;
                         }
                         List<ExportTemplate> files = new ArrayList<>();
-                        for (CodeGroup group : settingManager.getTemplates().getGroups()) {
-                            for (CodeTemplate template : group.getTemplates()) {
-                                ExportTemplate exportTemplate = new ExportTemplate();
-                                exportTemplate.setName(group.getName()+template.getDisplay()+".vm");
-                                ByteArrayOutputStream o = new ByteArrayOutputStream();
-                                o.write("#*\n".getBytes());
-                                o.write(("display: "+ template.getDisplay() +";\n").getBytes());
-                                o.write(("extension: "+ template.getExtension() +";\n").getBytes());
-                                o.write(("filename: "+ template.getFilename() +";\n").getBytes());
-                                o.write(("subPath: "+ template.getSubPath() +";\n").getBytes());
-                                o.write(("group: "+ group.getName() +";\n").getBytes());
-                                o.write(("level: "+ group.getLevel() +";\n").getBytes());
-                                o.write(("isResources: "+ template.getResources().toString() +";\n").getBytes());
-                                o.write("*#\n".getBytes());
-                                o.write(template.getTemplate().getBytes(Charset.defaultCharset()));
-                                exportTemplate.setBytes(o.toByteArray());
-                                files.add(exportTemplate);
+                        for (CodeRoot root : settingManager.getTemplates().getRoots()) {
+                            for (CodeGroup group : root.getGroups()) {
+                                for (CodeTemplate template : group.getTemplates()) {
+                                    ExportTemplate exportTemplate = new ExportTemplate();
+                                    exportTemplate.setName(group.getName()+template.getDisplay()+".vm");
+                                    ByteArrayOutputStream o = new ByteArrayOutputStream();
+                                    o.write("#*\n".getBytes());
+                                    o.write(("display: "+ template.getDisplay() +";\n").getBytes());
+                                    o.write(("extension: "+ template.getExtension() +";\n").getBytes());
+                                    o.write(("filename: "+ template.getFilename() +";\n").getBytes());
+                                    o.write(("subPath: "+ template.getSubPath() +";\n").getBytes());
+                                    o.write(("root: "+ root.getName() +";\n").getBytes());
+                                    o.write(("group: "+ group.getName() +";\n").getBytes());
+                                    o.write(("level: "+ group.getLevel() +";\n").getBytes());
+                                    o.write(("isResources: "+ template.getResources().toString() +";\n").getBytes());
+                                    o.write("*#\n".getBytes());
+                                    o.write(template.getTemplate().getBytes(Charset.defaultCharset()));
+                                    exportTemplate.setBytes(o.toByteArray());
+                                    files.add(exportTemplate);
+                                }
                             }
                         }
                         ZipUtil.export(files, virtualFile.getCanonicalPath() + "/CodeGen-Templates.zip");
@@ -289,8 +335,26 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         add(templateEditor.$$$getRootComponent$$$(), BorderLayout.CENTER);
     }
 
-    private void addAction(){
-        //获取选中节点
+    /**
+     * TODO: 添加按钮
+     */
+    private void addAction(AnActionButton button){
+        // 获取选中节点
+        final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
+        if (selectedNode == null) {
+            return;
+        }
+        Object object = selectedNode.getUserObject();
+        if(object instanceof CodeTemplate) {
+            return;
+        }
+
+        List<AnAction> actions = new ArrayList<>();
+        final DefaultActionGroup group = new DefaultActionGroup(actions);
+        JBPopupFactory.getInstance()
+                .createActionGroupPopup(null, group, DataManager.getInstance().getDataContext(button.getContextComponent()),
+                        JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, true).show(button.getPreferredPopupPoint());
+        /*//获取选中节点
         final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
         //如果节点为空，直接返回
         if (selectedNode == null) {
@@ -340,7 +404,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             dialog.setResizable(false);
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
-        }
+        }*/
     }
 
     /**
@@ -407,23 +471,35 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         }
     }
 
+    /**
+     * 将模板以tree的方式展开
+     */
     private void setTemplates(Templates templates){
-
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-
-        List<CodeGroup> groups = templates.getGroups();
-        groups.forEach( it -> {
-            DefaultMutableTreeNode group = new DefaultMutableTreeNode(it);
-            it.getTemplates().forEach( template -> {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode(template);
-                group.add(node);
+        // 获取roots
+        List<CodeRoot> roots = templates.getRoots();
+        if (roots == null || roots.size() == 0) {
+            return;
+        }
+        // 获取组和模板, 转换成tree
+        DefaultMutableTreeNode tree = new DefaultMutableTreeNode();
+        roots.forEach(root -> {
+            DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(root);
+            root.getGroups().forEach(group -> {
+                DefaultMutableTreeNode treeGroup = new DefaultMutableTreeNode(group);
+                group.getTemplates().forEach(template -> {
+                    DefaultMutableTreeNode node = new DefaultMutableTreeNode(template);
+                    treeGroup.add(node);
+                });
+                treeRoot.add(treeGroup);
             });
-            root.add(group);
+            tree.add(treeRoot);
         });
-        templateTree.setModel(new DefaultTreeModel(root, false));
+        templateTree.setModel(new DefaultTreeModel(tree, false));
+        templateTree.setRootVisible(false);
     }
 
-    public class TemplateTreeCellRenderer extends DefaultTreeCellRenderer{
+    public class TemplateTreeCellRenderer extends DefaultTreeCellRenderer {
+        private static final long serialVersionUID = -6564861041507376828L;
 
         /**
          * 重写父类DefaultTreeCellRenderer的方法
@@ -442,19 +518,70 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
             Object obj = treeNode.getUserObject();
 
-            if (obj instanceof CodeTemplate) {
-                CodeTemplate node = (CodeTemplate) obj;
+            if (obj instanceof CodeRoot) {
+                CodeRoot node = (CodeRoot) obj;
                 DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
-                return tempCellRenderer.getTreeCellRendererComponent(tree, node.getDisplay(), selected, expanded, true, row, hasFocus);
-            } else if (obj instanceof CodeGroup) {
+                return tempCellRenderer.getTreeCellRendererComponent(tree, node.getName(), selected, expanded, false, row, hasFocus);
+            }
+            else if (obj instanceof CodeGroup) {
                 CodeGroup group = (CodeGroup) obj;
                 DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
                 return tempCellRenderer.getTreeCellRendererComponent(tree, group.getName(), selected, expanded, false, row, hasFocus);
-            }else{
+            }
+            else if (obj instanceof CodeTemplate) {
+                CodeTemplate node = (CodeTemplate) obj;
+                DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
+                return tempCellRenderer.getTreeCellRendererComponent(tree, node.getDisplay(), selected, expanded, true, row, hasFocus);
+            } else{
                 String text = (String) obj;
                 DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
                 return tempCellRenderer.getTreeCellRendererComponent(tree, text, selected, expanded, false, row, hasFocus);
             }
+        }
+    }
+
+    /**
+     * Root添加事件
+     */
+    class CodeRootAction extends AnAction {
+
+        public CodeRootAction() {
+            super("Code Root", null, AllIcons.Nodes.JavaModuleRoot);
+        }
+
+        @Override
+        public void actionPerformed(AnActionEvent anActionEvent) {
+
+        }
+    }
+
+    /**
+     * 组group添加事件
+     */
+    class CodeGroupAction extends AnAction {
+
+        public CodeGroupAction() {
+            super("Code Group", null, AllIcons.Nodes.Folder);
+        }
+
+        @Override
+        public void actionPerformed(AnActionEvent anActionEvent) {
+
+        }
+    }
+
+    /**
+     * 模板添加事件
+     */
+    class CodeTemplateAction extends AnAction {
+
+        public CodeTemplateAction() {
+            super("Code Template", null, AllIcons.FileTypes.Text);
+        }
+
+        @Override
+        public void actionPerformed(AnActionEvent anActionEvent) {
+
         }
     }
 

@@ -42,8 +42,8 @@ public class SettingManager implements PersistentStateComponent<SettingManager> 
     @Override
     public void loadState(SettingManager formatSetting) {
         XmlSerializerUtil.copyBean(formatSetting, this);
-        if (templates != null && templates.getGroups().size() == 0) {
-            templates.setGroups(Defaults.getDefaultTemplates());
+        if (templates != null && templates.getRoots().size() == 0) {
+            templates.setRoots(Defaults.getDefaultTemplates());
         }
     }
 
