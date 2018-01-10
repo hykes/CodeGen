@@ -3,6 +3,7 @@ package com.github.hykes.codegen;
 import com.github.hykes.codegen.gui.SqlEditorPanel;
 import com.github.hykes.codegen.messages.CodeGenBundle;
 import com.github.hykes.codegen.model.IdeaContext;
+import com.github.hykes.codegen.utils.NotifyUtil;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -10,6 +11,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageType;
 
 import javax.swing.*;
 
@@ -28,6 +30,7 @@ public class SQLGeneratorAction extends AnAction implements DumbAware {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
 
+        NotifyUtil.notice(CodeGenBundle.message("codegen.plugin.is.not.available.during.indexing"), MessageType.INFO);
         Project project = PsiUtil.getProject(anActionEvent);
         DumbService dumbService = DumbService.getInstance(project);
         if (dumbService.isDumb()) {
