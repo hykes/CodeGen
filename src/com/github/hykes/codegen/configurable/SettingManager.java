@@ -3,6 +3,7 @@ package com.github.hykes.codegen.configurable;
 import com.github.hykes.codegen.configurable.model.Configs;
 import com.github.hykes.codegen.configurable.model.Templates;
 import com.github.hykes.codegen.configurable.model.Variables;
+import com.github.hykes.codegen.constants.Defaults;
 import com.intellij.openapi.components.*;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +42,9 @@ public class SettingManager implements PersistentStateComponent<SettingManager> 
     @Override
     public void loadState(SettingManager formatSetting) {
         XmlSerializerUtil.copyBean(formatSetting, this);
+        if (templates != null && templates.getRoots().size() == 0) {
+            templates.setRoots(Defaults.getDefaultTemplates());
+        }
     }
 
     public Configs getConfigs() {

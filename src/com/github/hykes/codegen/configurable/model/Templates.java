@@ -1,6 +1,7 @@
 package com.github.hykes.codegen.configurable.model;
 
 import com.github.hykes.codegen.model.CodeGroup;
+import com.github.hykes.codegen.model.CodeRoot;
 import com.github.hykes.codegen.model.CodeTemplate;
 
 import java.io.Serializable;
@@ -18,25 +19,38 @@ public class Templates implements Serializable {
 
     private static final long serialVersionUID = 8790162098133834684L;
 
-    private List<CodeGroup> groups = new ArrayList<>();
+    /**
+     * 模板的根root
+     */
+    private List<CodeRoot> roots = new ArrayList<>();
 
     public Templates() {}
 
-    public Map<String, List<CodeTemplate>> getTemplatesMap(){
-        Map<String, List<CodeTemplate>> result = new HashMap<>();
-        groups.forEach( it -> result.put(it.getId(), it.getTemplates()));
+    /**
+     * 获取组和模板的映射map
+     */
+    public Map<String, List<CodeGroup>> getGroupsMap(){
+        Map<String, List<CodeGroup>> result = new HashMap<>();
+        roots.forEach(it -> result.put(it.getId(), it.getGroups()));
         return result;
     }
 
-    public List<CodeGroup> getGroups() {
-        return groups;
+
+    /**
+     * 获取组和模板的映射map
+     */
+    public Map<String, List<CodeTemplate>> getTemplatesMap(){
+        Map<String, List<CodeTemplate>> result = new HashMap<>();
+        roots.forEach(root ->
+                root.getGroups().forEach(it -> result.put(it.getId(), it.getTemplates())));
+        return result;
     }
 
-    public void setGroups(List<CodeGroup> groups) {
-        this.groups = groups;
+    public List<CodeRoot> getRoots() {
+        return roots;
     }
 
-    public void addGroups(List<CodeGroup> groups) {
-        this.groups.addAll(groups);
+    public void setRoots(List<CodeRoot> roots) {
+        this.roots = roots;
     }
 }

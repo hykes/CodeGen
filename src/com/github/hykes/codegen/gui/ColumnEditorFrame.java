@@ -2,7 +2,7 @@ package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.PathDialog;
 import com.github.hykes.codegen.configurable.SettingManager;
-import com.github.hykes.codegen.constants.DefaultParams;
+import com.github.hykes.codegen.constants.Defaults;
 import com.github.hykes.codegen.model.CodeContext;
 import com.github.hykes.codegen.model.CodeGroup;
 import com.github.hykes.codegen.model.CodeTemplate;
@@ -19,7 +19,6 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.util.containers.JBIterable;
-import com.intellij.util.ui.JBUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -101,7 +100,8 @@ public class ColumnEditorFrame extends JFrame {
         final JPanel groupPanel = new JPanel();
         groupPanel.setLayout(new BoxLayout(groupPanel, BoxLayout.X_AXIS));
 
-        List<CodeGroup> groups = SETTING_MANAGER.getTemplates().getGroups();
+        // TODO: 此处需要选择root
+        List<CodeGroup> groups = SETTING_MANAGER.getTemplates().getRoots().get(0).getGroups();
         groups.forEach( it -> {
             JCheckBox groupBox = new JCheckBox(it.getName());
             groupBox.setName(it.getId());
@@ -168,11 +168,12 @@ public class ColumnEditorFrame extends JFrame {
 
     public void generator(IdeaContext ideaContext, List<String> groups, List<CodeContext> contexts){
         Map<String, Object> params = new HashMap<>();
-        params.putAll(DefaultParams.getInHouseVariables());
+        params.putAll(Defaults.getDefaultVariables());
         params.putAll(SETTING_MANAGER.getVariables().getParams());
         params.put("Project", ideaContext.getProject().getName());
 
-        List<CodeGroup> groupList = SETTING_MANAGER.getTemplates().getGroups();
+        // TODO: 此处需要选择root
+        List<CodeGroup> groupList = SETTING_MANAGER.getTemplates().getRoots().get(0).getGroups();
         groupList = groupList.stream().filter(it -> groups.contains(it.getId())).sorted(new ComparatorUtil()).collect(Collectors.toList());
 
         for(CodeGroup group: groupList){

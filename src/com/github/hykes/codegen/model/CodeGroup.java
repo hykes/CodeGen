@@ -41,6 +41,11 @@ public class CodeGroup implements Serializable {
      */
     private List<CodeTemplate> templates;
 
+    /**
+     * 组所在root的名称
+     */
+    private String root;
+
     public String getId() {
         return id;
     }
@@ -73,4 +78,11 @@ public class CodeGroup implements Serializable {
         this.templates = templates;
     }
 
+    public String getRoot() {
+        return root;
+    }
+
+    public void setRoot(String root) {
+        this.root = root;
+    }
 }

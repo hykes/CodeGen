@@ -1,6 +1,7 @@
 package com.github.hykes.codegen.utils;
 
 import com.github.hykes.codegen.model.CodeGroup;
+import com.github.hykes.codegen.model.CodeRoot;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.model.ExportTemplate;
 import com.intellij.openapi.diagnostic.Logger;
@@ -36,7 +37,7 @@ public class ZipUtil {
         }
     }
 
-    public static void readZipFile(String file,  List<CodeTemplate> templates, List<CodeGroup> groups) throws Exception {
+    public static void readZipFile(String file, List<CodeTemplate> templates, List<CodeGroup> groups, List<CodeRoot> roots) throws Exception {
         ZipFile zf = new ZipFile(file);
         InputStream in = new BufferedInputStream(new FileInputStream(file));
         ZipInputStream zin = new ZipInputStream(in);
@@ -80,7 +81,16 @@ public class ZipUtil {
                     codeGroup.setLevel(Integer.valueOf(infoMap.get("level")));
                     codeGroup.setName(infoMap.get("group"));
                     codeGroup.setTemplates(new ArrayList<>());
+                    codeGroup.setRoot(infoMap.containsKey("root") ? infoMap.get("root") : null);
                     groups.add(codeGroup);
+                }
+
+                if (infoMap.containsKey("root")) {
+                    CodeRoot codeRoot = new CodeRoot();
+                    codeRoot.setId(UUID.randomUUID().toString());
+                    codeRoot.setName(infoMap.get("group"));
+                    codeRoot.setGroups(new ArrayList<>());
+                    roots.add(codeRoot);
                 }
             }
         }

@@ -38,6 +38,8 @@ public class DefaultProviderImpl extends AbstractFileProvider {
 
         VelocityContext velocityContext = new VelocityContext(BuilderUtil.transBean2Map(context));
         velocityContext.put("serialVersionUID", BuilderUtil.computeDefaultSUID(context.getModel(), context.getFields()));
+        // $!dateFormatUtils.format($!now,'yyyy-MM-dd')
+        velocityContext.put("dateFormatUtils", new org.apache.commons.lang.time.DateFormatUtils());
         if (extraMap != null && extraMap.size() > 0) {
             for (Map.Entry<String, Object> entry: extraMap.entrySet()) {
                 velocityContext.put(entry.getKey(), entry.getValue());

@@ -1,12 +1,13 @@
 package com.github.hykes.codegen;
 
 import com.github.hykes.codegen.gui.ColumnEditorFrame;
+import com.github.hykes.codegen.messages.CodeGenBundle;
 import com.github.hykes.codegen.model.IdeaContext;
+import com.github.hykes.codegen.utils.Icons;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.intellij.database.psi.DbElement;
 import com.intellij.database.psi.DbTable;
 import com.intellij.database.view.DatabaseView;
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAware;
@@ -26,7 +27,7 @@ import java.util.List;
 public class DBGeneratorAction extends AnAction implements DumbAware {
 
     public DBGeneratorAction() {
-        super(AllIcons.Icon_small);
+        super(Icons.CODEGEN);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class DBGeneratorAction extends AnAction implements DumbAware {
         Project project = PsiUtil.getProject(e);
         DumbService dumbService = DumbService.getInstance(project);
         if (dumbService.isDumb()) {
-            dumbService.showDumbModeNotification("CodeGen plugin is not available during indexing !");
+            dumbService.showDumbModeNotification(CodeGenBundle.message("codegen.plugin.is.not.available.during.indexing"));
             return;
         }
 

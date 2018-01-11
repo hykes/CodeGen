@@ -21,34 +21,6 @@ public class BuilderUtil {
     public static final char UNDERLINE = '_';
 
     /**
-     * 创建文件目录
-     * @param directory
-     */
-    public static void mkdirs(String directory){
-        File file = new File(directory);
-        if (!file.exists() && !file.isDirectory()) {
-            file.mkdirs();
-        }
-    }
-
-    /**
-     * 创建文件
-     * @param filePath
-     * @param context
-     * @throws IOException
-     */
-    public static void createFile(String filePath, String context) throws IOException{
-        File file = new File(filePath);
-        if (!file.exists()) {
-            file.createNewFile();
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(context);
-            bw.close();
-        }
-    }
-
-    /**
      * Bean --> Map
      * @param obj
      * @return

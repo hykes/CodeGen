@@ -4,9 +4,13 @@ import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.parser.DefaultParser;
 import com.github.hykes.codegen.parser.Parser;
+import com.github.hykes.codegen.provider.filetype.SqlFileType;
 import com.github.hykes.codegen.utils.NotifyUtil;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -27,29 +31,28 @@ public class SqlEditorPanel {
 
     private static final Logger LOGGER = Logger.getInstance(SqlEditorPanel.class);
 
+    private IdeaContext ideaContext;
     private JPanel rootPanel;
     private JButton buttonCancel;
     private JButton buttonOk;
-    private JTextArea sqlTextArea;
+    private Editor sqlTextArea;
     private JPanel sqlPanel;
     private JPanel actionPanel;
     private JScrollPane sqlScrollPane;
 
     public SqlEditorPanel(IdeaContext ideaContext) {
+        this.ideaContext = ideaContext;
         $$$setupUI$$$();
 
         buttonOk.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
-             *
-             * @param e
              */
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String sqls = sqlTextArea.getText().trim();
-
-                    if (StringUtils.isEmpty(sqls)) {
+                    String sqls = sqlTextArea.getDocument().getText();
+                    if (StringUtils.isBlank(sqls)) {
                         return;
                     }
 
@@ -99,7 +102,12 @@ public class SqlEditorPanel {
         rootPanel = new JPanel();
         sqlPanel = new JPanel();
         sqlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        // 设置 sql text editor
+        Document document = EditorFactory.getInstance().createDocument("");
+        sqlTextArea = EditorFactory.getInstance().createEditor(document, ideaContext.getProject(), SqlFileType.INSTANCE, false);
+
         sqlScrollPane = new JBScrollPane();
+        sqlScrollPane.setViewportView(sqlTextArea.getComponent());
     }
 
     public static void main(String[] args) {
@@ -132,8 +140,6 @@ public class SqlEditorPanel {
         sqlPanel.setLayout(new BorderLayout(0, 0));
         rootPanel.add(sqlPanel, BorderLayout.CENTER);
         sqlPanel.add(sqlScrollPane, BorderLayout.CENTER);
-        sqlTextArea = new JTextArea();
-        sqlScrollPane.setViewportView(sqlTextArea);
     }
 
     /**
