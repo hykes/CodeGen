@@ -14,7 +14,10 @@
             <preferred-size width="200" height="200"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <dividerLocation value="350"/>
+          <resizeWeight value="1.0"/>
+        </properties>
         <border type="none"/>
         <children>
           <grid id="dfb5a" binding="varPanel" custom-create="true" layout-manager="BorderLayout" hgap="0" vgap="0">
