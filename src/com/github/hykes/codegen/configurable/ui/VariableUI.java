@@ -46,6 +46,9 @@ public class VariableUI implements UIConfigurable {
         jSplitPane = new JSplitPane();
         jSplitPane.setOrientation(0);
         jSplitPane.setContinuousLayout(true);
+        jSplitPane.setDividerLocation(350);
+        jSplitPane.setOneTouchExpandable(true);
+        jSplitPane.setResizeWeight(1.0);
         varPanel = new JPanel(new BorderLayout());
         varPanel.setBorder(IdeBorderFactory.createTitledBorder("Predefined Variables", false));
         varPanel.setPreferredSize(JBUI.size(300, 200));
