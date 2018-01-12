@@ -194,7 +194,13 @@ public class TablePanel {
 
     public List<Field> getFields() {
         List<Field> fields = new ArrayList<>();
-        List<String> ignoreList = StringUtils.splitToList(settingManager.getConfigs().getIgnoreFields(), ",", true);
+        List<String> ignoreList;
+        if (settingManager.getVariables().getParams().containsKey("ignoreFields")) {
+            ignoreList = StringUtils.splitToList(settingManager.getVariables().getParams().get("ignoreFields"), ",", true);
+        } else {
+            ignoreList = new ArrayList<>();
+        }
+
         DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             Field field = new Field();

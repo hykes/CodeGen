@@ -1,10 +1,12 @@
 package com.github.hykes.codegen.configurable;
 
-import com.github.hykes.codegen.configurable.model.Configs;
 import com.github.hykes.codegen.configurable.model.Templates;
 import com.github.hykes.codegen.configurable.model.Variables;
 import com.github.hykes.codegen.constants.Defaults;
-import com.intellij.openapi.components.*;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,14 +23,11 @@ public class SettingManager implements PersistentStateComponent<SettingManager> 
         return ServiceManager.getService(SettingManager.class);
     }
 
-    private Configs configs;
-
     private Variables variables;
 
     private Templates templates;
 
     public SettingManager() {
-        this.configs = new Configs();
         this.variables = new Variables();
         this.templates = new Templates();
     }
@@ -44,15 +43,10 @@ public class SettingManager implements PersistentStateComponent<SettingManager> 
         XmlSerializerUtil.copyBean(formatSetting, this);
         if (templates != null && templates.getRoots().size() == 0) {
             templates.setRoots(Defaults.getDefaultTemplates());
+            if (variables != null && !variables.getParams().containsKey("ignoreFields")) {
+                variables.getParams().put("ignoreFields", "id,created_at,updated_at");
+            }
         }
-    }
-
-    public Configs getConfigs() {
-        return configs;
-    }
-
-    public void setConfigs(Configs configs) {
-        this.configs = configs;
     }
 
     public Variables getVariables() {
