@@ -32,6 +32,7 @@ public class VariableUI implements UIConfigurable {
     private JPanel rootPanel;
     private JPanel varPanel;
     private JPanel descPanel;
+    private JSplitPane jSplitPane;
     private JBTable varTable;
     private JTextArea descArea;
 
@@ -42,6 +43,9 @@ public class VariableUI implements UIConfigurable {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        jSplitPane = new JSplitPane();
+        jSplitPane.setOrientation(0);
+        jSplitPane.setContinuousLayout(true);
         varPanel = new JPanel(new BorderLayout());
         varPanel.setBorder(IdeBorderFactory.createTitledBorder("Predefined Variables", false));
         varPanel.setPreferredSize(JBUI.size(300, 200));
@@ -224,9 +228,10 @@ public class VariableUI implements UIConfigurable {
     private void $$$setupUI$$$() {
         createUIComponents();
         rootPanel = new JPanel();
-        rootPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        rootPanel.add(varPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        rootPanel.add(descPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        rootPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        rootPanel.add(jSplitPane, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+        jSplitPane.setLeftComponent(varPanel);
+        jSplitPane.setRightComponent(descPanel);
     }
 
     /**
