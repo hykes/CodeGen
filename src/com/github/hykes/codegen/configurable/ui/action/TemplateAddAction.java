@@ -51,57 +51,6 @@ public class TemplateAddAction extends BaseTemplateAction implements AnActionBut
         JBPopupFactory.getInstance()
                 .createActionGroupPopup(null, group, DataManager.getInstance().getDataContext(button.getContextComponent()),
                         JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, true).show(button.getPreferredPopupPoint());
-        /*//获取选中节点
-        final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
-        //如果节点为空，直接返回
-        if (selectedNode == null) {
-            return;
-        }
-        Object object = selectedNode.getUserObject();
-        if(object instanceof CodeTemplate) {
-            return;
-        }
-        if(object instanceof String) {
-            // 新增模版组
-            TemplateGroupEditDialog dialog = new TemplateGroupEditDialog();
-            dialog.setTitle("Create New Group");
-            dialog.getButtonOK().addActionListener( it ->{
-                String name = dialog.getNameTextField().getText().trim();
-                String level = dialog.getLevelTextField().getText().trim();
-
-                CodeGroup group = new CodeGroup(UUID.randomUUID().toString(), name, Integer.valueOf(level), new ArrayList<>());
-                addNode(selectedNode, new DefaultMutableTreeNode(group));
-                dialog.setVisible(false);
-            });
-
-            dialog.setSize(300, 150);
-            dialog.setAlwaysOnTop(true);
-            dialog.setLocationRelativeTo(this);
-            dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-            dialog.setResizable(false);
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        }
-        if(object instanceof CodeGroup){
-            // 新增模版
-            TemplateEditDialog dialog = new TemplateEditDialog();
-            dialog.setTitle("Create New Template");
-            dialog.getButtonOK().addActionListener( it ->{
-                String display = dialog.getDisplayTextField().getText();
-                String extension = dialog.getExtensionTextField().getText();
-
-                addNode(selectedNode, new DefaultMutableTreeNode(new CodeTemplate(UUID.randomUUID().toString(), display, extension, display, "", null, false)));
-                dialog.setVisible(false);
-            });
-
-            dialog.setSize(300, 150);
-            dialog.setAlwaysOnTop(true);
-            dialog.setLocationRelativeTo(this);
-            dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-            dialog.setResizable(false);
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        }*/
     }
 
 

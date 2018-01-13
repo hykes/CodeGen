@@ -4,7 +4,8 @@ import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.configurable.UIConfigurable;
 import com.github.hykes.codegen.configurable.model.Templates;
 import com.github.hykes.codegen.configurable.ui.action.TemplateAddAction;
-import com.github.hykes.codegen.configurable.ui.dialog.TemplateGroupEditDialog;
+import com.github.hykes.codegen.configurable.ui.action.TemplateEditAction;
+import com.github.hykes.codegen.configurable.ui.action.TemplateRemoveAction;
 import com.github.hykes.codegen.configurable.ui.editor.TemplateEditorUI;
 import com.github.hykes.codegen.model.CodeGroup;
 import com.github.hykes.codegen.model.CodeRoot;
@@ -159,13 +160,14 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        // 新建文件树
         templateTree = new Tree();
         templateTree.putClientProperty("JTree.lineStyle", "Horizontal");
         templateTree.setRootVisible(true);
         templateTree.setShowsRootHandles(true);
         templateTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         templateTree.setCellRenderer(new TemplateTreeCellRenderer());
-
+        // 文件数节点选择事件
         templateTree.addTreeSelectionListener( it -> {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
             if (node == null) {
@@ -174,20 +176,17 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             Object object = node.getUserObject();
             if(object instanceof CodeTemplate) {
                 CodeTemplate template = (CodeTemplate) object;
+                templateEditor.getRootPanel().setVisible(true);
                 templateEditor.refresh(template);
-            }else if(object instanceof CodeGroup) {
-                CodeGroup group = (CodeGroup) object;
-                LOGGER.info(String.format("click: %s",  group.getName()));
-            } else if(object instanceof String) {
-                String text = (String)object;
-                LOGGER.info(String.format("click: %s", text));
+            } else {
+                templateEditor.getRootPanel().setVisible(false);
             }
         });
-
+        // 工具栏
         toolbarDecorator = ToolbarDecorator.createDecorator(templateTree)
             .setAddAction(new TemplateAddAction(this))
-            .setRemoveAction( it -> removeAction())
-            .setEditAction(it -> editorAction())
+            .setRemoveAction(new TemplateRemoveAction(this))
+            .setEditAction(new TemplateEditAction(this))
             .addExtraAction(new AnActionButton("Import", AllIcons.Actions.Upload) {
                 @Override
                 public void actionPerformed(AnActionEvent e) {
@@ -307,16 +306,17 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
                 }})
             .setEditActionUpdater( it -> {
-                // 只能允许CodeGroup在树中编辑
+                // 只能允许CodeRoot, CodeGroup在树中编辑
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
-                return selectedNode != null && (selectedNode.getUserObject() instanceof CodeGroup);
+                return selectedNode != null &&
+                        ((selectedNode.getUserObject() instanceof CodeGroup) || selectedNode.getUserObject() instanceof CodeRoot);
             })
             .setAddActionUpdater(it -> {
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
                 return selectedNode != null;
             })
             .setRemoveActionUpdater( it -> {
-                // 只允许CodeGroup、CodeTemplate删除
+                // 允许CodeRoot、CodeGroup、CodeTemplate删除
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
                 return selectedNode != null && selectedNode.getParent() != null;
             });
@@ -326,55 +326,6 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
         templateEditor = new TemplateEditorUI();
         add(templateEditor.$$$getRootComponent$$$(), BorderLayout.CENTER);
-    }
-
-    private void removeAction(){
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
-        if (selectedNode != null && selectedNode.getParent() != null) {
-            //删除指定节点
-            DefaultTreeModel model = (DefaultTreeModel) templateTree.getModel();
-            model.removeNodeFromParent(selectedNode);
-        }
-    }
-
-    private void editorAction(){
-
-        //获取选中节点
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
-        //如果节点为空，直接返回
-        if (selectedNode == null) {
-            return;
-        }
-        Object object = selectedNode.getUserObject();
-        if(object instanceof CodeGroup){
-
-            CodeGroup group = (CodeGroup) object;
-
-            // 编辑模版组
-            TemplateGroupEditDialog dialog = new TemplateGroupEditDialog();
-            dialog.setTitle("Edit Group");
-
-            dialog.getNameTextField().setText(group.getName());
-            dialog.getLevelTextField().setText(String.valueOf(group.getLevel() != null ? group.getLevel() : 0));
-            dialog.getButtonOK().addActionListener( it ->{
-                String name = dialog.getNameTextField().getText().trim();
-                String level = dialog.getLevelTextField().getText().trim();
-
-                group.setName(name);
-                group.setLevel(Integer.valueOf(level));
-                selectedNode.setUserObject(group);
-                dialog.setVisible(false);
-            });
-
-            dialog.setSize(300, 150);
-            dialog.setAlwaysOnTop(true);
-            dialog.setLocationRelativeTo(this);
-            dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-            dialog.setResizable(false);
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-
-        }
     }
 
     /**
@@ -421,24 +372,31 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             }
             // TreeNode
             DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) value;
-
             Object obj = treeNode.getUserObject();
-
             if (obj instanceof CodeRoot) {
                 CodeRoot node = (CodeRoot) obj;
                 DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
+                tempCellRenderer.setOpenIcon(AllIcons.Nodes.JavaModuleRoot);
+                tempCellRenderer.setClosedIcon(AllIcons.Nodes.JavaModuleRoot);
+                tempCellRenderer.setLeafIcon(AllIcons.Nodes.JavaModuleRoot);
                 return tempCellRenderer.getTreeCellRendererComponent(tree, node.getName(), selected, expanded, false, row, hasFocus);
             }
             else if (obj instanceof CodeGroup) {
                 CodeGroup group = (CodeGroup) obj;
                 DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
+                tempCellRenderer.setOpenIcon(AllIcons.Nodes.Folder);
+                tempCellRenderer.setClosedIcon(AllIcons.Nodes.Folder);
+                tempCellRenderer.setLeafIcon(AllIcons.Nodes.Folder);
                 return tempCellRenderer.getTreeCellRendererComponent(tree, group.getName(), selected, expanded, false, row, hasFocus);
             }
             else if (obj instanceof CodeTemplate) {
                 CodeTemplate node = (CodeTemplate) obj;
                 DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
+                tempCellRenderer.setOpenIcon(AllIcons.FileTypes.Text);
+                tempCellRenderer.setClosedIcon(AllIcons.FileTypes.Text);
+                tempCellRenderer.setLeafIcon(AllIcons.FileTypes.Text);
                 return tempCellRenderer.getTreeCellRendererComponent(tree, node.getDisplay(), selected, expanded, true, row, hasFocus);
-            } else{
+            } else {
                 String text = (String) obj;
                 DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
                 return tempCellRenderer.getTreeCellRendererComponent(tree, text, selected, expanded, false, row, hasFocus);
