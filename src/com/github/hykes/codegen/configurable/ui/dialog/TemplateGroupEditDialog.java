@@ -67,6 +67,25 @@ public class TemplateGroupEditDialog extends JDialog {
                 setVisible(false);
             }
         });
+        levelTextField.addKeyListener(new KeyAdapter() {
+            /**
+             * Invoked when a key has been typed.
+             * This event occurs when a key press is followed by a key release.
+             *
+             * @param e
+             */
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // 只能输入数字
+                char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') ||
+                        (c == KeyEvent.VK_BACK_SPACE) ||
+                        (c == KeyEvent.VK_DELETE))) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
     }
 
     private void onCancel() {

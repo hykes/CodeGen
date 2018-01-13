@@ -168,4 +168,17 @@ public class CodeTemplate implements Serializable {
         result = 31 * result + (isResources != null ? isResources.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "CodeTemplate{" +
+                "id='" + id + '\'' +
+                ", display='" + display + '\'' +
+                ", extension='" + extension + '\'' +
+                ", filename='" + filename + '\'' +
+                ", subPath='" + subPath + '\'' +
+                ", isResources=" + isResources +
+                ", group='" + group + '\'' +
+                '}';
+    }
 }

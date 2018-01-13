@@ -3,6 +3,7 @@ package com.github.hykes.codegen.configurable.ui;
 import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.configurable.UIConfigurable;
 import com.github.hykes.codegen.configurable.model.Templates;
+import com.github.hykes.codegen.configurable.ui.action.TemplateAddAction;
 import com.github.hykes.codegen.configurable.ui.dialog.TemplateGroupEditDialog;
 import com.github.hykes.codegen.configurable.ui.editor.TemplateEditorUI;
 import com.github.hykes.codegen.model.CodeGroup;
@@ -15,13 +16,9 @@ import com.github.hykes.codegen.utils.StringUtils;
 import com.github.hykes.codegen.utils.VelocityUtil;
 import com.github.hykes.codegen.utils.ZipUtil;
 import com.intellij.icons.AllIcons;
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
@@ -36,9 +33,6 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
@@ -191,7 +185,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         });
 
         toolbarDecorator = ToolbarDecorator.createDecorator(templateTree)
-            .setAddAction(this::addAction)
+            .setAddAction(new TemplateAddAction(this))
             .setRemoveAction( it -> removeAction())
             .setEditAction(it -> editorAction())
             .addExtraAction(new AnActionButton("Import", AllIcons.Actions.Upload) {
@@ -317,10 +311,9 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
                 return selectedNode != null && (selectedNode.getUserObject() instanceof CodeGroup);
             })
-            .setAddActionUpdater( it -> {
-                // 只允许Root、CodeGroup添加子节点
+            .setAddActionUpdater(it -> {
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
-                return selectedNode != null && !(selectedNode.getUserObject() instanceof CodeTemplate);
+                return selectedNode != null;
             })
             .setRemoveActionUpdater( it -> {
                 // 只允许CodeGroup、CodeTemplate删除
@@ -333,93 +326,6 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
 
         templateEditor = new TemplateEditorUI();
         add(templateEditor.$$$getRootComponent$$$(), BorderLayout.CENTER);
-    }
-
-    /**
-     * TODO: 添加按钮
-     */
-    private void addAction(AnActionButton button){
-        // 获取选中节点
-        final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
-        if (selectedNode == null) {
-            return;
-        }
-        Object object = selectedNode.getUserObject();
-        if(object instanceof CodeTemplate) {
-            return;
-        }
-
-        List<AnAction> actions = new ArrayList<>();
-        final DefaultActionGroup group = new DefaultActionGroup(actions);
-        JBPopupFactory.getInstance()
-                .createActionGroupPopup(null, group, DataManager.getInstance().getDataContext(button.getContextComponent()),
-                        JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, true).show(button.getPreferredPopupPoint());
-        /*//获取选中节点
-        final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
-        //如果节点为空，直接返回
-        if (selectedNode == null) {
-            return;
-        }
-        Object object = selectedNode.getUserObject();
-        if(object instanceof CodeTemplate) {
-            return;
-        }
-        if(object instanceof String) {
-            // 新增模版组
-            TemplateGroupEditDialog dialog = new TemplateGroupEditDialog();
-            dialog.setTitle("Create New Group");
-            dialog.getButtonOK().addActionListener( it ->{
-                String name = dialog.getNameTextField().getText().trim();
-                String level = dialog.getLevelTextField().getText().trim();
-
-                CodeGroup group = new CodeGroup(UUID.randomUUID().toString(), name, Integer.valueOf(level), new ArrayList<>());
-                addNode(selectedNode, new DefaultMutableTreeNode(group));
-                dialog.setVisible(false);
-            });
-
-            dialog.setSize(300, 150);
-            dialog.setAlwaysOnTop(true);
-            dialog.setLocationRelativeTo(this);
-            dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-            dialog.setResizable(false);
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        }
-        if(object instanceof CodeGroup){
-            // 新增模版
-            TemplateEditDialog dialog = new TemplateEditDialog();
-            dialog.setTitle("Create New Template");
-            dialog.getButtonOK().addActionListener( it ->{
-                String display = dialog.getDisplayTextField().getText();
-                String extension = dialog.getExtensionTextField().getText();
-
-                addNode(selectedNode, new DefaultMutableTreeNode(new CodeTemplate(UUID.randomUUID().toString(), display, extension, display, "", null, false)));
-                dialog.setVisible(false);
-            });
-
-            dialog.setSize(300, 150);
-            dialog.setAlwaysOnTop(true);
-            dialog.setLocationRelativeTo(this);
-            dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-            dialog.setResizable(false);
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        }*/
-    }
-
-    /**
-     * 直接通过model来添加新节点，则无需通过调用JTree的updateUI方法
-     * model.insertNodeInto(newNode, selectedNode, selectedNode.getChildCount());
-     * 直接通过节点添加新节点，则需要调用tree的updateUI方法
-     */
-    private void addNode(DefaultMutableTreeNode pNode, MutableTreeNode newNode){
-        pNode.add(newNode);
-        //--------下面代码实现显示新节点（自动展开父节点）-------
-        DefaultTreeModel model = (DefaultTreeModel) templateTree.getModel();
-        TreeNode[] nodes = model.getPathToRoot(newNode);
-        TreePath path = new TreePath(nodes);
-        templateTree.scrollPathToVisible(path);
-        templateTree.updateUI();
     }
 
     private void removeAction(){
@@ -540,49 +446,8 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         }
     }
 
-    /**
-     * Root添加事件
-     */
-    class CodeRootAction extends AnAction {
-
-        public CodeRootAction() {
-            super("Code Root", null, AllIcons.Nodes.JavaModuleRoot);
-        }
-
-        @Override
-        public void actionPerformed(AnActionEvent anActionEvent) {
-
-        }
-    }
-
-    /**
-     * 组group添加事件
-     */
-    class CodeGroupAction extends AnAction {
-
-        public CodeGroupAction() {
-            super("Code Group", null, AllIcons.Nodes.Folder);
-        }
-
-        @Override
-        public void actionPerformed(AnActionEvent anActionEvent) {
-
-        }
-    }
-
-    /**
-     * 模板添加事件
-     */
-    class CodeTemplateAction extends AnAction {
-
-        public CodeTemplateAction() {
-            super("Code Template", null, AllIcons.FileTypes.Text);
-        }
-
-        @Override
-        public void actionPerformed(AnActionEvent anActionEvent) {
-
-        }
+    public Tree getTemplateTree() {
+        return templateTree;
     }
 
     public static void main(String[] args) {
