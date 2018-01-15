@@ -480,7 +480,8 @@ public class StringUtils {
             return inString;
         }
         StringBuilder sb = new StringBuilder();
-        int pos = 0; // our position in the old string
+        // our position in the old string
+        int pos = 0;
         int index = inString.indexOf(oldPattern);
         // the index of an occurrence we've found, or -1
         int patLen = oldPattern.length();

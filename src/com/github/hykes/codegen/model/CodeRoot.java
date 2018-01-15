@@ -1,7 +1,9 @@
 package com.github.hykes.codegen.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Desc: code group的所在组
@@ -37,6 +39,10 @@ public class CodeRoot implements Serializable {
         this.groups = groups;
     }
 
+    public static CodeRoot fromName(String name) {
+        return new CodeRoot(UUID.randomUUID().toString(), name, new ArrayList<>());
+    }
+
     public String getId() {
         return id;
     }
@@ -59,5 +65,14 @@ public class CodeRoot implements Serializable {
 
     public void setGroups(List<CodeGroup> groups) {
         this.groups = groups;
+    }
+
+    @Override
+    public String toString() {
+        return "CodeRoot{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", groups=" + groups +
+                '}';
     }
 }

@@ -1,12 +1,4 @@
 
-import io.terminus.boot.rpc.common.annotation.RpcConsumer;
-import io.terminus.common.exception.JsonResponseException;
-import io.terminus.common.model.Paging;
-import io.terminus.common.model.Response;
-
-import lombok.extern.slf4j.Slf4j;
-import com.google.common.collect.Maps;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,15 +18,14 @@ import java.util.List;
  * @date ${NOW}
  * Created by CodeGen .
  */
-@Slf4j
 @RestController
 @RequestMapping
 public class ${model}s {
 
-    @RpcConsumer
+    @Autowired
     private ${model}WriteService #LowerCase(${model})WriteService;
 
-    @RpcConsumer
+    @Autowired
     private ${model}ReadService #LowerCase(${model})ReadService;
 
     /**
@@ -44,30 +35,7 @@ public class ${model}s {
      */
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ${model} find${model}(@PathVariable Long id) {
-        Response<${model}> response = #LowerCase(${model})ReadService.findById(id);
-        if (!response.isSuccess()) {
-            throw new JsonResponseException(500, response.getError());
-        }
-        return response.getResult();
-    }
-
-    /**
-     * 分页
-     * @param pageNo
-     * @param pageSize
-     * @return
-     */
-    @GetMapping(value = "/paging", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Paging<${model}> paging${model}(@RequestParam(value = "pageNo", required = false) Integer pageNo,
-                                                 @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-
-        Map<String, Object> criteria = Maps.newHashMap();
-
-        Response<Paging<${model}>> result = #LowerCase(${model})ReadService.paging(pageNo, pageSize, criteria);
-        if(!result.isSuccess()){
-            throw new JsonResponseException(result.getError());
-        }
-        return result.getResult();
+        return #LowerCase(${model})ReadService.findById(id);
     }
 
     /**
@@ -77,52 +45,6 @@ public class ${model}s {
      */
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Long create${model}(@RequestBody ${model} #LowerCase(${model})) {
-        Response<Long> response = #LowerCase(${model})WriteService.create(#LowerCase(${model}));
-        if (!response.isSuccess()) {
-            throw new JsonResponseException(500, response.getError());
-        }
-        return response.getResult();
-    }
-
-    /**
-     * 更新
-     * @param #LowerCase(${model})
-     * @return
-     */
-    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean update${model}(@RequestBody ${model} #LowerCase(${model})) {
-        Response<Boolean> response = #LowerCase(${model})WriteService.update(#LowerCase(${model}));
-        if (!response.isSuccess()) {
-            throw new JsonResponseException(500, response.getError());
-        }
-        return response.getResult();
-    }
-
-    /**
-    * 删除
-    * @param id
-    * @return
-    */
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean delete${model}(@PathVariable Long id) {
-        Response<Boolean> response = #LowerCase(${model})WriteService.delete(id);
-        if (!response.isSuccess()) {
-            throw new JsonResponseException(500, response.getError());
-        }
-        return response.getResult();
-    }
-
-   /**
-    * 列表
-    * @return
-    */
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<${model}> list${model}() {
-       Map<String, Object> criteria = Maps.newHashMap();
-       Response<List<${model}>> result = #LowerCase(${model})ReadService.list(criteria);
-       if(!result.isSuccess()){
-           throw new JsonResponseException(result.getError());
-       }
-       return result.getResult();
+        return #LowerCase(${model})WriteService.create(#LowerCase(${model}));
     }
 }

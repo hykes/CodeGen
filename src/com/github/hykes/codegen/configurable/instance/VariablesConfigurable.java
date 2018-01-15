@@ -54,6 +54,6 @@ public class VariablesConfigurable implements Configurable {
     @Nls
     @Override
     public String getDisplayName() {
-        return "Variables";
+        return "CodeGen";
     }
 }

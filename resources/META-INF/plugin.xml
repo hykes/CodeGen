@@ -40,8 +40,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-    <applicationConfigurable groupId="tools" id="CodeGen.Configs" instance="com.github.hykes.codegen.configurable.instance.ConfigsConfigurable">
-      <configurable id="CodeGen.Variables" instance="com.github.hykes.codegen.configurable.instance.VariablesConfigurable"/>
+    <applicationConfigurable groupId="tools" id="CodeGen.Variables" instance="com.github.hykes.codegen.configurable.instance.VariablesConfigurable">
       <configurable id="CodeGen.Templates" instance="com.github.hykes.codegen.configurable.instance.TemplatesConfigurable"/>
     </applicationConfigurable>
 

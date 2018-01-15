@@ -1,6 +1,4 @@
 
-import io.terminus.common.mysql.dao.MyBatisDao;
-
 import org.springframework.stereotype.Repository;
 
 #ImportPackage(${model})
@@ -12,6 +10,20 @@ import org.springframework.stereotype.Repository;
  * Created by CodeGen .
  */
 @Repository
-public class ${model}Dao extends MyBatisDao<${model}> {
+public class ${model}Dao {
+
+    /**
+    * 创建对象
+    */
+    public Boolean create(${model} #LowerCase(${model})){
+        return Boolean.TRUE;
+    }
+
+    /**
+    * 查询对象
+    */
+    public ${model} findById(Long id){
+        return new ${model}();
+    }
 
 }

@@ -4,7 +4,10 @@ import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.configurable.UIConfigurable;
 import com.github.hykes.codegen.configurable.model.Variables;
 import com.github.hykes.codegen.configurable.ui.dialog.VariableEditDialog;
+import com.github.hykes.codegen.constants.Defaults;
 import com.github.hykes.codegen.utils.StringUtils;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.ui.GuiUtils;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBScrollPane;
@@ -32,19 +35,24 @@ public class VariableUI implements UIConfigurable {
     private JPanel rootPanel;
     private JPanel varPanel;
     private JPanel descPanel;
+    private JSplitPane jSplitPane;
     private JBTable varTable;
     private JTextArea descArea;
 
     public VariableUI() {
         $$$setupUI$$$();
+        GuiUtils.replaceJSplitPaneWithIDEASplitter(rootPanel);
         setVariables(settingManager.getVariables());
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        jSplitPane = new JSplitPane();
+        jSplitPane.setOrientation(0);
+        jSplitPane.setContinuousLayout(true);
+        jSplitPane.setBorder(IdeBorderFactory.createEmptyBorder());
         varPanel = new JPanel(new BorderLayout());
         varPanel.setBorder(IdeBorderFactory.createTitledBorder("Predefined Variables", false));
-        varPanel.setPreferredSize(JBUI.size(300, 200));
         varTable = new JBTable();
         varTable.getEmptyText().setText("No Variables");
         //不可整列移动
@@ -59,15 +67,13 @@ public class VariableUI implements UIConfigurable {
         varPanel.add(panel, BorderLayout.CENTER);
 
         descPanel = new JPanel(new BorderLayout());
-        descPanel.setPreferredSize(JBUI.size(300, 200));
-        descPanel.setBorder(IdeBorderFactory.createTitledBorder("Description", false));
+        descPanel.setBorder(IdeBorderFactory.createTitledBorder("Default Variables & Directives", false));
 
         String inHouseVariables;
         try {
-            InputStream template = getClass().getResourceAsStream("/variables.md");
-            inHouseVariables = StringUtils.stream2String(template);
-        } catch (IOException ioe) {
-            inHouseVariables = "IOException";
+            inHouseVariables = FileUtil.loadTextAndClose(VariableUI.class.getResourceAsStream("/variables.md"));
+        } catch (Exception e) {
+            inHouseVariables = "something error";
         }
         descArea = new JTextArea();
         descArea.setText(inHouseVariables);
@@ -224,9 +230,12 @@ public class VariableUI implements UIConfigurable {
     private void $$$setupUI$$$() {
         createUIComponents();
         rootPanel = new JPanel();
-        rootPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        rootPanel.add(varPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        rootPanel.add(descPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        rootPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        jSplitPane.setDividerLocation(350);
+        jSplitPane.setResizeWeight(1.0);
+        rootPanel.add(jSplitPane, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+        jSplitPane.setLeftComponent(varPanel);
+        jSplitPane.setRightComponent(descPanel);
     }
 
     /**

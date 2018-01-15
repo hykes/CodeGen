@@ -1,7 +1,9 @@
 package com.github.hykes.codegen.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Desc:
@@ -19,6 +21,10 @@ public class CodeGroup implements Serializable {
         this.name = name;
         this.level = level;
         this.templates = templates;
+    }
+
+    public CodeGroup(String name, Integer level) {
+        this(UUID.randomUUID().toString(), name, level, new ArrayList<>());
     }
 
     /**
@@ -84,5 +90,16 @@ public class CodeGroup implements Serializable {
 
     public void setRoot(String root) {
         this.root = root;
+    }
+
+    @Override
+    public String toString() {
+        return "CodeGroup{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", level=" + level +
+                ", templates=" + templates +
+                ", root='" + root + '\'' +
+                '}';
     }
 }

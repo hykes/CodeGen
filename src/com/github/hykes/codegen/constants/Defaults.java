@@ -32,7 +32,6 @@ public class Defaults {
         return context;
     }
 
-
     /**
      * 获取默认的模板
      */
@@ -44,7 +43,7 @@ public class Defaults {
             templates1.add(new CodeTemplate(UUID.randomUUID().toString(), "Model", "java", "${model}", FileUtil.loadTextAndClose(Defaults.class.getResourceAsStream("/templates/ModelTemplate.vm")), "model", false));
             templates1.add(new CodeTemplate(UUID.randomUUID().toString(), "ReadService", "java", "${model}ReadService", FileUtil.loadTextAndClose(Defaults.class.getResourceAsStream("/templates/ReadServiceTemplate.vm")), "service", false));
             templates1.add(new CodeTemplate(UUID.randomUUID().toString(), "WriteService", "java", "${model}WriteService", FileUtil.loadTextAndClose(Defaults.class.getResourceAsStream("/templates/WriteServiceTemplate.vm")), "service", false));
-            CodeGroup modelGroup = new CodeGroup(UUID.randomUUID().toString(), "example-model-service", 1, templates1);
+            CodeGroup modelGroup = new CodeGroup(UUID.randomUUID().toString(), "model-service", 1, templates1);
             groups.add(modelGroup);
 
             List<CodeTemplate> templates2 = new ArrayList<>();
@@ -52,14 +51,14 @@ public class Defaults {
             templates2.add(new CodeTemplate(UUID.randomUUID().toString(), "ReadService", "java", "${model}ReadServiceImpl", FileUtil.loadTextAndClose(Defaults.class.getResourceAsStream("/templates/ReadServiceImplTemplate.vm")), "service", false));
             templates2.add(new CodeTemplate(UUID.randomUUID().toString(), "WriteService", "java", "${model}WriteServiceImpl", FileUtil.loadTextAndClose(Defaults.class.getResourceAsStream("/templates/WriteServiceImplTemplate.vm")), "service", false));
             templates2.add(new CodeTemplate(UUID.randomUUID().toString(), "Mapper", "xml", "${model}Mapper", FileUtil.loadTextAndClose(Defaults.class.getResourceAsStream("/templates/MapperTemplate.vm")), "mapper", true));
-            CodeGroup implGroup = new CodeGroup(UUID.randomUUID().toString(), "example-service-impl", 2,  templates2);
+            CodeGroup implGroup = new CodeGroup(UUID.randomUUID().toString(), "impl-dao", 2,  templates2);
             groups.add(implGroup);
         } catch (Exception e){
             LOGGER.error(StringUtils.getStackTraceAsString(e));
         }
         // 设置默认根, 名称为root
         List<CodeRoot> roots = new ArrayList<>();
-        roots.add(new CodeRoot(UUID.randomUUID().toString(), "Root", groups));
+        roots.add(new CodeRoot(UUID.randomUUID().toString(), "example", groups));
         return roots;
     }
 
