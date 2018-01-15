@@ -2,7 +2,7 @@
 
 This plugin helps you to generate specific template code by create table statement or database .
 
-[![release](https://img.shields.io/badge/IDEA-v0.8-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hykes/CodeGen/blob/master/LICENSE)
+[![release](https://img.shields.io/badge/IDEA-v1.2-blue.svg)](https://plugins.jetbrains.com/plugin/9574-codegen) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/hykes/CodeGen/blob/master/LICENSE)
 
 ![CodeGen](https://raw.githubusercontent.com/hykes/CodeGen/master/doc/codegen.gif)
 
@@ -49,7 +49,7 @@ https://www.jetbrains.com/help/idea/meet-intellij-idea.html
 
 ## Guide
 
-* [Guide_cn](https://github.com/hykes/CodeGen/blob/master/doc/Guide_cn.md)
+* [中文使用手册](https://github.com/hykes/CodeGen/blob/master/doc/Guide_zh_v1.2.md)
 
 ## Contributions
 
