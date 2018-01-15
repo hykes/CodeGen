@@ -7,6 +7,7 @@ import com.github.hykes.codegen.configurable.ui.dialog.VariableEditDialog;
 import com.github.hykes.codegen.constants.Defaults;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.ui.GuiUtils;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBScrollPane;
@@ -40,6 +41,7 @@ public class VariableUI implements UIConfigurable {
 
     public VariableUI() {
         $$$setupUI$$$();
+        GuiUtils.replaceJSplitPaneWithIDEASplitter(rootPanel);
         setVariables(settingManager.getVariables());
     }
 

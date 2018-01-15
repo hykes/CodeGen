@@ -22,6 +22,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.AnActionButton;
+import com.intellij.ui.GuiUtils;
+import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
@@ -57,6 +59,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
     private Tree templateTree;
     private ToolbarDecorator toolbarDecorator;
     private TemplateEditorUI templateEditor;
+    private JSplitPane jSplitPane;
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
@@ -322,10 +325,15 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             });
         JPanel templatesPanel = toolbarDecorator.createPanel();
         templatesPanel.setPreferredSize(new Dimension(160,100));
-        add(templatesPanel, BorderLayout.WEST);
-
         templateEditor = new TemplateEditorUI();
-        add(templateEditor.$$$getRootComponent$$$(), BorderLayout.CENTER);
+        jSplitPane = new JSplitPane();
+        jSplitPane.setOrientation(1);
+        jSplitPane.setContinuousLayout(true);
+        jSplitPane.setBorder(IdeBorderFactory.createEmptyBorder());
+        jSplitPane.setTopComponent(templatesPanel);
+        jSplitPane.setBottomComponent(templateEditor.$$$getRootComponent$$$());
+        add(jSplitPane, BorderLayout.CENTER);
+        GuiUtils.replaceJSplitPaneWithIDEASplitter(this);
     }
 
     /**

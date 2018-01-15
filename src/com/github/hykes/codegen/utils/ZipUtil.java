@@ -43,6 +43,8 @@ public class ZipUtil {
         ZipInputStream zin = new ZipInputStream(in);
         ZipEntry ze;
 
+        List<String> rootNames = new ArrayList<>();
+        List<String> groupNames = new ArrayList<>();
         while ((ze = zin.getNextEntry()) != null) {
             if (!ze.isDirectory() && ze.getName().endsWith(".vm")) {
                 BufferedReader br = new BufferedReader(
@@ -76,21 +78,27 @@ public class ZipUtil {
                 templates.add(codeTemplate);
 
                 if (infoMap.containsKey("group")) {
-                    CodeGroup codeGroup = new CodeGroup();
-                    codeGroup.setId(UUID.randomUUID().toString());
-                    codeGroup.setLevel(Integer.valueOf(infoMap.get("level")));
-                    codeGroup.setName(infoMap.get("group"));
-                    codeGroup.setTemplates(new ArrayList<>());
-                    codeGroup.setRoot(infoMap.containsKey("root") ? infoMap.get("root") : null);
-                    groups.add(codeGroup);
+                    if (!groupNames.contains(infoMap.get("group"))) {
+                        groupNames.add(infoMap.get("group"));
+                        CodeGroup codeGroup = new CodeGroup();
+                        codeGroup.setId(UUID.randomUUID().toString());
+                        codeGroup.setLevel(Integer.valueOf(infoMap.get("level")));
+                        codeGroup.setName(infoMap.get("group"));
+                        codeGroup.setTemplates(new ArrayList<>());
+                        codeGroup.setRoot(infoMap.containsKey("root") ? infoMap.get("root") : null);
+                        groups.add(codeGroup);
+                    }
                 }
 
                 if (infoMap.containsKey("root")) {
-                    CodeRoot codeRoot = new CodeRoot();
-                    codeRoot.setId(UUID.randomUUID().toString());
-                    codeRoot.setName(infoMap.get("group"));
-                    codeRoot.setGroups(new ArrayList<>());
-                    roots.add(codeRoot);
+                    if (!rootNames.contains(infoMap.get("root"))) {
+                        rootNames.add(infoMap.get("root"));
+                        CodeRoot codeRoot = new CodeRoot();
+                        codeRoot.setId(UUID.randomUUID().toString());
+                        codeRoot.setName(infoMap.get("root"));
+                        codeRoot.setGroups(new ArrayList<>());
+                        roots.add(codeRoot);
+                    }
                 }
             }
         }

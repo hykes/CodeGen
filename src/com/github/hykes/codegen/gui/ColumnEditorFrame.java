@@ -2,12 +2,7 @@ package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.constants.Defaults;
-import com.github.hykes.codegen.model.CodeContext;
-import com.github.hykes.codegen.model.CodeGroup;
-import com.github.hykes.codegen.model.CodeTemplate;
-import com.github.hykes.codegen.model.Field;
-import com.github.hykes.codegen.model.IdeaContext;
-import com.github.hykes.codegen.model.Table;
+import com.github.hykes.codegen.model.*;
 import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.github.hykes.codegen.utils.StringUtils;
@@ -100,7 +95,11 @@ public class ColumnEditorFrame extends JFrame {
         groupPanel.setLayout(new BoxLayout(groupPanel, BoxLayout.X_AXIS));
 
         // TODO: 此处需要选择root
-        List<CodeGroup> groups = SETTING_MANAGER.getTemplates().getRoots().get(0).getGroups();
+        List<CodeGroup> groups = new ArrayList<>();
+        List<CodeRoot> codeRoots =  SETTING_MANAGER.getTemplates().getRoots();
+        for (CodeRoot root: codeRoots) {
+            groups.addAll(root.getGroups());
+        }
         groups.forEach( it -> {
             JCheckBox groupBox = new JCheckBox(it.getName());
             groupBox.setName(it.getId());
@@ -158,7 +157,11 @@ public class ColumnEditorFrame extends JFrame {
         params.put("Project", ideaContext.getProject().getName());
 
         // TODO: 此处需要选择root
-        List<CodeGroup> groupList = SETTING_MANAGER.getTemplates().getRoots().get(0).getGroups();
+        List<CodeGroup> groupList = new ArrayList<>();
+        List<CodeRoot> codeRoots =  SETTING_MANAGER.getTemplates().getRoots();
+        for (CodeRoot root: codeRoots) {
+            groupList.addAll(root.getGroups());
+        }
         groupList = groupList.stream().filter(it -> groups.contains(it.getId())).sorted(new ComparatorUtil()).collect(Collectors.toList());
 
         for(CodeGroup group: groupList){
