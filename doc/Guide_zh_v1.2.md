@@ -44,8 +44,8 @@ ${Project} the name of the current project
 
 ### 内置指令
 
-codegen 使用**handlebars.java模板引擎**进行生成，支持使用**原生的helper**。
-同时内置以下helpers，如果其他有需求欢迎提出。
+codegen 使用**Volecity模板引擎**进行生成，支持使用**原生的指令**。
+同时内置以下指令，如果其他有需求欢迎提出。
 
 ```
 * 首尾拼接
