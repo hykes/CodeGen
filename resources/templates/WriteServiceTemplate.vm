@@ -1,6 +1,4 @@
 
-import io.terminus.common.model.Response;
-
 #ImportPackage(${model})
 
 /**
@@ -17,21 +15,6 @@ public interface ${model}WriteService {
 
      * @return Boolean
      */
-    Response<Long> create(${model} #LowerCase(${model}));
-
-    /**
-     * 更新
-     * @param #LowerCase(${model})
-
-     * @return Boolean
-     */
-    Response<Boolean> update(${model} #LowerCase(${model}));
-
-    /**
-     * 删除
-     * @param id
-     * @return Boolean
-     */
-    Response<Boolean> delete(Long id);
+    Long create(${model} #LowerCase(${model}));
 
 }

@@ -1,13 +1,4 @@
 
-
-import io.terminus.common.model.PageInfo;
-import io.terminus.common.model.Paging;
-import io.terminus.common.model.Response;
-import io.terminus.boot.rpc.common.annotation.RpcProvider;
-
-import com.google.common.base.Throwables;
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,42 +15,19 @@ import java.util.List;
  * @date ${NOW}
  * Created by CodeGen .
  */
-@Slf4j
 @Service
-@RpcProvider
 public class ${model}ReadServiceImpl implements ${model}ReadService {
 
     @Autowired
     private ${model}Dao #LowerCase(${model})Dao;
 
     @Override
-    public Response<${model}> findById(Long id) {
+    public ${model} findById(Long id) {
         try{
-            return Response.ok(#LowerCase(${model})Dao.findById(id));
+            return #LowerCase(${model})Dao.findById(id);
         }catch (Exception e){
-            log.error("failed to find #Split("#LowerCase(${model})" ' ') by id:{}, cause:{}", id, Throwables.getStackTraceAsString(e));
-            return Response.fail("#Split("#LowerCase(${model})" '.').find.fail");
-        }
-    }
-
-    @Override
-    public Response<Paging<${model}>> paging(Integer pageNo, Integer pageSize, Map<String, Object> criteria) {
-        try{
-            PageInfo pageInfo = new PageInfo(pageNo, pageSize);
-            return Response.ok(#LowerCase(${model})Dao.paging(pageInfo.getOffset(), pageInfo.getLimit(), criteria));
-        }catch (Exception e){
-            log.error("failed to paging #Split("#LowerCase(${model})" ' ') by pageNo:{} pageSize:{}, cause:{}", pageNo, pageSize, Throwables.getStackTraceAsString(e));
-            return Response.fail("#Split("#LowerCase(${model})" '.').paging.fail");
-        }
-    }
-
-    @Override
-    public Response<List<${model}>> list(Map<String, Object> criteria) {
-        try{
-            return Response.ok(#LowerCase(${model})Dao.list(criteria));
-        }catch (Exception e){
-            log.error("failed to list #Split("#LowerCase(${model})" ' '), cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("#Split("#LowerCase(${model})" '.').list.fail");
+            // for example
+            return new ${model}();
         }
     }
 

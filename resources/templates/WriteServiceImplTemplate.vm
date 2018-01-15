@@ -1,10 +1,4 @@
 
-import io.terminus.common.model.Response;
-import io.terminus.boot.rpc.common.annotation.RpcProvider;
-
-import com.google.common.base.Throwables;
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,42 +12,20 @@ import org.springframework.stereotype.Service;
  * @date ${NOW}
  * Created by CodeGen .
  */
-@Slf4j
 @Service
-@RpcProvider
 public class ${model}WriteServiceImpl implements ${model}WriteService {
 
     @Autowired
     private ${model}Dao #LowerCase(${model})Dao;
 
     @Override
-    public Response<Long> create(${model} #LowerCase(${model})) {
+    public Long create(${model} #LowerCase(${model})) {
         try{
             #LowerCase(${model})Dao.create(#LowerCase(${model}));
-            return Response.ok(#LowerCase(${model}).getId());
+            return #LowerCase(${model}).getId();
         }catch (Exception e){
-            log.error("failed to create #Split("#LowerCase(${model})" ' '), cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("#Split("#LowerCase(${model})" '.').create.fail");
-        }
-    }
-
-    @Override
-    public Response<Boolean> update(${model} #LowerCase(${model})) {
-        try{
-            return Response.ok(#LowerCase(${model})Dao.update(#LowerCase(${model})));
-        }catch (Exception e){
-            log.error("failed to update #Split("#LowerCase(${model})" ' '), cause:{}", Throwables.getStackTraceAsString(e));
-            return Response.fail("#Split("#LowerCase(${model})" '.').update.fail");
-        }
-    }
-
-   @Override
-    public Response<Boolean> delete(Long id) {
-        try{
-            return Response.ok(#LowerCase(${model})Dao.delete(id));
-        }catch (Exception e){
-            log.error("failed to delete #Split("#LowerCase(${model})" ' ') by id:{}, cause:{}", id,  Throwables.getStackTraceAsString(e));
-            return Response.fail("#Split("#LowerCase(${model})" '.').delete.fail");
+            // for example
+            return 1L;
         }
     }
 
