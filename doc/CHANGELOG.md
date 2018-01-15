@@ -1,4 +1,8 @@
 # Change Logs
+
+- v1.2 2018-01-15
+    - Add import & export templates
+
 - v1.1 2017-12-22
     - Fix compatibility error
     - Add ImportPackage directive
