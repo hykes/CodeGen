@@ -5,7 +5,6 @@ import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
@@ -14,8 +13,8 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 文件提供者抽象类
@@ -76,20 +75,15 @@ public abstract class AbstractFileProvider {
      */
     private PsiDirectory findResourcesDirectory(PsiDirectory psiDirectory){
 
-        PsiDirectory parentDirectory = psiDirectory.getParentDirectory();
+        PsiDirectory iterator = psiDirectory.getParentDirectory();
 
-        VirtualFile virtualFile = parentDirectory.getVirtualFile();
-        String path = virtualFile.getPresentableUrl();
-
-        if(!path.endsWith("src/main")){
-            // 如果已经找到了项目根路径, 终止递归
-            if (!path.endsWith("/" + project.getName())) {
-                return findResourcesDirectory(parentDirectory);
-            }
+        while (!iterator.getName().equals("main")) {
+            iterator = iterator.getParentDirectory();
         }
-        PsiDirectory resourcesDirectory = parentDirectory.findSubdirectory("resources");
+
+        PsiDirectory resourcesDirectory = iterator.findSubdirectory("resources");
         if(resourcesDirectory == null){
-            resourcesDirectory = parentDirectory.createSubdirectory("resources");
+            resourcesDirectory = iterator.createSubdirectory("resources");
         }
         return resourcesDirectory;
     }
