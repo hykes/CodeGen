@@ -35,15 +35,15 @@ public abstract class AbstractFileProvider {
 
     public abstract void create(CodeTemplate template, CodeContext context, Map<String, Object> extraMap) throws Exception;
 
-    protected PsiDirectory subDirectory(PsiDirectory psiDirectory, String subPath, Boolean isResources){
-        if(StringUtils.isEmpty(subPath)){
+    protected PsiDirectory subDirectory(PsiDirectory psiDirectory, String subPath, Boolean isResources) {
+        if (StringUtils.isEmpty(subPath)) {
             return psiDirectory;
-        }else{
-            if("/".equals(subPath.substring(0,1))){
+        } else {
+            if ("/".equals(subPath.substring(0, 1))) {
                 subPath = subPath.substring(1);
             }
             String[] subPathAttr = subPath.split("/");
-            if(Objects.nonNull(isResources) && isResources){
+            if (Objects.nonNull(isResources) && isResources) {
                 psiDirectory = findResourcesDirectory(psiDirectory);
             }
             return createSubDirectory(psiDirectory, subPathAttr, 0);
@@ -57,12 +57,12 @@ public abstract class AbstractFileProvider {
      * @param level
      * @return
      */
-    private PsiDirectory createSubDirectory(PsiDirectory psiDirectory, String[] temp, int level){
+    private PsiDirectory createSubDirectory(PsiDirectory psiDirectory, String[] temp, int level) {
         PsiDirectory subdirectory = psiDirectory.findSubdirectory(temp[level]);
-        if(subdirectory == null){
+        if (subdirectory == null) {
             subdirectory = psiDirectory.createSubdirectory(temp[level]);
         }
-        if(temp.length != level + 1){
+        if (temp.length != level + 1) {
             return createSubDirectory(subdirectory, temp, level + 1);
         }
         return subdirectory;
@@ -73,17 +73,17 @@ public abstract class AbstractFileProvider {
      * @param psiDirectory
      * @return
      */
-    private PsiDirectory findResourcesDirectory(PsiDirectory psiDirectory){
+    private PsiDirectory findResourcesDirectory(PsiDirectory psiDirectory) {
 
         PsiDirectory iterator = psiDirectory.getParentDirectory();
 
-        while (!iterator.getName().equals("main")) {
+        while (iterator != null && !iterator.getName().equals("main")) {
             iterator = iterator.getParentDirectory();
         }
 
-        PsiDirectory resourcesDirectory = iterator.findSubdirectory("resources");
-        if(resourcesDirectory == null){
-            resourcesDirectory = iterator.createSubdirectory("resources");
+        PsiDirectory resourcesDirectory = iterator == null ? null : iterator.findSubdirectory("resources");
+        if (resourcesDirectory == null) {
+            resourcesDirectory = psiDirectory.getParentDirectory().createSubdirectory("resources");
         }
         return resourcesDirectory;
     }
