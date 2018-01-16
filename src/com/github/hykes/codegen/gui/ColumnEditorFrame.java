@@ -1,6 +1,5 @@
 package com.github.hykes.codegen.gui;
 
-import com.github.hykes.codegen.PathDialog;
 import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.constants.Defaults;
 import com.github.hykes.codegen.model.*;
