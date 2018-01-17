@@ -13,7 +13,7 @@ import java.util.List;
 #ImportPackage("${model}WriteService")
 
 /**
- *
+ * $!{comment}
  * @author $!{email}
  * @date ${NOW}
  * Created by CodeGen .
@@ -29,7 +29,7 @@ public class ${model}s {
     private ${model}ReadService #LowerCase(${model})ReadService;
 
     /**
-     * 查询
+     * 查询$!{comment}
      * @param id
      * @return
      */
@@ -39,7 +39,7 @@ public class ${model}s {
     }
 
     /**
-     * 创建
+     * 创建$!{comment}
      * @param #LowerCase(${model})
      * @return
      */

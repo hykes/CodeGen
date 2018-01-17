@@ -51,8 +51,13 @@ public class Defaults {
             templates2.add(new CodeTemplate(UUID.randomUUID().toString(), "ReadService", "java", "${model}ReadServiceImpl", FileUtil.loadTextAndClose(Defaults.class.getResourceAsStream("/templates/ReadServiceImplTemplate.vm")), "service", false));
             templates2.add(new CodeTemplate(UUID.randomUUID().toString(), "WriteService", "java", "${model}WriteServiceImpl", FileUtil.loadTextAndClose(Defaults.class.getResourceAsStream("/templates/WriteServiceImplTemplate.vm")), "service", false));
             templates2.add(new CodeTemplate(UUID.randomUUID().toString(), "Mapper", "xml", "${model}Mapper", FileUtil.loadTextAndClose(Defaults.class.getResourceAsStream("/templates/MapperTemplate.vm")), "mapper", true));
-            CodeGroup implGroup = new CodeGroup(UUID.randomUUID().toString(), "impl-dao", 2,  templates2);
+            CodeGroup implGroup = new CodeGroup(UUID.randomUUID().toString(), "service-impl-dao", 2,  templates2);
             groups.add(implGroup);
+
+            List<CodeTemplate> templates3 = new ArrayList<>();
+            templates3.add(new CodeTemplate(UUID.randomUUID().toString(), "Controller", "java", "${model}s", FileUtil.loadTextAndClose(Defaults.class.getResourceAsStream("/templates/ControllerTemplate.vm")), "front", false));
+            CodeGroup apiGroup = new CodeGroup(UUID.randomUUID().toString(), "api", 2,  templates3);
+            groups.add(apiGroup);
         } catch (Exception e){
             LOGGER.error(StringUtils.getStackTraceAsString(e));
         }

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 #ImportPackage(${model})
 
 /**
- *
+ * $!{comment} DAO层
  * @author $!{email}
  * @date ${NOW}
  * Created by CodeGen .

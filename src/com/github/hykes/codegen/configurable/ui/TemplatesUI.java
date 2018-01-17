@@ -23,7 +23,6 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.GuiUtils;
-import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
@@ -40,11 +39,8 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 模版配置面板
@@ -247,7 +243,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                             for (CodeGroup group : root.getGroups()) {
                                 for (CodeTemplate template : group.getTemplates()) {
                                     ExportTemplate exportTemplate = new ExportTemplate();
-                                    exportTemplate.setName(group.getName()+template.getDisplay()+".vm");
+                                    exportTemplate.setName(root.getName() + "_" + group.getName() + "_" + template.getDisplay() +".vm");
                                     ByteArrayOutputStream o = new ByteArrayOutputStream();
                                     o.write("#*\n".getBytes());
                                     o.write(("display: "+ template.getDisplay() +";\n").getBytes());
@@ -267,7 +263,6 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                         }
                         ZipUtil.export(files, virtualFile.getCanonicalPath() + "/CodeGen-Templates.zip");
                         Messages.showInfoMessage("Export CodeGen templates success", "INFO");
-//                        NotifyUtil.notice("Export CodeGen templates success", virtualFile.getCanonicalPath() + "/CodeGen-Templates.zip", MessageType.INFO);
                     } catch (Exception var){
                         LOGGER.error(var.getMessage());
                     }

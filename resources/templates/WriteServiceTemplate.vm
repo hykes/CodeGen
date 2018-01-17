@@ -2,7 +2,7 @@
 #ImportPackage(${model})
 
 /**
- *
+ * $!{comment}写服务接口
  * @author $!{email}
  * @date ${NOW}
  * Created by CodeGen .
@@ -10,7 +10,7 @@
 public interface ${model}WriteService {
 
     /**
-     * 创建
+     * 创建$!{comment}
      * @param #LowerCase(${model})
 
      * @return Boolean

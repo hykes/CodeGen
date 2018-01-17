@@ -99,8 +99,9 @@ public class ColumnEditorFrame extends JFrame {
                 for (TablePanel panel: panels) {
                     String modelName = panel.getModelTextField().getText().trim();
                     String tableName = panel.getTableTextField().getText().trim();
+                    String comment = panel.getCommentTextField().getText().trim();
                     // 组装数据
-                    CodeContext context = new CodeContext(modelName, tableName, panel.getFields());
+                    CodeContext context = new CodeContext(modelName, tableName, comment, panel.getFields());
                     contexts.add(context);
                 }
                 generator(ideaContext, selectGroups, contexts);
@@ -122,8 +123,7 @@ public class ColumnEditorFrame extends JFrame {
             Component c=ct.getComponent(i);
             if(c instanceof JCheckBox && ((JCheckBox)c).isSelected()){
                 selectGroups.add(c.getName());
-            }
-            else if(c instanceof Container){
+            } else if (c instanceof Container){
                 this.getAllJCheckBoxValue((Container)c, selectGroups);
             }
         }
@@ -161,16 +161,13 @@ public class ColumnEditorFrame extends JFrame {
      */
     public class ComparatorUtil implements Comparator<CodeGroup> {
 
-        /**
-         * 倒序排列即从大到小，若需要从小到大修改返回值1 和 -1
-         */
         @Override
         public int compare(CodeGroup o1, CodeGroup o2) {
-            double tempResult1 = o1.getLevel();
-            double tempResult2 = o2.getLevel();
-            if (tempResult1 > tempResult2) {
+            double level1 = o1.getLevel();
+            double level2 = o2.getLevel();
+            if (level1 > level2) {
                 return 1;
-            } else if (tempResult1 < tempResult2) {
+            } else if (level1 < level2) {
                 return -1;
             } else {
                 return 0;

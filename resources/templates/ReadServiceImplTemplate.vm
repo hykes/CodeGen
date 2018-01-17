@@ -10,7 +10,7 @@ import java.util.List;
 #ImportPackage("${model}Dao")
 
 /**
- *
+ * $!{comment}读服务实现类
  * @author $!{email}
  * @date ${NOW}
  * Created by CodeGen .

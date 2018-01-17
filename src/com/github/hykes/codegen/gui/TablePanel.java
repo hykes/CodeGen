@@ -34,6 +34,8 @@ public class TablePanel {
     private JLabel modelLab;
     private JLabel tableLab;
     private JPanel columnsPanel;
+    private JTextField commentTextField;
+    private JLabel commentLab;
 
     private JBTable fieldTable = new JBTable();
 
@@ -45,6 +47,10 @@ public class TablePanel {
 
     public JTextField getTableTextField() {
         return tableTextField;
+    }
+
+    public JTextField getCommentTextField() {
+        return commentTextField;
     }
 
     public TablePanel(Table table) {

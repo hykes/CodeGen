@@ -73,7 +73,9 @@ public class SelectGroupPanel {
             SelectPathDialog dialog = new SelectPathDialog(project);
             dialog.setSize(350, 160);
             dialog.setAlwaysOnTop(true);
-            dialog.setLocationRelativeTo(this.rootPanel);
+            Toolkit kit = Toolkit.getDefaultToolkit();
+            Dimension screenSize = kit.getScreenSize();
+            dialog.setLocation((screenSize.width-dialog.getWidth())/2, (screenSize.height-dialog.getHeight())/2);
             dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
             dialog.setResizable(false);
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -113,11 +115,7 @@ public class SelectGroupPanel {
     public class CellRenderer extends JLabel implements ListCellRenderer {
 
         @Override
-        public Component getListCellRendererComponent(JList list,
-                                                      Object value,
-                                                      int index,
-                                                      boolean isSelected,
-                                                      boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             CodeRoot root = (CodeRoot) value;
             setHorizontalAlignment(JLabel.CENTER);
             try {
