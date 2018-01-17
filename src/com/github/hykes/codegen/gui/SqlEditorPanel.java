@@ -110,6 +110,10 @@ public class SqlEditorPanel {
         sqlScrollPane.setViewportView(sqlTextArea.getComponent());
     }
 
+    public JComponent getRootComponent() {
+        return rootPanel;
+    }
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("CodeGen-SQL");
         frame.setContentPane(new SqlEditorPanel(null).$$$getRootComponent$$$());

@@ -39,7 +39,7 @@ public class SQLGeneratorAction extends AnAction implements DumbAware {
 
         JFrame frame = new JFrame();
         frame.setTitle("CodeGen-SQL");
-        frame.setContentPane(new SqlEditorPanel(new IdeaContext(project)).$$$getRootComponent$$$());
+        frame.setContentPane(new SqlEditorPanel(new IdeaContext(project)).getRootComponent());
         frame.setSize(600, 400);
         frame.setResizable(false);
         frame.setAlwaysOnTop(true);

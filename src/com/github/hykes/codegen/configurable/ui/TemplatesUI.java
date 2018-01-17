@@ -329,9 +329,9 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
         jSplitPane = new JSplitPane();
         jSplitPane.setOrientation(1);
         jSplitPane.setContinuousLayout(true);
-        jSplitPane.setBorder(IdeBorderFactory.createEmptyBorder());
+        jSplitPane.setBorder(BorderFactory.createEmptyBorder());
         jSplitPane.setTopComponent(templatesPanel);
-        jSplitPane.setBottomComponent(templateEditor.$$$getRootComponent$$$());
+        jSplitPane.setBottomComponent(templateEditor.getRootPanel());
         add(jSplitPane, BorderLayout.CENTER);
         GuiUtils.replaceJSplitPaneWithIDEASplitter(this);
     }
