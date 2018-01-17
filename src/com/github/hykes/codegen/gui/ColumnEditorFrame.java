@@ -8,10 +8,6 @@ import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.database.model.DasColumn;
 import com.intellij.database.psi.DbTable;
 import com.intellij.database.util.DasUtil;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.vfs.*;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.util.containers.JBIterable;
 
@@ -29,8 +25,6 @@ import java.util.stream.Collectors;
  * @date 2017/5/12
  */
 public class ColumnEditorFrame extends JFrame {
-
-    private static final Logger LOGGER = Logger.getInstance(ColumnEditorFrame.class);
 
     private final SettingManager SETTING_MANAGER = SettingManager.getInstance();
 
@@ -149,24 +143,17 @@ public class ColumnEditorFrame extends JFrame {
         }
         groupList = groupList.stream().filter(it -> groups.contains(it.getId())).sorted(new ComparatorUtil()).collect(Collectors.toList());
 
-        try {
-            for(CodeGroup group: groupList){
-                String outputPath = groupPathMap.get(group.getId());
-                VirtualFile vFile = VfsUtil.createDirectoryIfMissing(outputPath);
-                PsiDirectory psiDirectory = PsiDirectoryFactory.getInstance(ideaContext.getProject()).createDirectory(vFile);
-                if(Objects.nonNull(psiDirectory)){
-                    for (CodeContext context: contexts) {
-                        for (CodeTemplate codeTemplate : group.getTemplates()) {
-                            FileProviderFactory fileFactory = new FileProviderFactory(ideaContext.getProject(), psiDirectory);
-                            fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context, params);
-                        }
+        for (CodeGroup group : groupList) {
+            String outputPath = groupPathMap.get(group.getId());
+            if (StringUtils.isNotEmpty(outputPath)) {
+                for (CodeContext context : contexts) {
+                    for (CodeTemplate codeTemplate : group.getTemplates()) {
+                        FileProviderFactory fileFactory = new FileProviderFactory(ideaContext.getProject(), outputPath);
+                        fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context, params);
                     }
                 }
             }
-        } catch (Exception e){
-            LOGGER.error(StringUtils.getStackTraceAsString(e));
         }
-
     }
 
     /**

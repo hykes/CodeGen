@@ -26,14 +26,14 @@ public abstract class AbstractFileProvider {
 
     protected Project project;
 
-    protected PsiDirectory psiDirectory;
+    protected String outputPath;
 
-    public AbstractFileProvider(Project project, PsiDirectory psiDirectory) {
+    public AbstractFileProvider(Project project, String outputPath) {
         this.project = project;
-        this.psiDirectory = psiDirectory;
+        this.outputPath = outputPath;
     }
 
-    public abstract void create(CodeTemplate template, CodeContext context, Map<String, Object> extraMap) throws Exception;
+    public abstract void create(CodeTemplate template, CodeContext context, Map<String, Object> extraMap);
 
     protected PsiDirectory subDirectory(PsiDirectory psiDirectory, String subPath, Boolean isResources) {
         if (StringUtils.isEmpty(subPath)) {

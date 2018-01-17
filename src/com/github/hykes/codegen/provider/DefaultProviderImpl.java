@@ -9,9 +9,12 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiPackage;
+import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import org.apache.velocity.VelocityContext;
 
 import java.util.Map;
@@ -28,13 +31,13 @@ public class DefaultProviderImpl extends AbstractFileProvider {
 
     protected LanguageFileType languageFileType;
 
-    public DefaultProviderImpl(Project project, PsiDirectory psiDirectory, LanguageFileType languageFileType) {
-        super(project, psiDirectory);
+    public DefaultProviderImpl(Project project, String outputPath, LanguageFileType languageFileType) {
+        super(project, outputPath);
         this.languageFileType = languageFileType;
     }
 
     @Override
-    public void create(CodeTemplate template, CodeContext context, Map<String, Object> extraMap) throws Exception{
+    public void create(CodeTemplate template, CodeContext context, Map<String, Object> extraMap){
 
         VelocityContext velocityContext = new VelocityContext(BuilderUtil.transBean2Map(context));
         velocityContext.put("serialVersionUID", BuilderUtil.computeDefaultSUID(context.getModel(), context.getFields()));
@@ -51,6 +54,8 @@ public class DefaultProviderImpl extends AbstractFileProvider {
 
         WriteCommandAction.runWriteCommandAction(this.project, () -> {
             try {
+                VirtualFile vFile = VfsUtil.createDirectoryIfMissing(outputPath);
+                PsiDirectory psiDirectory = PsiDirectoryFactory.getInstance(this.project).createDirectory(vFile);
                 PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getResources());
                 PsiPackage psiPackage = JavaDirectoryService.getInstance().getPackage(directory);
                 if (!StringUtils.isEmpty(psiPackage.getQualifiedName())) {
