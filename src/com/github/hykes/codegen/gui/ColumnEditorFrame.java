@@ -46,6 +46,7 @@ public class ColumnEditorFrame extends JFrame {
                 Field field = new Field();
                 field.setColumn(dasColumn.getName());
                 field.setColumnType(dasColumn.getDataType().typeName);
+                // field.setSqlType(dasColumn.getDataType().jdbcType);
                 field.setColumnSize(String.valueOf(dasColumn.getDataType().size));
                 field.setComment(dasColumn.getComment());
                 fields.add(field);

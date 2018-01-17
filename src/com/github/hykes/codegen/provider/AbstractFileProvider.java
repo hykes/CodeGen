@@ -75,6 +75,7 @@ public abstract class AbstractFileProvider {
      */
     private PsiDirectory findResourcesDirectory(PsiDirectory psiDirectory) {
 
+        PsiDirectory parentDirectory = psiDirectory.getParentDirectory();
         PsiDirectory iterator = psiDirectory.getParentDirectory();
 
         while (iterator != null && !iterator.getName().equals("main")) {
@@ -83,7 +84,10 @@ public abstract class AbstractFileProvider {
 
         PsiDirectory resourcesDirectory = iterator == null ? null : iterator.findSubdirectory("resources");
         if (resourcesDirectory == null) {
-            resourcesDirectory = psiDirectory.getParentDirectory().createSubdirectory("resources");
+            resourcesDirectory = parentDirectory.findSubdirectory("resources");
+            if (resourcesDirectory == null) {
+                resourcesDirectory = parentDirectory.createSubdirectory("resources");
+            }
         }
         return resourcesDirectory;
     }

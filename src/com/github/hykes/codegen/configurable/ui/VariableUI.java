@@ -4,8 +4,6 @@ import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.configurable.UIConfigurable;
 import com.github.hykes.codegen.configurable.model.Variables;
 import com.github.hykes.codegen.configurable.ui.dialog.VariableEditDialog;
-import com.github.hykes.codegen.constants.Defaults;
-import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.ui.GuiUtils;
 import com.intellij.ui.IdeBorderFactory;
@@ -14,15 +12,13 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.util.ui.JBUI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author hehaiyang@terminus.io
@@ -36,6 +32,9 @@ public class VariableUI implements UIConfigurable {
     private JPanel varPanel;
     private JPanel descPanel;
     private JSplitPane jSplitPane;
+    private JPanel ignorePane;
+    private JTextField ignoreText;
+    private JLabel ignoreLabel;
     private JBTable varTable;
     private JTextArea descArea;
 
@@ -77,8 +76,13 @@ public class VariableUI implements UIConfigurable {
         }
         descArea = new JTextArea();
         descArea.setText(inHouseVariables);
-        descArea.setEnabled(false);
+        // descArea.setEnabled(false);
+        descArea.setEditable(false);
         descPanel.add(new JBScrollPane(descArea), BorderLayout.CENTER);
+
+        // ignore fields
+        ignorePane = new JPanel();
+        ignorePane.setBorder(IdeBorderFactory.createTitledBorder("The Ignore Fields", false));
     }
 
 
@@ -100,6 +104,8 @@ public class VariableUI implements UIConfigurable {
                 return false;
             }
         };
+        // 设置ignore fields
+        ignoreText.setText(variables.getIgnoreFields());
         varTable.setModel(tableModel);
     }
 
@@ -188,6 +194,9 @@ public class VariableUI implements UIConfigurable {
                 return true;
             }
         }
+        if (!Objects.equals(ignoreText.getText().trim(), variables.getIgnoreFields())) {
+            return true;
+        }
         return false;
     }
 
@@ -202,6 +211,7 @@ public class VariableUI implements UIConfigurable {
             params.put(tableModel.getValueAt(i, 0).toString().trim(), tableModel.getValueAt(i, 1).toString().trim());
         }
         settingManager.getVariables().setParams(params);
+        settingManager.getVariables().setIgnoreFields(ignoreText.getText().trim());
     }
 
     /**
@@ -230,12 +240,33 @@ public class VariableUI implements UIConfigurable {
     private void $$$setupUI$$$() {
         createUIComponents();
         rootPanel = new JPanel();
-        rootPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        jSplitPane.setDividerLocation(350);
+        rootPanel.setLayout(new GridBagLayout());
+        jSplitPane.setDividerLocation(172);
+        jSplitPane.setDividerSize(5);
         jSplitPane.setResizeWeight(1.0);
-        rootPanel.add(jSplitPane, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+        GridBagConstraints gbc;
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 5.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        rootPanel.add(jSplitPane, gbc);
         jSplitPane.setLeftComponent(varPanel);
         jSplitPane.setRightComponent(descPanel);
+        ignorePane.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        rootPanel.add(ignorePane, gbc);
+        ignoreLabel = new JLabel();
+        ignoreLabel.setText("Ignore Fields");
+        ignorePane.add(ignoreLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        ignoreText = new JTextField();
+        ignorePane.add(ignoreText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
     }
 
     /**

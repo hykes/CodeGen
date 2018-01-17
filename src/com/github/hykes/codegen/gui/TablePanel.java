@@ -15,6 +15,7 @@ import com.intellij.util.ui.JBUI;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -76,6 +77,8 @@ public class TablePanel {
         modelTextField.setText(table.getModelName());
         tableTextField.setText(table.getTableName());
         initFields(table.getFields());
+
+        this.getRootComponent().registerKeyboardAction(e -> this.getRootComponent().disable(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     /**
@@ -200,11 +203,9 @@ public class TablePanel {
 
     public List<Field> getFields() {
         List<Field> fields = new ArrayList<>();
-        List<String> ignoreList;
-        if (settingManager.getVariables().getParams().containsKey("ignoreFields")) {
-            ignoreList = StringUtils.splitToList(settingManager.getVariables().getParams().get("ignoreFields"), ",", true);
-        } else {
-            ignoreList = new ArrayList<>();
+        List<String> ignoreList = new ArrayList<>();
+        if (StringUtils.isNotBlank(settingManager.getVariables().getIgnoreFields())) {
+            ignoreList = StringUtils.splitToList(settingManager.getVariables().getIgnoreFields(), ",", true);
         }
 
         DefaultTableModel tableModel = (DefaultTableModel) fieldTable.getModel();
@@ -276,21 +277,26 @@ public class TablePanel {
         topPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(topPanel, BorderLayout.NORTH);
         modelPanel = new JPanel();
-        modelPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        modelPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         topPanel.add(modelPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        modelLab = new JLabel();
-        modelLab.setText("Model");
-        modelPanel.add(modelLab, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        modelTextField = new JTextField();
-        modelPanel.add(modelTextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         tablePanel = new JPanel();
-        tablePanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        tablePanel.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
         topPanel.add(tablePanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         tableLab = new JLabel();
         tableLab.setText("Table ");
-        tablePanel.add(tableLab, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        tablePanel.add(tableLab, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         tableTextField = new JTextField();
-        tablePanel.add(tableTextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        tablePanel.add(tableTextField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        commentLab = new JLabel();
+        commentLab.setText("Model Comment");
+        tablePanel.add(commentLab, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        commentTextField = new JTextField();
+        tablePanel.add(commentTextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        modelLab = new JLabel();
+        modelLab.setText("Model");
+        tablePanel.add(modelLab, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        modelTextField = new JTextField();
+        tablePanel.add(modelTextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
     }
 
     /**
