@@ -1,6 +1,7 @@
 package com.github.hykes.codegen.provider;
 
 import com.github.hykes.codegen.provider.filetype.KotlinFileType;
+import com.github.hykes.codegen.provider.filetype.MdFileType;
 import com.github.hykes.codegen.provider.filetype.SqlFileType;
 import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.ide.highlighter.XmlFileType;
@@ -32,7 +33,7 @@ public class FileProviderFactory {
         } else if("kt".equals(type)) {
             return new DefaultProviderImpl(project, outputPath, KotlinFileType.INSTANCE);
         } else {
-            return new DefaultProviderImpl(project, outputPath, JavaFileType.INSTANCE);
+            return new DefaultProviderImpl(project, outputPath, MdFileType.INSTANCE);
         }
     }
 }

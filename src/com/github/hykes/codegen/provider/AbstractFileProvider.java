@@ -36,17 +36,17 @@ public abstract class AbstractFileProvider {
     public abstract void create(CodeTemplate template, CodeContext context, Map<String, Object> extraMap);
 
     protected PsiDirectory subDirectory(PsiDirectory psiDirectory, String subPath, Boolean isResources) {
-        if (StringUtils.isEmpty(subPath)) {
-            return psiDirectory;
-        } else {
+        if (Objects.nonNull(isResources) && isResources) {
+            psiDirectory = findResourcesDirectory(psiDirectory);
+        }
+        if (StringUtils.isNotEmpty(subPath)) {
             if ("/".equals(subPath.substring(0, 1))) {
                 subPath = subPath.substring(1);
             }
             String[] subPathAttr = subPath.split("/");
-            if (Objects.nonNull(isResources) && isResources) {
-                psiDirectory = findResourcesDirectory(psiDirectory);
-            }
             return createSubDirectory(psiDirectory, subPathAttr, 0);
+        } else {
+            return psiDirectory;
         }
     }
 
