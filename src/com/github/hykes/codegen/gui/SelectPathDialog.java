@@ -3,150 +3,137 @@ package com.github.hykes.codegen.gui;
 import com.intellij.ide.util.PackageChooserDialog;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
+import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.PackageChooser;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.JavaDirectoryService;
+import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiPackage;
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
-import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.Nullable;
+import com.intellij.psi.impl.file.PsiDirectoryFactory;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.event.*;
 import java.util.Objects;
 
-public class SelectPathDialog extends DialogWrapper {
-
-    private JButton outputPathBtn;
-    private JButton basePackageBtn;
-    private JTextField outputPathField;
-    private JTextField basePackageField;
-    private JComboBox<String> templateGroupCombo;
-    private JPanel mainPanel;
-    private final Project project;
+public class SelectPathDialog extends JDialog implements ActionListener{
+    private JPanel contentPane;
+    private JButton buttonOK;
+    private JButton buttonCancel;
+    private JTextField outPutText;
+    private JButton selectOutputBtn;
+    private JTextField packageText;
+    private JButton selectPackageBtn;
+    private String outputPath;
+    private String basePackage;
 
     public SelectPathDialog(Project project) {
-        super(project, false);
-        this.project = project;
-        setTitle("Select Path");
-        initBtn();
-        initCombo();
-        init();
-    }
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
 
-    @Override
-    protected void doOKAction() {
-        if (StringUtils.isBlank(getOutputPath())) {
-            outputPathField.requestFocus();
-            return;
-        }
-        if (StringUtils.isBlank(getBasePackage())) {
-            basePackageField.requestFocus();
-            return;
-        }
-//        if (StringUtils.isBlank(getTemplateGroup())) {
-//            templateGroupCombo.requestFocus();
-//            return;
-//        }
-        close(0);
-    }
+        buttonOK.addActionListener(this);
 
-    public String getOutputPath() {
-        return outputPathField.getText();
-    }
+        buttonCancel.addActionListener(this);
 
-    public String getBasePackage() {
-        return basePackageField.getText();
-    }
-
-    public String getTemplateGroup() {
-        Object selectedGroup = templateGroupCombo.getSelectedItem();
-        if (Objects.nonNull(selectedGroup)) {
-            return String.valueOf(selectedGroup);
-        }
-        return null;
-    }
-
-    private void initCombo() {
-//        templateGroupMap.forEach((key, value) -> {
-//            templateGroupCombo.addItem(key);
-//        });
-    }
-
-    private void initBtn() {
-        basePackageBtn.addActionListener(e -> {
-            PackageChooser packageChooser = new PackageChooserDialog("Select Base Package", project);
-            packageChooser.show();
-            PsiPackage psiPackage = packageChooser.getSelectedPackage();
-            if (Objects.nonNull(psiPackage)) {
-                basePackageField.setText(psiPackage.getQualifiedName());
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                onCancel();
             }
         });
 
-        outputPathBtn.addActionListener(e -> {
-            FileChooserDescriptor descriptor = new FileChooserDescriptor(false, true, false, false, false, false);
-            VirtualFile virtualFile = FileChooser.chooseFile(descriptor, project, null);
-            if (Objects.nonNull(virtualFile)) {
-                outputPathField.setText(virtualFile.getPath());
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        selectOutputBtn.addActionListener(new ActionListener() {
+            /**
+             * Invoked when an action occurs.
+             *
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
+                descriptor.setTitle("Select output path");
+                descriptor.setShowFileSystemRoots(false);
+                descriptor.setDescription("Select output path");
+                descriptor.setHideIgnored(true);
+                descriptor.setRoots(project.getBaseDir());
+                descriptor.setForcedToUseIdeaFileChooser(true);
+                VirtualFile virtualFile = FileChooser.chooseFile(descriptor, project, project.getBaseDir());
+                if (Objects.nonNull(virtualFile)) {
+                    String output = virtualFile.getPath();
+                    PsiDirectory psiDirectory = PsiDirectoryFactory.getInstance(project).createDirectory(virtualFile);
+                    PsiPackage psiPackage = JavaDirectoryService.getInstance().getPackage(psiDirectory);
+                    if(psiPackage != null && psiPackage.getName() != null) {
+                        final StringBuilder path = new StringBuilder();
+                        path.append(psiPackage.getName());
+                        while (psiPackage.getParentPackage() != null && psiPackage.getParentPackage().getName() != null) {
+                            psiPackage = psiPackage.getParentPackage();
+                            if (path.length() > 0) {
+                                path.insert(0, '.');
+                            }
+                            path.insert(0, psiPackage.getName());
+                        }
+                        packageText.setText(path.toString());
+                        output = output.replace(path.toString().replace(".", "/"), "");
+                    }
+                    outPutText.setText(output);
+                }
+            }
+        });
+        selectPackageBtn.addActionListener(new ActionListener() {
+            /**
+             * Invoked when an action occurs.
+             *
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PackageChooser packageChooser = new PackageChooserDialog("Select Base Package", project);
+                packageChooser.show();
+                PsiPackage psiPackage = packageChooser.getSelectedPackage();
+                if (Objects.nonNull(psiPackage)) {
+                    packageText.setText(psiPackage.getQualifiedName());
+                }
             }
         });
     }
 
-    @Nullable
-    @Override
-    protected JComponent createCenterPanel() {
-        return mainPanel;
+    private void onOK() {
+        // add your code here
+        dispose();
     }
 
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
+    private void onCancel() {
+        // add your code here if necessary
+        dispose();
+    }
+
+    public String getOutPutPath(){
+        return outputPath;
+    }
+
+    public String getBasePackage(){
+        return basePackage;
     }
 
     /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
+     * Invoked when an action occurs.
      *
-     * @noinspection ALL
+     * @param e
      */
-    private void $$$setupUI$$$() {
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayoutManager(4, 3, new Insets(0, 0, 0, 0), -1, -1));
-        final JLabel label1 = new JLabel();
-        label1.setText("Output Path");
-        mainPanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        mainPanel.add(spacer1, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        outputPathField = new JTextField();
-        mainPanel.add(outputPathField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        outputPathBtn = new JButton();
-        outputPathBtn.setText("...");
-        mainPanel.add(outputPathBtn, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label2 = new JLabel();
-        label2.setText("Base Package");
-        mainPanel.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        basePackageField = new JTextField();
-        mainPanel.add(basePackageField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        basePackageBtn = new JButton();
-        basePackageBtn.setText("...");
-        mainPanel.add(basePackageBtn, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label3 = new JLabel();
-        label3.setText("Template Group");
-        mainPanel.add(label3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        templateGroupCombo = new JComboBox();
-        mainPanel.add(templateGroupCombo, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-    }
-
-    /**
-     * @noinspection ALL
-     */
-    public JComponent $$$getRootComponent$$$() {
-        return mainPanel;
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        outputPath = outPutText.getText();
+        basePackage = packageText.getText();
+        setVisible(false);
     }
 }

@@ -4,25 +4,22 @@ import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.constants.Defaults;
 import com.github.hykes.codegen.model.*;
 import com.github.hykes.codegen.provider.FileProviderFactory;
-import com.github.hykes.codegen.utils.PsiUtil;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.database.model.DasColumn;
 import com.intellij.database.psi.DbTable;
 import com.intellij.database.util.DasUtil;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.vfs.*;
 import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.util.containers.JBIterable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +35,7 @@ public class ColumnEditorFrame extends JFrame {
     private final SettingManager SETTING_MANAGER = SettingManager.getInstance();
 
     private final List<TablePanel> panels = new ArrayList<>();
+    private Map<String, String> groupPathMap = new HashMap<>();
 
     public ColumnEditorFrame newColumnEditorByDb(IdeaContext ideaContext, List<DbTable> dbTables) {
 
@@ -87,47 +85,21 @@ public class ColumnEditorFrame extends JFrame {
 
         for (Table table: tables) {
             TablePanel tablePanel = new TablePanel(table);
-            tablesPanel.add(tablePanel.$$$getRootComponent$$$());
+            tablesPanel.add(tablePanel.getRootComponent());
             panels.add(tablePanel);
         }
 
-        final JPanel groupPanel = new JPanel();
-        groupPanel.setLayout(new BoxLayout(groupPanel, BoxLayout.X_AXIS));
-
-        // TODO: 此处需要选择root
-        List<CodeGroup> groups = new ArrayList<>();
         List<CodeRoot> codeRoots =  SETTING_MANAGER.getTemplates().getRoots();
-        for (CodeRoot root: codeRoots) {
-            groups.addAll(root.getGroups());
-        }
-        groups.forEach( it -> {
-            JCheckBox groupBox = new JCheckBox(it.getName());
-            groupBox.setName(it.getId());
-            groupBox.addActionListener( box -> {
-//                PathDialog dialog = new PathDialog();
-//                dialog.pack();
-//                dialog.setVisible(true);
-                SelectPathDialog dialog = new SelectPathDialog(ideaContext.getProject());
-                dialog.show();
-                if (dialog.isOK()) {
-                    String basePackage = dialog.getBasePackage();
-                    String outputPath = dialog.getOutputPath();
-                    System.out.println(outputPath);
-                    System.out.println(basePackage);
-                }
-            });
+        SelectGroupPanel selectGroupPanel = new SelectGroupPanel(codeRoots, ideaContext.getProject());
 
-            groupPanel.add(groupBox);
-        });
-        groupPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-        JButton genBtn = new JButton("Generate");
-
+        JPanel groupPanel = selectGroupPanel.getGroupsPanel();
+        JButton genBtn = selectGroupPanel.getGenerator();
+        groupPathMap = selectGroupPanel.getGroupPathMap();
         genBtn.addActionListener( it -> {
-            List<String> list = new ArrayList<>();
-            this.getAllJCheckBoxValue(groupPanel, list);
+            List<String> selectGroups = new ArrayList<>();
+            this.getAllJCheckBoxValue(groupPanel, selectGroups);
 
-            if(!list.isEmpty()) {
+            if(!selectGroups.isEmpty()) {
                 List<CodeContext> contexts = new ArrayList<>();
 
                 for (TablePanel panel: panels) {
@@ -137,31 +109,31 @@ public class ColumnEditorFrame extends JFrame {
                     CodeContext context = new CodeContext(modelName, tableName, panel.getFields());
                     contexts.add(context);
                 }
-                generator(ideaContext, list, contexts);
+                generator(ideaContext, selectGroups, contexts);
                 dispose();
             }
         });
-        groupPanel.add(genBtn);
 
         add(jScrollPane, BorderLayout.CENTER);
-        add(groupPanel, BorderLayout.SOUTH);
+        selectGroupPanel.getRootPanel().setBorder(BorderFactory.createEmptyBorder(0, 15, 10, 15));
+        add(selectGroupPanel.getRootPanel(), BorderLayout.SOUTH);
     }
 
-    private List<String> getAllJCheckBoxValue(Container ct, List<String> list){
-        if(list==null){
-            list = new ArrayList<>();
+    private List<String> getAllJCheckBoxValue(Container ct, List<String> selectGroups){
+        if(selectGroups == null){
+            selectGroups = new ArrayList<>();
         }
         int count=ct.getComponentCount();
         for(int i=0;i<count;i++){
             Component c=ct.getComponent(i);
             if(c instanceof JCheckBox && ((JCheckBox)c).isSelected()){
-                list.add(c.getName());
+                selectGroups.add(c.getName());
             }
             else if(c instanceof Container){
-                this.getAllJCheckBoxValue((Container)c,list);
+                this.getAllJCheckBoxValue((Container)c, selectGroups);
             }
         }
-        return list;
+        return selectGroups;
     }
 
     public void generator(IdeaContext ideaContext, List<String> groups, List<CodeContext> contexts){
@@ -170,7 +142,6 @@ public class ColumnEditorFrame extends JFrame {
         params.putAll(SETTING_MANAGER.getVariables().getParams());
         params.put("Project", ideaContext.getProject().getName());
 
-        // TODO: 此处需要选择root
         List<CodeGroup> groupList = new ArrayList<>();
         List<CodeRoot> codeRoots =  SETTING_MANAGER.getTemplates().getRoots();
         for (CodeRoot root: codeRoots) {
@@ -179,7 +150,9 @@ public class ColumnEditorFrame extends JFrame {
         groupList = groupList.stream().filter(it -> groups.contains(it.getId())).sorted(new ComparatorUtil()).collect(Collectors.toList());
 
         for(CodeGroup group: groupList){
-            PsiDirectory psiDirectory = PsiUtil.createDirectory(ideaContext.getProject(), "Select Package For " + group.getName(), "");
+            String outputPath = groupPathMap.get(group.getId());
+            VirtualFile vFile = LocalFileSystem.getInstance().findFileByPath(outputPath);
+            PsiDirectory psiDirectory = PsiDirectoryFactory.getInstance(ideaContext.getProject()).createDirectory(vFile);
             if(Objects.nonNull(psiDirectory)){
                 try {
                     for (CodeContext context: contexts) {
