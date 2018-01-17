@@ -143,28 +143,28 @@ public class ColumnEditorFrame extends JFrame {
         params.put("Project", ideaContext.getProject().getName());
 
         List<CodeGroup> groupList = new ArrayList<>();
-        List<CodeRoot> codeRoots =  SETTING_MANAGER.getTemplates().getRoots();
+        List<CodeRoot> codeRoots = SETTING_MANAGER.getTemplates().getRoots();
         for (CodeRoot root: codeRoots) {
             groupList.addAll(root.getGroups());
         }
         groupList = groupList.stream().filter(it -> groups.contains(it.getId())).sorted(new ComparatorUtil()).collect(Collectors.toList());
 
-        for(CodeGroup group: groupList){
-            String outputPath = groupPathMap.get(group.getId());
-            VirtualFile vFile = LocalFileSystem.getInstance().findFileByPath(outputPath);
-            PsiDirectory psiDirectory = PsiDirectoryFactory.getInstance(ideaContext.getProject()).createDirectory(vFile);
-            if(Objects.nonNull(psiDirectory)){
-                try {
+        try {
+            for(CodeGroup group: groupList){
+                String outputPath = groupPathMap.get(group.getId());
+                VirtualFile vFile = VfsUtil.createDirectoryIfMissing(outputPath);
+                PsiDirectory psiDirectory = PsiDirectoryFactory.getInstance(ideaContext.getProject()).createDirectory(vFile);
+                if(Objects.nonNull(psiDirectory)){
                     for (CodeContext context: contexts) {
                         for (CodeTemplate codeTemplate : group.getTemplates()) {
                             FileProviderFactory fileFactory = new FileProviderFactory(ideaContext.getProject(), psiDirectory);
                             fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context, params);
                         }
                     }
-                } catch (Exception e){
-                    LOGGER.error(StringUtils.getStackTraceAsString(e));
                 }
             }
+        } catch (Exception e){
+            LOGGER.error(StringUtils.getStackTraceAsString(e));
         }
 
     }
