@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>1.2</version>
+  <version>1.2.1</version>
   <vendor email="hehaiyangwork@gmail.com" url="https://github.com/hykes">hehaiyang</vendor>
 
   <description><![CDATA[
@@ -13,21 +13,23 @@
         <li>Velocity template language</li>
         <li>IDEA database</li>
         <li>Predefined variables</li>
-        <li>Custom template groups</li>
+        <li>Custom template</li>
       </ul>
     ]]></description>
 
   <change-notes><![CDATA[
-      <p>v1.2 2018-01-15</p>
+      <p>v1.2 2018-01-18</p>
       <ul>
-        <li>Add import & export templates</li>
+        <li>Import & Export templates</li>
+        <li>Support multi-group</li>
+        <li>Optimize output path selection</li>
       </ul>
       <p>v1.1 2017-12-22</p>
       <ul>
         <li>Fix compatibility error</li>
         <li>Add ImportPackage directive</li>
       </ul>
-      <a href="https://github.com/hykes/CodeGen/blob/master/CHANGELOG.md">Read More ...</a>
+      <a href="https://github.com/hykes/CodeGen/blob/master/doc/CHANGELOG.md">Read More ...</a>
     ]]>
   </change-notes>
 

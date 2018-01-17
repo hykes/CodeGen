@@ -1,7 +1,9 @@
 # Change Logs
 
 - v1.2 2018-01-15
-    - Add import & export templates
+    - Import & Export templates
+    - Support multi-group
+    - Optimize output path selection
 
 - v1.1 2017-12-22
     - Fix compatibility error
