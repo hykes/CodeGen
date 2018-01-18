@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>1.2.1</version>
+  <version>1.2.2</version>
   <vendor email="hehaiyangwork@gmail.com" url="https://github.com/hykes">hehaiyang</vendor>
 
   <description><![CDATA[
