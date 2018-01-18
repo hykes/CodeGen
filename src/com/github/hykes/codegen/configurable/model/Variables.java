@@ -13,7 +13,15 @@ public class Variables implements Serializable {
 
     private static final long serialVersionUID = -2336608097560710669L;
 
+    /**
+     * 自定义参数
+     */
     private Map<String, String> params = new HashMap<>();
+
+    /**
+     * 需要忽略的字段
+     */
+    private String ignoreFields;
 
     public Variables() {
         params.put("author", "[ your name ]");
@@ -26,5 +34,13 @@ public class Variables implements Serializable {
 
     public void setParams(Map<String, String> params) {
         this.params = params;
+    }
+
+    public String getIgnoreFields() {
+        return ignoreFields;
+    }
+
+    public void setIgnoreFields(String ignoreFields) {
+        this.ignoreFields = ignoreFields;
     }
 }

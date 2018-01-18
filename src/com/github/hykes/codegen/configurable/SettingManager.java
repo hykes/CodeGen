@@ -3,6 +3,7 @@ package com.github.hykes.codegen.configurable;
 import com.github.hykes.codegen.configurable.model.Templates;
 import com.github.hykes.codegen.configurable.model.Variables;
 import com.github.hykes.codegen.constants.Defaults;
+import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
@@ -43,9 +44,9 @@ public class SettingManager implements PersistentStateComponent<SettingManager> 
         XmlSerializerUtil.copyBean(formatSetting, this);
         if (templates != null && templates.getRoots().size() == 0) {
             templates.setRoots(Defaults.getDefaultTemplates());
-            if (variables != null && !variables.getParams().containsKey("ignoreFields")) {
-                variables.getParams().put("ignoreFields", "id,created_at,updated_at");
-            }
+        }
+        if (variables != null && StringUtils.isBlank(variables.getIgnoreFields())) {
+            variables.setIgnoreFields("id,created_at,updated_at");
         }
     }
 
