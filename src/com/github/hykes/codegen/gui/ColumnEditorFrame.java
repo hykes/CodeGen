@@ -8,8 +8,12 @@ import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.database.model.DasColumn;
 import com.intellij.database.psi.DbTable;
 import com.intellij.database.util.DasUtil;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.util.containers.JBIterable;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,9 +70,7 @@ public class ColumnEditorFrame extends JFrame {
 
     private void init(IdeaContext ideaContext, List<Table> tables){
         setLayout(new BorderLayout());
-
         JBTabbedPane tabbedPane = new JBTabbedPane();
-
 
         for (Table table: tables) {
             TablePanel tablePanel = new TablePanel(table);
@@ -128,24 +130,43 @@ public class ColumnEditorFrame extends JFrame {
         params.putAll(SETTING_MANAGER.getVariables().getParams());
         params.put("Project", ideaContext.getProject().getName());
 
-        List<CodeGroup> groupList = new ArrayList<>();
-        List<CodeRoot> codeRoots = SETTING_MANAGER.getTemplates().getRoots();
-        for (CodeRoot root: codeRoots) {
-            groupList.addAll(root.getGroups());
-        }
-        groupList = groupList.stream().filter(it -> groups.contains(it.getId())).sorted(new ComparatorUtil()).collect(Collectors.toList());
+        final List<CodeGroup> groupList = new ArrayList<>();
+        SETTING_MANAGER.getTemplates().getRoots().forEach(it -> groupList.addAll(it.getGroups()));
 
-        for (CodeGroup group : groupList) {
-            String outputPath = groupPathMap.get(group.getId());
-            if (StringUtils.isNotEmpty(outputPath)) {
-                for (CodeContext context : contexts) {
-                    for (CodeTemplate codeTemplate : group.getTemplates()) {
-                        FileProviderFactory fileFactory = new FileProviderFactory(ideaContext.getProject(), outputPath);
-                        fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context, params);
+        final List<CodeGroup> genGroups = groupList.stream().filter(it -> groups.contains(it.getId())).sorted(new ComparatorUtil()).collect(Collectors.toList());
+        ProgressManager.getInstance().run(new Task.Backgroundable(ideaContext.getProject(), "CodeGen Progress ..."){
+
+            @Override
+            public void run(@NotNull ProgressIndicator progressIndicator) {
+
+                // Set the progress bar percentage and text
+                progressIndicator.setFraction(0D);
+                progressIndicator.setText("start to generator code ...");
+
+                // start your process
+                for (CodeGroup group : genGroups) {
+
+                    // process running ..
+                    progressIndicator.setFraction(1/genGroups.size());
+
+                    String outputPath = groupPathMap.get(group.getId());
+                    if (StringUtils.isNotEmpty(outputPath)) {
+                        for (CodeContext context : contexts) {
+                            for (CodeTemplate codeTemplate : group.getTemplates()) {
+                                progressIndicator.setText(String.format("generator template %s ...", codeTemplate.getDisplay()));
+
+                                FileProviderFactory fileFactory = new FileProviderFactory(ideaContext.getProject(), outputPath);
+                                fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context, params);
+                            }
+                        }
                     }
                 }
+
+                // Finished
+                progressIndicator.setFraction(1D);
+                progressIndicator.setText("finished");
             }
-        }
+        });
     }
 
     /**
