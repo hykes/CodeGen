@@ -65,7 +65,7 @@ public class SqlEditorPanel {
 
                     ColumnEditorFrame frame = new ColumnEditorFrame();
                     frame.newColumnEditorBySql(ideaContext, tables);
-                    frame.setSize(900, 500);
+                    frame.setSize(800, 550);
                     frame.setAlwaysOnTop(false);
                     frame.setLocationRelativeTo(null);
                     frame.setVisible(true);

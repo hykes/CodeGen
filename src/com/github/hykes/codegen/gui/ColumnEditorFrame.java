@@ -8,7 +8,7 @@ import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.database.model.DasColumn;
 import com.intellij.database.psi.DbTable;
 import com.intellij.database.util.DasUtil;
-import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.util.containers.JBIterable;
 
 import javax.swing.*;
@@ -31,8 +31,7 @@ public class ColumnEditorFrame extends JFrame {
     private final List<TablePanel> panels = new ArrayList<>();
     private Map<String, String> groupPathMap = new HashMap<>();
 
-    public ColumnEditorFrame newColumnEditorByDb(IdeaContext ideaContext, List<DbTable> dbTables) {
-
+    public void newColumnEditorByDb(IdeaContext ideaContext, List<DbTable> dbTables) {
         List<Table> tables = new ArrayList<>();
         for (DbTable dbTable: dbTables) {
             Table table = new Table();
@@ -46,7 +45,6 @@ public class ColumnEditorFrame extends JFrame {
                 Field field = new Field();
                 field.setColumn(dasColumn.getName());
                 field.setColumnType(dasColumn.getDataType().typeName);
-                // field.setSqlType(dasColumn.getDataType().jdbcType);
                 field.setColumnSize(String.valueOf(dasColumn.getDataType().size));
                 field.setComment(dasColumn.getComment());
                 fields.add(field);
@@ -58,29 +56,23 @@ public class ColumnEditorFrame extends JFrame {
 
         // esc
         this.getRootPane().registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
-        return this;
     }
 
-    public ColumnEditorFrame newColumnEditorBySql(IdeaContext ideaContext, List<Table> tables) {
+    public void newColumnEditorBySql(IdeaContext ideaContext, List<Table> tables) {
         init(ideaContext, tables);
         // esc
         this.getRootPane().registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
-        return this;
     }
 
     private void init(IdeaContext ideaContext, List<Table> tables){
         setLayout(new BorderLayout());
 
-        JPanel tablesPanel = new JPanel();
-        tablesPanel.setLayout(new BoxLayout(tablesPanel, BoxLayout.Y_AXIS));
-        JScrollPane jScrollPane = ScrollPaneFactory.createScrollPane(tablesPanel);
-        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        jScrollPane.setAlignmentY(TOP_ALIGNMENT);
-        jScrollPane.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        JBTabbedPane tabbedPane = new JBTabbedPane();
+
 
         for (Table table: tables) {
             TablePanel tablePanel = new TablePanel(table);
-            tablesPanel.add(tablePanel.getRootComponent());
+            tabbedPane.add(tablePanel.getRootComponent(), table.getTableName());
             panels.add(tablePanel);
         }
 
@@ -110,7 +102,7 @@ public class ColumnEditorFrame extends JFrame {
             }
         });
 
-        add(jScrollPane, BorderLayout.CENTER);
+        add(tabbedPane, BorderLayout.CENTER);
         selectGroupPanel.getRootPanel().setBorder(BorderFactory.createEmptyBorder(0, 15, 10, 15));
         add(selectGroupPanel.getRootPanel(), BorderLayout.SOUTH);
     }
