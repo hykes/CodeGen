@@ -7,11 +7,13 @@ import com.github.hykes.codegen.configurable.ui.dialog.VariableEditDialog;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.ui.GuiUtils;
 import com.intellij.ui.IdeBorderFactory;
+import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.util.ui.JBUI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -35,21 +37,24 @@ public class VariableUI implements UIConfigurable {
     private JPanel ignorePane;
     private JTextField ignoreText;
     private JLabel ignoreLabel;
+    private JPanel splitPanel;
     private JBTable varTable;
     private JTextArea descArea;
 
     public VariableUI() {
         $$$setupUI$$$();
-        GuiUtils.replaceJSplitPaneWithIDEASplitter(rootPanel);
+        GuiUtils.replaceJSplitPaneWithIDEASplitter(splitPanel);
         setVariables(settingManager.getVariables());
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        splitPanel = new JPanel();
+        splitPanel.setPreferredSize(JBUI.size(300, 400));
         jSplitPane = new JSplitPane();
         jSplitPane.setOrientation(0);
         jSplitPane.setContinuousLayout(true);
-        jSplitPane.setBorder(IdeBorderFactory.createEmptyBorder());
+        jSplitPane.setBorder(BorderFactory.createEmptyBorder());
         varPanel = new JPanel(new BorderLayout());
         varPanel.setBorder(IdeBorderFactory.createTitledBorder("Predefined Variables", false));
         varTable = new JBTable();
@@ -76,15 +81,13 @@ public class VariableUI implements UIConfigurable {
         }
         descArea = new JTextArea();
         descArea.setText(inHouseVariables);
-        // descArea.setEnabled(false);
         descArea.setEditable(false);
-        descPanel.add(new JBScrollPane(descArea), BorderLayout.CENTER);
+        descPanel.add(ScrollPaneFactory.createScrollPane(descArea), BorderLayout.CENTER);
 
         // ignore fields
         ignorePane = new JPanel();
         ignorePane.setBorder(IdeBorderFactory.createTitledBorder("The Ignore Fields", false));
     }
-
 
     private void setVariables(Variables variables) {
         // 列名
