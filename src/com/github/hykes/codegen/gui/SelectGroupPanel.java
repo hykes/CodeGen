@@ -85,7 +85,7 @@ public class SelectGroupPanel {
                     dialog.setVisible(true);
                     String outputPath = dialog.getOutPutPath();
                     String basePackage = dialog.getBasePackage();
-                    if (StringUtils.isBlank(outputPath) && StringUtils.isBlank(basePackage)) {
+                    if (StringUtils.isEmpty(outputPath)) {
                         groupBox.setSelected(false);
                     } else {
                         groupPathMap.put(groupBox.getName(), outputPath + basePackage.replace(".", "/"));

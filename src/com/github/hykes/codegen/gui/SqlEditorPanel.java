@@ -66,10 +66,10 @@ public class SqlEditorPanel {
                     ColumnEditorFrame frame = new ColumnEditorFrame();
                     frame.newColumnEditorBySql(ideaContext, tables);
                     frame.setSize(800, 550);
-                    frame.setAlwaysOnTop(false);
+                    frame.setAlwaysOnTop(true);
                     frame.setLocationRelativeTo(null);
+                    frame.setResizable(false);
                     frame.setVisible(true);
-                    frame.setResizable(true);
 
                     disable();
                 } catch (Exception ex) {

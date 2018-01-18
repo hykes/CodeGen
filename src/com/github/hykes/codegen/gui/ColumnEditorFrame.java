@@ -78,7 +78,6 @@ public class ColumnEditorFrame extends JFrame {
 
         List<CodeRoot> codeRoots =  SETTING_MANAGER.getTemplates().getRoots();
         SelectGroupPanel selectGroupPanel = new SelectGroupPanel(codeRoots, ideaContext.getProject());
-
         JPanel groupPanel = selectGroupPanel.getGroupsPanel();
         JButton genBtn = selectGroupPanel.getGenerator();
         groupPathMap = selectGroupPanel.getGroupPathMap();
