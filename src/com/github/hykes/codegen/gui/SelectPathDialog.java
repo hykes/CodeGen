@@ -104,7 +104,7 @@ public class SelectPathDialog extends JDialog implements ActionListener {
                 PackageChooser packageChooser = new PackageChooserDialog("Select Base Package", project);
                 packageChooser.getWindow().setAlwaysOnTop(true);
                 packageChooser.show();
-                switch(packageChooser.getExitCode()) {
+                switch (packageChooser.getExitCode()) {
                     case PackageChooser.OK_EXIT_CODE:
                         PsiPackage psiPackage = packageChooser.getSelectedPackage();
                         if (Objects.nonNull(psiPackage)) {

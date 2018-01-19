@@ -9,7 +9,6 @@ import com.intellij.ui.GuiUtils;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.ToolbarDecorator;
-import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -244,20 +243,8 @@ public class VariableUI implements UIConfigurable {
         createUIComponents();
         rootPanel = new JPanel();
         rootPanel.setLayout(new GridBagLayout());
-        jSplitPane.setDividerLocation(172);
-        jSplitPane.setDividerSize(5);
-        jSplitPane.setResizeWeight(1.0);
-        GridBagConstraints gbc;
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 1.0;
-        gbc.weighty = 5.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        rootPanel.add(jSplitPane, gbc);
-        jSplitPane.setLeftComponent(varPanel);
-        jSplitPane.setRightComponent(descPanel);
         ignorePane.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -270,6 +257,20 @@ public class VariableUI implements UIConfigurable {
         ignorePane.add(ignoreLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ignoreText = new JTextField();
         ignorePane.add(ignoreText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        splitPanel.setLayout(new BorderLayout(0, 0));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 4.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        rootPanel.add(splitPanel, gbc);
+        jSplitPane.setDividerLocation(138);
+        jSplitPane.setDividerSize(5);
+        jSplitPane.setResizeWeight(1.0);
+        splitPanel.add(jSplitPane, BorderLayout.CENTER);
+        jSplitPane.setLeftComponent(varPanel);
+        jSplitPane.setRightComponent(descPanel);
     }
 
     /**

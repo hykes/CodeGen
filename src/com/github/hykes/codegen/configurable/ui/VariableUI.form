@@ -37,7 +37,7 @@
       <grid id="cb234" binding="splitPanel" custom-create="true" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
+          <gridbag weightx="1.0" weighty="4.0"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -45,7 +45,7 @@
           <splitpane id="1cb90" binding="jSplitPane" custom-create="true">
             <constraints border-constraint="Center"/>
             <properties>
-              <dividerLocation value="300"/>
+              <dividerLocation value="138"/>
               <dividerSize value="5"/>
               <resizeWeight value="1.0"/>
             </properties>
