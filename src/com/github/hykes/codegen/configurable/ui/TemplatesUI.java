@@ -255,11 +255,11 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                             }
                         }
 
-                        List<ExportTemplate> files = new ArrayList<>();
                         for (CodeRoot root : settingManager.getTemplates().getRoots()) {
                             if (Objects.nonNull(rootId) && !rootId.equals(root.getId())) {
                                 continue;
                             }
+                            List<ExportTemplate> files = new ArrayList<>();
                             for (CodeGroup group : root.getGroups()) {
                                 for (CodeTemplate template : group.getTemplates()) {
                                     ExportTemplate exportTemplate = new ExportTemplate();
@@ -280,8 +280,8 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                                     files.add(exportTemplate);
                                 }
                             }
+                            ZipUtil.export(files, String.format("%s/CodeGen-Template-%s.zip", virtualFile.getCanonicalPath(), root.getName()));
                         }
-                        ZipUtil.export(files, virtualFile.getCanonicalPath() + "/CodeGen-Templates.zip");
                         Messages.showInfoMessage("Export CodeGen templates success", "INFO");
                     } catch (Exception var){
                         LOGGER.error(var.getMessage());
