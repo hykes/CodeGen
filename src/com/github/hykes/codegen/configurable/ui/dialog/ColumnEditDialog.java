@@ -28,8 +28,6 @@ public class ColumnEditDialog extends JDialog {
     private JLabel commentLab;
     private JPanel buttonPanel;
     private JPanel fieldPanel;
-    private JPanel commentPanel;
-    private JPanel columnPanel;
 
     public ColumnEditDialog() {
         setContentPane(contentPane);

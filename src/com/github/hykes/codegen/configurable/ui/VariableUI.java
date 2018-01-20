@@ -4,6 +4,7 @@ import com.github.hykes.codegen.configurable.SettingManager;
 import com.github.hykes.codegen.configurable.UIConfigurable;
 import com.github.hykes.codegen.configurable.model.Variables;
 import com.github.hykes.codegen.configurable.ui.dialog.VariableEditDialog;
+import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.ui.GuiUtils;
 import com.intellij.ui.IdeBorderFactory;
@@ -117,6 +118,10 @@ public class VariableUI implements UIConfigurable {
         dialog.getButtonOK().addActionListener(it -> {
             String key = dialog.getKeyTextField().getText().trim();
             String value = dialog.getValueTextField().getText().trim();
+            if (StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
+                dialog.setVisible(false);
+                return;
+            }
             DefaultTableModel tableModel = (DefaultTableModel) varTable.getModel();
             String[] rowValues = {key, value};
             tableModel.addRow(rowValues);
@@ -158,7 +163,10 @@ public class VariableUI implements UIConfigurable {
             dialog.getButtonOK().addActionListener(it -> {
                 String key = dialog.getKeyTextField().getText().trim();
                 String value = dialog.getValueTextField().getText().trim();
-
+                if (StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
+                    dialog.setVisible(false);
+                    return;
+                }
                 tableModel.setValueAt(key, selectedRow, 0);
                 tableModel.setValueAt(value, selectedRow, 1);
                 dialog.setVisible(false);

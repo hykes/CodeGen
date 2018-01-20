@@ -20,7 +20,6 @@ public class TemplateEditDialog extends JDialog {
     private JLabel displayLab;
     private JLabel extensionLab;
     private JPanel displayPanel;
-    private JPanel extensionPanel;
 
     public JButton getButtonOK() {
         return buttonOK;

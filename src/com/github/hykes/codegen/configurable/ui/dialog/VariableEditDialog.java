@@ -20,7 +20,6 @@ public class VariableEditDialog extends JDialog {
     private JLabel keyLab;
     private JLabel valueLab;
     private JPanel keyPanel;
-    private JPanel valuePanel;
 
     public JButton getButtonOK() {
         return buttonOK;

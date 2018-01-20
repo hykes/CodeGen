@@ -57,6 +57,8 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
     private TemplateEditorUI templateEditor;
     private JSplitPane jSplitPane;
 
+    private static final String TEMPLATE_FILE_EXTENSION = "ZIP";
+
     private final SettingManager settingManager = SettingManager.getInstance();
 
     public TemplatesUI() {
@@ -191,9 +193,10 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 public void actionPerformed(AnActionEvent e) {
                     try {
                         VirtualFile virtualFile = PsiUtil.chooseFile(null, "ZIP Chooser", "Select Import ZIP", true, true, null);
-                        if (virtualFile == null ||
-                                (!"zip".equals(virtualFile.getExtension())
-                                        && !"ZIP".equals(virtualFile.getExtension()))) {
+                        if (Objects.isNull(virtualFile)) {
+                            return ;
+                        }
+                        if (!TEMPLATE_FILE_EXTENSION.equals(virtualFile.getExtension().toUpperCase())) {
                             Messages.showInfoMessage("请选择模版压缩文件(.zip)", "ERROR");
                             return ;
                         }
@@ -234,12 +237,29 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 public void actionPerformed(AnActionEvent e) {
                     try {
                         VirtualFile virtualFile = PsiUtil.chooseFolder(null, "Directory Chooser", "Select Export Directory", true, true, null);
-                        if (virtualFile == null || !virtualFile.isDirectory()) {
-                            Messages.showInfoMessage("请选择导出目录", "ERROR");
+                        if (Objects.isNull(virtualFile)) {
                             return ;
                         }
+                        if (!virtualFile.isDirectory()) {
+                            Messages.showInfoMessage("请选择导出文件夹", "ERROR");
+                            return ;
+                        }
+
+                        String rootId = null;
+                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
+                        if (Objects.nonNull(node)) {
+                            Object object = node.getUserObject();
+                            if(object instanceof CodeRoot) {
+                                CodeRoot root = (CodeRoot) object;
+                                rootId = root.getId();
+                            }
+                        }
+
                         List<ExportTemplate> files = new ArrayList<>();
                         for (CodeRoot root : settingManager.getTemplates().getRoots()) {
+                            if (Objects.nonNull(rootId) && !rootId.equals(root.getId())) {
+                                continue;
+                            }
                             for (CodeGroup group : root.getGroups()) {
                                 for (CodeTemplate template : group.getTemplates()) {
                                     ExportTemplate exportTemplate = new ExportTemplate();
