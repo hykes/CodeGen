@@ -16,6 +16,8 @@ public class TemplateRootEditDialog extends JDialog {
     private JButton buttonCancel;
     private JTextField nameField;
     private JLabel nameLabel;
+    private JPanel editPanel;
+    private JPanel footerPanel;
 
     public TemplateRootEditDialog() {
         setContentPane(contentPane);
