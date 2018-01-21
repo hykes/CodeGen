@@ -68,7 +68,7 @@ public class TablePanel {
                 .setRemoveAction(it -> removeAction())
                 .setEditAction(it -> editAction())
                 .createPanel();
-        panel.setPreferredSize(JBUI.size(300, 200));
+        panel.setPreferredSize(JBUI.size(600, 200));
         columnsPanel.setBorder(IdeBorderFactory.createTitledBorder("Columns", false));
         columnsPanel.add(panel, BorderLayout.CENTER);
 

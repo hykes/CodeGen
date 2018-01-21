@@ -13,12 +13,10 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.components.JBScrollPane;
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.util.ui.JBUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -33,61 +31,51 @@ public class SqlEditorPanel {
 
     private IdeaContext ideaContext;
     private JPanel rootPanel;
-    private JButton buttonCancel;
-    private JButton buttonOk;
     private Editor sqlTextArea;
     private JPanel sqlPanel;
-    private JPanel actionPanel;
     private JScrollPane sqlScrollPane;
+
+    /**
+     * ok事件
+     */
+    private ActionListener okActionListener;
 
     public SqlEditorPanel(IdeaContext ideaContext) {
         this.ideaContext = ideaContext;
         $$$setupUI$$$();
 
-        buttonOk.addActionListener(new ActionListener() {
-            /**
-             * Invoked when an action occurs.
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String sqls = sqlTextArea.getDocument().getText();
-                    if (StringUtils.isBlank(sqls)) {
-                        return;
-                    }
-
-                    Parser parser = new DefaultParser();
-                    List<Table> tables = parser.parseSQLs(sqls);
-                    if (tables == null || tables.isEmpty()) {
-                        NotifyUtil.notice("CodeGen-SQL", "please check sql format !", MessageType.ERROR);
-                        return;
-                    }
-
-                    ColumnEditorFrame frame = new ColumnEditorFrame();
-                    frame.newColumnEditorBySql(ideaContext, tables);
-                    frame.setSize(800, 550);
-                    frame.setAlwaysOnTop(true);
-                    frame.setLocationRelativeTo(null);
-                    frame.setResizable(false);
-                    frame.setVisible(true);
-
-                    disable();
-                } catch (Exception ex) {
-                    LOGGER.error(ex.getMessage());
+        okActionListener = e -> {
+            try {
+                String sqls = sqlTextArea.getDocument().getText();
+                if (StringUtils.isBlank(sqls)) {
+                    return;
                 }
-            }
-        });
-        buttonCancel.addActionListener(new ActionListener() {
-            /**
-             * Invoked when an action occurs.
-             *
-             * @param e
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
+
+                Parser parser = new DefaultParser();
+                List<Table> tables = parser.parseSQLs(sqls);
+                if (tables == null || tables.isEmpty()) {
+                    NotifyUtil.notice("CodeGen-SQL", "please check sql format !", MessageType.ERROR);
+                    return;
+                }
+
+                ColumnEditorFrame frame = new ColumnEditorFrame();
+                frame.newColumnEditorBySql(ideaContext, tables);
+                // frame.setSize(800, 550);
+                // frame.setLocationRelativeTo(null);
+                // frame.setAlwaysOnTop(true);
+                // frame.setResizable(false);
+                // frame.setVisible(true);
+                MyDialogWrapper frameWrapper = new MyDialogWrapper(ideaContext.getProject(), frame);
+                frameWrapper.setOkAction(frame.getGenerateAction());
+                frameWrapper.setSize(800, 550);
+                frameWrapper.setResizable(false);
+                frameWrapper.show();
+
                 disable();
+            } catch (Exception ex) {
+                LOGGER.error(ex.getMessage());
             }
-        });
+        };
 
         this.rootPanel.registerKeyboardAction(e -> disable(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
@@ -102,6 +90,7 @@ public class SqlEditorPanel {
         rootPanel = new JPanel();
         sqlPanel = new JPanel();
         sqlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        sqlPanel.setPreferredSize(JBUI.size(600, 360));
         // 设置 sql text editor
         Document document = EditorFactory.getInstance().createDocument("");
         sqlTextArea = EditorFactory.getInstance().createEditor(document, ideaContext.getProject(), SqlFileType.INSTANCE, false);
@@ -112,6 +101,10 @@ public class SqlEditorPanel {
 
     public JComponent getRootComponent() {
         return rootPanel;
+    }
+
+    public ActionListener getOkActionListener() {
+        return okActionListener;
     }
 
     public static void main(String[] args) {
@@ -132,15 +125,6 @@ public class SqlEditorPanel {
     private void $$$setupUI$$$() {
         createUIComponents();
         rootPanel.setLayout(new BorderLayout(0, 0));
-        actionPanel = new JPanel();
-        actionPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        rootPanel.add(actionPanel, BorderLayout.SOUTH);
-        buttonOk = new JButton();
-        buttonOk.setText("OK");
-        actionPanel.add(buttonOk, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        buttonCancel = new JButton();
-        buttonCancel.setText("Cancel");
-        actionPanel.add(buttonCancel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sqlPanel.setLayout(new BorderLayout(0, 0));
         rootPanel.add(sqlPanel, BorderLayout.CENTER);
         sqlPanel.add(sqlScrollPane, BorderLayout.CENTER);
