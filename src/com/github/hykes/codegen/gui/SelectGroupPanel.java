@@ -21,7 +21,6 @@ import java.util.Map;
 public class SelectGroupPanel {
     private JPanel rootPanel;
     private JComboBox groupComboBox;
-    private JButton generator;
     private JPanel groupsPanel;
 
     private Project project;
@@ -29,10 +28,6 @@ public class SelectGroupPanel {
 
     public JPanel getRootPanel() {
         return rootPanel;
-    }
-
-    public JButton getGenerator() {
-        return generator;
     }
 
     public JPanel getGroupsPanel() {
@@ -71,18 +66,22 @@ public class SelectGroupPanel {
         root.getGroups().forEach(it -> {
             JCheckBox groupBox = new JCheckBox(it.getName());
             groupBox.setName(it.getId());
-            SelectPathDialog dialog = new SelectPathDialog(project);
-            dialog.setSize(350, 160);
-            dialog.setAlwaysOnTop(true);
-            Toolkit kit = Toolkit.getDefaultToolkit();
-            Dimension screenSize = kit.getScreenSize();
-            dialog.setLocation((screenSize.width - dialog.getWidth()) / 2, (screenSize.height - dialog.getHeight()) / 2);
-            dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-            dialog.setResizable(false);
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             groupBox.addActionListener(box -> {
                 if (groupBox.isSelected()) {
-                    dialog.setVisible(true);
+                    SelectPathDialog dialog = new SelectPathDialog(project);
+                    MyDialogWrapper dialogWrapper = new MyDialogWrapper(project, dialog.getRootPane());
+                    dialog.setAlwaysOnTop(true);
+                    Toolkit kit = Toolkit.getDefaultToolkit();
+                    Dimension screenSize = kit.getScreenSize();
+                    dialogWrapper.setSize(350, 160);
+                    dialogWrapper.setLocation((screenSize.width - dialog.getWidth()) / 2, (screenSize.height - dialog.getHeight()) / 2);
+                    dialogWrapper.setResizable(false);
+                    dialogWrapper.setOkAction(dialog.getOkActionListener());
+                    dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    // dialog.setVisible(true);
+                    dialogWrapper.show();
+                    // 获取对应的值
                     String outputPath = dialog.getOutPutPath();
                     String basePackage = dialog.getBasePackage();
                     if (StringUtils.isEmpty(outputPath)) {
@@ -132,15 +131,6 @@ public class SelectGroupPanel {
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         rootPanel.add(groupsPanel, gbc);
-        generator = new JButton();
-        generator.setText("generator");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.anchor = GridBagConstraints.EAST;
-        rootPanel.add(generator, gbc);
         groupComboBox.setToolTipText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;

@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.List;
@@ -34,6 +35,7 @@ public class ColumnEditorFrame extends JFrame {
 
     private final List<TablePanel> panels = new ArrayList<>();
     private Map<String, String> groupPathMap = new HashMap<>();
+    private ActionListener generateAction;
 
     public void newColumnEditorByDb(IdeaContext ideaContext, List<DbTable> dbTables) {
         List<Table> tables = new ArrayList<>();
@@ -81,9 +83,8 @@ public class ColumnEditorFrame extends JFrame {
         List<CodeRoot> codeRoots =  SETTING_MANAGER.getTemplates().getRoots();
         SelectGroupPanel selectGroupPanel = new SelectGroupPanel(codeRoots, ideaContext.getProject());
         JPanel groupPanel = selectGroupPanel.getGroupsPanel();
-        JButton genBtn = selectGroupPanel.getGenerator();
         groupPathMap = selectGroupPanel.getGroupPathMap();
-        genBtn.addActionListener( it -> {
+        generateAction = it -> {
             List<String> selectGroups = new ArrayList<>();
             this.getAllJCheckBoxValue(groupPanel, selectGroups);
 
@@ -101,7 +102,7 @@ public class ColumnEditorFrame extends JFrame {
                 generator(ideaContext, selectGroups, contexts);
                 dispose();
             }
-        });
+        };
 
         add(tabbedPane, BorderLayout.CENTER);
         selectGroupPanel.getRootPanel().setBorder(BorderFactory.createEmptyBorder(0, 15, 10, 15));
@@ -167,6 +168,10 @@ public class ColumnEditorFrame extends JFrame {
                 progressIndicator.setText("finished");
             }
         });
+    }
+
+    public ActionListener getGenerateAction() {
+        return generateAction;
     }
 
     /**
