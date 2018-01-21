@@ -73,12 +73,8 @@ public class DBGeneratorAction extends AnAction implements DumbAware {
 
         ColumnEditorFrame frame = new ColumnEditorFrame();
         frame.newColumnEditorByDb(new IdeaContext(project), tables);
-        // frame.setSize(800, 550);
-        // frame.setLocationRelativeTo(null);
-        // frame.setAlwaysOnTop(true);
-        // frame.setResizable(false);
-        // frame.setVisible(true);
         MyDialogWrapper frameWrapper = new MyDialogWrapper(project, frame);
+        frameWrapper.setTitle("CodeGen-DB");
         frameWrapper.setOkAction(frame.getGenerateAction());
         frameWrapper.setSize(800, 550);
         frameWrapper.setResizable(false);
