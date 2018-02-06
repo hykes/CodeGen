@@ -41,7 +41,7 @@ codegen 目前内置了部分**时间参数**，以及**序列化ID**、**projec
 
 {{$.Project}} the name of the current project
 
-{{$.Module1} the name of the current selected module
+{{$.Module1}} the name of the current selected module
 
 {{$.Package1} the name of the current selected package
 ```
