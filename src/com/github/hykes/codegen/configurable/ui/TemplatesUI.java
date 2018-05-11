@@ -331,7 +331,8 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             })
             .setAddActionUpdater(it -> {
                 final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) templateTree.getLastSelectedPathComponent();
-                return selectedNode != null;
+                // return selectedNode != null;
+                return true;
             })
             .setRemoveActionUpdater( it -> {
                 // 允许CodeRoot、CodeGroup、CodeTemplate删除
@@ -357,7 +358,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
     private void setTemplates(Templates templates){
         // 获取roots
         List<CodeRoot> roots = templates.getRoots();
-        if (roots == null || roots.size() == 0) {
+        if (roots == null) {
             return;
         }
         // 获取组和模板, 转换成tree

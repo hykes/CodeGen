@@ -39,9 +39,6 @@ public class TemplateAddAction extends BaseTemplateAction implements AnActionBut
     public void run(AnActionButton button) {
         // 获取选中节点
         final DefaultMutableTreeNode selectedNode = getSelectedNode();
-        if (selectedNode == null) {
-            return;
-        }
         List<AnAction> actions = getMultipleActions(selectedNode);
         if (actions == null || actions.isEmpty()) {
             return;
@@ -58,13 +55,19 @@ public class TemplateAddAction extends BaseTemplateAction implements AnActionBut
      * 获取点击加号按钮的各种添加操作, 包括root/group/template
      */
     private List<AnAction> getMultipleActions(DefaultMutableTreeNode selectedNode) {
-        Object object = selectedNode.getUserObject();
-
         // 初始化所有的AnAction
         List<AnAction> actions = new ArrayList<>();
         CodeRootAddAction rootAction = new CodeRootAddAction();
         CodeGroupAddAction groupAction = new CodeGroupAddAction();
         CodeTemplateAddAction templateAction = new CodeTemplateAddAction();
+
+        // 0. 如果未选中节点
+        if (selectedNode == null) {
+            actions.add(rootAction);
+            return actions;
+        }
+
+        Object object = selectedNode.getUserObject();
         // 1. 如果是选中的root, 则可以新增root和group
         if (object instanceof CodeRoot) {
             actions.add(rootAction);
