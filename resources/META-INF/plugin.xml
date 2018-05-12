@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>1.2.3</version>
+  <version>1.2.4</version>
   <vendor email="hehaiyangwork@gmail.com" url="https://github.com/hykes">hehaiyang</vendor>
 
   <description><![CDATA[
@@ -18,16 +18,9 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      <p>v1.2 2018-01-18</p>
+      <p>v1.2.4 2018-05-12</p>
       <ul>
-        <li>Import & Export templates</li>
-        <li>Support multi-group</li>
-        <li>Optimize output path selection</li>
-      </ul>
-      <p>v1.1 2017-12-22</p>
-      <ul>
-        <li>Fix compatibility error</li>
-        <li>Add ImportPackage directive</li>
+        <li>Fix template init</li>
       </ul>
       <a href="https://github.com/hykes/CodeGen/blob/master/doc/CHANGELOG.md">Read More ...</a>
     ]]>
