@@ -1,8 +1,8 @@
 package com.github.hykes.codegen.provider.filetype;
 
 import com.intellij.icons.AllIcons;
-import com.intellij.lang.java.JavaLanguage;
 import com.intellij.openapi.fileTypes.LanguageFileType;
+import com.intellij.sql.psi.SqlLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +22,7 @@ public class SqlFileType extends LanguageFileType {
     public static final SqlFileType INSTANCE = new SqlFileType();
 
     private SqlFileType() {
-        super(JavaLanguage.INSTANCE);
+        super(SqlLanguage.INSTANCE);
     }
 
     @Override

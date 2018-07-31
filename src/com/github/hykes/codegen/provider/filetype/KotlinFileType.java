@@ -1,7 +1,7 @@
 package com.github.hykes.codegen.provider.filetype;
 
+import com.github.hykes.codegen.provider.language.KotlinLanguage;
 import com.intellij.icons.AllIcons;
-import com.intellij.lang.java.JavaLanguage;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -17,13 +17,13 @@ public class KotlinFileType extends LanguageFileType {
     public static final KotlinFileType INSTANCE = new KotlinFileType();
 
     private KotlinFileType() {
-        super(JavaLanguage.INSTANCE);
+        super(KotlinLanguage.INSTANCE);
     }
 
     @Override
     @NotNull
     public String getName() {
-        return "KOTLIN";
+        return "Kotlin";
     }
 
     @Override
