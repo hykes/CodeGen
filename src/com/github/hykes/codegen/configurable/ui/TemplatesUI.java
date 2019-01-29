@@ -102,6 +102,9 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                         DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) childEnum.nextElement();
                         CodeTemplate template = (CodeTemplate) childNode.getUserObject();
                         CodeTemplate tmp = templateEditor.getCodeTemplate();
+                        if (Objects.isNull(tmp.getOrder())) {
+                            tmp.setOrder(Integer.valueOf(1));
+                        }
                         if(template.getId().equals(tmp.getId()) && !template.equals(tmp)){
                             return true;
                         }
@@ -138,9 +141,13 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                             template = tmp;
                         }
                     }
+                    if (Objects.isNull(template.getOrder())) {
+                        template.setOrder(Integer.valueOf(1));
+                    }
                     templates.add(template);
                 }
                 CodeGroup group = (CodeGroup) node.getUserObject();
+                Collections.sort(templates, Comparator.comparing(CodeTemplate::getOrder));
                 group.setTemplates(templates);
                 groups.add(group);
             }
@@ -274,6 +281,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                                     o.write(("group: "+ group.getName() +";\n").getBytes());
                                     o.write(("level: "+ group.getLevel() +";\n").getBytes());
                                     o.write(("isResources: "+ template.getResources().toString() +";\n").getBytes());
+                                    o.write(("order: "+ template.getOrder().toString() +";\n").getBytes());
                                     o.write("*#\n".getBytes());
                                     o.write(template.getTemplate().getBytes(Charset.defaultCharset()));
                                     exportTemplate.setBytes(o.toByteArray());

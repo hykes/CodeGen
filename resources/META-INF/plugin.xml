@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.hehaiyang.codegen</id>
   <name>CodeGen</name>
-  <version>1.2.4</version>
+  <version>1.2.5</version>
   <vendor email="hehaiyangwork@gmail.com" url="https://github.com/hykes">hehaiyang</vendor>
 
   <description><![CDATA[
@@ -18,6 +18,10 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      <p>v1.2.5 2019-01-29</p>
+      <ul>
+        <li>Add template sequence</li>
+      </ul>
       <p>v1.2.4 2018-05-12</p>
       <ul>
         <li>Fix template init</li>

@@ -34,3 +34,9 @@ Predefined Directive:
 
 * 组合用法
 #Append("#LowerCase('AbcDefGhi')" '$' '%') => $abcDefGhi%
+
+* 获取类路径
+#GetPackage(${model}) => xx.xxx.model
+
+* 引用类路径
+#ImportPackage(${model}) => import xx.xxx.model

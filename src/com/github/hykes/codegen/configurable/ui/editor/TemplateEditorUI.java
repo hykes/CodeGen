@@ -2,6 +2,7 @@ package com.github.hykes.codegen.configurable.ui.editor;
 
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.StringUtils;
+import com.google.common.base.Strings;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -33,8 +34,8 @@ public class TemplateEditorUI {
     private JLabel extensionLab;
     private JLabel subPathLab;
     private JLabel resourceLab;
-    private JCheckBox testCheckBox;
-    private JLabel isTestLab;
+    private JLabel orderLab;
+    private JTextField orderTextField;
 
     private final JTextField id = new JTextField();
 
@@ -56,6 +57,7 @@ public class TemplateEditorUI {
         extensionTextField.setText(codeTemplate.getExtension());
         filenameTextField.setText(codeTemplate.getFilename());
         subPathTextField.setText(codeTemplate.getSubPath());
+        orderTextField.setText(codeTemplate.getOrder().toString());
         resourceCheckBox.setSelected(Objects.isNull(codeTemplate.getResources()) ? false : codeTemplate.getResources());
         editor = createEditor(codeTemplate.getTemplate(), codeTemplate.getExtension());
 
@@ -97,6 +99,8 @@ public class TemplateEditorUI {
         codeTemplate.setTemplate(editor.getDocument().getText());
         codeTemplate.setSubPath(subPathTextField.getText().trim());
         codeTemplate.setResources(resourceCheckBox.isSelected());
+        Integer order = Strings.isNullOrEmpty(orderTextField.getText().trim()) ? Integer.valueOf(1) : Integer.valueOf(orderTextField.getText().trim());
+        codeTemplate.setOrder(order);
         return codeTemplate;
     }
 
@@ -154,12 +158,9 @@ public class TemplateEditorUI {
         resourceCheckBox = new JCheckBox();
         resourceCheckBox.setText("");
         infoPanel.add(resourceCheckBox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        isTestLab = new JLabel();
-        isTestLab.setText("IsTest");
-        infoPanel.add(isTestLab, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        testCheckBox = new JCheckBox();
-        testCheckBox.setText("");
-        infoPanel.add(testCheckBox, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        orderLab = new JLabel();
+        orderLab.setText("Order");
+        infoPanel.add(orderLab, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         extensionLab = new JLabel();
         extensionLab.setText("Extension");
         infoPanel.add(extensionLab, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

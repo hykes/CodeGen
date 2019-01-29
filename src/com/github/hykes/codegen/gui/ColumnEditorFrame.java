@@ -153,7 +153,9 @@ public class ColumnEditorFrame extends JFrame {
                     String outputPath = groupPathMap.get(group.getId());
                     if (StringUtils.isNotEmpty(outputPath)) {
                         for (CodeContext context : contexts) {
-                            for (CodeTemplate codeTemplate : group.getTemplates()) {
+                            List<CodeTemplate> codeTemplates = group.getTemplates();
+                            Collections.sort(codeTemplates, Comparator.comparing(CodeTemplate::getOrder));
+                            for (CodeTemplate codeTemplate : codeTemplates) {
                                 progressIndicator.setText(String.format("generator template %s ...", codeTemplate.getDisplay()));
 
                                 FileProviderFactory fileFactory = new FileProviderFactory(ideaContext.getProject(), outputPath);

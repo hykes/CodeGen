@@ -22,6 +22,18 @@ public class CodeTemplate implements Serializable {
         this.template = template;
         this.subPath = subPath;
         this.isResources = isResources;
+        this.order = 1;
+    }
+
+    public CodeTemplate(String id, String display, String extension, String filename, String template, String subPath, Boolean isResources, Integer order) {
+        this.id = id;
+        this.display = display;
+        this.extension = extension;
+        this.filename = filename;
+        this.template = template;
+        this.subPath = subPath;
+        this.isResources = isResources;
+        this.order = order;
     }
 
     /**
@@ -60,6 +72,16 @@ public class CodeTemplate implements Serializable {
     private Boolean isResources;
 
     private String group;
+
+    private Integer order;
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
 
     public String getId() {
         return id;
@@ -154,6 +176,9 @@ public class CodeTemplate implements Serializable {
         if (subPath != null ? !subPath.equals(that.subPath) : that.subPath != null) {
             return false;
         }
+        if (order != null ? !order.equals(that.order) : that.order != null) {
+            return false;
+        }
         return isResources != null ? isResources.equals(that.isResources) : that.isResources == null;
     }
 
@@ -166,6 +191,7 @@ public class CodeTemplate implements Serializable {
         result = 31 * result + (template != null ? template.hashCode() : 0);
         result = 31 * result + (subPath != null ? subPath.hashCode() : 0);
         result = 31 * result + (isResources != null ? isResources.hashCode() : 0);
+        result = 31 * result + (order != null ? order.hashCode() : 0);
         return result;
     }
 
@@ -179,6 +205,7 @@ public class CodeTemplate implements Serializable {
                 ", subPath='" + subPath + '\'' +
                 ", isResources=" + isResources +
                 ", group='" + group + '\'' +
+                ", order='" + order + '\'' +
                 '}';
     }
 }

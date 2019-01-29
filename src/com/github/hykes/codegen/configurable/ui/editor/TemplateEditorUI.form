@@ -85,20 +85,13 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="6d86d" class="javax.swing.JLabel" binding="isTestLab">
+          <component id="6d86d" class="javax.swing.JLabel" binding="orderLab">
             <constraints>
               <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="IsTest"/>
-            </properties>
-          </component>
-          <component id="5562b" class="javax.swing.JCheckBox" binding="testCheckBox">
-            <constraints>
-              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value=""/>
+              <labelFor value="6510d"/>
+              <text value="Order"/>
             </properties>
           </component>
           <component id="c389a" class="javax.swing.JLabel" binding="extensionLab">
@@ -108,6 +101,14 @@
             <properties>
               <text value="Extension"/>
             </properties>
+          </component>
+          <component id="6510d" class="javax.swing.JTextField" binding="orderTextField">
+            <constraints>
+              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
           </component>
         </children>
       </grid>
