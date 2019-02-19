@@ -2,6 +2,7 @@ package com.github.hykes.codegen.configurable.ui.editor;
 
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.StringUtils;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -57,7 +58,7 @@ public class TemplateEditorUI {
         extensionTextField.setText(codeTemplate.getExtension());
         filenameTextField.setText(codeTemplate.getFilename());
         subPathTextField.setText(codeTemplate.getSubPath());
-        orderTextField.setText(codeTemplate.getOrder().toString());
+        orderTextField.setText(MoreObjects.firstNonNull(codeTemplate.getOrder(), Integer.valueOf(1)).toString());
         resourceCheckBox.setSelected(Objects.isNull(codeTemplate.getResources()) ? false : codeTemplate.getResources());
         editor = createEditor(codeTemplate.getTemplate(), codeTemplate.getExtension());
 
