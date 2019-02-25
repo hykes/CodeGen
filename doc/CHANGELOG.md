@@ -1,5 +1,8 @@
 # Change Logs
 
+- v1.2.6 2019-02-25
+    - Fix import&export error
+    
 - v1.2.5 2019-01-29
     - Add template sequence
 
