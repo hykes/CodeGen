@@ -101,7 +101,7 @@ public class ParserUtils {
         sqlTypes.put("NVARCHAR", build("String"));
         sqlTypes.put("UNIQUEIDENTIFIER", build("String"));
         sqlTypes.put("UDT", build("Byte[]", "ByteArray"));
-        sqlTypes.put("VARBINARY", build("Byte[]", "ByteArray"));
+        // sqlTypes.put("VARBINARY", build("Byte[]", "ByteArray"))
         sqlTypes.put("XML", build("java.sql.SQLXML"));
     }
 

@@ -2,8 +2,6 @@ package com.github.hykes.codegen.configurable.ui.editor;
 
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.StringUtils;
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Strings;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -58,7 +56,7 @@ public class TemplateEditorUI {
         extensionTextField.setText(codeTemplate.getExtension());
         filenameTextField.setText(codeTemplate.getFilename());
         subPathTextField.setText(codeTemplate.getSubPath());
-        orderTextField.setText(MoreObjects.firstNonNull(codeTemplate.getOrder(), Integer.valueOf(1)).toString());
+        orderTextField.setText(StringUtils.nullOr(codeTemplate.getOrder(), "1"));
         resourceCheckBox.setSelected(Objects.isNull(codeTemplate.getResources()) ? false : codeTemplate.getResources());
         editor = createEditor(codeTemplate.getTemplate(), codeTemplate.getExtension());
 
@@ -100,7 +98,7 @@ public class TemplateEditorUI {
         codeTemplate.setTemplate(editor.getDocument().getText());
         codeTemplate.setSubPath(subPathTextField.getText().trim());
         codeTemplate.setResources(resourceCheckBox.isSelected());
-        Integer order = Strings.isNullOrEmpty(orderTextField.getText().trim()) ? Integer.valueOf(1) : Integer.valueOf(orderTextField.getText().trim());
+        Integer order = StringUtils.isBlank(orderTextField.getText().trim()) ? Integer.valueOf(1) : Integer.valueOf(orderTextField.getText().trim());
         codeTemplate.setOrder(order);
         return codeTemplate;
     }
@@ -165,6 +163,9 @@ public class TemplateEditorUI {
         extensionLab = new JLabel();
         extensionLab.setText("Extension");
         infoPanel.add(extensionLab, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        orderTextField = new JTextField();
+        infoPanel.add(orderTextField, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        orderLab.setLabelFor(orderTextField);
     }
 
     /**
@@ -173,4 +174,5 @@ public class TemplateEditorUI {
     public JComponent $$$getRootComponent$$$() {
         return rootPanel;
     }
+
 }

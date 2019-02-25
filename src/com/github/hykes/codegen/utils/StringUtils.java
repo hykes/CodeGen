@@ -993,11 +993,11 @@ public class StringUtils {
         return null;
     }
 
-    public static String nullOr(String value, String defaultString) {
+    public static String nullOr(Object value, String defaultString) {
         if (value == null) {
             return defaultString;
         }
-        return value;
+        return value.toString();
     }
 
     public static String trimObject(Object value) {
