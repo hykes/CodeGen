@@ -60,11 +60,6 @@ public class SqlEditorPanel {
 
                 ColumnEditorFrame frame = new ColumnEditorFrame();
                 frame.newColumnEditorBySql(ideaContext, tables);
-                // frame.setSize(800, 550);
-                // frame.setLocationRelativeTo(null);
-                // frame.setAlwaysOnTop(true);
-                // frame.setResizable(false);
-                // frame.setVisible(true);
                 MyDialogWrapper frameWrapper = new MyDialogWrapper(ideaContext.getProject(), frame);
                 frameWrapper.setOkAction(frame.getGenerateAction());
                 frameWrapper.setSize(800, 550);

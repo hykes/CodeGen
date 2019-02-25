@@ -70,6 +70,7 @@ public class ZipUtil {
                     codeTemplate.setExtension(infoMap.containsKey("extension") ? infoMap.get("extension") : null);
                     codeTemplate.setFilename(infoMap.containsKey("filename") ? infoMap.get("filename") : null);
                     codeTemplate.setSubPath(infoMap.containsKey("subPath") ? infoMap.get("subPath") : null);
+                    codeTemplate.setOrder(infoMap.containsKey("order") ? Integer.valueOf(infoMap.get("order")) : Integer.valueOf(1));
                     codeTemplate.setResources(infoMap.containsKey("isResources") ? Boolean.valueOf(infoMap.get("isResources")) : null);
                     String result = matcher.replaceAll("").replace("#**#", "");
                     codeTemplate.setTemplate(result);
