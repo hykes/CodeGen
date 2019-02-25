@@ -18,6 +18,10 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      <p>v1.2.6 2019-01-29</p>
+      <ul>
+        <li>Fix import&export error</li>
+      </ul>
       <p>v1.2.5 2019-01-29</p>
       <ul>
         <li>Add template sequence</li>

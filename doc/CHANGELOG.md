@@ -1,5 +1,8 @@
 # Change Logs
 
+- v1.2.5 2019-01-29
+    - Add template sequence
+
 - v1.2.4 2018-05-12
     - Fix template init
 
