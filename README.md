@@ -38,7 +38,8 @@ https://www.jetbrains.com/help/idea/meet-intellij-idea.html
 * Clone the project, and open with IDEA (Community).
 * Install Gradle
 * Import project from existing sources (Use Gradle)
-* 
+* Create file gradle.properties & update ideaSDKlocalPath
+* Run Gradle task [buildPlugin]
 
 > Welcome to contribute
 

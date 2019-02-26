@@ -1,5 +1,8 @@
 # Change Logs
 
+- v1.3.0 2019-02-26
+    - Rebuild project using gradle
+
 - v1.2.6 2019-02-25
     - Fix import&export error
     
