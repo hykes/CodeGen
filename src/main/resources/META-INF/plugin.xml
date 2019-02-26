@@ -42,8 +42,8 @@
   <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
   -->
-  <depends>com.intellij.database</depends>
-  <depends>com.intellij.modules.ultimate</depends>
+  <depends optional="true">com.intellij.database</depends>
+  <depends optional="true">com.intellij.modules.ultimate</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->

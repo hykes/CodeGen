@@ -2,3 +2,9 @@ out/
 .idea
 *.iml
 *.zip
+
+build/
+gradle/
+.gradle
+gradlew
+gradlew.bat
