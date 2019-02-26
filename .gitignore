@@ -4,8 +4,5 @@ out/
 *.zip
 
 build/
-gradle/
 .gradle
-gradlew
-gradlew.bat
 gradle.properties
