@@ -41,6 +41,11 @@ https://www.jetbrains.com/help/idea/meet-intellij-idea.html
 * Create file gradle.properties & update ideaSDKlocalPath
 * Run Gradle task [buildPlugin]
 
+> FAQ
+
+* [Getting Started with Gradle](https://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system/prerequisites.html)
+* [Convert Java Project into IntelliJ IDEA plugin](https://stackoverflow.com/questions/35470087/convert-java-project-into-intellij-idea-plugin)
+
 > Welcome to contribute
 
 ## Guide

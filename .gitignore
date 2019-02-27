@@ -5,4 +5,5 @@ out/
 
 build/
 .gradle
+.sandbox
 gradle.properties

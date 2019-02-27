@@ -101,6 +101,7 @@ public abstract class AbstractFileProvider {
             styleManager.optimizeImports(psiFile);
             styleManager.shortenClassReferences(psiFile);
         }
+        // TODO: 加入覆盖判断
         psiDirectory.add(psiFile);
         return psiFile;
     }

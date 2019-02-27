@@ -689,6 +689,16 @@ public class StringUtils {
     }
 
     /**
+     * 给路径结尾加上 /
+     */
+    public static String applyPath(String path) {
+        if (isBlank(path) || path.lastIndexOf(FOLDER_SEPARATOR) == path.length() - 1) {
+            return path;
+        }
+        return path + FOLDER_SEPARATOR;
+    }
+
+    /**
      * Parse the given {@code localeString} value into a {@link Locale}.
      * <p>This is the inverse operation of {@link Locale#toString Locale's toString}.
      * @param localeString the locale String, following {@code Locale's}

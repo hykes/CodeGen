@@ -1,5 +1,6 @@
 package com.github.hykes.codegen.gui;
 
+import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.ide.util.PackageChooserDialog;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
@@ -93,7 +94,7 @@ public class SelectPathDialog extends JDialog {
                         packageText.setText(path.toString());
                         output = output.replace(path.toString().replace(".", "/"), "");
                     }
-                    outPutText.setText(output);
+                    outPutText.setText(StringUtils.applyPath(output));
                 }
             }
         });

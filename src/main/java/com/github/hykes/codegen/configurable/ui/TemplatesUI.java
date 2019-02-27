@@ -424,9 +424,9 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             else if (obj instanceof CodeTemplate) {
                 CodeTemplate node = (CodeTemplate) obj;
                 DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
-                tempCellRenderer.setOpenIcon(AllIcons.FileTypes.Text);
-                tempCellRenderer.setClosedIcon(AllIcons.FileTypes.Text);
-                tempCellRenderer.setLeafIcon(AllIcons.FileTypes.Text);
+                tempCellRenderer.setOpenIcon(AllIcons.FileTypes.Java);
+                tempCellRenderer.setClosedIcon(AllIcons.FileTypes.Java);
+                tempCellRenderer.setLeafIcon(AllIcons.FileTypes.Java);
                 return tempCellRenderer.getTreeCellRendererComponent(tree, node.getDisplay(), selected, expanded, true, row, hasFocus);
             } else {
                 String text = (String) obj;
