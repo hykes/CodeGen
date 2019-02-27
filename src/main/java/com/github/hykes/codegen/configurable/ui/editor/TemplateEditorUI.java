@@ -70,10 +70,7 @@ public class TemplateEditorUI {
                     highlighterFactory.createEditorHighlighter(null, FileProviderFactory.getFileType(extension)));
             editor.getDocument().setText(template);
         }
-
-        this.rootPanel.removeAll();
-        this.rootPanel.add(infoPanel, BorderLayout.NORTH);
-        this.rootPanel.add(editor.getComponent(), BorderLayout.CENTER);
+        this.rootPanel.repaint();
     }
 
     private Editor emptyEditor() {
