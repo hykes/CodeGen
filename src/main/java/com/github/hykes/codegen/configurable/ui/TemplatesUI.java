@@ -12,6 +12,7 @@ import com.github.hykes.codegen.model.CodeRoot;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.model.ExportTemplate;
 import com.github.hykes.codegen.provider.DefaultProviderImpl;
+import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.github.hykes.codegen.utils.VelocityUtil;
@@ -19,6 +20,7 @@ import com.github.hykes.codegen.utils.ZipUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.AnActionButton;
@@ -424,9 +426,10 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
             else if (obj instanceof CodeTemplate) {
                 CodeTemplate node = (CodeTemplate) obj;
                 DefaultTreeCellRenderer tempCellRenderer = new DefaultTreeCellRenderer();
-                tempCellRenderer.setOpenIcon(AllIcons.FileTypes.Java);
-                tempCellRenderer.setClosedIcon(AllIcons.FileTypes.Java);
-                tempCellRenderer.setLeafIcon(AllIcons.FileTypes.Java);
+                FileType fileType = FileProviderFactory.getFileType(node.getExtension());
+                tempCellRenderer.setOpenIcon(fileType.getIcon());
+                tempCellRenderer.setClosedIcon(fileType.getIcon());
+                tempCellRenderer.setLeafIcon(fileType.getIcon());
                 return tempCellRenderer.getTreeCellRendererComponent(tree, node.getDisplay(), selected, expanded, true, row, hasFocus);
             } else {
                 String text = (String) obj;

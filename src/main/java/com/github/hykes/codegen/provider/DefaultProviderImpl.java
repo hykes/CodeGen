@@ -8,7 +8,7 @@ import com.github.hykes.codegen.utils.VelocityUtil;
 import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.fileTypes.LanguageFileType;
+import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -30,9 +30,9 @@ public class DefaultProviderImpl extends AbstractFileProvider {
 
     private static final Logger LOGGER = Logger.getInstance(DefaultProviderImpl.class);
 
-    protected LanguageFileType languageFileType;
+    protected FileType languageFileType;
 
-    public DefaultProviderImpl(Project project, String outputPath, LanguageFileType languageFileType) {
+    public DefaultProviderImpl(Project project, String outputPath, FileType languageFileType) {
         super(project, outputPath);
         this.languageFileType = languageFileType;
     }

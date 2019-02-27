@@ -5,9 +5,11 @@ import com.github.hykes.codegen.model.CodeRoot;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.io.FileUtil;
 import org.apache.commons.lang.time.DateFormatUtils;
 
+import javax.swing.*;
 import java.util.*;
 
 /**
@@ -16,8 +18,10 @@ import java.util.*;
  * @date 2017/4/16
  */
 public class Defaults {
-
     private static final Logger LOGGER = Logger.getInstance(Defaults.class);
+
+    // 项目图片
+    public static final Icon CODEGEN = IconLoader.getIcon("/icons/codegen.png");
 
     public static Map<String, String> getDefaultVariables() {
         Map<String, String> context = new HashMap<>();

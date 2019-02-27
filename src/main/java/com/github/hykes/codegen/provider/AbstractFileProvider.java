@@ -3,7 +3,7 @@ package com.github.hykes.codegen.provider;
 import com.github.hykes.codegen.model.CodeContext;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.utils.StringUtils;
-import com.intellij.openapi.fileTypes.LanguageFileType;
+import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
@@ -92,7 +92,7 @@ public abstract class AbstractFileProvider {
         return resourcesDirectory;
     }
 
-    protected PsiFile createFile(Project project, @NotNull PsiDirectory psiDirectory, String fileName, String context, LanguageFileType fileType) {
+    protected PsiFile createFile(Project project, @NotNull PsiDirectory psiDirectory, String fileName, String context, FileType fileType) {
         PsiFile psiFile = PsiFileFactory.getInstance(project).createFileFromText(fileName, fileType, context);
         // reformat class
         CodeStyleManager.getInstance(project).reformat(psiFile);

@@ -1,10 +1,10 @@
 package com.github.hykes.codegen;
 
+import com.github.hykes.codegen.constants.Defaults;
 import com.github.hykes.codegen.gui.MyDialogWrapper;
 import com.github.hykes.codegen.gui.SqlEditorPanel;
 import com.github.hykes.codegen.messages.CodeGenBundle;
 import com.github.hykes.codegen.model.IdeaContext;
-import com.github.hykes.codegen.utils.Icons;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -23,7 +23,7 @@ import javax.swing.*;
 public class SQLGeneratorAction extends AnAction implements DumbAware {
 
     public SQLGeneratorAction() {
-        super(Icons.CODEGEN);
+        super(Defaults.CODEGEN);
     }
 
     @Override

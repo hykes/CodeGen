@@ -1003,11 +1003,8 @@ public class StringUtils {
         return null;
     }
 
-    public static String nullOr(Object value, String defaultString) {
-        if (value == null) {
-            return defaultString;
-        }
-        return value.toString();
+    public static <T> T nullOr(T object, T defaultValue) {
+        return object != null ? object : defaultValue;
     }
 
     public static String trimObject(Object value) {

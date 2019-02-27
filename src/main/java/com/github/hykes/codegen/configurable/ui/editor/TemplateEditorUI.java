@@ -56,7 +56,7 @@ public class TemplateEditorUI {
         extensionTextField.setText(codeTemplate.getExtension());
         filenameTextField.setText(codeTemplate.getFilename());
         subPathTextField.setText(codeTemplate.getSubPath());
-        orderTextField.setText(StringUtils.nullOr(codeTemplate.getOrder(), "1"));
+        orderTextField.setText(StringUtils.nullOr(codeTemplate.getOrder(), 1) + "");
         resourceCheckBox.setSelected(Objects.isNull(codeTemplate.getResources()) ? false : codeTemplate.getResources());
         editor = createEditor(codeTemplate.getTemplate(), codeTemplate.getExtension());
 

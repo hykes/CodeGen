@@ -4,7 +4,7 @@ import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.parser.DefaultParser;
 import com.github.hykes.codegen.parser.Parser;
-import com.github.hykes.codegen.provider.filetype.SqlFileType;
+import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.NotifyUtil;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.diagnostic.Logger;
@@ -87,7 +87,7 @@ public class SqlEditorPanel {
         sqlPanel.setPreferredSize(JBUI.size(600, 360));
         // 设置 sql text editor
         Document document = EditorFactory.getInstance().createDocument("");
-        sqlTextArea = EditorFactory.getInstance().createEditor(document, ideaContext.getProject(), SqlFileType.INSTANCE, false);
+        sqlTextArea = EditorFactory.getInstance().createEditor(document, ideaContext.getProject(), FileProviderFactory.getFileType("SQL"), false);
 
         sqlScrollPane = new JBScrollPane();
         sqlScrollPane.setViewportView(sqlTextArea.getComponent());
