@@ -58,6 +58,6 @@ https://www.jetbrains.com/help/idea/meet-intellij-idea.html
 * [IceMimosa](https://github.com/IceMimosa)
 
 ## License
-Copyright © 2017 [MIT License](https://github.com/hykes/CodeGen/blob/master/LICENSE)
+Copyright © 2019 [MIT License](https://github.com/hykes/CodeGen/blob/master/LICENSE)
 
 
