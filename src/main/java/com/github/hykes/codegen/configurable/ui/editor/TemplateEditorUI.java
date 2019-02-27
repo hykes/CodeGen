@@ -1,12 +1,14 @@
 package com.github.hykes.codegen.configurable.ui.editor;
 
 import com.github.hykes.codegen.model.CodeTemplate;
+import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.EditorSettings;
-import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.editor.highlighter.EditorHighlighterFactory;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.util.ui.JBUI;
@@ -14,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
 /**
  * @author hehaiyang@terminus.io
@@ -39,6 +40,7 @@ public class TemplateEditorUI {
     private final JTextField id = new JTextField();
 
     private final EditorFactory factory = EditorFactory.getInstance();
+    private final EditorHighlighterFactory highlighterFactory = EditorHighlighterFactory.getInstance();
 
     private Editor editor;
 
@@ -57,8 +59,17 @@ public class TemplateEditorUI {
         filenameTextField.setText(codeTemplate.getFilename());
         subPathTextField.setText(codeTemplate.getSubPath());
         orderTextField.setText(StringUtils.nullOr(codeTemplate.getOrder(), 1) + "");
-        resourceCheckBox.setSelected(Objects.isNull(codeTemplate.getResources()) ? false : codeTemplate.getResources());
-        editor = createEditor(codeTemplate.getTemplate(), codeTemplate.getExtension());
+        resourceCheckBox.setSelected(StringUtils.nullOr(codeTemplate.getResources(), false));
+        // create editor
+        String template = StringUtils.isEmpty(codeTemplate.getTemplate()) ? "" : codeTemplate.getTemplate();
+        String extension = StringUtils.isEmpty(codeTemplate.getExtension()) ? "vm" : codeTemplate.getExtension();
+        if (editor == null) {
+            editor = createEditor(template, extension);
+        } else {
+            ((EditorEx) editor).setHighlighter(
+                    highlighterFactory.createEditorHighlighter(null, FileProviderFactory.getFileType(extension)));
+            editor.getDocument().setText(template);
+        }
 
         this.rootPanel.removeAll();
         this.rootPanel.add(infoPanel, BorderLayout.NORTH);
@@ -66,23 +77,16 @@ public class TemplateEditorUI {
     }
 
     private Editor emptyEditor() {
-        return createEditor(null, null);
+        return createEditor("", "vm");
     }
 
     /**
      * 创建编辑器
-     *
-     * @param template
-     * @param extension
-     * @return
      */
     private Editor createEditor(String template, String extension) {
-        template = StringUtils.isEmpty(template) ? "" : template;
-        extension = StringUtils.isEmpty(extension) ? "vm" : extension;
-
         Document velocityTemplate = factory.createDocument(template);
-        Editor editor = factory.createEditor(velocityTemplate, null, FileTypeManager.getInstance()
-                .getFileTypeByExtension(extension), false);
+        Editor editor = factory.createEditor(velocityTemplate,
+                null, FileProviderFactory.getFileType(extension), false);
 
         EditorSettings editorSettings = editor.getSettings();
         editorSettings.setLineNumbersShown(true);
