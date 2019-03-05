@@ -51,13 +51,14 @@ public class DefaultProviderImpl extends AbstractFileProvider {
         }
 
         String fileName = VelocityUtil.evaluate(velocityContext, template.getFilename());
+        String subPath = VelocityUtil.evaluate(velocityContext, template.getSubPath());
         String temp = VelocityUtil.evaluate(velocityContext, template.getTemplate());
 
         WriteCommandAction.runWriteCommandAction(this.project, () -> {
             try {
                 VirtualFile vFile = VfsUtil.createDirectoryIfMissing(outputPath);
                 PsiDirectory psiDirectory = PsiDirectoryFactory.getInstance(this.project).createDirectory(vFile);
-                PsiDirectory directory = subDirectory(psiDirectory, template.getSubPath(), template.getResources());
+                PsiDirectory directory = subDirectory(psiDirectory, subPath, template.getResources());
                 if (JavaFileType.INSTANCE == this.languageFileType) {
                     PsiPackage psiPackage = JavaDirectoryService.getInstance().getPackage(directory);
                     if (!StringUtils.isEmpty(psiPackage.getQualifiedName())) {
