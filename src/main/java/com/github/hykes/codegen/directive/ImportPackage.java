@@ -11,8 +11,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * 拼接元素
- * ${Append '#' 'ABC' '%'}  => #ABC%
+ * 引入
  * @author hehaiyangwork@gmail.com
  * @date 2017/12/19
  */
