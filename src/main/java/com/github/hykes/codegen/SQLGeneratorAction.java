@@ -40,10 +40,20 @@ public class SQLGeneratorAction extends AnAction implements DumbAware {
         SqlEditorPanel sqlPane = new SqlEditorPanel(new IdeaContext(project));
         frame.setContentPane(sqlPane.getRootComponent());
         MyDialogWrapper frameWrapper = new MyDialogWrapper(project, frame);
+        frameWrapper.setActionOperator(sqlPane);
         frameWrapper.setTitle("CodeGen-SQL");
         frameWrapper.setSize(600, 400);
         frameWrapper.setResizable(false);
-        frameWrapper.setOkAction(sqlPane.getOkActionListener());
+
+//        frameWrapper.setOkAction(e -> {
+//            JBPopup p = JBPopupFactory.getInstance().createMessage("aaaaasdaqwe");
+//            p.show(RelativePoint.getSouthOf(sqlPane.getRootComponent()));
+//
+//            // create a timer to hide the popup later
+//            Timer t = new Timer(5000, e1 -> p.cancel());
+//            t.setRepeats(false);
+//            t.start();
+//        });
         frameWrapper.show();
     }
 
