@@ -2,7 +2,7 @@ package com.github.hykes.codegen;
 
 import com.github.hykes.codegen.constants.Defaults;
 import com.github.hykes.codegen.gui.ColumnEditorFrame;
-import com.github.hykes.codegen.gui.MyDialogWrapper;
+import com.github.hykes.codegen.gui.cmt.MyDialogWrapper;
 import com.github.hykes.codegen.messages.CodeGenBundle;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.utils.PsiUtil;

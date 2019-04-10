@@ -1,5 +1,6 @@
-package com.github.hykes.codegen.gui;
+package com.github.hykes.codegen.gui.cmt;
 
+import com.github.hykes.codegen.gui.ActionOperator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.Nullable;
@@ -51,7 +52,7 @@ public class MyDialogWrapper extends DialogWrapper {
 
     @Override
     public void doCancelAction() {
-        if (this.getCancelAction().isEnabled() && operator.valid()) {
+        if (this.getCancelAction().isEnabled()) {
             this.close(1);
             this.operator.cancel();
         }

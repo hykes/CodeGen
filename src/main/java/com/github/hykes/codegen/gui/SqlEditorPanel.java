@@ -1,5 +1,7 @@
 package com.github.hykes.codegen.gui;
 
+import com.github.hykes.codegen.gui.cmt.JBalloon;
+import com.github.hykes.codegen.gui.cmt.MyDialogWrapper;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.parser.DefaultParser;
@@ -12,6 +14,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.ui.MessageType;
+import com.intellij.ui.awt.RelativePoint;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.ui.JBUI;
 
@@ -68,10 +71,6 @@ public class SqlEditorPanel implements ActionOperator {
     public void ok() {
         try {
             String sqls = sqlTextArea.getDocument().getText();
-            if (StringUtils.isBlank(sqls)) {
-                return;
-            }
-
             Parser parser = new DefaultParser();
             List<Table> tables = parser.parseSQLs(sqls);
             if (tables == null || tables.isEmpty()) {
@@ -100,7 +99,24 @@ public class SqlEditorPanel implements ActionOperator {
     public void cancel() { }
 
     @Override
-    public boolean valid() { return true; }
+    public boolean valid() {
+        // 1. check empty
+        String sqls = sqlTextArea.getDocument().getText();
+        if (StringUtils.isBlank(sqls)) {
+            JBalloon.buildSimple("Input sqls can not be empty!")
+                    .show(RelativePoint.getSouthOf(this.sqlScrollPane));
+            return false;
+        }
+        // 2. check parse
+        Parser parser = new DefaultParser();
+        List<Table> tables = parser.parseSQLs(sqls);
+        if (tables == null || tables.isEmpty()) {
+            JBalloon.buildSimple("Can not parse sqls, please check sql format!")
+                    .show(RelativePoint.getSouthOf(this.sqlScrollPane));
+            return false;
+        }
+        return true;
+    }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("CodeGen-SQL");

@@ -1,6 +1,7 @@
 package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.constants.Defaults;
+import com.github.hykes.codegen.gui.cmt.MyDialogWrapper;
 import com.github.hykes.codegen.model.CodeRoot;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.project.Project;

@@ -184,8 +184,6 @@ public class VariableUI implements UIConfigurable {
 
     /**
      * 是否已修改
-     *
-     * @return
      */
     @Override
     public boolean isModified() {
