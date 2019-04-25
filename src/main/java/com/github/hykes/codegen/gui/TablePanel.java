@@ -193,6 +193,7 @@ public class TablePanel {
             tableVales[row][6] = fields.get(row).getComment();
         }
         DefaultTableModel tableModel = new DefaultTableModel(tableVales, columnNames) {
+            private static final long serialVersionUID = -9011814014486029286L;
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;

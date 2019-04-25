@@ -824,16 +824,12 @@ public class StringUtils {
      * split string to List
      */
     public static List<String> splitToList(String toSplit, String delimiter, boolean upper) {
-        if (!hasLength(toSplit) || !hasLength(delimiter)) {
-            return null;
-        }
-        int offset = toSplit.indexOf(delimiter);
-        if (offset < 0) {
-            return null;
+        if (!hasLength(toSplit)) {
+            return Collections.emptyList();
         }
         String[] split = toSplit.split(delimiter);
         List<String> lists = new ArrayList<>();
-        for (String str: split) {
+        for (String str : split) {
             if (upper) {
                 str = str.toUpperCase();
             }

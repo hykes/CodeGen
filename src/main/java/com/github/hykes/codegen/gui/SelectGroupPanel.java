@@ -1,6 +1,7 @@
 package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.constants.Defaults;
+import com.github.hykes.codegen.gui.cmt.MyDialogWrapper;
 import com.github.hykes.codegen.model.CodeRoot;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.project.Project;
@@ -76,7 +77,7 @@ public class SelectGroupPanel {
                     dialogWrapper.setSize(350, 160);
                     dialogWrapper.setLocation((screenSize.width - dialog.getWidth()) / 2, (screenSize.height - dialog.getHeight()) / 2);
                     dialogWrapper.setResizable(false);
-                    dialogWrapper.setOkAction(dialog.getOkActionListener());
+                    dialogWrapper.setActionOperator(dialog);
                     dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     // dialog.setVisible(true);

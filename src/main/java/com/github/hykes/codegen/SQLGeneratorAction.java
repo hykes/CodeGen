@@ -1,7 +1,7 @@
 package com.github.hykes.codegen;
 
 import com.github.hykes.codegen.constants.Defaults;
-import com.github.hykes.codegen.gui.MyDialogWrapper;
+import com.github.hykes.codegen.gui.cmt.MyDialogWrapper;
 import com.github.hykes.codegen.gui.SqlEditorPanel;
 import com.github.hykes.codegen.messages.CodeGenBundle;
 import com.github.hykes.codegen.model.IdeaContext;
@@ -40,10 +40,10 @@ public class SQLGeneratorAction extends AnAction implements DumbAware {
         SqlEditorPanel sqlPane = new SqlEditorPanel(new IdeaContext(project));
         frame.setContentPane(sqlPane.getRootComponent());
         MyDialogWrapper frameWrapper = new MyDialogWrapper(project, frame);
+        frameWrapper.setActionOperator(sqlPane);
         frameWrapper.setTitle("CodeGen-SQL");
         frameWrapper.setSize(600, 400);
         frameWrapper.setResizable(false);
-        frameWrapper.setOkAction(sqlPane.getOkActionListener());
         frameWrapper.show();
     }
 

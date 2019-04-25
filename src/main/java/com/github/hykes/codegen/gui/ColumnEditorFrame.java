@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * @author hehaiyangwork@gmail.com
  * @date 2017/5/12
  */
-public class ColumnEditorFrame extends JFrame {
+public class ColumnEditorFrame extends JFrame implements ActionOperator {
 
     private final SettingManager SETTING_MANAGER = SettingManager.getInstance();
 
@@ -172,9 +172,16 @@ public class ColumnEditorFrame extends JFrame {
         });
     }
 
-    public ActionListener getGenerateAction() {
-        return generateAction;
+    @Override
+    public void ok() {
+        this.generateAction.actionPerformed(null);
     }
+
+    @Override
+    public void cancel() { }
+
+    @Override
+    public boolean valid() { return true; }
 
     /**
      * 模版组优先级排序

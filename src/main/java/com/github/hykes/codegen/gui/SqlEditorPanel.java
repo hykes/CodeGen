@@ -1,5 +1,7 @@
 package com.github.hykes.codegen.gui;
 
+import com.github.hykes.codegen.gui.cmt.JBalloon;
+import com.github.hykes.codegen.gui.cmt.MyDialogWrapper;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.parser.DefaultParser;
@@ -12,19 +14,19 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.ui.MessageType;
+import com.intellij.ui.awt.RelativePoint;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.ui.JBUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
  * @author hehaiyangwork@gmail.com
  * @date 2017/12/19
  */
-public class SqlEditorPanel {
+public class SqlEditorPanel implements ActionOperator {
 
     private static final Logger LOGGER = Logger.getInstance(SqlEditorPanel.class);
 
@@ -34,44 +36,9 @@ public class SqlEditorPanel {
     private JPanel sqlPanel;
     private JScrollPane sqlScrollPane;
 
-    /**
-     * ok事件
-     */
-    private ActionListener okActionListener;
-
     public SqlEditorPanel(IdeaContext ideaContext) {
         this.ideaContext = ideaContext;
         $$$setupUI$$$();
-
-        okActionListener = e -> {
-            try {
-                String sqls = sqlTextArea.getDocument().getText();
-                if (StringUtils.isBlank(sqls)) {
-                    return;
-                }
-
-                Parser parser = new DefaultParser();
-                List<Table> tables = parser.parseSQLs(sqls);
-                if (tables == null || tables.isEmpty()) {
-                    NotifyUtil.notice("CodeGen-SQL", "please check sql format !", MessageType.ERROR);
-                    return;
-                }
-
-                ColumnEditorFrame frame = new ColumnEditorFrame();
-                frame.newColumnEditorBySql(ideaContext, tables);
-                MyDialogWrapper frameWrapper = new MyDialogWrapper(ideaContext.getProject(), frame);
-                frameWrapper.setOkAction(frame.getGenerateAction());
-                frameWrapper.setSize(800, 550);
-                frameWrapper.setResizable(false);
-                frameWrapper.show();
-
-                disable();
-            } catch (Exception ex) {
-                LOGGER.error(ex.getMessage());
-            }
-        };
-
-        // this.rootPanel.registerKeyboardAction(e -> disable(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     private void disable() {
@@ -97,8 +64,58 @@ public class SqlEditorPanel {
         return rootPanel;
     }
 
-    public ActionListener getOkActionListener() {
-        return okActionListener;
+    /**
+     * 执行OK的动作
+     */
+    @Override
+    public void ok() {
+        try {
+            String sqls = sqlTextArea.getDocument().getText();
+            Parser parser = new DefaultParser();
+            List<Table> tables = parser.parseSQLs(sqls);
+            if (tables == null || tables.isEmpty()) {
+                NotifyUtil.notice("CodeGen-SQL", "please check sql format !", MessageType.ERROR);
+                return;
+            }
+
+            ColumnEditorFrame frame = new ColumnEditorFrame();
+            frame.newColumnEditorBySql(ideaContext, tables);
+            MyDialogWrapper frameWrapper = new MyDialogWrapper(ideaContext.getProject(), frame);
+            frameWrapper.setActionOperator(frame);
+            frameWrapper.setTitle("CodeGen-SQL");
+            frameWrapper.setSize(800, 550);
+            frameWrapper.setResizable(false);
+            frameWrapper.show();
+
+            disable();
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
+        }
+
+        // this.rootPanel.registerKeyboardAction(e -> disable(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+    }
+
+    @Override
+    public void cancel() { }
+
+    @Override
+    public boolean valid() {
+        // 1. check empty
+        String sqls = sqlTextArea.getDocument().getText();
+        if (StringUtils.isBlank(sqls)) {
+            JBalloon.buildSimple("Input sqls can not be empty!")
+                    .show(RelativePoint.getSouthOf(this.sqlScrollPane));
+            return false;
+        }
+        // 2. check parse
+        Parser parser = new DefaultParser();
+        List<Table> tables = parser.parseSQLs(sqls);
+        if (tables == null || tables.isEmpty()) {
+            JBalloon.buildSimple("Can not parse sqls, please check sql format!")
+                    .show(RelativePoint.getSouthOf(this.sqlScrollPane));
+            return false;
+        }
+        return true;
     }
 
     public static void main(String[] args) {

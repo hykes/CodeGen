@@ -2,7 +2,7 @@ package com.github.hykes.codegen;
 
 import com.github.hykes.codegen.constants.Defaults;
 import com.github.hykes.codegen.gui.ColumnEditorFrame;
-import com.github.hykes.codegen.gui.MyDialogWrapper;
+import com.github.hykes.codegen.gui.cmt.MyDialogWrapper;
 import com.github.hykes.codegen.messages.CodeGenBundle;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.utils.PsiUtil;
@@ -74,8 +74,8 @@ public class DBGeneratorAction extends AnAction implements DumbAware {
         ColumnEditorFrame frame = new ColumnEditorFrame();
         frame.newColumnEditorByDb(new IdeaContext(project), tables);
         MyDialogWrapper frameWrapper = new MyDialogWrapper(project, frame);
+        frameWrapper.setActionOperator(frame);
         frameWrapper.setTitle("CodeGen-DB");
-        frameWrapper.setOkAction(frame.getGenerateAction());
         frameWrapper.setSize(800, 550);
         frameWrapper.setResizable(false);
         frameWrapper.show();

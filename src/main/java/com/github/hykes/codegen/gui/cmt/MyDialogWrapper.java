@@ -1,11 +1,11 @@
-package com.github.hykes.codegen.gui;
+package com.github.hykes.codegen.gui.cmt;
 
+import com.github.hykes.codegen.gui.ActionOperator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
 
 /**
  * Desc: 封装的dialog wrapper, 需要将窗口固定在IDEA内部, 且自带cancel和ok的按钮
@@ -22,9 +22,9 @@ public class MyDialogWrapper extends DialogWrapper {
     private JComponent component;
 
     /**
-     * ok按钮事件
+     * 执行动作的对象
      */
-    private ActionListener okActionListener;
+    private ActionOperator operator = ActionOperator.BLANK;
 
     public MyDialogWrapper(Project project, JComponent component) {
         super(project, true);
@@ -44,19 +44,26 @@ public class MyDialogWrapper extends DialogWrapper {
 
     @Override
     protected void doOKAction() {
-        if (this.getOKAction().isEnabled()) {
+        if (this.getOKAction().isEnabled() && operator.valid()) {
             this.close(0);
-            if (this.okActionListener != null) {
-                // 传入的ActionEvent为空
-                this.okActionListener.actionPerformed(null);
-            }
+            this.operator.ok();
+        }
+    }
+
+    @Override
+    public void doCancelAction() {
+        if (this.getCancelAction().isEnabled()) {
+            this.close(1);
+            this.operator.cancel();
         }
     }
 
     /**
      * 设置ok按钮事件
      */
-    public void setOkAction(ActionListener okActionListener) {
-        this.okActionListener = okActionListener;
+    public void setActionOperator(ActionOperator operator) {
+        if (operator != null) {
+            this.operator = operator;
+        }
     }
 }
