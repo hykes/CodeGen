@@ -1,8 +1,10 @@
-package com.github.hykes.codegen.test;
+package com.github.hykes.codegen;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.java.generate.velocity.VelocityFactory;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -14,7 +16,8 @@ import java.util.Map;
  */
 public class VelocityTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void testSplitLowerCase() {
         VelocityEngine velocityEngine = VelocityFactory.getVelocityEngine();
         velocityEngine.loadDirective("com.github.hykes.codegen.directive.LowerCase");
         velocityEngine.loadDirective("com.github.hykes.codegen.directive.Split");
@@ -25,7 +28,7 @@ public class VelocityTest {
         StringWriter writer = new StringWriter();
         velocityEngine.evaluate(new VelocityContext(map), writer, "", template);
 
-        System.out.println(writer.toString());
+        Assert.assertEquals(writer.toString(), "hykes.is.strong");
     }
 
 }

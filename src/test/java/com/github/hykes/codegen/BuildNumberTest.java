@@ -1,4 +1,4 @@
-package com.github.hykes.codegen.test;
+package com.github.hykes.codegen;
 
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.util.BuildNumber;
