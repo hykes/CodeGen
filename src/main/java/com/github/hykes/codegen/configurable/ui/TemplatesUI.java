@@ -28,6 +28,7 @@ import com.intellij.ui.GuiUtils;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.treeStructure.Tree;
+import com.intellij.util.ui.JBUI;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
@@ -350,10 +351,11 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
                 return selectedNode != null && selectedNode.getParent() != null;
             });
         JPanel templatesPanel = toolbarDecorator.createPanel();
-        templatesPanel.setPreferredSize(new Dimension(160,100));
+        templatesPanel.setPreferredSize(JBUI.size(240,100));
         templateEditor = new TemplateEditorUI();
         jSplitPane = new JSplitPane();
-        jSplitPane.setOrientation(1);
+        jSplitPane.setDividerLocation(240);
+        jSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         jSplitPane.setContinuousLayout(true);
         jSplitPane.setBorder(BorderFactory.createEmptyBorder());
         jSplitPane.setTopComponent(templatesPanel);
@@ -365,7 +367,7 @@ public class TemplatesUI extends JBPanel implements UIConfigurable {
     /**
      * 将模板以tree的方式展开
      */
-    private void setTemplates(Templates templates){
+    private void setTemplates(Templates templates) {
         // 获取roots
         List<CodeRoot> roots = templates.getRoots();
         if (roots == null) {

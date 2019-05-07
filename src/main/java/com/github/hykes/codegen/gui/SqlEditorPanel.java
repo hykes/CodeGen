@@ -80,7 +80,7 @@ public class SqlEditorPanel implements ActionOperator {
 
             ColumnEditorFrame frame = new ColumnEditorFrame();
             frame.newColumnEditorBySql(ideaContext, tables);
-            MyDialogWrapper frameWrapper = new MyDialogWrapper(ideaContext.getProject(), frame);
+            MyDialogWrapper frameWrapper = new MyDialogWrapper(ideaContext.getProject(), frame.getRootPane());
             frameWrapper.setActionOperator(frame);
             frameWrapper.setTitle("CodeGen-SQL");
             frameWrapper.setSize(800, 550);

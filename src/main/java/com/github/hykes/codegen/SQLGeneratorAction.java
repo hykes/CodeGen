@@ -1,9 +1,8 @@
 package com.github.hykes.codegen;
 
-import com.github.hykes.codegen.constants.Defaults;
-import com.github.hykes.codegen.gui.cmt.MyDialogWrapper;
 import com.github.hykes.codegen.gui.SqlEditorPanel;
-import com.github.hykes.codegen.messages.CodeGenBundle;
+import com.github.hykes.codegen.gui.cmt.MyDialogWrapper;
+import com.github.hykes.codegen.constants.CodeGenBundle;
 import com.github.hykes.codegen.model.IdeaContext;
 import com.github.hykes.codegen.utils.PsiUtil;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -22,10 +21,6 @@ import javax.swing.*;
  */
 public class SQLGeneratorAction extends AnAction implements DumbAware {
 
-    public SQLGeneratorAction() {
-        super(Defaults.CODEGEN);
-    }
-
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
 
@@ -39,7 +34,7 @@ public class SQLGeneratorAction extends AnAction implements DumbAware {
         JFrame frame = new JFrame();
         SqlEditorPanel sqlPane = new SqlEditorPanel(new IdeaContext(project));
         frame.setContentPane(sqlPane.getRootComponent());
-        MyDialogWrapper frameWrapper = new MyDialogWrapper(project, frame);
+        MyDialogWrapper frameWrapper = new MyDialogWrapper(project, frame.getRootPane());
         frameWrapper.setActionOperator(sqlPane);
         frameWrapper.setTitle("CodeGen-SQL");
         frameWrapper.setSize(600, 400);

@@ -1,4 +1,4 @@
-package com.github.hykes.codegen.messages;
+package com.github.hykes.codegen.constants;
 
 import com.intellij.AbstractBundle;
 import org.jetbrains.annotations.NotNull;

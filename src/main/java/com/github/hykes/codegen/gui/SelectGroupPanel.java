@@ -3,17 +3,17 @@ package com.github.hykes.codegen.gui;
 import com.github.hykes.codegen.constants.Defaults;
 import com.github.hykes.codegen.gui.cmt.MyDialogWrapper;
 import com.github.hykes.codegen.model.CodeRoot;
+import com.github.hykes.codegen.utils.GuiUtil;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author hehaiyangwork@gmail.com
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class SelectGroupPanel {
     private JPanel rootPanel;
-    private JComboBox groupComboBox;
+    private JComboBox<CodeRoot> groupComboBox;
     private JPanel groupsPanel;
 
     private Project project;
@@ -31,12 +31,23 @@ public class SelectGroupPanel {
         return rootPanel;
     }
 
-    public JPanel getGroupsPanel() {
-        return groupsPanel;
+    /**
+     * 获取group的输出路径
+     * key: groupId
+     * value: output path
+     */
+    public Map<String, String> getGroupPathMap() {
+        List<String> selectGroups = GuiUtil.getAllJCheckBoxValue(groupsPanel);
+        return groupPathMap.entrySet().stream()
+                .filter(kv -> selectGroups.contains(kv.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public Map<String, String> getGroupPathMap() {
-        return groupPathMap;
+    /**
+     * 是否有选中
+     */
+    public Boolean hasSelected() {
+        return !GuiUtil.getAllJCheckBoxValue(groupsPanel).isEmpty();
     }
 
     public SelectGroupPanel(List<CodeRoot> roots, Project project) {
@@ -46,40 +57,37 @@ public class SelectGroupPanel {
         for (CodeRoot root : roots) {
             groupComboBox.addItem(root);
         }
-        groupComboBox.addActionListener(new ActionListener() {
-            /**
-             * Invoked when an action occurs.
-             *
-             * @param e
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JComboBox source = (JComboBox) e.getSource();
-                CodeRoot root = (CodeRoot) source.getSelectedItem();
-                renderGroupsPanel(root);
-            }
+        groupComboBox.addActionListener(e -> {
+            JComboBox source = (JComboBox) e.getSource();
+            CodeRoot root = (CodeRoot) source.getSelectedItem();
+            renderGroupsPanel(root);
         });
         renderGroupsPanel(roots.get(0));
     }
 
     private void renderGroupsPanel(CodeRoot root) {
+        if (root == null) {
+            return;
+        }
         groupsPanel.removeAll();
         root.getGroups().forEach(it -> {
             JCheckBox groupBox = new JCheckBox(it.getName());
             groupBox.setName(it.getId());
             groupBox.addActionListener(box -> {
                 if (groupBox.isSelected()) {
+                    // 选择输出路径
                     SelectPathDialog dialog = new SelectPathDialog(project);
-                    MyDialogWrapper dialogWrapper = new MyDialogWrapper(project, dialog.getRootPane());
                     dialog.setAlwaysOnTop(true);
+                    dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    // 包装对话框
+                    MyDialogWrapper dialogWrapper = new MyDialogWrapper(project, dialog.getRootPane());
                     Toolkit kit = Toolkit.getDefaultToolkit();
                     Dimension screenSize = kit.getScreenSize();
                     dialogWrapper.setSize(350, 160);
                     dialogWrapper.setLocation((screenSize.width - dialog.getWidth()) / 2, (screenSize.height - dialog.getHeight()) / 2);
                     dialogWrapper.setResizable(false);
                     dialogWrapper.setActionOperator(dialog);
-                    dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     // dialog.setVisible(true);
                     dialogWrapper.show();
                     // 获取对应的值
@@ -107,7 +115,7 @@ public class SelectGroupPanel {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        groupComboBox = new ComboBox();
+        groupComboBox = new ComboBox<>();
         groupComboBox.setRenderer(new CellRenderer());
         groupsPanel = new JPanel();
         groupsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -150,6 +158,7 @@ public class SelectGroupPanel {
     }
 
     public class CellRenderer extends JLabel implements ListCellRenderer {
+        private static final long serialVersionUID = 4769047597333393201L;
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

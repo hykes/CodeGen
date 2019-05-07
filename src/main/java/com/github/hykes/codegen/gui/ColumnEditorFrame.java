@@ -1,27 +1,24 @@
 package com.github.hykes.codegen.gui;
 
 import com.github.hykes.codegen.configurable.SettingManager;
-import com.github.hykes.codegen.constants.Defaults;
-import com.github.hykes.codegen.model.*;
-import com.github.hykes.codegen.provider.FileProviderFactory;
-import com.github.hykes.codegen.utils.StringUtils;
+import com.github.hykes.codegen.model.CodeContext;
+import com.github.hykes.codegen.model.CodeRoot;
+import com.github.hykes.codegen.model.Field;
+import com.github.hykes.codegen.model.IdeaContext;
+import com.github.hykes.codegen.model.Table;
+import com.github.hykes.codegen.utils.GuiUtil;
 import com.intellij.database.model.DasColumn;
 import com.intellij.database.psi.DbTable;
 import com.intellij.database.util.DasUtil;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
 import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.util.containers.JBIterable;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 字段自定义编辑器
@@ -34,7 +31,6 @@ public class ColumnEditorFrame extends JFrame implements ActionOperator {
     private final SettingManager SETTING_MANAGER = SettingManager.getInstance();
 
     private final List<TablePanel> panels = new ArrayList<>();
-    private Map<String, String> groupPathMap = new HashMap<>();
     private ActionListener generateAction;
 
     public void newColumnEditorByDb(IdeaContext ideaContext, List<DbTable> dbTables) {
@@ -82,13 +78,8 @@ public class ColumnEditorFrame extends JFrame implements ActionOperator {
 
         List<CodeRoot> codeRoots =  SETTING_MANAGER.getTemplates().getRoots();
         SelectGroupPanel selectGroupPanel = new SelectGroupPanel(codeRoots, ideaContext.getProject());
-        JPanel groupPanel = selectGroupPanel.getGroupsPanel();
-        groupPathMap = selectGroupPanel.getGroupPathMap();
         generateAction = it -> {
-            List<String> selectGroups = new ArrayList<>();
-            this.getAllJCheckBoxValue(groupPanel, selectGroups);
-
-            if(!selectGroups.isEmpty()) {
+            if(selectGroupPanel.hasSelected()) {
                 List<CodeContext> contexts = new ArrayList<>();
 
                 for (TablePanel panel: panels) {
@@ -99,7 +90,7 @@ public class ColumnEditorFrame extends JFrame implements ActionOperator {
                     CodeContext context = new CodeContext(modelName, tableName, comment, panel.getFields());
                     contexts.add(context);
                 }
-                generator(ideaContext, selectGroups, contexts);
+                GuiUtil.generateFile(ideaContext, contexts, selectGroupPanel.getGroupPathMap());
                 dispose();
             }
         };
@@ -107,69 +98,6 @@ public class ColumnEditorFrame extends JFrame implements ActionOperator {
         add(tabbedPane, BorderLayout.CENTER);
         selectGroupPanel.getRootPanel().setBorder(BorderFactory.createEmptyBorder(0, 15, 10, 15));
         add(selectGroupPanel.getRootPanel(), BorderLayout.SOUTH);
-    }
-
-    private List<String> getAllJCheckBoxValue(Container ct, List<String> selectGroups){
-        if(selectGroups == null){
-            selectGroups = new ArrayList<>();
-        }
-        int count=ct.getComponentCount();
-        for(int i=0;i<count;i++){
-            Component c=ct.getComponent(i);
-            if(c instanceof JCheckBox && ((JCheckBox)c).isSelected()){
-                selectGroups.add(c.getName());
-            } else if (c instanceof Container){
-                this.getAllJCheckBoxValue((Container)c, selectGroups);
-            }
-        }
-        return selectGroups;
-    }
-
-    public void generator(IdeaContext ideaContext, List<String> groups, List<CodeContext> contexts){
-        Map<String, Object> params = new HashMap<>();
-        params.putAll(Defaults.getDefaultVariables());
-        params.putAll(SETTING_MANAGER.getVariables().getParams());
-        params.put("Project", ideaContext.getProject().getName());
-
-        final List<CodeGroup> groupList = new ArrayList<>();
-        SETTING_MANAGER.getTemplates().getRoots().forEach(it -> groupList.addAll(it.getGroups()));
-
-        final List<CodeGroup> genGroups = groupList.stream().filter(it -> groups.contains(it.getId())).sorted(new ComparatorUtil()).collect(Collectors.toList());
-        ProgressManager.getInstance().run(new Task.Backgroundable(ideaContext.getProject(), "CodeGen Progress ..."){
-
-            @Override
-            public void run(@NotNull ProgressIndicator progressIndicator) {
-
-                // Set the progress bar percentage and text
-                progressIndicator.setFraction(0D);
-                progressIndicator.setText("start to generator code ...");
-
-                // start your process
-                for (CodeGroup group : genGroups) {
-
-                    // process running ..
-                    progressIndicator.setFraction(1/genGroups.size());
-
-                    String outputPath = groupPathMap.get(group.getId());
-                    if (StringUtils.isNotEmpty(outputPath)) {
-                        for (CodeContext context : contexts) {
-                            List<CodeTemplate> codeTemplates = group.getTemplates();
-                            Collections.sort(codeTemplates, Comparator.comparing(CodeTemplate::getOrder));
-                            for (CodeTemplate codeTemplate : codeTemplates) {
-                                progressIndicator.setText(String.format("generator template %s ...", codeTemplate.getDisplay()));
-
-                                FileProviderFactory fileFactory = new FileProviderFactory(ideaContext.getProject(), outputPath);
-                                fileFactory.getInstance(codeTemplate.getExtension()).create(codeTemplate, context, params);
-                            }
-                        }
-                    }
-                }
-
-                // Finished
-                progressIndicator.setFraction(1D);
-                progressIndicator.setText("finished");
-            }
-        });
     }
 
     @Override
@@ -182,24 +110,5 @@ public class ColumnEditorFrame extends JFrame implements ActionOperator {
 
     @Override
     public boolean valid() { return true; }
-
-    /**
-     * 模版组优先级排序
-     */
-    public class ComparatorUtil implements Comparator<CodeGroup> {
-
-        @Override
-        public int compare(CodeGroup o1, CodeGroup o2) {
-            double level1 = o1.getLevel();
-            double level2 = o2.getLevel();
-            if (level1 > level2) {
-                return 1;
-            } else if (level1 < level2) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
-    }
 
 }

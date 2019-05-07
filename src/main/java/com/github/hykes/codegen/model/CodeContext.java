@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Desc:
+ * Desc: 表结构相关的参数数据
+ *
  * Mail: hehaiyangwork@gmail.com
  * Date: 17/3/21
  */

@@ -58,11 +58,15 @@
 
   <actions>
     <!-- Add your actions here -->
-    <action id="CodeGen.SQLGenerator" class="com.github.hykes.codegen.SQLGeneratorAction" text="CodeGen-SQL">
+    <group id="CodeGen.Tools" text="CodeGen Tools" icon="/icons/codegen.png" popup="true">
+      <action id="CodeGen.SQLGenerator" class="com.github.hykes.codegen.SQLGeneratorAction" text="CodeGen by SQL">
+        <keyboard-shortcut keymap="$default" first-keystroke="shift control G"/>
+      </action>
+      <action id="CodeGen.Direct" class="com.github.hykes.codegen.FileGeneratorAction" text="CodeGen files">
+      </action>
       <add-to-group group-id="ToolsBasicGroup" anchor="first"/>
-      <add-to-group group-id="EditorPopupMenu.GoTo" anchor="last"/>
-      <keyboard-shortcut keymap="$default" first-keystroke="shift control G"/>
-    </action>
+      <add-to-group group-id="EditorLangPopupMenu" anchor="after" relative-to-action="Generate"/>
+    </group>
 
     <action id="CodeGen.DBGenerator" class="com.github.hykes.codegen.DBGeneratorAction" text="CodeGen-DB">
       <add-to-group group-id="DatabaseViewPopupMenu" anchor="after" relative-to-action="CopyReference"/>

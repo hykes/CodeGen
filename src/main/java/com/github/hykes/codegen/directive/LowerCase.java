@@ -1,5 +1,6 @@
 package com.github.hykes.codegen.directive;
 
+import com.github.hykes.codegen.utils.StringUtils;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
@@ -30,6 +31,10 @@ public class LowerCase extends Directive {
     @Override
     public boolean render(InternalContextAdapter context, Writer writer, Node node) throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
         String value = (String) node.jjtGetChild(0).value(context);
+        if (StringUtils.isBlank(value)) {
+            writer.write(value);
+            return true;
+        }
         String result = value.replaceFirst(value.substring(0, 1), value.substring(0, 1).toLowerCase());
         writer.write(result);
         return true;
