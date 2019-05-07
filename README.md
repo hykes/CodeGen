@@ -50,7 +50,7 @@ https://www.jetbrains.com/help/idea/meet-intellij-idea.html
 
 ## Guide
 
-* [中文使用手册](https://github.com/hykes/CodeGen/blob/master/doc/Guide_zh_v1.2.md)
+* [中文使用手册](/doc/Guide_zh_v1.2.md)
 
 ## Contributions
 
