@@ -47,9 +47,6 @@ public class FieldType implements Serializable {
 
     /**
      * 创建对象
-     * @param javaType
-     * @param kotlinType
-     * @return
      */
     public static FieldType build(String javaType, String kotlinType) {
         return new FieldType(javaType, kotlinType);

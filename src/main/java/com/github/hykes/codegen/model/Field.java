@@ -94,7 +94,7 @@ public class Field implements Serializable{
         this.sqlType = sqlType;
 
         FieldType fieldType = ParserUtils.getFieldType(columnType);
-        if ("UNKNOWN".equals(fieldType.getJavaType())) {
+        if (ParserUtils.UNKNOWN_FIELD.equals(fieldType.getJavaType())) {
             fieldType = ParserUtils.getFieldType(sqlType);
         }
         this.fieldType = fieldType.getJavaType();

@@ -17,6 +17,11 @@ import static com.github.hykes.codegen.model.FieldType.build;
 public class ParserUtils {
 
     /**
+     * 未知字段类型
+     */
+    public static String UNKNOWN_FIELD = "UNKNOWN";
+
+    /**
      * sqlType <-> javaType
      *
      * 如果要转javaType的枚举, 可以使用Types
@@ -25,7 +30,7 @@ public class ParserUtils {
     private static Map<String, FieldType> sqlTypes = new HashMap<>();
     static {
         // mysql https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-type-conversions.html
-        sqlTypes.put("UNKNOWN", build("UNKNOWN"));
+        sqlTypes.put(UNKNOWN_FIELD, build(UNKNOWN_FIELD));
         sqlTypes.put("BIT", build("Boolean"));
         sqlTypes.put("BOOL", build("Boolean"));
         sqlTypes.put("BOOLEAN", build("Boolean"));
@@ -103,6 +108,17 @@ public class ParserUtils {
         sqlTypes.put("UDT", build("Byte[]", "ByteArray"));
         // sqlTypes.put("VARBINARY", build("Byte[]", "ByteArray"))
         sqlTypes.put("XML", build("java.sql.SQLXML"));
+
+        // postgresql https://www.postgresql.org/docs/9.5/datatype.html
+        sqlTypes.put("JSON", build("String"));
+        sqlTypes.put("JSONB", build("Byte[]", "ByteArray"));
+        // sqlTypes.put("XML", build("String"));
+        sqlTypes.put("UUID", build("String"));
+        sqlTypes.put("CHARACTER VARYING", build("String"));
+        sqlTypes.put("CHARACTER VARYING[]", build("String[]", "Array<String>"));
+        sqlTypes.put("TEXT[]", build("String[]", "Array<String>"));
+        sqlTypes.put("INTEGER[]", build("Integer[]", "Array<Int>"));
+        sqlTypes.put("HSTORE", build("java.util.Map<String, String>", "Map<String, String>"));
     }
 
     /**
@@ -112,11 +128,11 @@ public class ParserUtils {
      */
     public static FieldType getFieldType(String typeName) {
         if (StringUtils.isBlank(typeName)) {
-            sqlTypes.get("UNKNOWN");
+            sqlTypes.get(UNKNOWN_FIELD);
         }
         FieldType fieldType = sqlTypes.get(typeName.trim().toUpperCase());
         if (fieldType == null) {
-            return sqlTypes.get("UNKNOWN");
+            return sqlTypes.get(UNKNOWN_FIELD);
         }
         return fieldType;
     }
@@ -128,7 +144,7 @@ public class ParserUtils {
      * @return 对应字段的java类型
      */
     public static FieldType getFieldType(Integer sqlType) {
-        FieldType fieldType = sqlTypes.get("UNKNOWN");
+        FieldType fieldType = sqlTypes.get(UNKNOWN_FIELD);
         if (sqlType == null) {
             return fieldType;
         }

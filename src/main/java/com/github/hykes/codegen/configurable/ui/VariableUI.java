@@ -71,7 +71,7 @@ public class VariableUI implements UIConfigurable {
         varPanel.add(panel, BorderLayout.CENTER);
 
         descPanel = new JPanel(new BorderLayout());
-        descPanel.setBorder(IdeBorderFactory.createTitledBorder("Default Variables & Directives", false));
+        descPanel.setBorder(IdeBorderFactory.createTitledBorder("Default Variables \\& Directives", false));
 
         String inHouseVariables;
         try {

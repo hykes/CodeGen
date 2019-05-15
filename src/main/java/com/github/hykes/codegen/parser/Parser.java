@@ -15,8 +15,9 @@ public interface Parser {
 
     /**
      * 将输入的sql语句解析成多个 Table 对象
-     * @param sqls
-     * @return
+     * @param sqls sql 语句, 分号分隔
+     *
+     * @return {@link Table}
      */
     List<Table> parseSQLs(String sqls);
 
