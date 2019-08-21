@@ -1,5 +1,8 @@
 # Change Logs
 
+- v1.3.1 2019-08-21
+    - Support IDEA Community Edition(171+)
+
 - v1.3.0 2019-02-26
     - Rebuild project using gradle
 

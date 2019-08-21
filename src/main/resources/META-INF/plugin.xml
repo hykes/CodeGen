@@ -1,14 +1,14 @@
 <idea-plugin>
-  <id>me.hehaiyang.codegen</id>
-  <name>CodeGen</name>
-  <version>1.3.0</version>
-  <vendor email="hehaiyangwork@gmail.com" url="https://github.com/hykes">hehaiyang</vendor>
+    <id>me.hehaiyang.codegen</id>
+    <name>CodeGen</name>
+    <version>1.3.1</version>
+    <vendor email="hehaiyangwork@gmail.com" url="https://github.com/hykes">hykes</vendor>
 
-  <description><![CDATA[
+    <description><![CDATA[
       <p><a href="https://github.com/hykes/CodeGen">GitHub</a> | <a href="https://github.com/hykes/CodeGen/issues">Issues</a> | <a href="https://plugins.jetbrains.com/plugin/9574-codegen">JetBrains</a> </p>
       <br>
       <p>This plugin helps you to generate specific template code by create table statement or database .</p>
-      <p>Support IDEA Ultimate(171+)</p>
+      <p>Support IDEA Community Edition(171+)、IDEA Ultimate Edition(171+)</p>
       <ul>
         <li>Velocity template language</li>
         <li>IDEA database</li>
@@ -17,60 +17,62 @@
       </ul>
     ]]></description>
 
-  <change-notes><![CDATA[
+    <change-notes><![CDATA[
+      <p>v1.3.1 2019-08-21</p>
+      <ul>
+        <li>Support IDEA Community Edition(171+)</li>
+      </ul>
       <p>v1.3.0 2019-02-26</p>
       <ul>
         <li>Rebuild project using gradle</li>
       </ul>
       <a href="https://github.com/hykes/CodeGen/blob/master/doc/CHANGELOG.md">Read More ...</a>
     ]]>
-  </change-notes>
+    </change-notes>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="171"/>
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="171"/>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
-  <depends optional="true">com.intellij.database</depends>
-  <depends optional="true">com.intellij.modules.ultimate</depends>
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+    <depends optional="true" config-file="withDatabase.xml">com.intellij.database</depends>
+    <!--<depends optional="true">com.intellij.modules.ultimate</depends>-->
 
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-    <applicationConfigurable groupId="tools" id="CodeGen.Variables" instance="com.github.hykes.codegen.configurable.instance.VariablesConfigurable">
-      <configurable id="CodeGen.Templates" instance="com.github.hykes.codegen.configurable.instance.TemplatesConfigurable"/>
-    </applicationConfigurable>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <applicationConfigurable groupId="tools" id="CodeGen.Variables"
+                                 instance="com.github.hykes.codegen.configurable.instance.VariablesConfigurable">
+            <configurable id="CodeGen.Templates"
+                          instance="com.github.hykes.codegen.configurable.instance.TemplatesConfigurable"/>
+        </applicationConfigurable>
 
-    <applicationService serviceInterface="com.github.hykes.codegen.configurable.SettingManager"
-                        serviceImplementation="com.github.hykes.codegen.configurable.SettingManager"/>
+        <applicationService serviceInterface="com.github.hykes.codegen.configurable.SettingManager"
+                            serviceImplementation="com.github.hykes.codegen.configurable.SettingManager"/>
 
-  </extensions>
+    </extensions>
 
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
 
-  <project-components>
-    <!-- Add your project components here -->
-  </project-components>
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
 
-  <actions>
-    <!-- Add your actions here -->
-    <group id="CodeGen.Tools" text="CodeGen Tools" icon="/icons/codegen.png" popup="true">
-      <action id="CodeGen.SQLGenerator" class="com.github.hykes.codegen.SQLGeneratorAction" text="CodeGen by SQL">
-        <keyboard-shortcut keymap="$default" first-keystroke="shift control G"/>
-      </action>
-      <action id="CodeGen.Direct" class="com.github.hykes.codegen.FileGeneratorAction" text="CodeGen files">
-      </action>
-      <add-to-group group-id="ToolsBasicGroup" anchor="first"/>
-      <add-to-group group-id="EditorLangPopupMenu" anchor="after" relative-to-action="Generate"/>
-    </group>
-
-    <action id="CodeGen.DBGenerator" class="com.github.hykes.codegen.DBGeneratorAction" text="CodeGen-DB">
-      <add-to-group group-id="DatabaseViewPopupMenu" anchor="after" relative-to-action="CopyReference"/>
-    </action>
-  </actions>
+    <actions>
+        <!-- Add your actions here -->
+        <group id="CodeGen.Tools" text="CodeGen Tools" icon="/icons/codegen.png" popup="true">
+            <action id="CodeGen.SQLGenerator" class="com.github.hykes.codegen.SQLGeneratorAction" text="CodeGen by SQL">
+                <keyboard-shortcut keymap="$default" first-keystroke="shift control G"/>
+            </action>
+            <action id="CodeGen.Direct" class="com.github.hykes.codegen.FileGeneratorAction" text="CodeGen files">
+            </action>
+            <add-to-group group-id="ToolsBasicGroup" anchor="first"/>
+            <add-to-group group-id="EditorLangPopupMenu" anchor="after" relative-to-action="Generate"/>
+        </group>
+    </actions>
 
 </idea-plugin>
