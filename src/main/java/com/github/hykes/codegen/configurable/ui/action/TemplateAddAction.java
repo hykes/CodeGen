@@ -94,7 +94,7 @@ public class TemplateAddAction extends BaseTemplateAction implements AnActionBut
     class CodeRootAddAction extends AnAction {
 
         public CodeRootAddAction() {
-            super("Code Root", null, AllIcons.Nodes.JavaModuleRoot);
+            super("Code Root", null, AllIcons.Nodes.JavaModule);
         }
 
         @Override

@@ -6,6 +6,7 @@ import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.PackageChooser;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaDirectoryService;
@@ -63,9 +64,9 @@ public class SelectPathDialog extends JDialog implements ActionOperator {
                 descriptor.setShowFileSystemRoots(false);
                 descriptor.setDescription("Select output path");
                 descriptor.setHideIgnored(true);
-                descriptor.setRoots(project.getBaseDir());
+                descriptor.setRoots(ProjectRootManager.getInstance(project).getContentRoots());
                 descriptor.setForcedToUseIdeaFileChooser(true);
-                VirtualFile virtualFile = FileChooser.chooseFile(descriptor, project, project.getBaseDir());
+                VirtualFile virtualFile = FileChooser.chooseFile(descriptor, project, project.getProjectFile());
                 if (Objects.nonNull(virtualFile)) {
                     String output = virtualFile.getPath();
                     PsiDirectory psiDirectory = PsiDirectoryFactory.getInstance(project).createDirectory(virtualFile);

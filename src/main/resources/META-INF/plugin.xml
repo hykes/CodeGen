@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>me.hehaiyang.codegen</id>
     <name>CodeGen</name>
-    <version>1.3.1</version>
+    <version>1.3.2</version>
     <vendor email="hehaiyangwork@gmail.com" url="https://github.com/hykes">hykes</vendor>
 
     <description><![CDATA[
@@ -39,6 +39,7 @@
     <depends>com.intellij.modules.lang</depends>
     -->
     <depends optional="true" config-file="withDatabase.xml">com.intellij.database</depends>
+    <depends>com.intellij.modules.java</depends>
     <!--<depends optional="true">com.intellij.modules.ultimate</depends>-->
 
     <extensions defaultExtensionNs="com.intellij">

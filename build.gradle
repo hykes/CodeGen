@@ -1,26 +1,28 @@
 buildscript {
     repositories {
-        mavenLocal()
-        mavenCentral() 
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:0.4.3"
+        classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:0.4.21"
     }
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '0.4.3'
+    id 'java'
+    id 'org.jetbrains.intellij' version '0.4.21'
 }
 
 group 'me.hehaiyang.codegen'
-version '1.3.0'
-
-apply plugin: 'idea'
-apply plugin: 'org.jetbrains.intellij'
-apply plugin: 'java'
+version '1.3.2'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+apply plugin: 'idea'
+apply plugin: "org.jetbrains.intellij"
+apply plugin: 'java'
+
 
 repositories {
     mavenLocal()
@@ -34,8 +36,8 @@ dependencies {
 }
 
 intellij {
-//    version '2017.3.1'
     localPath ideaSDKlocalPath
     pluginName 'CodeGen'
     sandboxDirectory = project.rootDir.canonicalPath + "/.sandbox"
+    plugins = ['java']
 }

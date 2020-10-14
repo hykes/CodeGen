@@ -11,6 +11,7 @@ import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
@@ -86,9 +87,9 @@ public class PsiUtil {
         descriptor.setShowFileSystemRoots(false);
         descriptor.setDescription(description);
         descriptor.setHideIgnored(true);
-        descriptor.setRoots(project.getBaseDir());
+        descriptor.setRoots(ProjectRootManager.getInstance(project).getContentRoots());
         descriptor.setForcedToUseIdeaFileChooser(true);
-        VirtualFile file = FileChooser.chooseFile(descriptor, project, project.getBaseDir());
+        VirtualFile file = FileChooser.chooseFile(descriptor, project, project.getProjectFile());
         if(Objects.isNull(file)){
             Messages.showInfoMessage("Cancel " + title, "Error");
             return null;

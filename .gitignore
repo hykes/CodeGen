@@ -2,6 +2,7 @@ out/
 .idea
 *.iml
 *.zip
+*.DS_Store
 
 build/
 .gradle
