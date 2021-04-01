@@ -14,7 +14,7 @@ plugins {
 }
 
 group 'me.hehaiyang.codegen'
-version '2.0.0'
+version '2.0.173'
 
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -43,11 +43,11 @@ intellij {
 }
 
 patchPluginXml {
-    sinceBuild 203
+    sinceBuild 173
     changeNotes """
-      <p>v2.0.0 2021-04-01</p>
+      <p>v2.0.173 2021-04-01</p>
       <ul>
-        <li>IntelliJ IDEA 2020.3 (Ultimate Edition)</li>
+        <li>IntelliJ IDEA 2017.1.6 - 2020.2.4 (Ultimate Edition)</li>
       </ul>
       <a href="https://github.com/hykes/CodeGen/blob/master/doc/CHANGELOG.md">Read More ...</a>"""
 }

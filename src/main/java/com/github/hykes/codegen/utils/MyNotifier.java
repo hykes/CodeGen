@@ -1,9 +1,12 @@
 package com.github.hykes.codegen.utils;
 
-import com.intellij.notification.NotificationGroupManager;
-import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationDisplayType;
+import com.intellij.notification.NotificationGroup;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.project.Project;
-import org.jetbrains.annotations.Nullable;
+import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.ui.MessageType;
 
 /**
  * @author hehaiyangwork@gmail.com
@@ -11,10 +14,14 @@ import org.jetbrains.annotations.Nullable;
  */
 public class MyNotifier {
 
-    public static void notifyError(@Nullable Project project, String content) {
-        NotificationGroupManager.getInstance().getNotificationGroup("CodeGen.Notification.Group")
-                .createNotification(content, NotificationType.ERROR)
-                .notify(project);
+    private final static NotificationGroup GROUP_DISPLAY_ID_INFO =
+            new NotificationGroup("CodeGen notification group",
+                    NotificationDisplayType.BALLOON, true);
+
+    public static void notice(String title, String content, MessageType type){
+        Notification notification = GROUP_DISPLAY_ID_INFO.createNotification(title, content, type.toNotificationType(), null);
+        Project[] projects = ProjectManager.getInstance().getOpenProjects();
+        Notifications.Bus.notify(notification, projects[0]);
     }
 
 }

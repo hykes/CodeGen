@@ -13,13 +13,14 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
+import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.ui.JBUI;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import javax.swing.*;
 
 /**
  * @author hehaiyangwork@gmail.com
@@ -73,7 +74,7 @@ public class SqlEditorPanel implements ActionOperator {
             Parser parser = new DefaultParser();
             List<Table> tables = parser.parseSQLs(sqls);
             if (tables == null || tables.isEmpty()) {
-                MyNotifier.notifyError(ideaContext.getProject(), "please check sql format !");
+                MyNotifier.notice("CodeGen-SQL", "please check sql format !", MessageType.ERROR);
                 return;
             }
 

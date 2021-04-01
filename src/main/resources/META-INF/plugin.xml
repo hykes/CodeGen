@@ -39,7 +39,6 @@
         <applicationService serviceInterface="com.github.hykes.codegen.configurable.SettingManager"
                             serviceImplementation="com.github.hykes.codegen.configurable.SettingManager"/>
 
-        <notificationGroup id="CodeGen.Notification.Group" displayType="BALLOON" key="CodeGen Notification Group"/>
     </extensions>
 
     <actions>
