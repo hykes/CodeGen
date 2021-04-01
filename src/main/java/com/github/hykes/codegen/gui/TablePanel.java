@@ -38,7 +38,7 @@ public class TablePanel {
     private JTextField commentTextField;
     private JLabel commentLab;
 
-    private JBTable fieldTable = new JBTable();
+    private final JBTable fieldTable = new JBTable();
 
     private final SettingManager settingManager = SettingManager.getInstance();
 
@@ -78,7 +78,7 @@ public class TablePanel {
         tableTextField.setText(table.getTableName());
         initFields(table.getFields());
 
-        this.getRootComponent().registerKeyboardAction(e -> this.getRootComponent().disable(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+        this.getRootComponent().registerKeyboardAction(e -> this.getRootComponent().setEnabled(false), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     /**

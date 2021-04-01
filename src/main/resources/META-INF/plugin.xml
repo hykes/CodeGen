@@ -24,9 +24,9 @@
     <depends>com.intellij.modules.lang</depends>
     -->
     <depends optional="true" config-file="withDatabase.xml">com.intellij.database</depends>
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.java</depends>
-    <depends>com.intellij.java</depends>
-    <!--<depends optional="true">com.intellij.modules.ultimate</depends>-->
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
@@ -39,7 +39,7 @@
         <applicationService serviceInterface="com.github.hykes.codegen.configurable.SettingManager"
                             serviceImplementation="com.github.hykes.codegen.configurable.SettingManager"/>
 
-        <notificationGroup id="CodeGen.Notification.Group" displayType="BALLOON" key="CodeGen Notification Group"/>
+        <notificationGroup id="CodeGen.Notification.Group" displayType="BALLOON"/>
     </extensions>
 
     <actions>
