@@ -3,6 +3,8 @@ package com.github.hykes.codegen.configurable.ui.editor;
 import com.github.hykes.codegen.model.CodeTemplate;
 import com.github.hykes.codegen.provider.FileProviderFactory;
 import com.github.hykes.codegen.utils.StringUtils;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -68,7 +70,8 @@ public class TemplateEditorUI {
         } else {
             ((EditorEx) editor).setHighlighter(
                     highlighterFactory.createEditorHighlighter(null, FileProviderFactory.getFileType(extension)));
-            editor.getDocument().setText(template);
+            Application applicationManager = ApplicationManager.getApplication();
+            applicationManager.runWriteAction(() -> editor.getDocument().setText(template));
         }
         this.rootPanel.repaint();
     }
@@ -136,33 +139,33 @@ public class TemplateEditorUI {
         infoPanel.setLayout(new GridLayoutManager(3, 4, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(infoPanel, BorderLayout.NORTH);
         displayLab = new JLabel();
-        displayLab.setText("Name");
+        displayLab.setText("模板名称");
         infoPanel.add(displayLab, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         displayTextField = new JTextField();
         infoPanel.add(displayTextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         filenameLab = new JLabel();
-        filenameLab.setText("FileName");
+        filenameLab.setText("生成文件名称");
         infoPanel.add(filenameLab, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         filenameTextField = new JTextField();
         infoPanel.add(filenameTextField, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         extensionTextField = new JTextField();
         infoPanel.add(extensionTextField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         subPathLab = new JLabel();
-        subPathLab.setText("SubPath");
+        subPathLab.setText("二级路径");
         infoPanel.add(subPathLab, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         subPathTextField = new JTextField();
         infoPanel.add(subPathTextField, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         resourceLab = new JLabel();
-        resourceLab.setText("IsResource");
+        resourceLab.setText("是否资源文件");
         infoPanel.add(resourceLab, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         resourceCheckBox = new JCheckBox();
         resourceCheckBox.setText("");
         infoPanel.add(resourceCheckBox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         orderLab = new JLabel();
-        orderLab.setText("Order");
+        orderLab.setText("生成顺序");
         infoPanel.add(orderLab, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         extensionLab = new JLabel();
-        extensionLab.setText("Extension");
+        extensionLab.setText("文件扩展名");
         infoPanel.add(extensionLab, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         orderTextField = new JTextField();
         infoPanel.add(orderTextField, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));

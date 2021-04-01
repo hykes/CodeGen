@@ -20,8 +20,10 @@ import java.util.*;
 public class Defaults {
     private static final Logger LOGGER = Logger.getInstance(Defaults.class);
 
-    // 项目图片
-    public static final Icon CODEGEN = IconLoader.getIcon("/icons/codegen.png");
+    /**
+     * 项目图片
+     */
+    public static final Icon CODEGEN = IconLoader.findIcon("/icons/codegen.png");
 
     public static Map<String, String> getDefaultVariables() {
         Map<String, String> context = new HashMap<>();

@@ -1,14 +1,13 @@
-<idea-plugin>
+<idea-plugin require-restart="true">
     <id>me.hehaiyang.codegen</id>
     <name>CodeGen</name>
-    <version>1.3.2</version>
     <vendor email="hehaiyangwork@gmail.com" url="https://github.com/hykes">hykes</vendor>
 
     <description><![CDATA[
       <p><a href="https://github.com/hykes/CodeGen">GitHub</a> | <a href="https://github.com/hykes/CodeGen/issues">Issues</a> | <a href="https://plugins.jetbrains.com/plugin/9574-codegen">JetBrains</a> </p>
       <br>
       <p>This plugin helps you to generate specific template code by create table statement or database .</p>
-      <p>Support IDEA Community Edition(171+)、IDEA Ultimate Edition(171+)</p>
+      <p>Support IntelliJ IDEA 2020.3.3 (Ultimate Edition)</p>
       <ul>
         <li>Velocity template language</li>
         <li>IDEA database</li>
@@ -17,21 +16,7 @@
       </ul>
     ]]></description>
 
-    <change-notes><![CDATA[
-      <p>v1.3.1 2019-08-21</p>
-      <ul>
-        <li>Support IDEA Community Edition(171+)</li>
-      </ul>
-      <p>v1.3.0 2019-02-26</p>
-      <ul>
-        <li>Rebuild project using gradle</li>
-      </ul>
-      <a href="https://github.com/hykes/CodeGen/blob/master/doc/CHANGELOG.md">Read More ...</a>
-    ]]>
-    </change-notes>
-
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="171"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -39,7 +24,8 @@
     <depends>com.intellij.modules.lang</depends>
     -->
     <depends optional="true" config-file="withDatabase.xml">com.intellij.database</depends>
-    <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.java</depends>
+    <depends>com.intellij.java</depends>
     <!--<depends optional="true">com.intellij.modules.ultimate</depends>-->
 
     <extensions defaultExtensionNs="com.intellij">
@@ -53,15 +39,8 @@
         <applicationService serviceInterface="com.github.hykes.codegen.configurable.SettingManager"
                             serviceImplementation="com.github.hykes.codegen.configurable.SettingManager"/>
 
+        <notificationGroup id="CodeGen.Notification.Group" displayType="BALLOON" key="CodeGen Notification Group"/>
     </extensions>
-
-    <application-components>
-        <!-- Add your application components here -->
-    </application-components>
-
-    <project-components>
-        <!-- Add your project components here -->
-    </project-components>
 
     <actions>
         <!-- Add your actions here -->

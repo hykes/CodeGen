@@ -7,13 +7,12 @@ import com.github.hykes.codegen.model.Table;
 import com.github.hykes.codegen.parser.DefaultParser;
 import com.github.hykes.codegen.parser.Parser;
 import com.github.hykes.codegen.provider.FileProviderFactory;
-import com.github.hykes.codegen.utils.NotifyUtil;
+import com.github.hykes.codegen.utils.MyNotifier;
 import com.github.hykes.codegen.utils.StringUtils;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
-import com.intellij.openapi.ui.MessageType;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.ui.JBUI;
@@ -74,7 +73,7 @@ public class SqlEditorPanel implements ActionOperator {
             Parser parser = new DefaultParser();
             List<Table> tables = parser.parseSQLs(sqls);
             if (tables == null || tables.isEmpty()) {
-                NotifyUtil.notice("CodeGen-SQL", "please check sql format !", MessageType.ERROR);
+                MyNotifier.notifyError(ideaContext.getProject(), "please check sql format !");
                 return;
             }
 

@@ -1,5 +1,8 @@
 # Change Logs
 
+- v2.0.0 2021-04-01</p>
+  - IntelliJ IDEA 2020.1 (Ultimate Edition)
+  - IntelliJ IDEA 2020.3 (Ultimate Edition)
 - v1.3.1 2019-08-21
     - Support IDEA Community Edition(171+)
 

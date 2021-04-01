@@ -14,10 +14,10 @@ plugins {
 }
 
 group 'me.hehaiyang.codegen'
-version '1.3.2'
+version '2.0.0'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 apply plugin: 'idea'
 apply plugin: "org.jetbrains.intellij"
@@ -40,4 +40,14 @@ intellij {
     pluginName 'CodeGen'
     sandboxDirectory = project.rootDir.canonicalPath + "/.sandbox"
     plugins = ['java']
+}
+
+patchPluginXml {
+    sinceBuild 203
+    changeNotes """
+      <p>v2.0.0 2021-04-01</p>
+      <ul>
+        <li>IntelliJ IDEA 2020.3 (Ultimate Edition)</li>
+      </ul>
+      <a href="https://github.com/hykes/CodeGen/blob/master/doc/CHANGELOG.md">Read More ...</a>"""
 }
