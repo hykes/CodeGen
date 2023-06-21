@@ -1,53 +1,50 @@
-buildscript {
-    repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven { url "https://plugins.gradle.org/m2/" }
-    }
-    dependencies {
-        classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:0.4.21"
-    }
-}
 
+//buildscript {
+//    dependencies {
+//        classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:1.13.2"
+//    }
+//}
+
+// 指定IDEA的SDK的版本 https://github.com/JetBrains/gradle-intellij-plugin/
 plugins {
-    id 'java'
-    id 'org.jetbrains.intellij' version '0.4.21'
+    id('java')
+    id("org.jetbrains.intellij") version "1.13.2"
 }
 
-group 'me.hehaiyang.codegen'
-version '2.0.203'
-
-sourceCompatibility = 11
-targetCompatibility = 11
-
+// 使用IntelliJ IDEA的插件
 apply plugin: 'idea'
 apply plugin: "org.jetbrains.intellij"
 apply plugin: 'java'
 
-
 repositories {
     mavenLocal()
     mavenCentral()
+    repositories {
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'com.github.jsqlparser', name: 'jsqlparser', version: '1.3'
+    testCompileOnly group: 'junit', name: 'junit', version: '4.12'
+    implementation group: 'com.github.jsqlparser', name: 'jsqlparser', version: '1.3'
     compileOnly fileTree(include: ['*.jar'], dir: ideaSDKlocalPath + '/Contents/plugins/DatabaseTools/lib')
 }
 
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+// 当前开发该插件的 IDEA 版本
 intellij {
-    localPath ideaSDKlocalPath
-    pluginName 'CodeGen'
-    sandboxDirectory = project.rootDir.canonicalPath + "/.sandbox"
-    plugins = ['java']
+    version = "2022.1"
+    type = "IU"
+    plugins = ["java"]
 }
 
+// 内部版本号范围
 patchPluginXml {
-    sinceBuild 203
-    changeNotes """
-      <p>v2.0.0 2021-04-01</p>
-      <ul>
-        <li>IntelliJ IDEA 2020.3 (Ultimate Edition)</li>
-      </ul>
-      <a href="https://github.com/hykes/CodeGen/blob/master/doc/CHANGELOG.md">Read More ...</a>"""
+    sinceBuild = '221'
+    untilBuild = '221.*'
 }
+
+group 'me.hehaiyang.codegen'
+// 插件版本
+version '2.0.221'

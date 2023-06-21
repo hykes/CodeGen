@@ -23,7 +23,7 @@ public class Defaults {
     /**
      * 项目图片
      */
-    public static final Icon CODEGEN = IconLoader.findIcon("/icons/codegen.png");
+    public static final Icon CODEGEN = IconLoader.findIcon("/icons/codegen.png", Defaults.class.getClassLoader());
 
     public static Map<String, String> getDefaultVariables() {
         Map<String, String> context = new HashMap<>();
