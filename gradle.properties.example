@@ -1,1 +1,6 @@
 ideaSDKlocalPath=/Applications/IntelliJ IDEA.app
+
+## gradle buildPlugin --configuration-cache
+org.gradle.unsafe.configuration-cache=true
+
+org.gradle.jvmargs=-Xmx2048m
