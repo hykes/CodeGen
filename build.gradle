@@ -1,20 +1,10 @@
 
-//buildscript {
-//    dependencies {
-//        classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:1.13.2"
-//    }
-//}
-
-// 指定IDEA的SDK的版本 https://github.com/JetBrains/gradle-intellij-plugin/
+// 指定IDEA插件SDK的版本
+// https://github.com/JetBrains/gradle-intellij-plugin/releases?page=1
 plugins {
     id('java')
-    id("org.jetbrains.intellij") version "1.13.2"
+    id("org.jetbrains.intellij") version "1.7.0"
 }
-
-// 使用IntelliJ IDEA的插件
-apply plugin: 'idea'
-apply plugin: "org.jetbrains.intellij"
-apply plugin: 'java'
 
 repositories {
     mavenLocal()
@@ -31,20 +21,26 @@ dependencies {
     compileOnly fileTree(include: ['*.jar'], dir: ideaSDKlocalPath + '/Contents/plugins/DatabaseTools/lib')
 }
 
-// See https://github.com/JetBrains/gradle-intellij-plugin/
 // 当前开发该插件的 IDEA 版本
+// https://github.com/JetBrains/gradle-intellij-plugin/
+// https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html?from=jetbrains.org#intellij-platform-based-products-of-recent-ide-versions
 intellij {
-    version = "2023.1"
+    version = "2021.1"
     type = "IU"
     plugins = ["java"]
 }
 
 // 内部版本号范围
 patchPluginXml {
-    sinceBuild = '231'
-    untilBuild = '231.*'
+    sinceBuild = '211'
+    untilBuild = '213.*'
 }
+
+// 使用IntelliJ IDEA的插件
+apply plugin: 'idea'
+apply plugin: "org.jetbrains.intellij"
+apply plugin: 'java'
 
 group 'me.hehaiyang.codegen'
 // 插件版本
-version '2.0.231'
+version '2.0.211'
