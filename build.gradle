@@ -1,11 +1,5 @@
-
-//buildscript {
-//    dependencies {
-//        classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:1.13.2"
-//    }
-//}
-
-// 指定IDEA的SDK的版本 https://github.com/JetBrains/gradle-intellij-plugin/
+// 指定IDEA的SDK的版本
+// https://github.com/JetBrains/gradle-intellij-plugin/releases?page=1
 plugins {
     id('java')
     id("org.jetbrains.intellij") version "1.13.2"
@@ -31,8 +25,9 @@ dependencies {
     compileOnly fileTree(include: ['*.jar'], dir: ideaSDKlocalPath + '/Contents/plugins/DatabaseTools/lib')
 }
 
-// See https://github.com/JetBrains/gradle-intellij-plugin/
 // 当前开发该插件的 IDEA 版本
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+// https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html?from=jetbrains.org#intellij-platform-based-products-of-recent-ide-versions
 intellij {
     version = "2022.2"
     type = "IU"
